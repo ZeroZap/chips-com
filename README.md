@@ -91,10 +91,11 @@ chips-com/
 完成基础概念后，按以下顺序进入工程调试文档：
 
 1. `basic/uart-practical.md`：UART 接线、参数、乱码和字节流分帧。
-2. `basic/i2c-practical.md`：I2C 上拉、地址扫描、寄存器读写和总线恢复。
-3. `basic/spi-practical.md`：SPI Mode、片选、dummy byte 和多设备共享。
-4. `bus/rs485-modbus-rtu-practical.md`：RS485 方向控制、终端电阻、Modbus RTU 帧和 CRC。
-5. `bus/can-canopen-practical.md`：CAN 物理层、CANopen SDO/PDO/NMT 和电机调试入口。
-6. `bus/i3c-topic.md`：I3C 动态地址、CCC、IBI 和 I2C 混挂边界。
-7. `bus/ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流和 Modbus TCP MBAP。
-8. `bus/mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源、I2C 初始化、Lane、像素格式和黑屏/无图定位。
+2. `basic/uart-deep-dive.md`：UART 波特率误差、过采样、DMA、硬件流控和量产排障。
+3. `basic/i2c-practical.md`：I2C 上拉、地址扫描、寄存器读写和总线恢复。
+4. `basic/spi-practical.md`：SPI Mode、片选、dummy byte 和多设备共享。
+5. `bus/rs485-modbus-rtu-practical.md`：RS485 方向控制、终端电阻、Modbus RTU 帧和 CRC。
+6. `bus/can-canopen-practical.md`：CAN 物理层、CANopen SDO/PDO/NMT 和电机调试入口。
+7. `bus/i3c-topic.md`：I3C 动态地址、CCC、IBI 和 I2C 混挂边界。
+8. `bus/ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流和 Modbus TCP MBAP。
+9. `bus/mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源、I2C 初始化、Lane、像素格式和黑屏/无图定位。

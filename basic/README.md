@@ -13,6 +13,7 @@
 
 - `uart.md`：异步串口、波特率、起始位/停止位、校验位。
 - `uart-practical.md`：UART 接线、参数、乱码、分帧和 TTL/RS232/RS485 区分。
+- `uart-deep-dive.md`：UART 波特率误差、过采样、DMA、流控、分帧和量产排障。
 - `i2c.md`：双线同步总线、地址、ACK/NACK、上拉电阻。
 - `i2c-practical.md`：I2C 上拉、地址扫描、寄存器读写、Repeated START 和总线恢复。
 - `spi.md`：四线同步总线、片选、CPOL/CPHA、全双工通信。
