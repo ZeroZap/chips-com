@@ -7,6 +7,7 @@
 ### 基于串口/差分链路的总线
 
 - `modbus.md`：Modbus RTU/TCP、寄存器模型、功能码、主从通信。
+- `rs485-modbus-rtu-practical.md`：RS485 方向控制、终端/偏置、Modbus RTU 帧、CRC 和调试流程。
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
 - `lin.md`：车身低速网络、主从调度、低成本单线通信。
 
@@ -15,11 +16,13 @@
 - `smbus.md`：系统管理总线、电池和主板管理场景。
 - `pmbus.md`：电源管理总线、电源模块监控与控制。
 - `i3c.md`：I2C 演进总线、动态地址、带内中断、更高速率。
+- `i3c-topic.md`：I3C 工程专题、CCC、IBI、动态地址和 I2C 混挂边界。
 
 ### 工业与汽车现场总线
 
 - `can.md`：CAN/CAN FD、仲裁、错误处理、车载和工业控制。
 - `canopen.md`：CANopen 对象字典、PDO/SDO、设备模型。
+- `can-canopen-practical.md`：CAN 物理层、CANopen COB-ID、SDO/PDO/NMT 和电机调试流程。
 - `profibus.md`：工业现场总线、主从控制、过程自动化。
 - `ethercat.md`：实时工业以太网、从站级联、分布式时钟。
 
@@ -27,6 +30,7 @@
 
 - `usb.md`：USB 设备枚举、端点、传输类型、主机控制。
 - `ethernet.md`：以太网 MAC/PHY、帧、交换、TCP/IP 入口。
+- `ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流、Modbus TCP MBAP 和 Wireshark 调试。
 - `pcie.md`：高速点对点总线、Lane、事务层、DMA 场景。
 
 ### 简单设备总线
@@ -34,6 +38,7 @@
 - `one-wire.md`：单线通信、寄生供电、温度传感器等低速设备。
 - `sdio.md`：SD 卡和 Wi-Fi 模块常见接口。
 - `mipi.md`：显示和摄像头接口，如 DSI、CSI。
+- `mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源时序、I2C 初始化、Lane、像素格式和黑屏/无图定位。
 
 ## 收录边界
 

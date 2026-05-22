@@ -12,8 +12,11 @@
 ### 串行通信接口
 
 - `uart.md`：异步串口、波特率、起始位/停止位、校验位。
+- `uart-practical.md`：UART 接线、参数、乱码、分帧和 TTL/RS232/RS485 区分。
 - `i2c.md`：双线同步总线、地址、ACK/NACK、上拉电阻。
+- `i2c-practical.md`：I2C 上拉、地址扫描、寄存器读写、Repeated START 和总线恢复。
 - `spi.md`：四线同步总线、片选、CPOL/CPHA、全双工通信。
+- `spi-practical.md`：SPI Mode、片选时序、dummy byte、多设备共享和故障定位。
 - `i2s.md`：音频串行接口、采样率、左右声道时钟、位时钟。
 
 ### 模拟与混合信号接口
