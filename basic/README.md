@@ -16,6 +16,7 @@
 - `uart-deep-dive.md`：UART 波特率误差、过采样、DMA、流控、分帧和量产排障。
 - `i2c.md`：双线同步总线、地址、ACK/NACK、上拉电阻。
 - `i2c-practical.md`：I2C 上拉、地址扫描、寄存器读写、Repeated START 和总线恢复。
+- `i2c-deep-dive.md`：I2C 上拉/电容、地址、Clock Stretching、总线恢复、MUX 和器件特性。
 - `spi.md`：四线同步总线、片选、CPOL/CPHA、全双工通信。
 - `spi-practical.md`：SPI Mode、片选时序、dummy byte、多设备共享和故障定位。
 - `spi-deep-dive.md`：SPI 采样模式、CS 边界、dummy cycle、Flash 命令、高速信号和 QSPI/OSPI。

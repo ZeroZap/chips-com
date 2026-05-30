@@ -8,6 +8,7 @@
 
 - `modbus.md`：Modbus RTU/TCP、寄存器模型、功能码、主从通信。
 - `rs485-modbus-rtu-practical.md`：RS485 方向控制、终端/偏置、Modbus RTU 帧、CRC 和调试流程。
+- `rs485-modbus-rtu-deep-dive.md`：RS485 半双工、隔离防护、帧间隔、寄存器偏移、主站轮询和现场排障。
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
 - `lin.md`：车身低速网络、主从调度、低成本单线通信。
 
