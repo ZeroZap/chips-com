@@ -35,6 +35,7 @@
 - `usb.md`：USB 设备枚举、端点、传输类型、主机控制。
 - `usb-practical.md`：USB Host/Device、枚举、描述符、Endpoint、CDC/HID/MSC 和 Type-C 基础。
 - `ethernet.md`：以太网 MAC/PHY、帧、交换、TCP/IP 入口。
+- `ethernet-deep-dive.md`：Ethernet MAC/PHY、RMII/RGMII、MDIO、帧、ARP、TCP/UDP 和 Wireshark 排障。
 - `ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流、Modbus TCP MBAP 和 Wireshark 调试。
 - `pcie.md`：高速点对点总线、Lane、事务层、DMA 场景。
 

@@ -106,5 +106,6 @@ chips-com/
 12. `bus/i3c-deep-dive.md`：I3C 动态地址、CCC、IBI、Hot-Join、SDR/HDR、混合总线和驱动模型。
 13. `bus/smbus-pmbus-practical.md`：SMBus 事务、PEC、Alert、PMBus 命令、Linear 格式、PAGE 和故障状态。
 14. `bus/usb-practical.md`：USB Host/Device、枚举、描述符、Endpoint、CDC/HID/MSC 和 Type-C 基础。
-15. `bus/ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流和 Modbus TCP MBAP。
-16. `bus/mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源、I2C 初始化、Lane、像素格式和黑屏/无图定位。
+15. `bus/ethernet-deep-dive.md`：Ethernet MAC/PHY、RMII/RGMII、MDIO、帧、ARP、TCP/UDP 和 Wireshark 排障。
+16. `bus/ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流和 Modbus TCP MBAP。
+17. `bus/mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源、I2C 初始化、Lane、像素格式和黑屏/无图定位。

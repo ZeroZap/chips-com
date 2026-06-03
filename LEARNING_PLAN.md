@@ -157,12 +157,8 @@
 
    已完成文档：
 
-   - `bus/ethernet-modbus-tcp-practical.md`
-
-   后续建议深化：
-
    - `bus/ethernet-deep-dive.md`
-   - `bus/modbus-tcp-deep-dive.md`
+   - `bus/ethernet-modbus-tcp-practical.md`
 
    重点能力：
 
@@ -232,27 +228,27 @@
 优先继续：
 
 ```text
-Ethernet Deep Dive
+MIPI CSI/DSI Deep Dive
 ```
 
 原因：
 
-- 已经完成 USB Host/Device 体系。
-- Ethernet 是网络通信和工业以太网的基础。
-- 后续 Modbus TCP、EtherCAT、PROFINET 都依赖 Ethernet 分层理解。
+- 已经完成网络通信基础。
+- MIPI CSI/DSI 是摄像头和显示屏最常见的高速板内接口。
+- 它能补齐图像输入和显示输出方向的调试能力。
 
 建议下一篇文档：
 
 ```text
-bus/ethernet-deep-dive.md
+bus/mipi-csi-dsi-deep-dive.md
 ```
 
 建议覆盖：
 
-- MAC/PHY。
-- MII/RMII/RGMII。
-- MDIO/MDC。
-- Ethernet Frame。
-- ARP/IP/TCP/UDP。
-- TCP 字节流。
-- Wireshark 排障。
+- D-PHY Lane。
+- CSI 摄像头初始化流程。
+- DSI 屏幕初始化流程。
+- RAW/YUV/RGB 格式。
+- Video Mode 和 Command Mode。
+- 电源时序、MCLK、RESET。
+- 黑屏、花屏、无图调试。
