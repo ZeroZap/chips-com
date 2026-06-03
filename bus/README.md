@@ -16,14 +16,17 @@
 
 - `smbus.md`：系统管理总线、电池和主板管理场景。
 - `pmbus.md`：电源管理总线、电源模块监控与控制。
+- `smbus-pmbus-practical.md`：SMBus 事务、PEC、Alert、PMBus 命令、Linear 格式、PAGE 和故障状态。
 - `i3c.md`：I2C 演进总线、动态地址、带内中断、更高速率。
 - `i3c-topic.md`：I3C 工程专题、CCC、IBI、动态地址和 I2C 混挂边界。
+- `i3c-deep-dive.md`：I3C 动态地址、CCC、IBI、Hot-Join、SDR/HDR、混合总线和驱动模型。
 
 ### 工业与汽车现场总线
 
 - `can.md`：CAN/CAN FD、仲裁、错误处理、车载和工业控制。
 - `canopen.md`：CANopen 对象字典、PDO/SDO、设备模型。
 - `can-canopen-practical.md`：CAN 物理层、CANopen COB-ID、SDO/PDO/NMT 和电机调试流程。
+- `can-canopen-deep-dive.md`：CAN 位时序、仲裁、错误状态、CANopen PDO/SDO/NMT 和 CiA 402。
 - `profibus.md`：工业现场总线、主从控制、过程自动化。
 - `ethercat.md`：实时工业以太网、从站级联、分布式时钟。
 

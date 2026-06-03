@@ -86,6 +86,8 @@ chips-com/
 5. `RS485/CAN PHY`：理解差分信号、终端匹配、长距离抗干扰。
 6. `Modbus/CAN/USB/Ethernet`：理解成熟协议如何定义设备、帧、错误处理和网络行为。
 
+完整的阶段化学习安排见 `LEARNING_PLAN.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
@@ -99,6 +101,9 @@ chips-com/
 7. `bus/rs485-modbus-rtu-practical.md`：RS485 方向控制、终端电阻、Modbus RTU 帧和 CRC。
 8. `bus/rs485-modbus-rtu-deep-dive.md`：RS485 半双工、隔离防护、帧间隔、寄存器偏移、主站轮询和现场排障。
 9. `bus/can-canopen-practical.md`：CAN 物理层、CANopen SDO/PDO/NMT 和电机调试入口。
-10. `bus/i3c-topic.md`：I3C 动态地址、CCC、IBI 和 I2C 混挂边界。
-11. `bus/ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流和 Modbus TCP MBAP。
-12. `bus/mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源、I2C 初始化、Lane、像素格式和黑屏/无图定位。
+10. `bus/can-canopen-deep-dive.md`：CAN 位时序、仲裁、错误状态、CANopen PDO/SDO/NMT 和 CiA 402。
+11. `bus/i3c-topic.md`：I3C 动态地址、CCC、IBI 和 I2C 混挂边界。
+12. `bus/i3c-deep-dive.md`：I3C 动态地址、CCC、IBI、Hot-Join、SDR/HDR、混合总线和驱动模型。
+13. `bus/smbus-pmbus-practical.md`：SMBus 事务、PEC、Alert、PMBus 命令、Linear 格式、PAGE 和故障状态。
+14. `bus/ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流和 Modbus TCP MBAP。
+15. `bus/mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源、I2C 初始化、Lane、像素格式和黑屏/无图定位。
