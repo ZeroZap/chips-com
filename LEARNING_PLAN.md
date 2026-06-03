@@ -141,9 +141,8 @@
 
 1. `USB`
 
-   后续建议文档：
+   已完成文档：
 
-   - `bus/usb.md`
    - `bus/usb-practical.md`
 
    重点能力：
@@ -233,27 +232,27 @@
 优先继续：
 
 ```text
-USB Practical Guide
+Ethernet Deep Dive
 ```
 
 原因：
 
-- 已经完成基础接口、工业总线和 I2C 生态扩展。
-- USB 是通用主机外设体系中最重要的协议之一。
-- 它能引入 Host/Device、枚举、描述符、端点和传输类型等关键概念。
+- 已经完成 USB Host/Device 体系。
+- Ethernet 是网络通信和工业以太网的基础。
+- 后续 Modbus TCP、EtherCAT、PROFINET 都依赖 Ethernet 分层理解。
 
 建议下一篇文档：
 
 ```text
-bus/usb-practical.md
+bus/ethernet-deep-dive.md
 ```
 
 建议覆盖：
 
-- USB Host/Device/OTG。
-- 枚举流程。
-- 描述符。
-- Endpoint 方向。
-- Control/Bulk/Interrupt/Isochronous。
-- CDC/HID/MSC。
-- VBUS、D+/D- 和 Type-C 基础。
+- MAC/PHY。
+- MII/RMII/RGMII。
+- MDIO/MDC。
+- Ethernet Frame。
+- ARP/IP/TCP/UDP。
+- TCP 字节流。
+- Wireshark 排障。
