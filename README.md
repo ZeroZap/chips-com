@@ -88,6 +88,10 @@ chips-com/
 
 完整的阶段化学习安排见 `LEARNING_PLAN.md`。
 
+跨协议排障方法见 `DEBUG_PLAYBOOK.md`。
+
+协议选型矩阵见 `PROTOCOL_SELECTION.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
