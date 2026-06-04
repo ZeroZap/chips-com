@@ -178,11 +178,7 @@
    已完成文档：
 
    - `bus/mipi-csi-dsi-debug.md`
-
-   后续建议深化：
-
-   - `bus/mipi-csi-deep-dive.md`
-   - `bus/mipi-dsi-deep-dive.md`
+   - `bus/mipi-csi-dsi-deep-dive.md`
 
    重点能力：
 
@@ -228,27 +224,27 @@
 优先继续：
 
 ```text
-MIPI CSI/DSI Deep Dive
+PCIe Practical Guide
 ```
 
 原因：
 
-- 已经完成网络通信基础。
-- MIPI CSI/DSI 是摄像头和显示屏最常见的高速板内接口。
-- 它能补齐图像输入和显示输出方向的调试能力。
+- 已经完成图像输入和显示输出链路。
+- PCIe 是高性能 SoC、SSD、网卡、FPGA、AI 加速器常见高速互联。
+- 它能补齐高速系统扩展和 DMA 方向。
 
 建议下一篇文档：
 
 ```text
-bus/mipi-csi-dsi-deep-dive.md
+bus/pcie-practical.md
 ```
 
 建议覆盖：
 
-- D-PHY Lane。
-- CSI 摄像头初始化流程。
-- DSI 屏幕初始化流程。
-- RAW/YUV/RGB 格式。
-- Video Mode 和 Command Mode。
-- 电源时序、MCLK、RESET。
-- 黑屏、花屏、无图调试。
+- Root Complex 和 Endpoint。
+- Lane 和 Gen。
+- 配置空间。
+- BAR。
+- MSI/MSI-X。
+- DMA。
+- 链路训练和 LTSSM。

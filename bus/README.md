@@ -45,6 +45,7 @@
 - `sdio.md`：SD 卡和 Wi-Fi 模块常见接口。
 - `mipi.md`：显示和摄像头接口，如 DSI、CSI。
 - `mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源时序、I2C 初始化、Lane、像素格式和黑屏/无图定位。
+- `mipi-csi-dsi-deep-dive.md`：MIPI D-PHY、CSI/DSI 初始化、RAW/YUV/RGB、显示时序和图像链路排障。
 
 ## 收录边界
 
