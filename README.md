@@ -94,6 +94,8 @@ chips-com/
 
 术语表见 `GLOSSARY.md`，缩写表见 `ACRONYMS.md`，调试工具指南见 `TOOLS.md`，分层图谱见 `LAYERED_MAP.md`。
 
+应用场景选型见 `APPLICATION_SCENARIOS.md`，典型设备接口参考见 `DEVICE_EXAMPLES.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
