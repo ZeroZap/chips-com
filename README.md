@@ -110,3 +110,9 @@ chips-com/
 16. `bus/ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流和 Modbus TCP MBAP。
 17. `bus/mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源、I2C 初始化、Lane、像素格式和黑屏/无图定位。
 18. `bus/mipi-csi-dsi-deep-dive.md`：MIPI D-PHY、CSI/DSI 初始化、RAW/YUV/RGB、显示时序和图像链路排障。
+19. `bus/pcie-practical.md`：PCIe Root Complex/Endpoint、Lane、配置空间、BAR、MSI 和 DMA。
+20. `bus/sdio-practical.md`：SDIO CLK/CMD/DAT、Wi-Fi 模块、固件、设备树和枚举排障。
+21. `bus/one-wire-practical.md`：1-Wire 上拉、时序、ROM ID、DS18B20 和寄生供电。
+22. `bus/lin-practical.md`：LIN 主从调度、Break/Sync/ID/Checksum 和车身低速节点。
+23. `bus/ethercat-deep-dive.md`：EtherCAT 主从、ESC、On-the-fly、PDO、Mailbox、DC 和 WKC。
+24. `bus/industrial-ethernet-comparison.md`：Modbus TCP、PROFINET、EtherNet/IP 和 EtherCAT 选型对比。

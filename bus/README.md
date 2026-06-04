@@ -11,6 +11,7 @@
 - `rs485-modbus-rtu-deep-dive.md`：RS485 半双工、隔离防护、帧间隔、寄存器偏移、主站轮询和现场排障。
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
 - `lin.md`：车身低速网络、主从调度、低成本单线通信。
+- `lin-practical.md`：LIN 主从调度、Break/Sync/Identifier、Checksum、LDF 和车身节点调试。
 
 ### 基于 I2C 生态的总线
 
@@ -29,6 +30,7 @@
 - `can-canopen-deep-dive.md`：CAN 位时序、仲裁、错误状态、CANopen PDO/SDO/NMT 和 CiA 402。
 - `profibus.md`：工业现场总线、主从控制、过程自动化。
 - `ethercat.md`：实时工业以太网、从站级联、分布式时钟。
+- `ethercat-deep-dive.md`：EtherCAT 主站/从站、ESC、On-the-fly、过程数据、Mailbox、DC 和 WKC。
 
 ### 通用高速总线与网络
 
@@ -37,12 +39,16 @@
 - `ethernet.md`：以太网 MAC/PHY、帧、交换、TCP/IP 入口。
 - `ethernet-deep-dive.md`：Ethernet MAC/PHY、RMII/RGMII、MDIO、帧、ARP、TCP/UDP 和 Wireshark 排障。
 - `ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流、Modbus TCP MBAP 和 Wireshark 调试。
+- `industrial-ethernet-comparison.md`：Modbus TCP、PROFINET、EtherNet/IP、EtherCAT 对比和选型。
 - `pcie.md`：高速点对点总线、Lane、事务层、DMA 场景。
+- `pcie-practical.md`：PCIe Root Complex/Endpoint、Lane、配置空间、BAR、MSI/MSI-X、DMA 和 LTSSM。
 
 ### 简单设备总线
 
 - `one-wire.md`：单线通信、寄生供电、温度传感器等低速设备。
+- `one-wire-practical.md`：1-Wire 上拉、GPIO 时序、ROM ID、DS18B20、寄生供电和多设备搜索。
 - `sdio.md`：SD 卡和 Wi-Fi 模块常见接口。
+- `sdio-practical.md`：SDIO CLK/CMD/DAT、1-bit/4-bit、Wi-Fi 模块、固件和设备树调试。
 - `mipi.md`：显示和摄像头接口，如 DSI、CSI。
 - `mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源时序、I2C 初始化、Lane、像素格式和黑屏/无图定位。
 - `mipi-csi-dsi-deep-dive.md`：MIPI D-PHY、CSI/DSI 初始化、RAW/YUV/RGB、显示时序和图像链路排障。

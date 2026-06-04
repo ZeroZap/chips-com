@@ -191,9 +191,8 @@
 
 2. `PCIe`
 
-   后续建议文档：
+   已完成文档：
 
-   - `bus/pcie.md`
    - `bus/pcie-practical.md`
 
    重点能力：
@@ -207,9 +206,8 @@
 
 3. `SDIO`
 
-   后续建议文档：
+   已完成文档：
 
-   - `bus/sdio.md`
    - `bus/sdio-practical.md`
 
    重点能力：
@@ -224,27 +222,25 @@
 优先继续：
 
 ```text
-PCIe Practical Guide
+Protocol Selection And Debug Playbook
 ```
 
 原因：
 
-- 已经完成图像输入和显示输出链路。
-- PCIe 是高性能 SoC、SSD、网卡、FPGA、AI 加速器常见高速互联。
-- 它能补齐高速系统扩展和 DMA 方向。
+- 主要协议族已经建立实战和深入文档。
+- 下一步应沉淀跨协议的选型、排障和工具方法。
+- 这样能把知识库从单协议说明升级为工程决策手册。
 
 建议下一篇文档：
 
 ```text
-bus/pcie-practical.md
+DEBUG_PLAYBOOK.md
 ```
 
 建议覆盖：
 
-- Root Complex 和 Endpoint。
-- Lane 和 Gen。
-- 配置空间。
-- BAR。
-- MSI/MSI-X。
-- DMA。
-- 链路训练和 LTSSM。
+- 通信协议选型树。
+- 逻辑分析仪/示波器/Wireshark/CAN 分析仪使用场景。
+- 分层排障方法。
+- 物理层、电气层、协议层、应用层问题区分。
+- 常见症状到原因映射。
