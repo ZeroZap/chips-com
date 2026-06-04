@@ -134,3 +134,5 @@ chips-com/
 3. `basic/adc-dac.md`：ADC/DAC 分辨率、参考电压、采样和模拟输出。
 4. `basic/i2s.md`：I2S 音频时钟、采样率、位深和 Codec 连接。
 5. `basic/qspi-ospi.md`：QSPI/OSPI 线宽、dummy cycle、Flash 和 XIP。
+6. `basic/jtag-swd.md`：JTAG/SWD 下载调试接口、VTref、复位和量产烧录。
+7. `basic/lvds.md`：LVDS 差分信号、工业屏连接和显示链路调试。
