@@ -20,6 +20,7 @@
 - `spi.md`：四线同步总线、片选、CPOL/CPHA、全双工通信。
 - `spi-practical.md`：SPI Mode、片选时序、dummy byte、多设备共享和故障定位。
 - `spi-deep-dive.md`：SPI 采样模式、CS 边界、dummy cycle、Flash 命令、高速信号和 QSPI/OSPI。
+- `qspi-ospi.md`：SPI Flash 高速扩展、Quad/Octal 数据线、dummy cycle、XIP。
 - `i2s.md`：音频串行接口、采样率、左右声道时钟、位时钟。
 
 ### 模拟与混合信号接口

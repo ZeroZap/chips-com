@@ -236,6 +236,14 @@ Review And Fill Missing Basics
 - 下一步应补齐尚未展开的基础主题，如 GPIO、PWM、ADC/DAC、I2S、QSPI/OSPI。
 - 这样知识库会从通信协议扩展为完整芯片外设通信基础。
 
+当前这些基础主题已补齐为：
+
+- `basic/gpio.md`
+- `basic/pwm.md`
+- `basic/adc-dac.md`
+- `basic/i2s.md`
+- `basic/qspi-ospi.md`
+
 建议下一篇文档：
 
 ```text

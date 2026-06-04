@@ -120,3 +120,13 @@ chips-com/
 22. `bus/lin-practical.md`：LIN 主从调度、Break/Sync/ID/Checksum 和车身低速节点。
 23. `bus/ethercat-deep-dive.md`：EtherCAT 主从、ESC、On-the-fly、PDO、Mailbox、DC 和 WKC。
 24. `bus/industrial-ethernet-comparison.md`：Modbus TCP、PROFINET、EtherNet/IP 和 EtherCAT 选型对比。
+
+## 基础外设补充
+
+基础外设文档用于补齐通信前置能力：
+
+1. `basic/gpio.md`：GPIO 输入输出、上拉下拉、推挽开漏和中断。
+2. `basic/pwm.md`：PWM 频率、占空比、分辨率和典型控制场景。
+3. `basic/adc-dac.md`：ADC/DAC 分辨率、参考电压、采样和模拟输出。
+4. `basic/i2s.md`：I2S 音频时钟、采样率、位深和 Codec 连接。
+5. `basic/qspi-ospi.md`：QSPI/OSPI 线宽、dummy cycle、Flash 和 XIP。
