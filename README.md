@@ -92,6 +92,8 @@ chips-com/
 
 协议选型矩阵见 `PROTOCOL_SELECTION.md`。
 
+术语表见 `GLOSSARY.md`，缩写表见 `ACRONYMS.md`，调试工具指南见 `TOOLS.md`，分层图谱见 `LAYERED_MAP.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
