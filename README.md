@@ -98,6 +98,8 @@ chips-com/
 
 文档模板见 `DOC_TEMPLATES.md`，协议对照表见 `PROTOCOL_COMPARISON.md`，故障速查见 `TROUBLESHOOTING_QUICKREF.md`，实验路线见 `LABS.md`。
 
+完整索引见 `INDEX.md`，按目标阅读见 `READING_PATHS.md`，新增内容评审见 `REVIEW_CHECKLIST.md`，贡献规范见 `CONTRIBUTING.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
