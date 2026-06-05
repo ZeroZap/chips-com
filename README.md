@@ -96,6 +96,8 @@ chips-com/
 
 应用场景选型见 `APPLICATION_SCENARIOS.md`，典型设备接口参考见 `DEVICE_EXAMPLES.md`。
 
+文档模板见 `DOC_TEMPLATES.md`，协议对照表见 `PROTOCOL_COMPARISON.md`，故障速查见 `TROUBLESHOOTING_QUICKREF.md`，实验路线见 `LABS.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
