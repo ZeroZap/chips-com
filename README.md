@@ -104,6 +104,8 @@ chips-com/
 
 原理图检查见 `SCHEMATIC_CHECKLISTS.md`，驱动状态机模式见 `DRIVER_PATTERNS.md`，故障案例见 `FAILURE_CASES.md`，波形观察见 `WAVEFORM_GUIDE.md`。
 
+实验记录模板见 `EXPERIMENT_TEMPLATE.md`，接口参数速查见 `PARAMETER_CHEATSHEET.md`，量产测试策略见 `PRODUCTION_TEST.md`，可靠性设计见 `RELIABILITY_GUIDE.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
