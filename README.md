@@ -102,6 +102,8 @@ chips-com/
 
 当前覆盖范围和后续扩展方向见 `COVERAGE.md`。
 
+原理图检查见 `SCHEMATIC_CHECKLISTS.md`，驱动状态机模式见 `DRIVER_PATTERNS.md`，故障案例见 `FAILURE_CASES.md`，波形观察见 `WAVEFORM_GUIDE.md`。
+
 ## 实战深入路径
 
 完成基础概念后，按以下顺序进入工程调试文档：
