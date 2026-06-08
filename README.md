@@ -134,6 +134,14 @@ chips-com/
 22. `bus/lin-practical.md`：LIN 主从调度、Break/Sync/ID/Checksum 和车身低速节点。
 23. `bus/ethercat-deep-dive.md`：EtherCAT 主从、ESC、On-the-fly、PDO、Mailbox、DC 和 WKC。
 24. `bus/industrial-ethernet-comparison.md`：Modbus TCP、PROFINET、EtherNet/IP 和 EtherCAT 选型对比。
+25. `bus/usb-deep-dive.md`：USB 标准请求、描述符层级、复合设备、类协议和枚举排障。
+26. `bus/modbus-tcp-deep-dive.md`：Modbus TCP MBAP、事务 ID、Unit ID、并发连接和网关转换。
+27. `bus/profinet.md`：PROFINET 设备发现、组态、周期 IO、诊断和实时通信概览。
+28. `bus/ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
+29. `bus/j1939.md`：J1939、PGN、SPN、商用车 CAN 通信概览。
+30. `bus/uds.md`：UDS 诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
+31. `bus/ethernet-tsn.md`：TSN 时间敏感网络、同步、调度和确定性以太网概览。
+32. `bus/fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头链路。
 
 ## 基础外设补充
 

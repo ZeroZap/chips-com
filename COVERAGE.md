@@ -39,20 +39,27 @@
 - Modbus TCP
 - CAN
 - CANopen
+- J1939
+- UDS
 - LIN
 - EtherCAT
+- PROFINET
+- EtherNet/IP
 - 工业以太网对比
 
 通用外设和高速互联：
 
 - USB
+- USB Deep Dive
 - Ethernet
+- Ethernet TSN
 - PCIe
 
 图像和显示：
 
 - MIPI CSI/DSI
 - LVDS
+- FPD-Link/GMSL
 - 显示接口概览
 
 工程方法：
@@ -71,17 +78,14 @@
 
 短期补充：
 
-- `bus/usb-deep-dive.md`：更深入的 USB 描述符、复合设备、CDC/HID/MSC 细节。
-- `bus/modbus-tcp-deep-dive.md`：Modbus TCP 连接管理、并发客户端、网关转换。
-- `bus/ethernet-ip.md`：EtherNet/IP 和 CIP 入门。
-- `bus/profinet.md`：PROFINET 入门和工程组态概念。
+- 为 `PROFINET`、`EtherNet/IP`、`J1939`、`UDS` 增加 practical/deep-dive 文档。
+- 为 `FPD-Link/GMSL` 增加调试案例和链路预算说明。
 
 中期补充：
 
-- `bus/j1939.md`：商用车 CAN 上层协议。
-- `bus/uds.md`：车载诊断 UDS。
-- `bus/ethernet-tsn.md`：TSN 时间敏感网络。
-- `bus/fpd-link-gmsl.md`：车载摄像头高速串行链路。
+- `bus/profibus.md`：补齐 PROFIBUS 入门。
+- `bus/dmx512.md`：补齐灯光控制总线。
+- `bus/hdmi-edp.md`：显示外部链路深入。
 
 长期补充：
 

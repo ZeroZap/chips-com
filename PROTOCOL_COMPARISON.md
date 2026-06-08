@@ -40,6 +40,9 @@
 | TCP | 传输层 | 可靠字节流 | HTTP、MQTT、Modbus TCP |
 | Modbus TCP | 应用层 | 依赖 TCP | 工业寄存器读写 |
 | EtherCAT | 工业以太网 | 主站控制 | 强实时控制 |
+| PROFINET | 工业以太网 | 依实时等级 | 西门子 PLC 和远程 IO |
+| EtherNet/IP | 工业以太网 | TCP/UDP + CIP | Rockwell/AB 生态 |
+| TSN | Ethernet 增强 | 确定性传输 | 工业/车载实时网络 |
 
 ## 显示接口对比
 

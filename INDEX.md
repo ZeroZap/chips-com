@@ -54,14 +54,21 @@
 - `bus/lin-practical.md`
 - `bus/ethercat-deep-dive.md`
 - `bus/industrial-ethernet-comparison.md`
+- `bus/j1939.md`
+- `bus/uds.md`
 
 ## 通用外设与网络
 
 - `bus/usb.md`
 - `bus/usb-practical.md`
+- `bus/usb-deep-dive.md`
 - `bus/ethernet.md`
 - `bus/ethernet-deep-dive.md`
 - `bus/ethernet-modbus-tcp-practical.md`
+- `bus/modbus-tcp-deep-dive.md`
+- `bus/profinet.md`
+- `bus/ethernet-ip.md`
+- `bus/ethernet-tsn.md`
 - `bus/pcie-practical.md`
 
 ## 图像与显示
@@ -69,6 +76,7 @@
 - `bus/mipi-csi-dsi-debug.md`
 - `bus/mipi-csi-dsi-deep-dive.md`
 - `bus/display-interfaces.md`
+- `bus/fpd-link-gmsl.md`
 
 ## 参考资料
 

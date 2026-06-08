@@ -31,15 +31,22 @@
 - `profibus.md`：工业现场总线、主从控制、过程自动化。
 - `ethercat.md`：实时工业以太网、从站级联、分布式时钟。
 - `ethercat-deep-dive.md`：EtherCAT 主站/从站、ESC、On-the-fly、过程数据、Mailbox、DC 和 WKC。
+- `j1939.md`：商用车 CAN 上层协议、PGN、SPN 和多包传输概览。
+- `uds.md`：车载统一诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
 
 ### 通用高速总线与网络
 
 - `usb.md`：USB 设备枚举、端点、传输类型、主机控制。
 - `usb-practical.md`：USB Host/Device、枚举、描述符、Endpoint、CDC/HID/MSC 和 Type-C 基础。
+- `usb-deep-dive.md`：USB 标准请求、描述符层级、复合设备、CDC/HID/MSC 和枚举排障。
 - `ethernet.md`：以太网 MAC/PHY、帧、交换、TCP/IP 入口。
 - `ethernet-deep-dive.md`：Ethernet MAC/PHY、RMII/RGMII、MDIO、帧、ARP、TCP/UDP 和 Wireshark 排障。
 - `ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流、Modbus TCP MBAP 和 Wireshark 调试。
 - `industrial-ethernet-comparison.md`：Modbus TCP、PROFINET、EtherNet/IP、EtherCAT 对比和选型。
+- `modbus-tcp-deep-dive.md`：Modbus TCP MBAP、事务 ID、Unit ID、并发连接和 RTU 网关转换。
+- `profinet.md`：PROFINET 设备发现、组态、周期 IO、诊断和实时通信概览。
+- `ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
+- `ethernet-tsn.md`：TSN 时间敏感网络、时间同步、调度和确定性以太网概览。
 - `pcie.md`：高速点对点总线、Lane、事务层、DMA 场景。
 - `pcie-practical.md`：PCIe Root Complex/Endpoint、Lane、配置空间、BAR、MSI/MSI-X、DMA 和 LTSSM。
 
@@ -53,6 +60,7 @@
 - `mipi-csi-dsi-debug.md`：MIPI CSI/DSI 电源时序、I2C 初始化、Lane、像素格式和黑屏/无图定位。
 - `mipi-csi-dsi-deep-dive.md`：MIPI D-PHY、CSI/DSI 初始化、RAW/YUV/RGB、显示时序和图像链路排障。
 - `display-interfaces.md`：SPI、RGB、LVDS、MIPI DSI、eDP、HDMI 显示接口选型概览。
+- `fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头/显示链路。
 
 ## 收录边界
 
