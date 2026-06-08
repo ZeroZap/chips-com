@@ -7,6 +7,7 @@
 ### 基于串口/差分链路的总线
 
 - `modbus.md`：Modbus RTU/TCP、寄存器模型、功能码、主从通信。
+- `modbus-tcp-deep-dive.md`：Modbus TCP MBAP、事务 ID、Unit ID、并发连接和 RTU 网关转换。
 - `rs485-modbus-rtu-practical.md`：RS485 方向控制、终端/偏置、Modbus RTU 帧、CRC 和调试流程。
 - `rs485-modbus-rtu-deep-dive.md`：RS485 半双工、隔离防护、帧间隔、寄存器偏移、主站轮询和现场排障。
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
@@ -28,6 +29,7 @@
 - `canopen.md`：CANopen 对象字典、PDO/SDO、设备模型。
 - `can-canopen-practical.md`：CAN 物理层、CANopen COB-ID、SDO/PDO/NMT 和电机调试流程。
 - `can-canopen-deep-dive.md`：CAN 位时序、仲裁、错误状态、CANopen PDO/SDO/NMT 和 CiA 402。
+- `iso-tp.md`：CAN 多帧传输、Single/First/Consecutive/Flow Control 帧和 UDS 承载。
 - `profibus.md`：工业现场总线、主从控制、过程自动化。
 - `ethercat.md`：实时工业以太网、从站级联、分布式时钟。
 - `ethercat-deep-dive.md`：EtherCAT 主站/从站、ESC、On-the-fly、过程数据、Mailbox、DC 和 WKC。
@@ -39,6 +41,7 @@
 - `usb.md`：USB 设备枚举、端点、传输类型、主机控制。
 - `usb-practical.md`：USB Host/Device、枚举、描述符、Endpoint、CDC/HID/MSC 和 Type-C 基础。
 - `usb-deep-dive.md`：USB 标准请求、描述符层级、复合设备、CDC/HID/MSC 和枚举排障。
+- `usb-dfu.md`：USB 固件升级、DFU 模式、分块下载、校验和 bootloader 保护。
 - `ethernet.md`：以太网 MAC/PHY、帧、交换、TCP/IP 入口。
 - `ethernet-deep-dive.md`：Ethernet MAC/PHY、RMII/RGMII、MDIO、帧、ARP、TCP/UDP 和 Wireshark 排障。
 - `ethernet-modbus-tcp-practical.md`：Ethernet 链路、TCP 字节流、Modbus TCP MBAP 和 Wireshark 调试。
@@ -47,6 +50,7 @@
 - `profinet.md`：PROFINET 设备发现、组态、周期 IO、诊断和实时通信概览。
 - `ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
 - `ethernet-tsn.md`：TSN 时间敏感网络、时间同步、调度和确定性以太网概览。
+- `mqtt.md`：MQTT 发布订阅、Topic、QoS、Keepalive 和 IoT 上云场景。
 - `pcie.md`：高速点对点总线、Lane、事务层、DMA 场景。
 - `pcie-practical.md`：PCIe Root Complex/Endpoint、Lane、配置空间、BAR、MSI/MSI-X、DMA 和 LTSSM。
 
@@ -61,6 +65,7 @@
 - `mipi-csi-dsi-deep-dive.md`：MIPI D-PHY、CSI/DSI 初始化、RAW/YUV/RGB、显示时序和图像链路排障。
 - `display-interfaces.md`：SPI、RGB、LVDS、MIPI DSI、eDP、HDMI 显示接口选型概览。
 - `fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头/显示链路。
+- `hdmi-edp.md`：HDMI/eDP、EDID、AUX、Link Training、外接和嵌入式显示链路。
 
 ## 收录边界
 

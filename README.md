@@ -142,6 +142,12 @@ chips-com/
 30. `bus/uds.md`：UDS 诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
 31. `bus/ethernet-tsn.md`：TSN 时间敏感网络、同步、调度和确定性以太网概览。
 32. `bus/fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头链路。
+33. `bus/profibus.md`：PROFIBUS DP/PA、传统现场总线和西门子存量生态概览。
+34. `bus/dmx512.md`：DMX512 灯光控制、Break、通道数据和舞台灯光场景。
+35. `bus/hdmi-edp.md`：HDMI/eDP 外接和嵌入式显示链路概览。
+36. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
+37. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
+38. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
 
 ## 基础外设补充
 

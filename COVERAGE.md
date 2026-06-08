@@ -41,8 +41,11 @@
 - CANopen
 - J1939
 - UDS
+- ISO-TP
 - LIN
 - EtherCAT
+- PROFIBUS
+- DMX512
 - PROFINET
 - EtherNet/IP
 - 工业以太网对比
@@ -51,8 +54,10 @@
 
 - USB
 - USB Deep Dive
+- USB DFU
 - Ethernet
 - Ethernet TSN
+- MQTT
 - PCIe
 
 图像和显示：
@@ -60,6 +65,7 @@
 - MIPI CSI/DSI
 - LVDS
 - FPD-Link/GMSL
+- HDMI/eDP
 - 显示接口概览
 
 工程方法：
@@ -83,9 +89,8 @@
 
 中期补充：
 
-- `bus/profibus.md`：补齐 PROFIBUS 入门。
-- `bus/dmx512.md`：补齐灯光控制总线。
-- `bus/hdmi-edp.md`：显示外部链路深入。
+- 为 `PROFIBUS`、`DMX512`、`HDMI/eDP` 增加 practical 文档和调试案例。
+- 为 `USB DFU`、`ISO-TP`、`MQTT` 增加 deep-dive 文档。
 
 长期补充：
 
