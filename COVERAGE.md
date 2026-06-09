@@ -42,6 +42,7 @@
 - J1939
 - UDS
 - ISO-TP
+- ISO-TP Practical
 - LIN
 - EtherCAT
 - PROFIBUS
@@ -55,9 +56,11 @@
 - USB
 - USB Deep Dive
 - USB DFU
+- USB DFU Practical
 - Ethernet
 - Ethernet TSN
 - MQTT
+- MQTT Practical
 - PCIe
 
 图像和显示：
@@ -65,6 +68,7 @@
 - MIPI CSI/DSI
 - LVDS
 - FPD-Link/GMSL
+- FPD-Link/GMSL Practical
 - HDMI/eDP
 - 显示接口概览
 

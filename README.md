@@ -148,6 +148,10 @@ chips-com/
 36. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
 37. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
 38. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
+39. `bus/iso-tp-practical.md`：ISO-TP CAN 多帧调试、Flow Control、STmin、Block Size 和 UDS 验证。
+40. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
+41. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
+42. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
 
 ## 基础外设补充
 
