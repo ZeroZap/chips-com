@@ -95,9 +95,9 @@
 
 3. `LIN`
 
-   后续建议文档：
+   已完成文档：
 
-   - `bus/lin.md`
+   - `bus/lin-practical.md`
 
    重点能力：
 
@@ -149,6 +149,7 @@
    已完成文档：
 
    - `bus/usb-practical.md`
+   - `bus/usb-deep-dive.md`
 
    重点能力：
 
@@ -227,35 +228,40 @@
 优先继续：
 
 ```text
-Review And Fill Missing Basics
+Add Practical / Deep-Dive Documents For Remaining Overview Topics
 ```
 
 原因：
 
 - 主要协议族和跨协议方法已经建立。
-- 下一步应补齐尚未展开的基础主题，如 GPIO、PWM、ADC/DAC、I2S、QSPI/OSPI。
-- 这样知识库会从通信协议扩展为完整芯片外设通信基础。
+- 基础外设主题已经补齐，下一步应把仍停留在概览层的协议推进到可调试、可落地的工程文档。
+- 这样知识库会从“知道概念”继续推进到“能接线、能抓包、能定位问题”。
 
-当前这些基础主题已补齐为：
+当前基础主题已补齐为：
 
 - `basic/gpio.md`
 - `basic/pwm.md`
 - `basic/adc-dac.md`
 - `basic/i2s.md`
 - `basic/qspi-ospi.md`
+- `basic/jtag-swd.md`
+- `basic/lvds.md`
 
-建议下一篇文档：
+建议下一批优先文档：
 
 ```text
-basic/gpio.md
+bus/ethernet-ip-practical.md
+bus/j1939-practical.md
+bus/uds-practical.md
 ```
+
+`bus/profinet-practical.md` 已完成，下一篇优先进入 `bus/ethernet-ip-practical.md`。
 
 建议覆盖：
 
-- 输入/输出。
-- 上拉/下拉。
-- 推挽/开漏。
-- 中断。
-- 去抖。
-- 电平兼容。
-- 驱动能力。
+- 工程工具和抓包入口。
+- 设备描述文件，如 GSDML / EDS / DBC / ODX 或诊断数据库。
+- 最小通信流程和典型报文。
+- 参数、地址、对象或服务的映射方式。
+- 常见现场故障和分层排查步骤。
+- 与现有 `bus/industrial-ethernet-comparison.md`、`bus/can-canopen-deep-dive.md`、`bus/iso-tp-deep-dive.md` 的交叉引用。

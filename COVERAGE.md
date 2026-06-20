@@ -43,11 +43,15 @@
 - UDS
 - ISO-TP
 - ISO-TP Practical
+- ISO-TP Deep Dive
 - LIN
 - EtherCAT
 - PROFIBUS
+- PROFIBUS Practical
 - DMX512
+- DMX512 Practical
 - PROFINET
+- PROFINET Practical
 - EtherNet/IP
 - 工业以太网对比
 
@@ -57,10 +61,12 @@
 - USB Deep Dive
 - USB DFU
 - USB DFU Practical
+- USB DFU Deep Dive
 - Ethernet
 - Ethernet TSN
 - MQTT
 - MQTT Practical
+- MQTT Deep Dive
 - PCIe
 
 图像和显示：
@@ -70,6 +76,7 @@
 - FPD-Link/GMSL
 - FPD-Link/GMSL Practical
 - HDMI/eDP
+- HDMI/eDP Practical
 - 显示接口概览
 
 工程方法：
@@ -88,13 +95,13 @@
 
 短期补充：
 
-- 为 `PROFINET`、`EtherNet/IP`、`J1939`、`UDS` 增加 practical/deep-dive 文档。
-- 为 `FPD-Link/GMSL` 增加调试案例和链路预算说明。
+- 为 `EtherNet/IP`、`J1939`、`UDS` 增加 practical 文档，为 `PROFINET` 增加 deep-dive 文档。
+- 为 `Ethernet TSN` 增加 practical 文档，覆盖时间同步、队列调度和交换机配置入口。
 
 中期补充：
 
-- 为 `PROFIBUS`、`DMX512`、`HDMI/eDP` 增加 practical 文档和调试案例。
-- 为 `USB DFU`、`ISO-TP`、`MQTT` 增加 deep-dive 文档。
+- 为 `PROFIBUS`、`DMX512`、`HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
+- 为 `FPD-Link/GMSL` 增加更完整的链路预算、同轴/双绞线选型和多摄同步案例。
 
 长期补充：
 

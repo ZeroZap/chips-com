@@ -137,21 +137,22 @@ chips-com/
 25. `bus/usb-deep-dive.md`：USB 标准请求、描述符层级、复合设备、类协议和枚举排障。
 26. `bus/modbus-tcp-deep-dive.md`：Modbus TCP MBAP、事务 ID、Unit ID、并发连接和网关转换。
 27. `bus/profinet.md`：PROFINET 设备发现、组态、周期 IO、诊断和实时通信概览。
-28. `bus/ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
-29. `bus/j1939.md`：J1939、PGN、SPN、商用车 CAN 通信概览。
-30. `bus/uds.md`：UDS 诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
-31. `bus/ethernet-tsn.md`：TSN 时间敏感网络、同步、调度和确定性以太网概览。
-32. `bus/fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头链路。
-33. `bus/profibus.md`：PROFIBUS DP/PA、传统现场总线和西门子存量生态概览。
-34. `bus/dmx512.md`：DMX512 灯光控制、Break、通道数据和舞台灯光场景。
-35. `bus/hdmi-edp.md`：HDMI/eDP 外接和嵌入式显示链路概览。
-36. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
-37. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
-38. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
-39. `bus/iso-tp-practical.md`：ISO-TP CAN 多帧调试、Flow Control、STmin、Block Size 和 UDS 验证。
-40. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
-41. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
-42. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
+28. `bus/profinet-practical.md`：PROFINET 设备命名、GSDML、周期 IO、PLC 诊断和 Wireshark 排查。
+29. `bus/ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
+30. `bus/j1939.md`：J1939、PGN、SPN、商用车 CAN 通信概览。
+31. `bus/uds.md`：UDS 诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
+32. `bus/ethernet-tsn.md`：TSN 时间敏感网络、同步、调度和确定性以太网概览。
+33. `bus/fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头链路。
+34. `bus/profibus.md`：PROFIBUS DP/PA、传统现场总线和西门子存量生态概览。
+35. `bus/dmx512.md`：DMX512 灯光控制、Break、通道数据和舞台灯光场景。
+36. `bus/hdmi-edp.md`：HDMI/eDP 外接和嵌入式显示链路概览。
+37. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
+38. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
+39. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
+40. `bus/iso-tp-practical.md`：ISO-TP CAN 多帧调试、Flow Control、STmin、Block Size 和 UDS 验证。
+41. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
+42. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
+43. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
 
 ## 基础外设补充
 

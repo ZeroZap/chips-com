@@ -54,13 +54,18 @@
 - `bus/can-canopen-deep-dive.md`
 - `bus/iso-tp.md`
 - `bus/iso-tp-practical.md`
+- `bus/iso-tp-deep-dive.md`
 - `bus/lin-practical.md`
 - `bus/ethercat-deep-dive.md`
 - `bus/industrial-ethernet-comparison.md`
+- `bus/profinet.md`
+- `bus/profinet-practical.md`
 - `bus/j1939.md`
 - `bus/uds.md`
 - `bus/profibus.md`
+- `bus/profibus-practical.md`
 - `bus/dmx512.md`
+- `bus/dmx512-practical.md`
 
 ## 通用外设与网络
 
@@ -69,15 +74,16 @@
 - `bus/usb-deep-dive.md`
 - `bus/usb-dfu.md`
 - `bus/usb-dfu-practical.md`
+- `bus/usb-dfu-deep-dive.md`
 - `bus/ethernet.md`
 - `bus/ethernet-deep-dive.md`
 - `bus/ethernet-modbus-tcp-practical.md`
 - `bus/modbus-tcp-deep-dive.md`
-- `bus/profinet.md`
 - `bus/ethernet-ip.md`
 - `bus/ethernet-tsn.md`
 - `bus/mqtt.md`
 - `bus/mqtt-practical.md`
+- `bus/mqtt-deep-dive.md`
 - `bus/pcie-practical.md`
 
 ## 图像与显示
@@ -88,6 +94,7 @@
 - `bus/fpd-link-gmsl.md`
 - `bus/fpd-link-gmsl-practical.md`
 - `bus/hdmi-edp.md`
+- `bus/hdmi-edp-practical.md`
 
 ## 参考资料
 

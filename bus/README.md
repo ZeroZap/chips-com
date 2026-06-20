@@ -50,6 +50,7 @@
 - `industrial-ethernet-comparison.md`：Modbus TCP、PROFINET、EtherNet/IP、EtherCAT 对比和选型。
 - `modbus-tcp-deep-dive.md`：Modbus TCP MBAP、事务 ID、Unit ID、并发连接和 RTU 网关转换。
 - `profinet.md`：PROFINET 设备发现、组态、周期 IO、诊断和实时通信概览。
+- `profinet-practical.md`：PROFINET 设备命名、GSDML、周期 IO、PLC 诊断和 Wireshark 排查。
 - `ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
 - `ethernet-tsn.md`：TSN 时间敏感网络、时间同步、调度和确定性以太网概览。
 - `mqtt.md`：MQTT 发布订阅、Topic、QoS、Keepalive 和 IoT 上云场景。
