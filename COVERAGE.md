@@ -55,6 +55,7 @@
 - PROFIBUS Deep Dive
 - DMX512
 - DMX512 Practical
+- DMX512 Deep Dive
 - PROFINET
 - PROFINET Practical
 - PROFINET Deep Dive
@@ -104,7 +105,7 @@
 
 短期补充：
 
-- 为 `DMX512`、`HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
+- 为 `HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
 
 中期补充：
 

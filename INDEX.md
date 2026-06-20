@@ -75,6 +75,7 @@
 - `bus/profibus-deep-dive.md`
 - `bus/dmx512.md`
 - `bus/dmx512-practical.md`
+- `bus/dmx512-deep-dive.md`
 
 ## 通用外设与网络
 

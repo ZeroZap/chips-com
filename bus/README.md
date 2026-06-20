@@ -11,6 +11,8 @@
 - `rs485-modbus-rtu-practical.md`：RS485 方向控制、终端/偏置、Modbus RTU 帧、CRC 和调试流程。
 - `rs485-modbus-rtu-deep-dive.md`：RS485 半双工、隔离防护、帧间隔、寄存器偏移、主站轮询和现场排障。
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
+- `dmx512-practical.md`：DMX512 Break、Start Code、通道地址、灯具模式、刷新率和终端调试。
+- `dmx512-deep-dive.md`：DMX512 时序、通道模型、RDM、多 Universe、抗干扰和灯光系统排查。
 - `lin.md`：车身低速网络、主从调度、低成本单线通信。
 - `lin-practical.md`：LIN 主从调度、Break/Sync/Identifier、Checksum、LDF 和车身节点调试。
 
