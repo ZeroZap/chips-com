@@ -88,6 +88,7 @@
 - `bus/ethernet-modbus-tcp-practical.md`
 - `bus/modbus-tcp-deep-dive.md`
 - `bus/ethernet-tsn.md`
+- `bus/ethernet-tsn-practical.md`
 - `bus/mqtt.md`
 - `bus/mqtt-practical.md`
 - `bus/mqtt-deep-dive.md`

@@ -60,6 +60,7 @@
 - `ethernet-ip-practical.md`：EtherNet/IP EDS、CIP 对象、Assembly、RPI、显式/隐式消息和抓包调试。
 - `ethernet-ip-deep-dive.md`：EtherNet/IP CIP 对象、Encapsulation、Forward Open、Assembly、RPI 和实现边界。
 - `ethernet-tsn.md`：TSN 时间敏感网络、时间同步、调度和确定性以太网概览。
+- `ethernet-tsn-practical.md`：TSN 时间同步、队列调度、Qbv/Qav/Qbu、交换机配置和延迟测量实践。
 - `mqtt.md`：MQTT 发布订阅、Topic、QoS、Keepalive 和 IoT 上云场景。
 - `mqtt-practical.md`：MQTT Topic 设计、QoS、Keepalive、断线重连、TLS 和网关上云实践。
 - `pcie.md`：高速点对点总线、Lane、事务层、DMA 场景。

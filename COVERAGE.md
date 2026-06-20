@@ -71,6 +71,7 @@
 - USB DFU Deep Dive
 - Ethernet
 - Ethernet TSN
+- Ethernet TSN Practical
 - MQTT
 - MQTT Practical
 - MQTT Deep Dive
@@ -102,11 +103,10 @@
 
 短期补充：
 
-- 为 `Ethernet TSN` 增加 practical 文档，覆盖时间同步、队列调度和交换机配置入口。
+- 为 `PROFIBUS`、`DMX512`、`HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
 
 中期补充：
 
-- 为 `PROFIBUS`、`DMX512`、`HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
 - 为 `FPD-Link/GMSL` 增加更完整的链路预算、同轴/双绞线选型和多摄同步案例。
 
 长期补充：
