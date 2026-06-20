@@ -53,6 +53,7 @@
 - `modbus-tcp-deep-dive.md`：Modbus TCP MBAP、事务 ID、Unit ID、并发连接和 RTU 网关转换。
 - `profinet.md`：PROFINET 设备发现、组态、周期 IO、诊断和实时通信概览。
 - `profinet-practical.md`：PROFINET 设备命名、GSDML、周期 IO、PLC 诊断和 Wireshark 排查。
+- `profinet-deep-dive.md`：PROFINET DCP、GSDML、AR/CR、周期 IO、诊断、RT/IRT 和协议栈实现边界。
 - `ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
 - `ethernet-ip-practical.md`：EtherNet/IP EDS、CIP 对象、Assembly、RPI、显式/隐式消息和抓包调试。
 - `ethernet-tsn.md`：TSN 时间敏感网络、时间同步、调度和确定性以太网概览。
