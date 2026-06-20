@@ -32,6 +32,8 @@
 - `iso-tp.md`：CAN 多帧传输、Single/First/Consecutive/Flow Control 帧和 UDS 承载。
 - `iso-tp-practical.md`：ISO-TP 多帧调试、Flow Control、Block Size、STmin 和 UDS 验证。
 - `profibus.md`：工业现场总线、主从控制、过程自动化。
+- `profibus-practical.md`：PROFIBUS DP/PA 区分、地址、终端、GSD、主站组态和从站诊断。
+- `profibus-deep-dive.md`：PROFIBUS DP/PA、主从周期通信、GSD、诊断、总线段和存量系统排查。
 - `ethercat.md`：实时工业以太网、从站级联、分布式时钟。
 - `ethercat-deep-dive.md`：EtherCAT 主站/从站、ESC、On-the-fly、过程数据、Mailbox、DC 和 WKC。
 - `j1939.md`：商用车 CAN 上层协议、PGN、SPN 和多包传输概览。

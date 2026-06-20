@@ -52,6 +52,7 @@
 - EtherCAT
 - PROFIBUS
 - PROFIBUS Practical
+- PROFIBUS Deep Dive
 - DMX512
 - DMX512 Practical
 - PROFINET
@@ -103,7 +104,7 @@
 
 短期补充：
 
-- 为 `PROFIBUS`、`DMX512`、`HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
+- 为 `DMX512`、`HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
 
 中期补充：
 
