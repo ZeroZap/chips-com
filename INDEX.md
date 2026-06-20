@@ -105,6 +105,7 @@
 - `bus/fpd-link-gmsl-practical.md`
 - `bus/hdmi-edp.md`
 - `bus/hdmi-edp-practical.md`
+- `bus/hdmi-edp-deep-dive.md`
 
 ## 参考资料
 

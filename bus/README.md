@@ -83,6 +83,8 @@
 - `fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头/显示链路。
 - `fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
 - `hdmi-edp.md`：HDMI/eDP、EDID、AUX、Link Training、外接和嵌入式显示链路。
+- `hdmi-edp-practical.md`：HDMI/eDP EDID、HPD、DDC、AUX、Link Training、Panel 电源和背光调试。
+- `hdmi-edp-deep-dive.md`：HDMI/eDP EDID、DPCD、TMDS/Main Link、Link Training、背光和黑屏排查。
 
 ## 收录边界
 

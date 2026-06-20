@@ -87,6 +87,7 @@
 - FPD-Link/GMSL Practical
 - HDMI/eDP
 - HDMI/eDP Practical
+- HDMI/eDP Deep Dive
 - 显示接口概览
 
 工程方法：
@@ -105,11 +106,11 @@
 
 短期补充：
 
-- 为 `HDMI/eDP` 增加 deep-dive 文档和真实调试案例。
+- 为 `FPD-Link/GMSL` 增加更完整的链路预算、同轴/双绞线选型和多摄同步案例。
 
 中期补充：
 
-- 为 `FPD-Link/GMSL` 增加更完整的链路预算、同轴/双绞线选型和多摄同步案例。
+- 每个高风险现场协议增加真实调试案例。
 
 长期补充：
 

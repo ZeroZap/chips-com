@@ -157,13 +157,15 @@ chips-com/
 45. `bus/dmx512-practical.md`：DMX512 Break、Start Code、通道地址、灯具模式、刷新率和终端调试。
 46. `bus/dmx512-deep-dive.md`：DMX512 时序、通道模型、RDM、多 Universe、抗干扰和灯光系统排查。
 47. `bus/hdmi-edp.md`：HDMI/eDP 外接和嵌入式显示链路概览。
-48. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
-49. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
-50. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
-51. `bus/iso-tp-practical.md`：ISO-TP CAN 多帧调试、Flow Control、STmin、Block Size 和 UDS 验证。
-52. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
-53. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
-54. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
+48. `bus/hdmi-edp-practical.md`：HDMI/eDP EDID、HPD、DDC、AUX、Link Training、Panel 电源和背光调试。
+49. `bus/hdmi-edp-deep-dive.md`：HDMI/eDP EDID、DPCD、TMDS/Main Link、Link Training、背光和黑屏排查。
+50. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
+51. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
+52. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
+53. `bus/iso-tp-practical.md`：ISO-TP CAN 多帧调试、Flow Control、STmin、Block Size 和 UDS 验证。
+54. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
+55. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
+56. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
 
 ## 基础外设补充
 
