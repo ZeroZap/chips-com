@@ -60,6 +60,8 @@
 - `bus/industrial-ethernet-comparison.md`
 - `bus/profinet.md`
 - `bus/profinet-practical.md`
+- `bus/ethernet-ip.md`
+- `bus/ethernet-ip-practical.md`
 - `bus/j1939.md`
 - `bus/uds.md`
 - `bus/profibus.md`
@@ -79,7 +81,6 @@
 - `bus/ethernet-deep-dive.md`
 - `bus/ethernet-modbus-tcp-practical.md`
 - `bus/modbus-tcp-deep-dive.md`
-- `bus/ethernet-ip.md`
 - `bus/ethernet-tsn.md`
 - `bus/mqtt.md`
 - `bus/mqtt-practical.md`

@@ -250,12 +250,11 @@ Add Practical / Deep-Dive Documents For Remaining Overview Topics
 建议下一批优先文档：
 
 ```text
-bus/ethernet-ip-practical.md
 bus/j1939-practical.md
 bus/uds-practical.md
 ```
 
-`bus/profinet-practical.md` 已完成，下一篇优先进入 `bus/ethernet-ip-practical.md`。
+`bus/profinet-practical.md` 和 `bus/ethernet-ip-practical.md` 已完成，下一篇优先进入 `bus/j1939-practical.md`。
 
 建议覆盖：
 

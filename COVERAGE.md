@@ -53,6 +53,7 @@
 - PROFINET
 - PROFINET Practical
 - EtherNet/IP
+- EtherNet/IP Practical
 - 工业以太网对比
 
 通用外设和高速互联：
@@ -95,7 +96,7 @@
 
 短期补充：
 
-- 为 `EtherNet/IP`、`J1939`、`UDS` 增加 practical 文档，为 `PROFINET` 增加 deep-dive 文档。
+- 为 `J1939`、`UDS` 增加 practical 文档，为 `PROFINET`、`EtherNet/IP` 增加 deep-dive 文档。
 - 为 `Ethernet TSN` 增加 practical 文档，覆盖时间同步、队列调度和交换机配置入口。
 
 中期补充：
