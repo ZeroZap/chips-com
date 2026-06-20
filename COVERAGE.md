@@ -40,6 +40,7 @@
 - CAN
 - CANopen
 - J1939
+- J1939 Practical
 - UDS
 - ISO-TP
 - ISO-TP Practical
@@ -96,7 +97,7 @@
 
 短期补充：
 
-- 为 `J1939`、`UDS` 增加 practical 文档，为 `PROFINET`、`EtherNet/IP` 增加 deep-dive 文档。
+- 为 `UDS` 增加 practical 文档，为 `PROFINET`、`EtherNet/IP`、`J1939` 增加 deep-dive 文档。
 - 为 `Ethernet TSN` 增加 practical 文档，覆盖时间同步、队列调度和交换机配置入口。
 
 中期补充：

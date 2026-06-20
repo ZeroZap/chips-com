@@ -63,6 +63,7 @@
 - `bus/ethernet-ip.md`
 - `bus/ethernet-ip-practical.md`
 - `bus/j1939.md`
+- `bus/j1939-practical.md`
 - `bus/uds.md`
 - `bus/profibus.md`
 - `bus/profibus-practical.md`

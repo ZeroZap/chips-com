@@ -141,19 +141,20 @@ chips-com/
 29. `bus/ethernet-ip.md`：EtherNet/IP、CIP 对象模型、显式消息和隐式 IO 概览。
 30. `bus/ethernet-ip-practical.md`：EtherNet/IP EDS、CIP 对象、Assembly、RPI、显式/隐式消息和抓包调试。
 31. `bus/j1939.md`：J1939、PGN、SPN、商用车 CAN 通信概览。
-32. `bus/uds.md`：UDS 诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
-33. `bus/ethernet-tsn.md`：TSN 时间敏感网络、同步、调度和确定性以太网概览。
-34. `bus/fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头链路。
-35. `bus/profibus.md`：PROFIBUS DP/PA、传统现场总线和西门子存量生态概览。
-36. `bus/dmx512.md`：DMX512 灯光控制、Break、通道数据和舞台灯光场景。
-37. `bus/hdmi-edp.md`：HDMI/eDP 外接和嵌入式显示链路概览。
-38. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
-39. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
-40. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
-41. `bus/iso-tp-practical.md`：ISO-TP CAN 多帧调试、Flow Control、STmin、Block Size 和 UDS 验证。
-42. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
-43. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
-44. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
+32. `bus/j1939-practical.md`：J1939 29-bit ID、PGN/SPN、地址声明、多包传输、DBC 和网关调试。
+33. `bus/uds.md`：UDS 诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
+34. `bus/ethernet-tsn.md`：TSN 时间敏感网络、同步、调度和确定性以太网概览。
+35. `bus/fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头链路。
+36. `bus/profibus.md`：PROFIBUS DP/PA、传统现场总线和西门子存量生态概览。
+37. `bus/dmx512.md`：DMX512 灯光控制、Break、通道数据和舞台灯光场景。
+38. `bus/hdmi-edp.md`：HDMI/eDP 外接和嵌入式显示链路概览。
+39. `bus/usb-dfu.md`：USB DFU 固件升级、bootloader、分块下载和防变砖策略。
+40. `bus/iso-tp.md`：ISO-TP CAN 多帧传输、Flow Control 和 UDS 承载。
+41. `bus/mqtt.md`：MQTT 发布订阅、Topic、QoS 和 IoT 上云场景。
+42. `bus/iso-tp-practical.md`：ISO-TP CAN 多帧调试、Flow Control、STmin、Block Size 和 UDS 验证。
+43. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
+44. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
+45. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
 
 ## 基础外设补充
 
