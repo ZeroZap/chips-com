@@ -66,6 +66,7 @@
 - `bus/ethernet-ip-deep-dive.md`
 - `bus/j1939.md`
 - `bus/j1939-practical.md`
+- `bus/j1939-deep-dive.md`
 - `bus/uds.md`
 - `bus/uds-practical.md`
 - `bus/profibus.md`

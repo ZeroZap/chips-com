@@ -36,6 +36,7 @@
 - `ethercat-deep-dive.md`：EtherCAT 主站/从站、ESC、On-the-fly、过程数据、Mailbox、DC 和 WKC。
 - `j1939.md`：商用车 CAN 上层协议、PGN、SPN 和多包传输概览。
 - `j1939-practical.md`：J1939 29-bit ID、PGN/SPN、地址声明、多包传输、DBC 和网关调试。
+- `j1939-deep-dive.md`：J1939 29-bit ID、NAME、地址声明、PGN/SPN、多包、DM 诊断和网关治理。
 - `uds.md`：车载统一诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
 - `uds-practical.md`：UDS 会话、DID、DTC、安全访问、NRC、刷写流程和诊断日志调试。
 
