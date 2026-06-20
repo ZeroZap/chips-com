@@ -44,6 +44,7 @@
 - J1939 Deep Dive
 - UDS
 - UDS Practical
+- UDS Deep Dive
 - ISO-TP
 - ISO-TP Practical
 - ISO-TP Deep Dive
@@ -101,7 +102,6 @@
 
 短期补充：
 
-- 为 `UDS` 增加 deep-dive 文档。
 - 为 `Ethernet TSN` 增加 practical 文档，覆盖时间同步、队列调度和交换机配置入口。
 
 中期补充：

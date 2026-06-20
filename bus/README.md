@@ -39,6 +39,7 @@
 - `j1939-deep-dive.md`：J1939 29-bit ID、NAME、地址声明、PGN/SPN、多包、DM 诊断和网关治理。
 - `uds.md`：车载统一诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
 - `uds-practical.md`：UDS 会话、DID、DTC、安全访问、NRC、刷写流程和诊断日志调试。
+- `uds-deep-dive.md`：UDS 诊断状态机、NRC、会话、安全访问、刷写事务、DoIP/网关和实现边界。
 
 ### 通用高速总线与网络
 

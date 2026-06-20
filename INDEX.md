@@ -69,6 +69,7 @@
 - `bus/j1939-deep-dive.md`
 - `bus/uds.md`
 - `bus/uds-practical.md`
+- `bus/uds-deep-dive.md`
 - `bus/profibus.md`
 - `bus/profibus-practical.md`
 - `bus/dmx512.md`
