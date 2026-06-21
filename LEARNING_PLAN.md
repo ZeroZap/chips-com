@@ -228,14 +228,14 @@
 优先继续：
 
 ```text
-Add Practical / Deep-Dive Documents For Remaining Overview Topics
+Add Real-World Failure Cases And Measurement Examples
 ```
 
 原因：
 
 - 主要协议族和跨协议方法已经建立。
-- 基础外设主题已经补齐，下一步应把仍停留在概览层的协议推进到可调试、可落地的工程文档。
-- 这样知识库会从“知道概念”继续推进到“能接线、能抓包、能定位问题”。
+- 基础外设、主要总线和高风险显示/车载链路已经补齐 practical / deep-dive 文档。
+- 下一步应把知识库从“可调试的方法论”推进到“有真实现象、测量证据和根因闭环的案例库”。
 
 当前基础主题已补齐为：
 
@@ -250,16 +250,15 @@ Add Practical / Deep-Dive Documents For Remaining Overview Topics
 建议下一批优先文档：
 
 ```text
-bus/fpd-link-gmsl-deep-dive.md
+Add real-world failure cases and measurement examples
 ```
 
-`bus/profinet-practical.md`、`bus/ethernet-ip-practical.md`、`bus/j1939-practical.md`、`bus/uds-practical.md`、`bus/profinet-deep-dive.md`、`bus/ethernet-ip-deep-dive.md`、`bus/j1939-deep-dive.md`、`bus/uds-deep-dive.md`、`bus/ethernet-tsn-practical.md`、`bus/profibus-deep-dive.md`、`bus/dmx512-deep-dive.md` 和 `bus/hdmi-edp-deep-dive.md` 已完成，下一篇优先进入 `bus/fpd-link-gmsl-deep-dive.md`。
+`bus/profinet-practical.md`、`bus/ethernet-ip-practical.md`、`bus/j1939-practical.md`、`bus/uds-practical.md`、`bus/profinet-deep-dive.md`、`bus/ethernet-ip-deep-dive.md`、`bus/j1939-deep-dive.md`、`bus/uds-deep-dive.md`、`bus/ethernet-tsn-practical.md`、`bus/profibus-deep-dive.md`、`bus/dmx512-deep-dive.md`、`bus/hdmi-edp-deep-dive.md` 和 `bus/fpd-link-gmsl-deep-dive.md` 已完成。下一步建议从“补齐协议文档”转向“补真实案例和测量样例”。
 
 建议覆盖：
 
-- 工程工具和抓包入口。
-- 设备描述文件，如 GSDML / EDS / DBC / ODX 或诊断数据库。
-- 最小通信流程和典型报文。
-- 参数、地址、对象或服务的映射方式。
-- 常见现场故障和分层排查步骤。
-- 与现有 `bus/industrial-ethernet-comparison.md`、`bus/can-canopen-deep-dive.md`、`bus/iso-tp-deep-dive.md` 的交叉引用。
+- 真实故障现象、复现条件和影响范围。
+- 示波器、逻辑分析仪、Wireshark 或寄存器 dump 的观测点。
+- 正常样机与故障样机的对比数据。
+- 分层排查路径和最终根因。
+- 可沉淀到 `FAILURE_CASES.md`、`TROUBLESHOOTING_QUICKREF.md` 和各协议 deep-dive 的案例索引。

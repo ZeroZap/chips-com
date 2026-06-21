@@ -85,6 +85,7 @@
 - LVDS
 - FPD-Link/GMSL
 - FPD-Link/GMSL Practical
+- FPD-Link/GMSL Deep Dive
 - HDMI/eDP
 - HDMI/eDP Practical
 - HDMI/eDP Deep Dive
@@ -106,7 +107,7 @@
 
 短期补充：
 
-- 为 `FPD-Link/GMSL` 增加更完整的链路预算、同轴/双绞线选型和多摄同步案例。
+- 为高风险视频链路增加真实故障案例和示波器/寄存器 dump 示例。
 
 中期补充：
 

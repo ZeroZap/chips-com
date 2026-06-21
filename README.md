@@ -166,6 +166,7 @@ chips-com/
 54. `bus/usb-dfu-practical.md`：USB DFU 升级流程、分区、校验、回滚和防变砖工程实践。
 55. `bus/mqtt-practical.md`：MQTT Topic、QoS、Keepalive、断线重连、TLS 和网关上云实践。
 56. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
+57. `bus/fpd-link-gmsl-deep-dive.md`：车载 SerDes 分层模型、反向通道、链路预算、PoC、多摄同步和现场排查。
 
 ## 基础外设补充
 

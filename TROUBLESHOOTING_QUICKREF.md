@@ -16,6 +16,7 @@
 | USB | VBUS、D+/D-、描述符、时钟 |
 | Ethernet | PHY Link、MDIO、IP、ARP |
 | MIPI | 电源时序、I2C ID、MCLK、RESET |
+| FPD-Link/GMSL | Deserializer I2C、Link Lock、远端供电、Back Channel |
 
 ## 偶发错误
 
@@ -36,6 +37,7 @@
 | Ethernet | PHY、双工、RGMII delay、线缆 |
 | SDIO | DAT 线、上拉、bus-width、时钟 |
 | MIPI | Lane rate、走线、ESD 电容 |
+| FPD-Link/GMSL | 线束损耗、PoC 滤波、equalizer、链路速率 |
 
 ## 数据值不对
 
@@ -47,6 +49,7 @@
 | PMBus | Linear11/Linear16、Direct 格式、PAGE |
 | CANopen | 对象字典、PDO 映射、单位缩放 |
 | 图像 | RAW/YUV/RGB、Bayer order、stride |
+| SerDes 摄像头 | VC/DT、I2C alias、MIPI lane、Sensor streaming |
 
 ## 枚举失败
 
@@ -71,3 +74,4 @@
 | USB | 枚举 + 读描述符 |
 | MIPI CSI | 读 Sensor ID + streaming |
 | MIPI DSI | 初始化 + 纯色测试图 |
+| FPD-Link/GMSL | Deserializer ID + Link Lock + 远端 Sensor ID |

@@ -103,6 +103,7 @@
 - `bus/display-interfaces.md`
 - `bus/fpd-link-gmsl.md`
 - `bus/fpd-link-gmsl-practical.md`
+- `bus/fpd-link-gmsl-deep-dive.md`
 - `bus/hdmi-edp.md`
 - `bus/hdmi-edp-practical.md`
 - `bus/hdmi-edp-deep-dive.md`

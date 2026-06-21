@@ -50,6 +50,8 @@
 3. I2C 读取摄像头 Sensor ID。
 4. MIPI CSI 输出 RAW 图。
 5. ISP 转换显示图像。
+6. FPD-Link/GMSL 读取 Deserializer ID、Link Lock 和远端 Sensor ID。
+7. FPD-Link/GMSL 对比短线、目标线束和降带宽时的 lock drop counter。
 
 ## 工具实验
 
@@ -58,6 +60,7 @@
 3. CAN 分析仪观察错误帧。
 4. Wireshark 抓 ARP 和 Modbus TCP。
 5. USB 日志观察枚举。
+6. 示波器测 SerDes PoC 远端电压启动和负载瞬态。
 
 ## 进阶目标
 

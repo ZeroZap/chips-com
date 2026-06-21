@@ -82,6 +82,7 @@
 - `display-interfaces.md`：SPI、RGB、LVDS、MIPI DSI、eDP、HDMI 显示接口选型概览。
 - `fpd-link-gmsl.md`：车载视频 SerDes、FPD-Link、GMSL 和远距离摄像头/显示链路。
 - `fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
+- `fpd-link-gmsl-deep-dive.md`：车载 SerDes 分层模型、反向通道、链路预算、PoC、多摄同步和现场排查。
 - `hdmi-edp.md`：HDMI/eDP、EDID、AUX、Link Training、外接和嵌入式显示链路。
 - `hdmi-edp-practical.md`：HDMI/eDP EDID、HPD、DDC、AUX、Link Training、Panel 电源和背光调试。
 - `hdmi-edp-deep-dive.md`：HDMI/eDP EDID、DPCD、TMDS/Main Link、Link Training、背光和黑屏排查。
