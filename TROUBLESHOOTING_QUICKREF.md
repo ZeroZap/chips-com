@@ -17,6 +17,7 @@
 | Ethernet | PHY Link、MDIO、IP、ARP |
 | MIPI | 电源时序、I2C ID、MCLK、RESET |
 | FPD-Link/GMSL | Deserializer I2C、Link Lock、远端供电、Back Channel |
+| TSN | gPTP 状态、VLAN PCP、队列映射、Qbv Base Time |
 
 ## 偶发错误
 
@@ -38,6 +39,7 @@
 | SDIO | DAT 线、上拉、bus-width、时钟 |
 | MIPI | Lane rate、走线、ESD 电容 |
 | FPD-Link/GMSL | 线束损耗、PoC 滤波、equalizer、链路速率 |
+| TSN | 时间同步、Guard Band、背景流分类、硬件 offload |
 
 ## 数据值不对
 

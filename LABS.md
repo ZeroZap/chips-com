@@ -42,6 +42,7 @@
 5. Modbus TCP server。
 6. SDIO Wi-Fi 模块枚举。
 7. PCIe Endpoint 枚举。
+8. TSN 单跳测试 gPTP offset、VLAN PCP、Qbv 开关和 p99/p999 延迟。
 
 ## 图像显示实验
 
@@ -61,6 +62,7 @@
 4. Wireshark 抓 ARP 和 Modbus TCP。
 5. USB 日志观察枚举。
 6. 示波器测 SerDes PoC 远端电压启动和负载瞬态。
+7. Wireshark 抓 PTP、VLAN PCP 和 TSN 实时流周期。
 
 ## 进阶目标
 

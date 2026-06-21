@@ -234,3 +234,36 @@ Deserializer 记录 lock drop，表现为偶发黑屏。
 - 调整 Deserializer equalizer 或启用自适应均衡，必要时降低链路速率。
 - 在驱动中记录 lock drop counter、远端供电状态和 CSI error counter，便于现场闭环。
 - 将短线、目标线束、高温、振动和多摄满带宽纳入回归测试。
+
+## Ethernet TSN 延迟偶发尖峰
+
+现象：
+
+```text
+Talker -> TSN Switch -> Listener 单跳测试中，实时 UDP 流平均延迟满足要求，
+但每隔几十秒出现一次 2 ms 以上尖峰。关闭背景流后尖峰消失。
+```
+
+排查：
+
+- 用 `ptp4l` 和 `pmc` 记录 gPTP offset，确认时间同步没有同时跳变。
+- 用 Wireshark 抓包确认实时流 VLAN PCP 是否稳定为预期优先级。
+- 用交换机统计查看实时队列和普通队列计数。
+- 检查 Qbv Gate Control List 的窗口长度、Guard Band 和 Base Time。
+- 增加满带宽背景流，比较 Qbv 开启前后的 p99/p999 延迟。
+- 用 `ethtool -S` 查看 Talker 网卡队列丢包和硬件 offload 状态。
+
+根因：
+
+```text
+实时流 VLAN PCP 正确，但交换机出口队列映射配置错误。
+实时流进入了普通队列，Qbv 时间窗口没有保护该队列，背景大帧导致排队等待，
+表现为平均延迟正常但尾延迟周期性尖峰。
+```
+
+修复：
+
+- 修正交换机 ingress/egress PCP 到队列映射，确保实时流进入 Qbv 保护队列。
+- 重新计算 Qbv 窗口、Guard Band 和最大帧长度预算。
+- 在测试报告中记录 min、max、p99、p999 和丢包率，不只记录平均值。
+- 把背景满载、Grandmaster 切换、链路恢复和配置重启纳入 TSN 回归测试。
