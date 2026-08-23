@@ -86,7 +86,7 @@ chips-com/basic/uart-*.md
 | 不定长接收 (idle) | uart-dma-circular-and-rtos.md 第 3 节 |
 | RTOS 怎么集成 | uart-dma-circular-and-rtos.md 第 5 节 |
 | 多任务并发 | uart-dma-circular-and-rtos.md 第 6 节 |
-| 协议分帧 | uart-dma-circular-and-rtos.md 第 4 节 |
+| 协议分帧 | uart-dma-circular-and-rtos.md 第 4 节 / `stream-protocol-parser-psm.md` L1 |
 | 产线死机案例 | uart-failure-cases.md |
 | UART vs SPI vs I2C | uart-deep-dive.md "## UART vs SPI vs I2C 选型决策" |
 | Modbus RTU | rs485-modbus-rtu-deep-dive.md |
@@ -211,6 +211,9 @@ uart-index.md (本文件, 导航)
 
 UART 是最简单的异步总线, 但**协议分帧 + RS485 时序 + 流控 + 异步日志**是产线死机的 4 大根因区。从原理到产线案例, 6 篇笔记覆盖完整。
 
+**关联跨协议**：`stream-protocol-parser-psm.md` 把 UART 5 状态机 / TCP MBAP 状态机 / J1939 TP 多包重组 3 档复杂度抽象成统一的"流式协议 PSM 模式库"。
+
 ## 更新记录
 
+- 2026-08-23: 关联 `stream-protocol-parser-psm.md` (L1 UART 引用)
 - 2026-07-24: 初版, 6 篇笔记全部完成

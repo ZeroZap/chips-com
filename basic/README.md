@@ -19,6 +19,7 @@
 - `uart-rs485-and-flow-control.md`：RS485 物理层、收发器选型、方向控制时序、硬件流控 RTS/CTS、软件流控 XON/XOFF、实战代码骨架。
 - `uart-dma-circular-and-rtos.md`：DMA 接收 + 环形缓冲 + idle 不定长接收 + FreeRTOS/Zephyr/RT-Thread 三平台集成 + 完整代码骨架。
 - `uart-index.md`：UART 主题总览导航——5 种读者路径、主题速查矩阵、UART vs SPI vs I2C 选型速查。
+- `stream-protocol-parser-psm.md`：流式协议解析器 PSM 模式库——L1 UART 5 状态机 / L2 TCP MBAP 状态机 / L3 J1939 TP 二级 PSM 的统一参考。
 - `i2c.md`：双线同步总线、地址、ACK/NACK、上拉电阻。
 - `i2c-practical.md`：I2C 上拉、地址扫描、寄存器读写、Repeated START 和总线恢复。
 - `i2c-deep-dive.md`：I2C 上拉/电容、地址、Clock Stretching、总线恢复、MUX 和器件特性。
