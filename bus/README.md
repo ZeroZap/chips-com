@@ -41,6 +41,10 @@
 - `j1939.md`：商用车 CAN 上层协议、PGN、SPN 和多包传输概览。
 - `j1939-practical.md`：J1939 29-bit ID、PGN/SPN、地址声明、多包传输、DBC 和网关调试。
 - `j1939-deep-dive.md`：J1939 29-bit ID、NAME、地址声明、PGN/SPN、多包、DM 诊断和网关治理。
+- `j1939-network-management.md`：NAME 64 bit 字段详细编码、Address Claimed 协议、Commanded Address、心跳监控、多 ECU 协同、Linux 内核 J1939 支持。
+- `j1939-transport-protocol.md`：J1939-21 传输协议——BAM 广播协议 + RTS/CTS 点对点协议完整流程 + 超时/重传 + 实战代码。
+- `j1939-failure-cases.md`：20 个产线 J1939 死机案例（地址声明冲突 / DM 格式错 / TP 丢包 / NAME 配置错 / 一致性测试等）。
+- `j1939-index.md`：J1939 主题总览导航——5 种读者路径、主题速查矩阵、J1939 vs CAN FD 决策。
 - `uds.md`：车载统一诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
 - `uds-practical.md`：UDS 会话、DID、DTC、安全访问、NRC、刷写流程和诊断日志调试。
 - `uds-deep-dive.md`：UDS 诊断状态机、NRC、会话、安全访问、刷写事务、DoIP/网关和实现边界。
@@ -48,8 +52,14 @@
 ### 通用高速总线与网络
 
 - `usb.md`：USB 设备枚举、端点、传输类型、主机控制。
-- `usb-practical.md`：USB Host/Device、枚举、描述符、Endpoint、CDC/HID/MSC 和 Type-C 基础。
-- `usb-deep-dive.md`：USB 标准请求、描述符层级、复合设备、CDC/HID/MSC 和枚举排障。
+- `usb-practical.md`：USB Host/Device、枚举、描述符、Endpoint、CDC/HID/MSC 和 Type-C 基础（扩）。
+- `usb-deep-dive.md`：USB 标准请求、描述符层级、复合设备、CDC/HID/MSC 和枚举排障（扩）。
+- `usb-failure-cases.md`：20 个产线 USB 死机案例（描述符 / VBUS / 类驱动 / 高速 / 信号完整性 / VID 等）。
+- `usb-enumeration-and-descriptors.md`：枚举 8 步流程、Device/Configuration/Interface/Endpoint 描述符、字符串描述符、IAD 复合设备、VID/PID 申请。
+- `usb-class-drivers.md`：CDC (串口) / HID (键鼠) / MSC (U 盘) / DFU (升级) 4 大类驱动完整协议栈和实战代码。
+- `usb-dma-and-rtos.md`：USB DMA 模式 (单次 / 双缓冲 / 循环)、FreeRTOS / Zephyr / RT-Thread 三平台集成、缓存一致性 (Cortex-M7)。
+- `usb-vs-other-bus.md`：USB vs CAN / I2C / SPI / UART / Ethernet / 无线协议 12 维度对比 + 选型决策树。
+- `usb-index.md`：USB 主题总览导航——5 种读者路径、主题速查矩阵、USB vs 其他主题对比。
 - `usb-dfu.md`：USB 固件升级、DFU 模式、分块下载、校验和 bootloader 保护。
 - `usb-dfu-practical.md`：USB DFU 工程升级流程、分区、校验、回滚和防变砖策略。
 - `ethernet.md`：以太网 MAC/PHY、帧、交换、TCP/IP 入口。
