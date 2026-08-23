@@ -267,3 +267,107 @@ Talker -> TSN Switch -> Listener 单跳测试中，实时 UDP 流平均延迟满
 - 重新计算 Qbv 窗口、Guard Band 和最大帧长度预算。
 - 在测试报告中记录 min、max、p99、p999 和丢包率，不只记录平均值。
 - 把背景满载、Grandmaster 切换、链路恢复和配置重启纳入 TSN 回归测试。
+
+## UDS 刷写 Transfer Data 超时
+
+现象：
+
+```text
+0x10 会话切换、0x27 安全访问、0x31 擦除例程都正常，
+0x34 Request Download 返回正响应，但 0x36 Transfer Data 传输数十个 block 后超时失败。
+降低 CAN FD 数据速率或增大工具侧 block 间隔后成功率提高。
+```
+
+排查：
+
+- 抓 CAN/ISO-TP 日志，确认 First Frame、Flow Control、Consecutive Frame 序号连续。
+- 检查 ECU 返回 Flow Control 的 `BS` 和 `STmin`，确认诊断工具是否严格遵守。
+- 区分 ISO-TP 超时、UDS P2/P2* 超时和 Bootloader Flash 写入失败。
+- 记录每个 Transfer Data block 的序号、长度、发送时间和 ECU 响应时间。
+- 在 Bootloader 中记录 Flash program 耗时、buffer 水位和擦写错误码。
+- 临时降低 block 大小或增大 STmin，观察失败点是否后移。
+
+根因：
+
+```text
+诊断工具忽略 ECU Flow Control 中的 STmin，连续高速发送 Consecutive Frame。
+Bootloader 接收缓冲区被填满，同时 Flash 写入任务占用时间较长，导致 ISO-TP 重组超时。
+UDS 层只看到 Transfer Data 超时，误判为刷写服务失败。
+```
+
+修复：
+
+- 工具侧严格执行 ECU Flow Control 的 BS/STmin，不用固定高速发送策略覆盖 ECU 参数。
+- Bootloader 将 ISO-TP 接收缓冲和 Flash 写入队列解耦，或按实际写入速度调整 Flow Control。
+- Request Download 返回的最大块长度要匹配 RAM buffer 和 Flash program 能力。
+- 日志中分开记录 ISO-TP 错误、UDS NRC、Flash driver 错误和电压条件。
+- 回归测试覆盖不同 CAN/CAN FD 速率、不同 block size、低电压和断电恢复场景。
+
+## PMBus 遥测读数异常误判过流
+
+现象：
+
+```text
+BMC 页面显示某路电源输出电流瞬间超过 200 A，触发上层告警。
+现场用电流钳和电源模块厂商工具确认实际电流约 18 A，电源未进入保护。
+重启 BMC 后告警仍偶发出现。
+```
+
+排查：
+
+- 用 SMBus/PMBus 原始读命令记录 `PAGE`、`READ_IOUT`、`STATUS_WORD` 和 `STATUS_IOUT`。
+- 确认该设备 `READ_IOUT` 使用 Linear11、Linear16 还是 Direct Format。
+- 对比 BMC 驱动换算值、原始 word、厂商工具显示值和外部电流钳读数。
+- 检查多路 rail 轮询时是否每次读取前显式写入 `PAGE`。
+- 检查 SMBus word 低字节在前是否被驱动误当作高字节在前。
+- 读取 `STATUS_CML`，确认是否存在 PEC、非法命令或数据格式错误。
+
+根因：
+
+```text
+BMC 驱动把 READ_IOUT 的 Linear11 原始 word 直接当作无符号整数换算，
+同时多路轮询依赖全局 PAGE 状态，偶发读到上一轮 rail 的数据。
+实际电源没有过流，是数据格式解析和 PAGE 管理错误导致的遥测误报。
+```
+
+修复：
+
+- 按设备手册实现 Linear11 有符号 exponent/mantissa 解析。
+- 所有 PMBus 通道访问都显式传入并写入 `PAGE`，不要依赖隐藏全局状态。
+- 遥测日志同时保存 raw word、converted value、PAGE 和 status bits。
+- 告警策略先检查 `STATUS_IOUT` 是否真实置位，再结合换算值和持续时间判断。
+- 回归测试覆盖多 rail 轮询、PEC 开关、字节序、Linear11 负指数和厂商工具对比。
+
+## USB DFU 升级后设备不启动
+
+现象：
+
+```text
+设备可以进入 DFU 模式，Host 分块下载显示成功，USB 重新枚举后设备无业务功能。
+再次上电后既不进入应用，也不自动回到 DFU，只能通过调试器重新烧录恢复。
+```
+
+排查：
+
+- 读取 DFU 状态机日志，确认下载、写 Flash、校验和复位各阶段是否完成。
+- 用调试器检查 Bootloader 区、Application 起始地址、向量表和栈顶地址。
+- 对比镜像 header 中的 load address、image size、hardware version 和 CRC/hash。
+- 检查 Host 分块大小是否和设备 Flash page/sector 擦写粒度匹配。
+- 检查升级过程中是否错误擦除了 metadata、boot flag 或 Bootloader 保护区域。
+- 断电重启后读取 metadata，确认是否处于 `READY_TO_BOOT`、`FAILED` 或未知状态。
+
+根因：
+
+```text
+DFU Host 发送的是裸 bin，设备端没有校验镜像 load address 和向量表范围。
+新固件按 0x08000000 链接，但 Bootloader 期望应用从 0x08008000 启动。
+Bootloader 将错误地址写入 metadata 并直接跳转，导致启动异常且没有回退 DFU。
+```
+
+修复：
+
+- 固件镜像必须携带 header，包含 magic、目标地址、长度、硬件版本、CRC/hash 和版本信息。
+- Bootloader 校验向量表、栈地址范围、镜像长度和 CRC/hash 后才设置可启动标志。
+- Bootloader 区域和恢复入口写保护，普通 DFU 不能擦写。
+- 应用首次启动后写入确认标志；未确认时下次启动回退 DFU 或旧镜像。
+- 量产日志记录设备序列号、镜像版本、写入地址、校验结果和失败原因。

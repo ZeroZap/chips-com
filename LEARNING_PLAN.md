@@ -1,5 +1,11 @@
 # Communication Learning Plan
 
+## 当前阶段
+
+**v3.x 沉淀期**（2026-07-29 起）。6 个主题已达 L4 闭环（I2C / SPI / UART / CAN / J1939 / USB），整体深度 70/100。
+
+暂停主动扩展主题，等实战触发。详见 `## 阶段 6：实战沉淀期`。
+
 ## 目标
 
 本计划用于有序深入芯片间通信知识库。学习路径从基础外设接口开始，逐步进入工业总线、网络通信、高速接口和专题调试。
@@ -262,3 +268,39 @@ Add real-world failure cases and measurement examples
 - 正常样机与故障样机的对比数据。
 - 分层排查路径和最终根因。
 - 可沉淀到 `FAILURE_CASES.md`、`TROUBLESHOOTING_QUICKREF.md` 和各协议 deep-dive 的案例索引。
+
+## 阶段 6：实战沉淀期（2026-07-29 起）
+
+**为什么封口**：
+
+- 6 个 L4 闭环主题 + 47 篇 607 KB 体量已经够扎实一段时间，再主动加容易"知识库胖但实战没跟上"。
+- 之前 1 周连续做了 3 个主题（CAN / J1939 / USB）的高强度扩展，需要沉淀。
+- **经验法则**：知识库价值 = 闭环主题数 × 实战案例密度。3 个 L4 主题各配 5-10 个真实产线案例 > 10 个 L2 主题只有简介。
+
+**封口期间做什么**：
+
+| 触发 | 动作 |
+| --- | --- |
+| 项目中遇到 I2C / SPI / UART / CAN / J1939 / USB 真实故障 | 写 `xxx-failure-cases.md` 或在 `DEBUG_PLAYBOOK.md` 加案例段 |
+| 读到高质量实战文章 | 整理进对应主题的 deep-dive，附"实战补充"标记 |
+| 跨主题横向工作（PROTOCOL_SELECTION / DEBUG_PLAYBOOK 升级） | 持续 |
+| 0 空白协议（BLE / ZigBee / LoRa / CAN FD）| **挂起**，等真实项目需要再激活 |
+| L3 → L4 升级（UDS / EtherNet/IP / Profinet / FPD-Link）| **挂起**，等实战触发 |
+
+**封口期 KPI**：
+
+- 不主动开新主题
+- 不主动扩 deep-dive
+- 实战案例优先：`FAILURE_CASES.md` / `TROUBLESHOOTING_QUICKREF.md` / `MEASUREMENT_EXAMPLES.md` 三件套持续更新
+- 每遇到一次真实调试，做"现象 → 抓包 → 定位 → 修复 → 复盘"5 段式记录
+
+**封口期结束条件**（任一满足即重新评估）：
+
+- 实战案例积累到 50+ 条（建议分散在 6 个 L4 主题各 8-10 条）
+- 工作室新项目需要某个当前 0 分或 L1 主题
+- 现有 6 个 L4 主题有 2+ 个用户主动要求升级
+
+**关联文档**：
+
+- `TOPIC_MATRIX.md` 第 225 行的"待做主题执行计划"已改名为"候选主题（沉淀期挂起）"
+- `INDEX.md` 底部记录 v3.x 封口里程碑

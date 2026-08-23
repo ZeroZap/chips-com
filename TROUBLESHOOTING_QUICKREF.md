@@ -18,6 +18,8 @@
 | MIPI | 电源时序、I2C ID、MCLK、RESET |
 | FPD-Link/GMSL | Deserializer I2C、Link Lock、远端供电、Back Channel |
 | TSN | gPTP 状态、VLAN PCP、队列映射、Qbv Base Time |
+| UDS 刷写 | 会话、安全访问、ISO-TP Flow Control、P2/P2* |
+| USB DFU | DFU 描述符、状态机、镜像地址、Bootloader 保护 |
 
 ## 偶发错误
 
@@ -52,6 +54,8 @@
 | CANopen | 对象字典、PDO 映射、单位缩放 |
 | 图像 | RAW/YUV/RGB、Bayer order、stride |
 | SerDes 摄像头 | VC/DT、I2C alias、MIPI lane、Sensor streaming |
+| UDS/ISO-TP | Block sequence、BS/STmin、DID 长度、NRC |
+| PMBus 遥测 | raw word、Linear11/16、PAGE、STATUS_WORD |
 
 ## 枚举失败
 
@@ -74,6 +78,9 @@
 | CANopen | 读 1000h 或 1018h |
 | Ethernet | Link + ARP + ping |
 | USB | 枚举 + 读描述符 |
+| USB DFU | 进入 DFU + 分块下载 + 校验 + 回退验证 |
 | MIPI CSI | 读 Sensor ID + streaming |
 | MIPI DSI | 初始化 + 纯色测试图 |
 | FPD-Link/GMSL | Deserializer ID + Link Lock + 远端 Sensor ID |
+| UDS 刷写 | 10/27/34/36/37 流程 + ISO-TP 多帧日志 |
+| PMBus | 读 STATUS_WORD + READ_VOUT/IOUT raw 和换算值 |

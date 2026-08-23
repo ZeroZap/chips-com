@@ -5,6 +5,7 @@
 - `README.md`：项目总览和实战深入路径。
 - `LEARNING_PLAN.md`：阶段化学习计划。
 - `PROTOCOL_SELECTION.md`：协议选型矩阵。
+- `TOPIC_MATRIX.md`：主题完成度矩阵 + 待做主题执行计划（5 分制 L0-L4 评分 + I2C 模式执行模板）。
 - `DEBUG_PLAYBOOK.md`：跨协议排障方法。
 - `TROUBLESHOOTING_QUICKREF.md`：故障速查表。
 - `LABS.md`：实验路线。
@@ -82,6 +83,12 @@
 - `bus/usb.md`
 - `bus/usb-practical.md`
 - `bus/usb-deep-dive.md`
+- `bus/usb-failure-cases.md`
+- `bus/usb-enumeration-and-descriptors.md`
+- `bus/usb-class-drivers.md`
+- `bus/usb-dma-and-rtos.md`
+- `bus/usb-vs-other-bus.md`
+- `bus/usb-index.md`
 - `bus/usb-dfu.md`
 - `bus/usb-dfu-practical.md`
 - `bus/usb-dfu-deep-dive.md`
@@ -113,8 +120,20 @@
 - `GLOSSARY.md`
 - `ACRONYMS.md`
 - `TOOLS.md`
+- `MEASUREMENT_EXAMPLES.md`
 - `LAYERED_MAP.md`
 - `APPLICATION_SCENARIOS.md`
 - `DEVICE_EXAMPLES.md`
 - `DOC_TEMPLATES.md`
 - `PROTOCOL_COMPARISON.md`
+- `REGRESSION_TEST_MATRIX.md`
+- `AUTOMATED_TEST_HARNESS.md`
+- `COMMUNICATION_OBSERVABILITY.md`
+- `COMMUNICATION_QUALITY_GATE.md`
+- `FIELD_DIAGNOSTIC_RUNBOOK.md`
+- `COMMUNICATION_TRACEABILITY.md`
+- `COMMUNICATION_SECURITY_SAFETY.md`
+
+## 知识库里程碑
+
+- **v3.x 沉淀期**（2026-07-29 起）：6 个 L4 闭环主题（I2C / SPI / UART / CAN / J1939 / USB）+ 47 篇 607 KB。暂停主动扩主题，专注实战案例和横向工作。详见 `LEARNING_PLAN.md` 阶段 6。

@@ -22,6 +22,7 @@
 5. SPI Flash 读写擦除。
 6. QSPI memory-mapped 读取。
 7. I2S 播放固定音频数据。
+8. PMBus 读取 STATUS_WORD、READ_VOUT/IOUT，记录 raw word 和 Linear 换算值。
 
 ## 工业总线实验
 
@@ -32,6 +33,7 @@
 5. CANopen 读取对象字典。
 6. CANopen 控制电机进入 Operation Enabled。
 7. LIN Master 发送调度帧。
+8. UDS over ISO-TP 读取 DID、执行安全访问并模拟 Transfer Data 分块传输。
 
 ## 网络和主机外设实验
 
@@ -43,6 +45,7 @@
 6. SDIO Wi-Fi 模块枚举。
 7. PCIe Endpoint 枚举。
 8. TSN 单跳测试 gPTP offset、VLAN PCP、Qbv 开关和 p99/p999 延迟。
+9. USB DFU 分块下载测试镜像，验证 CRC、metadata 和失败回退。
 
 ## 图像显示实验
 
@@ -63,6 +66,8 @@
 5. USB 日志观察枚举。
 6. 示波器测 SerDes PoC 远端电压启动和负载瞬态。
 7. Wireshark 抓 PTP、VLAN PCP 和 TSN 实时流周期。
+8. CAN 分析仪记录 ISO-TP FF/FC/CF、BS、STmin 和 UDS P2/P2*。
+9. USB 抓包或 DFU 工具日志记录 download、getstatus、manifest 和 reset 流程。
 
 ## 进阶目标
 
