@@ -386,3 +386,261 @@ lsusb -v
 - CDC/HID/MSC 类描述符与 Endpoint 匹配。
 - Type-C CC 处理正确。
 - 枚举失败时有抓包或系统日志。
+
+## 速查要点
+
+### 5 秒钟定位
+
+| 现象 | 一句话定位 | 首选动作 |
+| --- | --- | --- |
+| PC 完全看不到设备 | VBUS / 描述符 / 时钟 | 查 VBUS, 查时钟, USB 树查看 |
+| 看到设备但有黄色叹号 | 描述符错 / 驱动不匹配 | 设备管理器看错误码 |
+| 枚举后立即断开 | 电源 / 描述符 / 信号完整性 | 量 VBUS 跌落, 查描述符 |
+| 枚举成功但传输错 | 端点 / 数据错 | Wireshark 抓 USB 流量 |
+| 高速 (480M) 跑不通 | 物理层 / Hub / 阻抗 | 用 2.0 端口重试, 查 Hub |
+| CDC 串口打开失败 | CDC 类描述符错 | 查 CDC ACM 描述符, 串口工具日志 |
+| HID 设备不被识别 | HID 报告描述符错 | USBlyzer / Wireshark 分析 |
+| 传输大文件失败 | 端点 stall / 超时 | 抓包看 stall, 查 USB 错误码 |
+| 断电后无法重新枚举 | VBUS 时序 / 控制器状态 | 查上电时序, 控制器 reset |
+
+### USB 速度档
+
+```text
+低速 (Low Speed, 1.5M):    HID 鼠标 / 键盘 / 部分嵌入式
+全速 (Full Speed, 12M):   多数嵌入式 / USB 1.1 标准
+高速 (High Speed, 480M):  USB 2.0, 视频 / 存储
+超速 (Super Speed, 5G):   USB 3.0, 视频 / 高速存储
+超速+ (Super Speed+, 10G): USB 3.1 / 3.2
+
+实际工程: 大多数嵌入式 USB 是全速, 偶尔高速
+```
+
+### 端点类型
+
+```text
+Control (控制):
+  - 端点 0 固定
+  - 用于枚举 / 配置 / 类请求
+  - 双向, 消息式
+
+Bulk (批量):
+  - 用于数据量大, 实时性不高的场景
+  - 例: U盘读文件, 串口大数据
+  - 保证送达, 不保证带宽
+
+Interrupt (中断):
+  - 周期性小数据 (1-1024 字节)
+  - 例: HID 键盘 / 鼠标
+  - 有轮询周期保证
+
+Isochronous (等时):
+  - 实时性高, 不保证送达
+  - 例: USB 音频 / 视频
+  - 固定带宽, 无重传
+```
+
+### 描述符层级
+
+```text
+Device Descriptor (设备描述符, 1 个)
+  |
+  +-- Configuration Descriptor (配置描述符, N 个)
+       |
+       +-- Interface Descriptor (接口描述符, N 个)
+            |
+            +-- Endpoint Descriptor (端点描述符, N 个)
+            +-- Class-specific Descriptor (类特定描述符)
+       |
+       +-- Interface Association Descriptor (IAD, 复合设备)
+```
+
+### 关键描述符字段
+
+```text
+Device Descriptor:
+  bLength, bDescriptorType, bcdUSB, bDeviceClass,
+  bDeviceSubClass, bDeviceProtocol,
+  idVendor (VID, 16 bit), idProduct (PID, 16 bit),
+  bcdDevice, iManufacturer, iProduct, iSerialNumber,
+  bNumConfigurations
+
+Configuration Descriptor:
+  bLength, bDescriptorType, wTotalLength, bNumInterfaces,
+  bConfigurationValue, iConfiguration,
+  bmAttributes (self-powered / bus-powered / remote-wakeup),
+  bMaxPower (2 mA 单位)
+
+Interface Descriptor:
+  bLength, bDescriptorType, bInterfaceNumber,
+  bAlternateSetting, bNumEndpoints,
+  bInterfaceClass, bInterfaceSubClass, bInterfaceProtocol,
+  iInterface
+```
+
+### 常见类代码
+
+```text
+0x00: Use class info in interface descriptor
+0x01: Audio
+0x02: CDC (Communication Device Class, 串口)
+0x03: HID (Human Interface Device, 键鼠)
+0x05: Physical
+0x06: Image
+0x07: Printer
+0x08: Mass Storage (U 盘)
+0x09: Hub
+0x0B: Smart Card
+0x0D: Content Security
+0x0E: Video
+0x0F: Personal Healthcare
+0x10: Audio/Video
+0xE0: Wireless (Bluetooth)
+0xFF: Vendor Specific
+```
+
+### USB 请求 (Setup 请求)
+
+```text
+GET_DESCRIPTOR        0x8006  获取描述符
+SET_ADDRESS          0x0005  设置地址
+SET_CONFIGURATION    0x0009  设置配置
+GET_CONFIGURATION    0x8008  获取配置
+SET_INTERFACE        0x000B  设置接口
+CLEAR_FEATURE        0x0001  清除特性 (e.g. HALT 端点)
+SET_FEATURE          0x0003  设置特性
+GET_STATUS           0x8000  获取状态
+SET_DESCRIPTOR       0x0007  设置描述符 (可选)
+SYNCH_FRAME          0x800C  同步帧 (Iso)
+```
+
+### CDC 串口实战
+
+```text
+CDC ACM (Abstract Control Model) 是最常用的 USB 串口
+
+接口布局:
+  - Interface 0: Communication (CDC Control)
+    - 中断 IN 端点 (通知 host)
+  - Interface 1: Data
+    - Bulk IN 端点 (device -> host)
+    - Bulk OUT 端点 (host -> device)
+
+类描述符:
+  - Header
+  - Call Management
+  - Abstract Control Management
+  - Union (CDC 类)
+
+简化版 (省中断 IN):
+  - 兼容 Windows 10/11, Linux, macOS
+  - 节省 1 个端点
+```
+
+### 调试工具
+
+```text
+USB 抓包:
+  - Wireshark (USBPcap, USB 流量分析)
+  - USBlyzer (Windows, 描述符查看)
+  - Ellisys USB Explorer (硬件抓包)
+  - Total Phase Beagle (硬件抓包)
+
+USB 描述符查看:
+  - Windows: 设备管理器 -> 设备属性 -> 详细信息 -> 硬件 ID
+  - Linux: lsusb -v
+  - macOS: 系统信息 -> USB
+
+USB 调试日志:
+  - Linux: dmesg | grep usb
+  - Windows: 设备管理器日志
+  - 抓包工具
+```
+
+### 常见错误码
+
+```text
+USBD_OK              0  成功
+USBD_BUSY           1  忙
+USBD_FAIL           2  失败
+USBD_TIMEOUT        3  超时
+USBD_ERR_STALL      4  端点 stall
+USBD_ERR_MEM        5  内存错
+USBD_ERR_PARAM      6  参数错
+```
+
+### 端点状态
+
+```text
+Idle:    空闲
+Busy:    正在传输
+Halt:    停止 (host 发 CLEAR_FEATURE 才恢复)
+Setup:   接收 setup 包
+Stall:   错误, 端点不能工作
+NAK:     Not Acknowledge, 暂时不接受 (流控)
+NYET:    Not Yet (高速, 流量控制)
+```
+
+### VBUS 检测
+
+```text
+Device 必须检测 VBUS:
+  - 知道插入事件, 开始枚举
+  - 知道拔出事件, 复位状态
+
+检测方式:
+  - 专用 VBUS 引脚 (e.g. PA9 on STM32)
+  - 通过电阻分压
+  - 集成在 USB PHY 里
+
+VBUS 检测失败 = 永远不枚举
+```
+
+### USB 时钟
+
+```text
+USB 时钟精度要求:
+  - 全速: 1.5% (e.g. 48 MHz +/- 720 kHz)
+  - 高速: 0.05% (e.g. 480 MHz +/- 240 kHz)
+  - 通常: HSE 12 MHz / 24 MHz / 48 MHz 晶振
+  - 内部 RC 不行 (精度不够)
+```
+
+### DMA 触发
+
+```text
+适合 DMA:
+  - Bulk 端点大数据
+  - 等时端点音频/视频
+  - 高速传输 (USB 高速模式)
+
+不适合 DMA:
+  - 中断端点小数据
+  - 控制端点
+```
+
+### 描述符长度检查
+
+```text
+描述符常见错误:
+  - bLength 错 (每种描述符有固定长度)
+  - wTotalLength 算错 (Configuration 描述符总长, 含所有 sub)
+  - 16 bit 字段用 8 bit 接收 (wTotalLength, wMaxPacketSize)
+  - 字符串描述符语言 ID 错
+
+防御: 编译期 sizeof() 断言
+```
+
+## 关联文档
+
+- `usb-deep-dive.md` 原理和体系
+- `usb-failure-cases.md` 产线死机案例
+- `usb-enumeration-and-descriptors.md` 枚举 + 描述符
+- `usb-class-drivers.md` CDC / HID / MSC / DFU
+- `usb-dma-and-rtos.md` DMA + RTOS 集成
+- `usb-vs-other-bus.md` 跨总线对比
+- `usb-index.md` 导航
+- `usb-dfu-deep-dive.md` DFU 协议 (升级模式)
+- `usb-dfu-practical.md` DFU 实战
+- `basic/spi-*.md` SPI 类比 (差分信号)
+- `can-vs-other-bus.md` 跨总线对比参考
+
