@@ -100,3 +100,100 @@ RS485：差分 A/B，需要 RS485 收发器和方向控制
 - 接收缓冲区足够。
 - 协议有帧边界和校验。
 - 长距离通信已改用合适物理层。
+
+## 速查要点
+
+### 5 秒钟定位
+
+| 现象 | 一句话定位 | 首选动作 |
+| --- | --- | --- |
+| 完全没数据 | TX/RX 接反 / 没共地 | 交换 TX/RX, 查 GND |
+| 乱码 | 波特率错 / 晶振不准 | 示波器量 baud, 校准 |
+| 只能收不能发 | 方向控制 / 模式错 | 查 RS485 收发器 DIR |
+| 偶发丢字节 | 缓冲区溢出 / 帧边界丢失 | 开 DMA + 环形缓冲 |
+| 高速丢包 | FIFO 不够 / 流控未开 | 开硬件流控或降速 |
+| 接上就复位 | 电平不兼容 / ESD | 量两端电平, 加 TVS |
+| 串口工具能收, MCU 收不到 | 协议帧边界错 | 加 SOF + LEN + CRC |
+| 长线通信失败 | 距离 / EMC 超规格 | 改 RS485 / CAN |
+
+### 常用波特率速查
+
+```text
+低俗档 (调试):       9600, 19200
+中速档 (多数应用):    115200, 230400
+高速档 (下载/固件):  460800, 921600, 1500000
+超高速 (特殊):       3000000, 6000000
+```
+
+### 帧格式速查
+
+```text
+8N1:   1 start + 8 data + 0 parity + 1 stop = 10 bit/byte (最常用)
+8E1:   1 start + 8 data + even parity + 1 stop = 10 bit/byte
+8O1:   1 start + 8 data + odd parity + 1 stop = 10 bit/byte
+8N2:   1 start + 8 data + 0 parity + 2 stop = 11 bit/byte
+9N1:   1 start + 9 data + 0 parity + 1 stop = 11 bit/byte
+```
+
+### 物理层速查
+
+```text
+TTL UART:  MCU 引脚, 0/3.3V 或 0/5V, 距离 < 1m
+RS232:     +/-12V 差分 (相对 GND), 需要 MAX232, 距离 < 15m
+RS485:     差分 A/B, 半双工 (2 线) 或全双工 (4 线), 距离 < 1200m
+RS422:     差分, 全双工, 距离 < 1200m
+```
+
+### 错误码速查
+
+```text
+framing error:    帧错 (停止位没收到, 波特率/噪声)
+parity error:     校验位错 (有干扰)
+overrun error:    FIFO 溢出 (CPU 来不及读)
+break condition:  长时间低电平 (诊断或异常)
+noise error:      噪声干扰
+```
+
+### DMA 触发
+
+```text
+适合 DMA:
+  - 数据长度 > 8 字节
+  - 高速 (> 115200) 持续传输
+  - 大量日志 / 固件下载
+  - 接收多帧连续数据
+
+不适合 DMA:
+  - 数据长度 < 4 字节
+  - 调试 (printf 阻塞场景)
+  - 不确定字节数 (变长协议)
+```
+
+### 接收缓冲区大小建议
+
+```text
+低速 (< 115200):    256 字节
+中速 (115200~1M):   1024 字节
+高速 (> 1M):        4096 字节 + DMA 双缓冲
+超高速 + 固件下载:   8KB+ 字节
+```
+
+### 调试时序
+
+```text
+短距离 (< 30cm):    TTL 串口, 3.3V/5V, 不需要转换
+中距离 (30cm~15m):  RS232 (MAX232 转换)
+长距离 (15m~1200m): RS485 (差分, 抗干扰)
+超长距离 / 工业现场:  CAN / RS485 + 光耦隔离
+```
+
+## 关联文档
+
+- `uart-deep-dive.md` 原理和体系
+- `uart-failure-cases.md` 产线死机案例
+- `uart-rs485-and-flow-control.md` RS485 / 流控专题
+- `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
+- `uart-index.md` 导航
+- `rs232-rs485.md` 物理层基础
+- `modbus.md` Modbus RTU (UART 上层协议)
+- `i2c-practical.md` I2C 速查 (对比)

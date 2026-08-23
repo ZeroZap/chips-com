@@ -484,3 +484,274 @@ word_size
 - 写/擦后轮询 WIP 并处理超时。
 - QSPI/OSPI 已确认 QE、dummy 和命令模式。
 - DMA 场景处理 CS、Cache 和完成时序。
+
+## SPI 故障树
+
+把 SPI 通信异常的所有可能根因画成一张决策树, 从现场现象一路推到具体验证手段。
+
+```text
+现象: SPI 通信失败
+  |
+  +-- 抓波形
+        |
+        +-- CS 不拉低
+        |     -> CS GPIO 错 / CS 极性反 / pinmux 错 / 软件没拉低
+        |     -> 验证: 示波器看 CS, 改 GPIO 寄存器直接拉低验证
+        |
+        +-- SCLK 没输出
+        |     -> SPI 控制器没 enable / pinmux 错 / 控制器被 disable
+        |     -> 验证: 检查 SPIx->CR1 SPE bit, 检查 GPIO AF
+        |
+        +-- MOSI 没数据
+        |     -> TX buffer 没数据 / 控制器没启动 / pinmux 错
+        |     -> 验证: 检查 TXDR 寄存器, 看 TXE flag
+        |
+        +-- MISO 没数据
+        |     -> 设备未选中 / Mode 错 / MISO 接反 / 设备未上电
+        |     -> 验证: 查 CS, 切 Mode 0/1/2/3 试
+        |
+        +-- 数据错位
+        |     -> CPHA 错 / 采样边沿错 / 速度过高 / 噪声
+        |     -> 验证: 切 Mode 0, 降到 100 kHz
+        |
+        +-- 数据全 0xFF
+        |     -> MISO 悬空 / 设备未上电 / CS 极性反
+        |     -> 验证: 量 MISO 上拉电阻, 量 VCC
+        |
+        +-- 数据全 0x00
+        |     -> MISO 被拉低 / 设备锁死 / Mode 错
+        |     -> 验证: 单独验证设备, 切 Mode 试
+        |
+        +-- 偶发失败
+              -> 速度过高 / 时序裕量不足 / 电源纹波 / EMC 干扰
+              -> 验证: 降速看是否消失, 量电源纹波
+```
+
+### 故障树对应的快速判定
+
+| 现象 | 一句话定位 | 首选动作 |
+| --- | --- | --- |
+| 读不到 ID | 接线 / Mode / CS | 示波器看 4 根线 |
+| 数据错位 | CPHA / 采样边沿 | 切 Mode 0, 降速 |
+| 全 0xFF | MISO 悬空 / 未选中 | 查 CS 极性, 量 MISO |
+| 全 0x00 | MISO 拉低 / 设备锁死 | 单独验证设备 |
+| 多设备互影响 | MISO 冲突 / CS 漏拉 | 单独 CS 控制 |
+| 偶发失败 | 时序裕量 / EMC | 降速, 加屏蔽 |
+| 写入无效 | 未 Write Enable / WIP 忙 | 查 SR1, 轮询 WIP |
+| Fast Read 错 | dummy cycle 不够 | 加 dummy, 查手册 |
+| DMA 跑到一半挂 | ISR race / DMA 配错 | 改 IT 模式对比 |
+
+## SPI vs I2C 选型决策
+
+```text
+选 I2C 当:
+  - 速度 < 400 kHz
+  - 设备数 >= 2 (省引脚)
+  - 板内管理类设备 (PMIC, 温度, RTC)
+  - 接受外加上拉 + 多 master 复杂性
+  - 总线短 (< 30cm)
+
+选 SPI 当:
+  - 速度 > 1 MHz
+  - 单个高速设备 (Flash, LCD, ADC, sensor)
+  - 接受 4-7 根引脚开销
+  - 不需要长距离
+  - 需要 DMA 高吞吐
+
+选 UART 当:
+  - 点对点异步通信
+  - 调试口 (printf)
+  - RS485 / RS422 长距离
+  - 不需要时钟线
+
+选 CAN 当:
+  - 汽车 / 工业现场
+  - 多节点, 强实时
+  - 强抗干扰
+  - 距离 > 1m
+```
+
+## SPI 速度边界
+
+```text
+低速档 (调试用):     100 kHz ~ 1 MHz
+  - 适合: 调试, 验证设备, 长走线
+  - 优势: 抗干扰, 调试容易
+
+中速档 (多数应用):    1 MHz ~ 10 MHz
+  - 适合: 普通 sensor, Flash
+  - 优势: 平衡
+
+高速档 (Flash, LCD):  10 MHz ~ 50 MHz
+  - 适合: SPI Flash, LCD 显示
+  - 风险: 信号完整性, MISO 延迟
+
+超高速 (QSPI):       50 MHz ~ 200 MHz+
+  - 适合: QSPI Flash, 高端 LCD
+  - 风险: 走线, 阻抗匹配, 屏蔽
+```
+
+## 高速 SPI 信号完整性
+
+高速 (>10 MHz) 时, SPI 的"信号完整性"成为产线死机的最大根因区。
+
+### 4 个常见问题
+
+```text
+问题 1: MISO 边沿慢
+  - 原因: MISO 内部上拉弱, 容性负载大
+  - 解决: 加外部上拉 (10k-47k), 短走线
+  - 验证: 示波器看 MISO 上升时间
+
+问题 2: 时钟边沿有振铃
+  - 原因: 走线电感 + 寄生电容, 阻抗不匹配
+  - 解决: 加 series 电阻 (22-100 ohm), 缩短走线
+  - 验证: 示波器看 SCLK 边沿
+
+问题 3: 数据建立时间不足
+  - 原因: MISO 延迟 > 时钟周期 / 2
+  - 解决: 降速, 调整采样边沿 (CPHA)
+  - 验证: 量 MISO 边沿到下一 SCLK 边沿时间
+
+问题 4: 跨地电位差
+  - 原因: 多个 GND 点, 大电流经过 GND
+  - 解决: 单点接地, 加地线, 隔离
+  - 验证: 量两端 GND 电压差
+```
+
+### 信号完整性检查清单
+
+```text
+□ MISO 上升时间 < 时钟周期 / 4
+□ SCLK 边沿无振铃 (过冲 < 0.5V)
+□ 数据建立时间 > 5 ns
+□ 保持时间 > 5 ns
+□ 走线 < 10 cm (高速档)
+□ 走线阻抗 50 ohm 匹配
+□ 串接电阻 (22-100 ohm) 防反射
+□ VCC 纹波 < 50 mV
+□ GND 单点或低阻抗
+□ 高速信号线远离噪声源
+```
+
+## SPI 与 DMA 配合
+
+### 何时用 DMA
+
+```text
+适合 DMA:
+  - 数据长度 > 16 字节
+  - 高速 (10MHz+) 持续传输
+  - CPU 忙其他任务
+  - LCD / Flash 大量数据
+
+不适合 DMA:
+  - 数据长度 < 8 字节
+  - 调试 (排障难)
+  - 多设备频繁切换
+  - 短命令
+```
+
+### DMA + SPI 模式
+
+```c
+/* 模式 1: 全双工 DMA (主推) */
+HAL_SPI_TransmitReceive_DMA(&hspi1, tx_buf, rx_buf, len);
+
+/* 模式 2: 半双工 DMA (写 + 读分两次) */
+HAL_SPI_Transmit_DMA(&hspi1, tx_buf, len);
+HAL_SPI_Receive_DMA(&hspi1, rx_buf, len);
+
+/* 模式 3: 循环 DMA (连续采集) */
+HAL_SPI_TransmitReceive_DMA(&hspi1, tx_buf, rx_buf, len);
+HAL_SPI_DMAPause(&hspi1);  // 暂停
+HAL_SPI_DMAResume(&hspi1); // 恢复
+```
+
+### DMA 完成后的 CS 处理
+
+```c
+/* 问题: DMA 完成后 CS 立刻拉高, 从设备还没处理完最后一字节 */
+/* 解决: CS 拉高前等几个 dummy clock */
+
+void spi_tx_with_delay_cs(SPI_HandleTypeDef *hspi, ...) {
+    HAL_SPI_Transmit_DMA(hspi, data, len);
+    /* 等 DMA 完成 */
+    osSemaphoreAcquire(dma_done_sem, timeout);
+    /* 关键: 多等几个 clock, 确保设备锁存最后字节 */
+    delay_us(5);
+    HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+}
+```
+
+## SPI 状态机
+
+```text
+IDLE
+  -> (发起事务) -> CS_LOW
+CS_LOW
+  -> (开始传输) -> XFER
+XFER
+  -> (DMA/IT 完成) -> CS_HIGH
+  -> (timeout) -> ABORT
+  -> (CRC 错) -> ERROR
+CS_HIGH
+  -> (返回 IDLE) -> IDLE
+ABORT
+  -> (force CS_HIGH) -> CS_HIGH
+ERROR
+  -> (返回 IDLE, 上报) -> IDLE
+```
+
+## SPI 错误码设计
+
+```c
+typedef enum {
+    SPI_OK              = 0,
+    SPI_ERR_TIMEOUT     = -1,   // 等待超时
+    SPI_ERR_CRC         = -2,   // CRC 错误 (高速 QSPI)
+    SPI_ERR_MODE        = -3,   // Mode 错
+    SPI_ERR_CS          = -4,   // CS 时序错
+    SPI_ERR_DMA         = -5,   // DMA 失败
+    SPI_ERR_OVERRUN     = -6,   // overrun
+    SPI_ERR_UNDERRUN    = -7,   // underrun
+} spi_err_t;
+```
+
+## 7 条 SPI 常见错误
+
+| # | 错误 | 后果 |
+| --- | --- | --- |
+| 1 | Mode 配错 | 数据全错 |
+| 2 | MOSI/MISO 接反 | 读到固定值, 写不进去 |
+| 3 | CS 默认拉低 | 多设备总线冲突 |
+| 4 | CS 拉高过早 | 从设备丢最后一字节 |
+| 5 | dummy byte 缺失 | 读不到数据 |
+| 6 | 速度过高 | 数据错位 |
+| 7 | 未写 Write Enable | Flash 写不进去 |
+| 8 | 未等 WIP 忙 | Flash 写丢失 |
+
+## 产线 SPI 验收清单
+
+- [ ] Mode 与 datasheet 一致
+- [ ] CS 默认高 (未选中)
+- [ ] CS 覆盖完整事务 (不中途拉高)
+- [ ] 读数据有 dummy byte
+- [ ] MISO 无三态冲突
+- [ ] 100 kHz 跑通后再提速
+- [ ] Flash 写/擦前 Write Enable
+- [ ] 写/擦后轮询 WIP
+- [ ] DMA 完成后再拉高 CS
+- [ ] 高速 (10MHz+) 验证信号完整性
+- [ ] 产线 fault injection (CS 抖动, 速度, EMC)
+- [ ] 老化测试 (1000 小时)
+
+## 关联文档
+
+- `spi-practical.md` 速查
+- `spi-failure-cases.md` 产线死机案例
+- `spi-multislave-and-dma.md` 多从 / 菊花链 / DMA
+- `spi-rtos-integration.md` RTOS 集成
+- `spi-index.md` 导航
+- `qspi-ospi.md` 高速 SPI Flash
+- `i2c-deep-dive.md` I2C 原理 (对比)
