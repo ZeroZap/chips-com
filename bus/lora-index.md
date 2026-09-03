@@ -106,6 +106,11 @@ chips-com/bus/lora-*.md
 | LoRa 低功耗 3 陷阱 + TCXO | lora-failure-cases.md 案例 17 |
 | chirp 物理层 + 3 翻车坑 | lora-failure-cases.md 案例 18 |
 | CN470 同异频 + 8 子带映射 | lora-failure-cases.md 案例 19 |
+| STM32WL LDRO + 32MHz 温漂 | lora-failure-cases.md 案例 20 |
+| Daviteq 16 项 LED 状态机 | lora-failure-cases.md 案例 21 |
+| 农业 SF7 硬编码 6 周放弃 | lora-failure-cases.md 案例 22 |
+| World Bank 城市空气 4 多故障 | lora-failure-cases.md 案例 23 |
+| 私网 LoRa 300 节点 99.8% | lora-failure-cases.md 案例 24 |
 
 ## 关键概念地图
 

@@ -101,6 +101,11 @@ chips-com/bus/zigbee-*.md
 | 5 大入网失败 + 200 节点 | zigbee-failure-cases.md 案例 17 |
 | 涂鸦多网关离线 15-30% | zigbee-failure-cases.md 案例 18 |
 | Transport Key 失败 3 根因 | zigbee-failure-cases.md 案例 19 |
+| 自愈变自杀 化工厂凌晨雪崩 | zigbee-failure-cases.md 案例 20 |
+| 晓网 5 大根因 2000 平米仓库 | zigbee-failure-cases.md 案例 21 |
+| BlackHat 2015 + Aviatrix 2024 安全 | zigbee-failure-cases.md 案例 22 |
+| Green Power 全栈 + GP 失踪 5 根因 | zigbee-failure-cases.md 案例 23 |
+| EFR32 NCP 并发 OTA 0x19 buffer out | zigbee-failure-cases.md 案例 24 |
 | Poll Interval | zigbee-practical.md "## End Device 睡眠参数" |
 | SoC vs NCP 差异 | zigbee-deep-dive.md "## SoC vs NCP 调试差异" |
 | 厂商协议栈对比 | zigbee-deep-dive.md "## 厂商协议栈对比" |

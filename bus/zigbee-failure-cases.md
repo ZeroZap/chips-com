@@ -1877,6 +1877,620 @@ void zigbee_join_with_install_code(uint8_t install_code[18]) {
 
 ---
 
+## 案例 20：化工厂 ZigBee "自愈变自杀"——非线性射频环境协议栈崩溃
+
+### 现象
+
+化工厂无线传感器网关：
+
+- 现场无微波炉 / 大电机
+- 理论 RF 环境可控
+- **凌晨 3 点网关频繁掉线**（夜间无人值守）
+- 白天偶尔恢复
+- 持续一周
+
+### 抓包 / 根因
+
+```text
+频谱仪抓包：
+  - 现场无明显干扰
+  - 但金属罐体多径效应
+  - 接收端信号微抖动（毫秒级）
+  - 触发 MAC 层重传
+
+雪崩链路：
+  Step 1：信号微抖动 → 1-2 包丢
+  Step 2：节点 CSMA/CA 退避 → 信道忙等待
+  Step 3：父节点判定子节点丢失 → 离网广播
+  Step 4：子节点收到离网广播 → 触发 rejoin
+  Step 5：rejoin 风暴 → 父节点表满
+  Step 6：父节点瘫痪 → 子节点全部瘫痪
+  Step 7：几秒内整个子网瘫
+  Step 8：协调器未受影响（孤岛）
+```
+
+### 关键工程认知
+
+```text
+1. CSMA/CA 在多径下"过度谦让"
+   - 标准假设：信号稳定
+   - 实际：信号抖动 → CSMA 退避 → 累积延迟
+   - 修复：禁 LBT（Listen Before Talk）
+
+2. Datasheet 的 +20 dBm / -100 dBm 是暗室数据
+   - 产线要看 Dk 漂移 → VSWR 恶化 → PA 发热负反馈
+   - 实际灵敏度：-95 dBm（-100 dBm 缩水 5 dB）
+
+3. MAC 重传风暴 + 离网广播 = "鬼影"雪崩
+   - 几秒内整个子网瘫
+   - 协调器不知道（孤岛）
+   - 凌晨值班 = 0 告警
+```
+
+### 选型决策矩阵（什么时候该抛弃 ZigBee）
+
+```text
+**ZigBee 适合**：
+  - 节点密度：30-50 个 / 网关
+  - 实时性：< 50ms
+  - RF 环境：办公 / 家用
+  - 工业：仓储 / 物流
+
+**ZigBee 不适合**：
+  - 节点密度：> 50 个 / 网关
+  - 实时性：> 50ms
+  - RF 环境：金属密集 / 多径 / 强电磁
+  - 工业：化工厂 / 钢铁厂 / 高电磁
+
+**替代方案**：
+  - LoRaWAN：远距 + 抗干扰（但实时性差）
+  - TSN 有线：实时 + 抗干扰（但布线成本）
+  - RS-485 + Modbus：传统工控
+```
+
+### 修复（4 步）
+
+```text
+1. 禁 LBT
+   - 默认 ZigBee 3.0 开 LBT
+   - 多径下必须关
+   - 改 NWK 配置
+
+2. 限 rejoin 频率
+   - 默认 rejoin 每 60s 一次
+   - 改 3600s（1 小时）
+   - 避免雪崩
+
+3. 协调器 firmware 锁版
+   - 锁版本避免 OTA 改 GP sink
+   - 锁硬件（不要换模组）
+
+4. 远程诊断
+   - RSSI / 噪声底 / 动态协商 TX
+   - 数据远程可查
+```
+
+### 复盘
+
+- **"自愈"反向 = 雪崩瘫痪**——ZigBee 在非线性射频环境的硬伤
+- 选型决策：节点密度 + 实时性 + RF 环境 = 三维判断
+- 化工厂 / 钢铁厂应该直接放弃 ZigBee
+- 修复 = 禁 LBT + 限 rejoin + 锁固件
+- 关键：CSMA/CA 在多径下过度谦让
+
+### 来源
+
+- _Inbox/ZigBee-2026-08-27-candidates.md 候选 1
+- _Inbox/ZigBee-2026-08-29-candidates.md 候选 1
+- _Inbox/ZigBee-2026-08-31-candidates.md 候选 1
+- TrueSight 实战
+
+---
+
+## 案例 21：晓网 5 大根因——2000 平米仓库 300 节点凌晨 3 点批量掉线
+
+### 现象
+
+晓网电子（ZigBee 厂商）实战案例：
+
+- 2000 平米仓库
+- 300 节点部署
+- 凌晨 3 点批量掉线
+- 在线率 92%
+
+### 抓包 / 5 大根因
+
+```text
+根因 1：父节点失效
+  现象：50% 子节点连不上协调器
+  根因：父节点（路由器）自身失效
+        子节点不知道切父节点
+  解决：
+    - 父节点 LQI 检测
+    - 失败阈值切换（> 3 次失败）
+    - 自动选新父
+
+根因 2：WiFi 干扰
+  现象：白天掉线少，凌晨掉线多
+  根因：白天仓库工作 → WiFi 少
+        凌晨无人 → WiFi AP 自动信道变化
+        自动信道变 11 → 覆盖 ZigBee 11-15
+  解决：固化协调器信道 20/25
+
+根因 3：路由老化
+  现象：节点路由表失效
+  根因：节点移动 / 库存变化 → 路由失效
+  解决：路由表 10 → 20 扩容
+        定期 rejoin
+
+根因 4：电源跌落
+  现象：节点周期性离线
+  根因：仓库电瓶车充电 → 电源污染
+  解决：电池 + DC-DC 隔离
+
+根因 5：NVM 密钥丢失
+  现象：节点 join 后掉线
+  根因：FALSH 写保护错
+        加密 key 没存住
+  解决：NV_RESTORE + 异常掉电测试
+```
+
+### 实战 3 步诊断
+
+```text
+Step 1：硬件排查
+  - 节点 LED 状态（红/绿/灭）
+  - 父节点路由表状态
+  - 电源纹波
+
+Step 2：现场勘测
+  - 频谱仪扫 2.4 GHz
+  - WiFi AP 信道列表
+  - 仓库货物摆放（金属遮挡）
+
+Step 3：日志分析
+  - NS 后台看每个节点最后上行
+  - 离网广播次数
+  - rejoin 风暴
+```
+
+### 修复 4 步
+
+```text
+1. 父节点 LQI 检测 + 失败阈值切换
+2. 信道 20/25（避 WiFi 11）
+3. 路由表 10 → 20 扩容
+4. NV_RESTORE + 异常掉电测试
+```
+
+### 实战数据
+
+```text
+修复前：
+  - 在线率：92%
+  - 凌晨掉线：50% 节点
+
+修复后：
+  - 在线率：99.8%
+  - 凌晨掉线：< 1%
+```
+
+### 复盘
+
+- **5 大根因典型**（父节点 / WiFi / 路由 / 电源 / NVM）
+- 凌晨掉线 = 排查 WiFi 自动信道
+- 父节点失效 = 切父阈值 + 自动选新
+- 路由老化 = 路由表扩容 + 定期 rejoin
+- 92% → 99.8% = 4 步全做
+
+### 来源
+
+- _Inbox/ZigBee-2026-08-23-candidates.md 候选 1
+- 晓网电子（ZigBee 厂商实战）
+- CSDN 实战
+
+---
+
+## 案例 22：ZigBee 安全实战——BlackHat 2015 + Aviatrix 2024 工业 IIoT 渗透
+
+### 现象
+
+ZigBee 协议被多次证明有重大安全风险：
+
+- 2015 BlackHat：Cognosec 公开 3 大产品安全漏洞
+- 2024 Aviatrix：工业 ZigBee 渗透 + 3 CVE
+
+### BlackHat 2015 三大攻击
+
+```text
+攻击 1：Hue / SmartThings / 门锁默认 TC Link Key
+  - 出厂默认 `ZigbeeAlliance09`
+  - 攻击者嗅探 rejoin 报文
+  - 弱 key 降级攻击
+  - 拿到 Network Key
+
+攻击 2：ZLL Touchlink 远距离劫持
+  - ZLL 协议 inter-PAN 帧明文无认证
+  - 2015 年 master key 泄露（reddit）
+  - 攻击者用泄露 master key + 100m 外发命令
+  - 实际 36m 距离可劫持
+  - 设计 2m，实测 36m
+
+攻击 3：11 月无 key rotation
+  - ZigBee 默认不轮换 Network Key
+  - 攻击者拿到一次 key = 长期有效
+  - 工业部署 = 一年不轮换 = 永久被控
+```
+
+### Aviatrix 2024 工业 IIoT 渗透
+
+```text
+真实工控 ZigBee 渗透链：
+  Step 1：嗅探
+    - 抓取 rejoin 报文
+    - 提取 APS 层加密数据
+  Step 2：弱 key 攻击
+    - 工业 ZigBee 仍大量默认 key
+    - rejoin 窗口持续抓网络 key
+  Step 3：协调器仿冒
+    - 用拿到的 key 加入网络
+    - 协调器无法区分
+  Step 4：端点重绑
+    - 重新绑定控制端点
+    - 拿到控制权
+  Step 5：继电器劫持
+    - 控制工业设备
+    - 物理破坏 / 数据篡改
+
+3 CVE 公开：
+  - CVE-2024-XXXX：默认 key
+  - CVE-2024-XXXX：rejoin 弱认证
+  - CVE-2024-XXXX：ZLL 远程劫持
+
+完整 MITRE ATT&CK 映射：
+  - Initial Access：默认 key 嗅探
+  - Persistence：rejoin 持续攻击
+  - Lateral Movement：协调器仿冒
+  - Impact：继电器劫持
+```
+
+### 修复（ZigBee 出厂安全基线）
+
+```text
+1. 弃用默认 key
+   - 出厂生成独立 Install Code
+   - 每节点唯一 Network Key
+   - 不共享 master key
+
+2. 强制 LE-SC（Secure Connections）
+   - LE-SC = LE Legacy 替换
+   - 抗中间人
+   - 但 ZigBee 3.0 之前不支持
+
+3. 启用 key rotation
+   - 每月轮换 Network Key
+   - 或每周（高安全场景）
+   - 强制 rejoin 重新分发
+
+4. 禁用 ZLL Touchlink
+   - ZLL 设计有 backward compatibility 漏洞
+   - 工业产品禁用
+   - 3.0 修复（但老产品仍受影响）
+
+5. 监控异常 rejoin
+   - 频繁 rejoin = 攻击信号
+   - 监控网络异常
+   - 自动告警
+```
+
+### ZigBee 3.0 安全演进时间线
+
+```text
+- ZigBee HA 1.2（2007）：
+  - 默认 Trust Center Link Key
+  - 明文传输
+  - 漏洞：嗅探 + 仿冒
+
+- BlackHat 2015（Cognosec）：
+  - 公开 3 大攻击
+  - Hue / SmartThings / 门锁
+
+- ZigBee 3.0（2016）：
+  - Install Code 派发 Link Key
+  - 强制 LE-SC
+  - Trust Center Rejoin 改 Secure Rejoin
+
+- ZigBee PRO 2023：
+  - 进一步强化加密
+  - 修复 3.0 已知漏洞
+
+- 2024 Aviatrix：
+  - 工业 IIoT 仍有 3 CVE
+  - 默认 key 仍被广泛使用
+  - rejoin 攻击仍有效
+```
+
+### 复盘
+
+- **ZigBee 安全 ≠ 默认安全**——必须显式配置
+- 默认 key = 永久被控
+- ZLL Touchlink = 远程劫持入口
+- Install Code + LE-SC = 出厂基线
+- **2024 工业 IIoT 仍大量用默认 key**——必须主动加固
+- 3.0 不是终点，PRO 2023 才是现代基线
+
+### 来源
+
+- _Inbox/ZigBee-2026-08-25-candidates.md 候选 1 + 候选 2
+- BlackHat 2015 / Cognosec
+- Aviatrix threat-research 2024
+- Silicon Labs Zigbee Security
+
+---
+
+## 案例 23：ZigBee Green Power 3.0 全栈 + GP 能量收集设备"失踪"5 根因
+
+### 现象
+
+ZigBee Green Power（GP）3.0 协议——超低功耗能量收集场景：
+
+- 5 根因致 GP 设备"配对后掉线"
+- 加路由器反而更糟
+- 协调器 OTA 后 GP sink 改变 = 全部 GP 设备失联
+
+### Green Power 3.0 协议栈
+
+```text
+四角色：
+  - GP Source（GP 发射器，能量收集）
+  - GP Proxy（GP 代理，转发到 ZigBee 网状）
+  - GP Sink（GP 汇聚，接收 GP 数据）
+  - GP Combo（GP + ZigBee 双功能）
+
+三层地址：
+  - Source IEEE（GP 设备唯一 ID）
+  - Source Network（GP 网络内 ID）
+  - Alias（GP Proxy 用）
+
+三种配网模式：
+  - Commissioning：传统配网
+  - Push：配对后入网
+  - Auto-commissioning：自动发现 + 配对
+```
+
+### 实战代码模板（NXP JN516x）
+
+```c
+// GP 初始化
+void gp_init(void) {
+    // 1. GP Sink
+    GP_RegisterSink();
+    
+    // 2. GP Proxy
+    GP_RegisterProxy();
+    
+    // 3. 去重表（**本地**）
+    GP_InitDeduplicationTable(GP_DEDUP_SIZE);  // 家庭 5-10 / 工业 15-20
+    
+    // 4. 配对窗口
+    GP_SetCommissioningWindow(GP_COMMISSIONING_TIMEOUT);  // 2-3s
+    
+    // 5. 配对超时
+    GP_SetTimeout(GP_TIMEOUT);
+    
+    // 6. 翻译表（GP ID → ZigBee 端点）
+    GP_InitTranslationTable();
+}
+
+// GP 发送
+void gp_send_button_press(uint8_t button_id) {
+    uint8_t gp_frame[10];
+    gp_frame[0] = 0x01;  // 简化命令
+    gp_frame[1] = button_id;
+    
+    GP_SendFrame(gp_frame, 10, GP_FRAME_LIGHTWEIGHT);
+}
+```
+
+### GP 设备"失踪"5 根因
+
+```text
+根因 1：缺 GP Proxy
+  现象：GP 设备发数据，Sink 收不到
+  根因：网络中没有 GP Proxy 节点
+  修复：每个 Router 节点必须开 GP Proxy
+
+根因 2：加路由器改 link cost
+  现象：加 Router 后 GP 设备"消失"
+  根因：路由表变化导致 GP 转发路径错
+  修复：锁定 Router 位置，避免动态调整
+
+根因 3：协调器固件差异
+  现象：协调器 OTA 后 GP 全部失联
+  根因：OTA 改了 GP sink 行为
+  修复：协调器固件锁版（重要：GP sink 跟协调器版本绑定）
+
+根因 4：能量不足
+  现象：GP 设备配对后立即掉线
+  根因：能量收集（如按压机械能）供不上
+  修复：储能电容 + 多次按压触发
+
+根因 5：配网漏
+  现象：GP 设备配对后没入网
+  根因：配对窗口太短（< 1s）来不及入网
+  修复：延窗口到 2-3s
+```
+
+### 关键限制
+
+```text
+1. "**更多路由器≠更好**"
+   - GP 依赖特定 proxy 转发
+   - 路由 churn 撞微焦耳
+   - 协调器 → 1 个 GP proxy（不需多）
+
+2. ZigBee 仅 1 broadcast/s
+   - 多 GP 广播必丢
+   - 必须 unicast
+
+3. 双向"二次握手"省 GP 接收能量
+   - GP Source 发 → GP Proxy 收
+   - GP Proxy 应答（一次握手）
+   - 节省 GP Source 接收能量
+```
+
+### 部署方法论
+
+```text
+playbook：
+  1. 固件锁版
+     - 协调器固件必须锁
+     - 不能 OTA 改 GP sink
+  2. 代理近端
+     - GP Proxy 放在协调器附近
+     - 不要远端 Router
+  3. 20 次触发回归
+     - GP 设备配对后按 20 次
+     - 验证稳定入网
+  4. 配网窗口
+     - 默认 2-3s
+     - 电池 + 多次触发
+```
+
+### 关键参数
+
+```text
+家庭 SIZE：5-10 个 GP 设备
+工业 SIZE：15-20 个 GP 设备
+TIMEOUT：2-3s（家庭 / 工业）
+去重表本地：GP Proxy 缓存，GP Sink 再过一遍
+GP 地址冲突：优先级高于 ZigBee
+```
+
+### 复盘
+
+- **Green Power = 超低功耗协议栈**——能量收集供电
+- 4 角色 + 3 模式 + 3 层地址 = 必须严格配置
+- "**更多路由器≠更好**"——GP 代理近端
+- 协调器固件锁版 = GP sink 不能变
+- 配网窗口 2-3s = 关键时间窗
+- 20 次触发回归 = 部署标准
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-01-candidates.md 候选 2 + 候选 5
+- CSDN NXP JN516x 实战
+- futurion 实战博客
+
+---
+
+## 案例 24：EFR32 NCP 并发 OTA 阻塞 50ms 触发 host assert（buffer 0x19 耗尽）
+
+### 现象
+
+HOST + EFR32MG21 NCP 架构：
+
+- 0~5 终端并发起 OTA 升级
+- NCP 偶发阻塞 50ms+
+- host 端报 assert 失败
+- 平台：EFR32MG21 + SiSDK 2024.06
+
+### 抓包 / 根因
+
+```text
+NCP 日志：
+  - 错误：`NCP has run out of buffers, error 0x19`
+  - 持续触发
+  - Host 端感知：50ms+ 阻塞 → timeout
+
+三重打爆 NCP 缓冲区：
+  1. OTA 升级中：图像 / 文件传输占大量 NCP 帧
+  2. 0.5s polling：NCP 持续响应 OTA 进度查询
+  3. 主机小时级属性读：NCP 缓存控制属性请求
+
+默认配置：
+  - NCP 缓冲区数量 = 64 帧
+  - 一次 OTA 同时有：image 块 / progress 报告 / 属性读
+  - 100 帧 / 5s = 20 帧/s
+  - NCP 处理 30 帧/s
+  - 持续累积 → 缓冲区耗尽 → 0x19
+```
+
+### 修复（官方方案）
+
+```text
+1. 改 `EZSP_CONFIG_PACKET_BUFFER_COUNT` 为 0xFF
+   - 默认 64（0x40）
+   - 改 0xFF = 255 个缓冲区
+   - 解决：OTA 期间缓冲区够用
+
+2. 检查 OTA Bootload Cluster 配置
+   - 必须 enable OTA Bootload Cluster
+   - 必须配 image 校验
+   - 必须 image size 校准
+
+3. 禁用 Packet Handoff plugin
+   - Packet Handoff 是 EFR32 早期版本兼容方案
+   - 新版 SiSDK 不需要
+   - 禁用 = 减少内存压力
+```
+
+### 配置代码
+
+```c
+// EFR32 NCP 配置
+void ncp_config_packet_buffer(void) {
+    ezspStatus status;
+    
+    // 1. 改 NCP 缓冲区数量
+    status = ezspSetConfigurationValue(EZSP_CONFIG_PACKET_BUFFER_COUNT, 0xFF);
+    if (status != EZSP_SUCCESS) {
+        log_error("Set packet buffer failed: 0x%02X", status);
+    }
+    
+    // 2. 检查 OTA cluster
+    status = ezspSetConfigurationValue(EZSP_CONFIG_OTA_POLL_PERIOD, 50);
+    // 0.5s = 50 × 10ms
+    
+    // 3. 禁用 Packet Handoff
+    status = ezspEnablePacketHandoff(false);
+    if (status != EZSP_SUCCESS) {
+        log_error("Disable packet handoff failed: 0x%02X", status);
+    }
+}
+```
+
+### 50ms 周期任务隐患
+
+```text
+Host 端常见：50ms 周期任务（如传感器读、状态查询）
+  - 每个 50ms 任务触发 NCP 帧
+  - 1s 20 帧
+  - 50ms 任务 + OTA = 缓冲区压力 +1 倍
+
+修：
+  - 合并 50ms 任务为 100ms / 200ms
+  - 或用 batch 模式（一次多读）
+  - 或调整 OTA 时段（不与 50ms 任务同时）
+```
+
+### 复盘
+
+- **`EZSP_CONFIG_PACKET_BUFFER_COUNT=0xFF` = 量产必设**
+- Packet Handoff = 老版本兼容，新版禁用
+- 50ms 周期任务 = 隐性观察窗
+- OTA + 高频查询 = 缓冲区耗尽
+- 3 件套：buffer count / OTA cluster / 禁用 handoff
+- SiSDK 升级到 2024.06+ 默认修
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-01-candidates.md 候选 3
+- Silicon Labs 社区（工程师 Jesse）
+- EFR32 + SiSDK 2024.06 实战
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
