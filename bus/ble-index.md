@@ -106,6 +106,18 @@ chips-com/bus/ble-*.md
 | Android requestMtu 断连 | ble-failure-cases.md 案例 22 |
 | 华为 / 小米 / OPPO GATT 碎片化 | ble-failure-cases.md 案例 23 |
 | 实时日志压到 10 分钟 | ble-failure-cases.md 案例 24 |
+| ESP32-C3 mDNS + WiFi coex | ble-failure-cases.md 案例 25 |
+| STM32+nRF52840 外挂 ISR 假休眠 | ble-failure-cases.md 案例 26 |
+| CH582 国产 RISC-V 漏电 3 坑 | ble-failure-cases.md 案例 27 |
+| STM32WB 0x02 BlueCore 升级 fix | ble-failure-cases.md 案例 28 |
+| Abbott Libre 3 FDA 召回 + iCGM | ble-failure-cases.md 案例 29 |
+| NVIDIA Tegra SE ECDH 0x05 silent fail | ble-failure-cases.md 案例 30 |
+| Arduino Nano 33 18mA brownout + BareOS | ble-failure-cases.md 案例 31 |
+| 零售 IoT overnight degradation | ble-failure-cases.md 案例 32 |
+| BLE sensor 60s 能量账本 | ble-failure-cases.md 案例 33 |
+| Ellisys PHY + Nordic Out-of-Order + NCP OTA 0x19 | ble-failure-cases.md 案例 34 |
+| BLE 5 大系统级错误 | ble-failure-cases.md 案例 35 |
+| 40 万台安全产品 BLE 重设计 | ble-failure-cases.md 案例 36 |
 
 ## 关键概念地图
 

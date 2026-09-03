@@ -1958,6 +1958,1286 @@ void on_ble_evt(ble_evt_t *p_ble_evt) {
 
 ---
 
+## 案例 25：ESP32-C3 + mDNS + WiFi coex 单芯片 30s 必断
+
+### 现象
+
+ESP32-C3 + NimBLE 量产手环：
+
+- 连接稳定 30 秒后**准时**断
+- HCI log 只显示 `disconnect reason 0x08 (CONNECTION TIMEOUT)`
+- 重连后同样 30 秒
+- 排查 2 天协议栈无果
+
+### 抓包 / 根因
+
+```text
+抓包：nRF Sniffer 抓空中 PDU
+  - 连接建立后 6 个 connection event 全 OK
+  - 第 7 个 connection event miss
+  - 之后连续 miss 到 supervision timeout
+  - 30s 后必断（supervision = 30s）
+
+根因（致命级别）：
+  1. mDNS 周期性 announce
+     - 同一片 ESP32-C3 跑 WiFi（OTA 用）
+     - mDNS announce 占用 2.4 GHz 时隙
+     - 抢占 BLE connection event 时隙
+  2. ESP32 单 2.4 GHz 射频
+     - WiFi + BLE 共存
+     - 时隙分配：WiFi > mDNS > BLE
+     - BLE 一直低优先级
+  3. NimBLE HCI log 0x08
+     - **log 不会告诉你 coex 争用**
+     - 看起来是"超时"，实际是"时隙丢"
+```
+
+### 修复（3 件套）
+
+```c
+// 1. 调大 supervision timeout
+esp_ble_gap_set_prefer_conn_params(0x18, 0x28, 0, 400, 0);  
+// min = 30ms, max = 50ms, latency = 0, timeout = 4000ms
+
+// 2. 调大连接间隔（50ms，避免 mDNS 抢）
+esp_ble_gap_set_prefer_conn_params(0x32, 0x32, 0, 400, 0);
+// 50ms 间隔，留出 50% 时隙给 mDNS
+
+// 3. 配置 coex 偏好（关键）
+#include "esp_coexist.h"
+esp_coex_preference_set(ESP_COEX_PREFER_BT);
+// 或 ESP_COEX_PREFER_BALANCED（不极致偏 BLE）
+
+// 4. 关闭 mDNS（或减少频率）
+// mDNS announce 间隔默认 1s
+// 改 30s 一次（如果不需要频繁发现）
+mdns_set_ttl(30);
+```
+
+### 复盘
+
+- **ESP32 / nRF52840 / EFR32 单 2.4 GHz 芯片普遍问题**
+- BLE log 0x08 不指向 coex
+- 排查要查 WiFi / mDNS / 蓝牙经典 共存
+- 单芯片 + 多 radio 必做 `esp_coex_preference_set(ESP_COEX_PREFER_BT)`
+- 30s 准时断 = supervision 周期，coex 时隙丢的典型特征
+
+### 来源
+
+- _Inbox/BLE-2026-08-24-candidates.md 候选 2
+- _Inbox/BLE-2026-08-25-candidates.md 候选 1
+- _Inbox/BLE-2026-08-29-candidates.md 候选 4
+- moltbook 工程师实战帖
+
+---
+
+## 案例 26：STM32 + nRF52840 外挂架构 3.2mA 假休眠（ISR 三不原则）
+
+### 现象
+
+手环项目：STM32 主控 + nRF52840 BLE 外挂（SPI）
+
+- 理论功耗：5μA（电池续航 2 年）
+- 实测功耗：3.2mA（电池续航 5 天）
+- 600 倍差距
+
+### 抓包 / 3 类异常模式
+
+```text
+模式 1：持续高平台
+  现象：电流稳定在 1.5mA
+  根因：CPU 睡了但 SPI / BLE_INT 还在工作
+        → 实际是"假休眠"
+  诊断：Keithley 2450 测静态电流
+        → 应该 < 50μA，实测 1.5mA
+
+模式 2：周期尖峰
+  现象：每 60s 一个 18mA 脉冲（持续 100ms）
+  根因：BLE 广播间隔 100ms × 11mA = 0.92mAh / 小时
+        比预期 1.83μAh 高 500 倍
+  诊断：TCP0030A 电流探头看波形
+
+模式 3：长时唤醒
+  现象：CPU 醒来 1.5s（不是预期的 200ms）
+  根因：协议栈重传 + ISR 阻塞
+  诊断：Saleae 抓 GPIO wake/sleep 时序
+```
+
+### 修复（ISR 三不原则 + 零拷贝缓冲）
+
+```c
+// ISR 三不原则：
+//   1. 不打印日志（UART 慢、阻塞）
+//   2. 不访问 SPI（与主线程竞争）
+//   3. 不调阻塞 API（信号量、队列等）
+
+// ❌ 错版：ISR 慢
+void SPI1_IRQHandler(void) {
+    LOG("SPI RX: 0x%02X\n", rx_byte);  // 不允许
+    spi_tx(&main_spi, next_byte);         // 不允许
+    xSemaphoreGiveFromISR(xSem, NULL);     // 不允许
+}
+
+// ✅ 对版：ISR 只 set flag
+volatile bool spi_done = false;
+void SPI1_IRQHandler(void) {
+    spi_done = true;  // 1 行
+}
+
+// 主线程查 flag
+while (!spi_done) {
+    __WFE();  // 等待事件
+}
+process_spi_data();
+```
+
+### 零拷贝环形缓冲
+
+```c
+// 不用 malloc 分配包
+// 静态环形缓冲复用
+static uint8_t ring_buf[4096] __attribute__((aligned(4)));
+static volatile uint16_t head = 0, tail = 0;
+
+void spi_rx_put(uint8_t b) {
+    ring_buf[head++ & 0xFFF] = b;
+}
+uint8_t spi_rx_get(void) {
+    return ring_buf[tail++ & 0xFFF];
+}
+```
+
+### 动态连接参数（3 档切换）
+
+```c
+// 3 档：活动档 / 平衡档 / 休眠档
+typedef enum { BLE_ACTIVE, BLE_BALANCED, BLE_SLEEP } ble_mode_t;
+
+void ble_set_mode(ble_mode_t mode) {
+    switch (mode) {
+        case BLE_ACTIVE:
+            // 7.5ms interval, 0 latency, 50ms supervision
+            update_conn_params(7, 7, 0, 50);
+            break;
+        case BLE_BALANCED:
+            // 50ms interval, 4 latency, 500ms supervision
+            update_conn_params(40, 80, 4, 500);
+            break;
+        case BLE_SLEEP:
+            // 1s interval, 30 latency, 30s supervision
+            update_conn_params(800, 1600, 30, 30000);
+            break;
+    }
+}
+```
+
+### 实测效果
+
+```text
+原状态：3.2mA / 续航 5 天
+优化后：2.08mA / 续航 35 天（-35%）
+  - 持续高平台：1.5mA → 0.2mA（-87%）
+  - 周期尖峰：18mA × 100ms → 18mA × 50ms（-50%）
+  - 长时唤醒：1.5s → 800ms（-47%）
+目标功耗：50μA（理论值）
+仍差 40 倍 → 需进一步深度优化
+```
+
+### 复盘
+
+- **"假休眠" = CPU 睡了但外设还在工作**——最隐蔽
+- ISR 阻塞 1ms = 100μs × 10 = CPU 浪费巨大
+- BLE 广播突发 vs 分散 = 3 条 180μs → 1 条 burst 80μs（-55%）
+- Python + Monsoon 自动化测试平台 = 量产必备
+- 连接参数保守区间 = 关键工程化
+
+### 来源
+
+- _Inbox/BLE-2026-08-24-candidates.md 候选 5
+- _Inbox/BLE-2026-08-27-candidates.md 候选 3
+- 夸智网长文（STM32 + nRF52840 案例）
+- CSDN 实战
+
+---
+
+## 案例 27：CH582 沁恒国产 RISC-V+BLE 5.3 信标 1.2mA→5μA 排查全记录
+
+### 现象
+
+CH582（RISC-V + BLE 5.3）温湿度信标项目：
+
+- 标称续航：6 个月
+- 实测续航：**3 周**（差 7.5 倍）
+- 国产 BLE MCU 真实量产坑
+
+### 抓包 / 72h 排查全记录
+
+```text
+工具配置：
+  - Keithley 2450 源表（μA 静态）
+  - TCP0030A 电流探头
+  - Saleae 16 通道逻辑分析仪
+
+步骤 1（0-12h）：测基础功耗
+  - 实测空闲：1.2mA（应 < 50μA）
+  - 24 倍差距
+  - 第一怀疑：DC-DC 不关
+
+步骤 2（12-24h）：DC-DC 验证
+  - 关闭 DC-DC 模式（LDO 模式）
+  - 电流：1.2mA → 1.15mA（差距 50μA）
+  - 第二怀疑：DEBUG 宏没关
+
+步骤 3（24-36h）：DEBUG 宏
+  - 关闭 DEBUG UART 输出
+  - 电流：1.15mA → 0.8mA
+  - 解决一部分
+  - 第三怀疑：浮空 GPIO 漏电
+
+步骤 4（36-48h）：浮空 GPIO
+  - 38 个 GPIO 中发现 1 个浮空
+  - 漏电 200μA（外加 ESD 二极管漏电）
+  - 配置为 Analog + 下拉
+  - 电流：0.8mA → 0.6mA
+
+步骤 5（48-60h）：软件定时器
+  - CH582 SDK 1 个软件定时器泄漏
+  - 持续唤醒 CPU
+  - 修复：禁用未用定时器
+  - 电流：0.6mA → 50μA
+
+步骤 6（60-72h）：验证
+  - 24h 持续录波
+  - 电流稳定 5μA
+  - 续航：3 周 → 6 个月 ✅
+```
+
+### 3 漏电陷阱总结
+
+```text
+陷阱 1：DEBUG 宏 UART 活跃
+  - 默认开启（开发友好）
+  - 实际出货必须关闭
+  - 漏电：~400μA
+  - 修：DEBUG = 0 / 关 PB0 串口
+
+陷阱 2：浮空 GPIO 单引脚漏电
+  - 38 个 GPIO 中 1 个浮空
+  - 漏电 200μA
+  - 修：Analog 模式 + 下拉电阻
+  - 警告：所有未用 GPIO 必显式配置
+
+陷阱 3：软件定时器泄漏
+  - SDK 1 个未用定时器
+  - 持续触发唤醒
+  - 漏电 50μA+
+  - 修：禁用所有未用定时器
+```
+
+### 测量前置（必做）
+
+```text
+**测功耗前必断 J-Link**（否则测的是调试器电流）
+  - J-Link 自身供电 30mA+
+  - 任何测量都失效
+  - 物理断开
+  - 或用电池供电测试板
+```
+
+### 修复代码
+
+```c
+// 沁恒 CH582 出货配置模板
+void ble_beacon_init_ship(void) {
+    // 1. 关闭 DEBUG
+    #undef DEBUG
+    DEBUG_INIT();
+    
+    // 2. 配置所有 GPIO 为 Analog
+    GPIOA_ModeCfg(GPIO_Pin_All, GPIO_ModeIN_Floating);
+    GPIOB_ModeCfg(GPIO_Pin_All, GPIO_ModeIN_Floating);
+    
+    // 3. 关键 GPIO 显式下拉
+    for (int i = 0; i < 38; i++) {
+        if (i == BLE_ANT_PIN) continue;  // 保留天线
+        if (i == LED_PIN) continue;       // 保留 LED
+        GPIOA_ModeCfg(1 << i, GPIO_ModeIN_PD);
+    }
+    
+    // 4. 禁用未用软件定时器
+    TMR0_Disable();  // 未用
+    TMR1_Disable();  // 未用
+    
+    // 5. 设置睡眠模式
+    PWR_EnterSLEEP(PWR_ROM_CONSUMPTION_MODE);
+    
+    // 6. 验证电流
+    // 应 < 50μA
+}
+```
+
+### 复盘
+
+- **国产 BLE MCU 跟 Nordic 一样有低功耗坑**——只是文档少
+- CH582 是 RISC-V 内核 + BLE 5.3，国产替代 nRF51822 / nRF52832
+- 72h 排查路径 = 量产标准 SOP
+- 3 漏电陷阱 = **出货前 100% 测试**
+- **测功耗前必断 J-Link**（最常被忽略）
+- Keithley 2450 + TCP0030A = μA 级测试金标准
+
+### 来源
+
+- _Inbox/BLE-2026-08-27-candidates.md 候选 2
+- CSDN 沁恒 CH582 实战
+- 沁恒官方 SDK 文档
+
+---
+
+## 案例 28：STM32WB 0x02 BlueCore Time Overrun 部分单元良率坑
+
+### 现象
+
+STM32WB 量产项目，BLE Stack v1.11.0 + FUS v1.2.0：
+
+- **同 PCB / 同固件**，5% 单元报 `HCI_HARDWARE_ERROR_EVENT (0x02)`
+- BlueCore time overrun
+- 良率 95%（不达标）
+
+### 抓包 / 定位
+
+```text
+HCI 抓包：
+  - 错误事件 0x02 = HCI_HARDWARE_ERROR_EVENT
+  - 持续触发，每秒 1-2 次
+  - 单元重启可恢复，但几分钟后复发
+  - 只部分单元出问题
+
+可能原因排查：
+  1. HSE 精度：单元间晶振差异（±20 ppm 变 ±40 ppm）
+  2. LSE 精度：32.768 kHz 晶振精度差
+  3. RF 匹配：板级差异
+  4. 电源纹波：单元间 PCB 差异
+  5. 固件 bug：旧版本 SDK 已知问题
+
+实测：
+  - 升级到 BLE Stack v1.24.0 + FUS v2.2.0
+  - 问题**消失**
+  - 验证：100 台新固件，0 台报错 0x02
+```
+
+### 修复
+
+```text
+短期方案：
+  1. 升级到 BLE Stack v1.24.0 + FUS v2.2.0
+  2. 验证 100+ 单元
+  3. 良率 95% → 100%
+
+长期方案：
+  1. 选型时优先最新稳定版固件
+  2. 量产前跑 200+ 单元老化测试
+  3. 旧固件不上量产
+  4. 升级到 v1.24.0 后良率稳定
+
+厂商建议：
+  - STM32WB 文档明确 v1.11.0 有 BlueCore overrun 问题
+  - v1.24.0 已修
+  - 升级路径：FUS v2.2.0 + 重新烧录 stack
+```
+
+### 复盘
+
+- **同 PCB / 同固件 / 部分单元出错 = 良率问题**
+- 排查方向：HSE / LSE / RF 匹配 / 电源纹波 / **固件版本**
+- BLE stack 大版本升级 = 量产良率直接 fix
+- 选型时不能只看 datasheet，要看 release notes
+- 量产前 200+ 单元老化测试 = 必做
+
+### 来源
+
+- _Inbox/BLE-2026-08-29-candidates.md 候选 3
+- ST Community 实战
+- STM32WB Release Notes
+
+---
+
+## 案例 29：Abbott FreeStyle Libre 3 FDA Warning Letter + 3M 召回（IoT 医疗验收教训）
+
+### 现象
+
+2025-10 FDA 检查 Abbott 厂 4 项 GMP 违规：
+
+1. 未传精度
+2. 无验收测试
+3. 抽样无依据
+4. release 未对齐
+
+**关键指控**：FDA 警告信指 **BLE connectivity testing 替代了 glucose accuracy 测试**——意思是用 BLE 连通性测试**替代**了血糖精度测试，导致假低血糖读数（实际上血糖正常但设备报低）。
+
+召回：3M Libre 3 / 3+ 设备
+- 严重等级：Class I（FDA 最严重）
+- 伤害：860 重伤 + 7 死
+- 触发：传感器在体温变化时读数漂移
+
+### 抓包 / 根因
+
+```text
+真问题不是 BLE 协议问题，是验收流程问题：
+
+1. 设计 transfer 失守
+   - 设计阶段 R&D 验证了 BLE connectivity ✅
+   - 但**没**验证 glucose accuracy（传感器精度）
+   - 设计 transfer 没把精度测试当必做项
+
+2. 成品 acceptance 失守
+   - 100% 验收 = BLE 连通 + 基本功能
+   - 抽样验收 = 缺统计学依据
+   - 抽样不包含温度变化场景
+
+3. 统计抽样失守
+   - n=10 抽样不够
+   - 没覆盖全温区（-10°C ~ +50°C）
+   - 没考虑身体部位（手臂 vs 腹部）
+
+4. release 未对齐
+   - 实际出货的固件 ≠ 验证过的固件
+   - 后期 OTA 改了读数算法但没重做验收
+```
+
+### 修复（IoT 医疗验收 3 大原则）
+
+```text
+原则 1：设计 transfer 必须包含端到端精度测试
+  - 不是 BLE 连通性 = 验收
+  - 是传感器 + BLE + 应用 = 端到端精度
+  - 21 CFR 862.1355（iCGM）要求：
+    - 血糖读数误差 < 20%
+    - 95% 读数在 ±15% 内
+    - 99% 读数在 ±40% 内
+
+原则 2：成品 acceptance 必须全温区
+  - 低温 -10°C
+  - 室温 25°C
+  - 高温 50°C
+  - 高湿 95% RH
+  - 振动 + 跌落
+
+原则 3：OTA 升级必须重新验收
+  - 不只是 BLE 协议
+  - 必须重做精度测试
+  - 必须重做统计抽样
+  - 必须 FDA 报告
+```
+
+### 复盘
+
+- **BLE connectivity ≠ 验收**——医疗 IoT 必须端到端精度
+- **OTA 改了算法 = 重新验收**——不只是"功能正常"
+- **FDA Warning Letter = 工业级别**——影响出货资格
+- 3M 召回 + 7 死 = 人命代价
+- **设计 transfer + 成品 acceptance + 统计抽样** = 三大失守点
+- iCGM 21 CFR 862.1355 = 法规硬约束
+
+### 来源
+
+- _Inbox/BLE-2026-08-29-candidates.md 候选 5
+- Manufacturing Chemist 报道
+- FDA Warning Letter 公开数据
+- iCGM 21 CFR 862.1355 法规
+
+---
+
+## 案例 30：NVIDIA Tegra SE ELP 硬件 ECDH 错误——BLE OOB 配对 0x05 静默失败
+
+### 现象
+
+NVIDIA Jetson Xavier NX + L4T R35.6.0：
+
+- BLE SMP OOB（Out-of-Band）配对 0x05
+- 静默失败：**无 panic 无 log 无错误码**
+- 配对 confirm 不匹配
+- 同 OOB 数据在 Android / 非 Tegra Linux 上正常
+
+### 抓包 / 根因
+
+```text
+追踪：
+  - 抓 BLE 空中 PDU
+  - 配对 request → pairing confirm
+  - 比较 confirm value（应该匹配）
+  - 不匹配 → 0x05 AUTHENTICATION_FAILURE
+
+源码层：
+  - Linux BLE 协议栈调用 `tegra-se-ecdh`
+  - Tegra Security Engine 的 ECDH 硬件加速驱动
+  - 返回值错误（跟 RFC 7748 / SEC 1 不一致）
+  - 协议栈拿到错误 ECDH = 配对 confirm 不匹配
+
+影响：
+  - Orin（更老）上：kernel panic
+  - Xavier NX：静默失败（无任何错误）
+  - 同根因，不同表现 = 排查噩梦
+```
+
+### 修复（workaround）
+
+```bash
+# 1. unbind Tegra SE ECDH 驱动
+echo 3ad0000.se_elp > /sys/bus/platform/drivers/tegra-se-ecdh/unbind
+# 或
+sudo rmmod tegra_se_ecdh
+
+# 2. 系统自动 fallback 到 ecdh-generic（软件实现）
+#    验证：dmesg | grep ecdh-generic
+
+# 3. 重新跑 OOB 配对测试
+sudo btmgmt pairable on
+sudo btmgmt bondable on
+```
+
+### 关键工程认知
+
+```text
+1. 硬件 crypto 加速器 ≠ 正确实现
+   - 加速器可能实现错
+   - 测试时必须验证
+   - 不能信加速器
+
+2. 静默失败是排查噩梦
+   - 无 panic、无 log、无错误码
+   - 不同硬件表现不同
+   - 升级固件/内核可能恶化
+
+3. Workaround 是临时方案
+   - unbind 加速器
+   - 回退到软件实现
+   - 性能降低但能用
+```
+
+### 选型教训
+
+```text
+- 新平台 BLE 配对必须 multi-platform 验证
+  - Android / iOS / Linux / Windows
+  - 不能只测一个
+- 配对 confirm/value 不匹配 = 0x05 立刻报
+- 静默失败（0 错误）= 排查地狱
+- 硬件加速器 = **必须回归测试**
+```
+
+### 跟 SimCardReader DRK 交叉
+
+```text
+两案例同根因：
+  - Tegra SE ECDH 错误 = 硬件 crypto bug
+  - SimCardReader DRK/RDP 错误 = 硬件 crypto bug
+  - 都是"硬件加速器 ≠ 正确实现"
+
+教训：
+  - 任何硬件 crypto 集成后必须 RFC 测试向量
+  - 不能只跑功能测试
+  - 必须用已知输入对比期望输出
+```
+
+### 复盘
+
+- **硬件 crypto 加速器 ≠ 正确实现**——必须回归测试
+- 静默失败（无 log）= 排查噩梦
+- 多平台交叉验证 = 唯一发现途径
+- workaround = unbind 加速器 + 回退软件
+- 跟 SimCardReader DRK = 同根因（硬件 crypto bug）
+
+### 来源
+
+- _Inbox/BLE-2026-09-01-candidates.md 候选 5
+- NVIDIA 官方论坛（Jetson Xavier NX, L4T R35.6.0）
+- Bluetooth Core Spec Vol 3 Part H
+
+---
+
+## 案例 31：Arduino Nano 33 BLE 18mA 突 brownout——BareOS 128KB RAM 板级规范
+
+### 现象
+
+nRF52840 Arduino Nano 33 BLE 实测：
+
+- 标称 TX 电流：5-10mA
+- 实测 TX 电流：18mA 突发（+4 dBm）
+- 3.3V 跌穿 2.7V brownout → MCU 重置 → 掉链
+- 10m 距离直接掉到 30cm
+
+### 抓包 / 根因（3 个并发）
+
+```text
+根因 1：TX 突发电流预算 = 板级设计必做
+  - nRF52840 TX +4 dBm 峰值 = 18mA
+  - LDO 3.3V 跌穿 2.7V brownout
+  - MCU 重置
+  - 修复：100 µF 钽 + 100 nF 陶瓷去耦
+
+根因 2：面包板金属弹簧引脚
+  - 寄生电容把 chip antenna 调偏
+  - 10m 距离 → 30cm
+  - 修复：直接焊 PCB
+
+根因 3：MTU / connection interval 不匹配
+  - 移动端静默断开
+  - 修复：iOS/Android 平台适配参数
+```
+
+### 修复（板级硬规范）
+
+```text
+1. 去耦电容
+   - 100 µF 钽（bulk）
+   - 100 nF 陶瓷（高频）
+   - 紧挨 VCC 引脚
+   - 短走线（< 5mm）
+
+2. RF keep-out
+   - 15 mm RF 净空区
+   - 不能铺地
+   - 不能走线
+
+3. PCB 接地铜皮距天线 ≥ 5 mm
+   - chip antenna 默认参考地
+   - 距离不够 = 谐振偏移
+
+4. 电源设计
+   - 峰值电流 1.5x 标称
+   - LDO dropout < 100 mV
+   - DC-DC 纹波 < 30 mV
+```
+
+### BareOS 128KB RAM 板级规范对照
+
+```text
+BareOS 平台（N32L40X，128 KB RAM / 512 KB ROM）：
+
+板级设计：
+  - 100 µF 钽 + 100 nF 陶瓷（必）
+  - 15 mm RF keep-out
+  - chip antenna 距地 ≥ 5 mm
+  - 3.3V LDO 输出纹波 < 30 mV
+  - TX 峰值电流预算 = 1.5x 标称
+
+软件侧：
+  - 启动延迟 10ms（等晶振稳）
+  - 启动后立即测电源电压（ADC）
+  - 异常立即进 safe mode
+  - 看门狗复位后重新 init RF
+
+测试侧：
+  - 100% 老化测试 24h
+  - 实测 TX 突发电流波形
+  - 100% brownout 复位测试
+```
+
+### 复盘
+
+- **TX 突发电流预算 = 板级设计必做项**（不是芯片 spec 兜底）
+- chip antenna 调偏比选错芯片更要命
+- MTU / connection interval 不匹配 = 移动端静默断开
+- BareOS 128KB RAM 板设计**直接套用本案例规范**
+- 3 规范：去耦 / keep-out / 接地距天线
+
+### 来源
+
+- _Inbox/BLE-2026-08-30-candidates.md 候选 3
+- electricalflux.com 实战
+- nRF52840 datasheet §5.3.1
+- BareOS 板级设计规范
+
+---
+
+## 案例 32：零售 IoT "overnight degradation"——可自诊断是部署级硬需求
+
+### 现象
+
+spörk 嵌入式无线工程师 LinkedIn 实战：
+
+- 零售 IoT 部署一夜之间全面劣化
+- 无硬件 / 无固件 / 无安装改动
+- 现场勘察：邻居 IoT 网 OTA 升级后占用更多共享频谱
+
+### 抓包 / 根因
+
+```text
+事实：
+  - 自家设备没坏
+  - 是 RF 环境变了
+  - 共享 ISM 频段无法独占
+  - 邻居 OTA = 直接拖垮你
+
+"症状"：
+  - 延迟突刺
+  - 间歇断开
+  - 吞吐随日变化
+  - 无法复现
+```
+
+### 修复（可自诊断部署）
+
+```text
+"可自诊断"是部署级硬需求：
+  - 不然每次派人上站
+  - 成本爆炸
+
+远程诊断必须采集：
+  1. RSSI 历史曲线
+  2. 动态协商 TX 功率
+  3. 噪声底
+  4. 干扰事件
+  5. 设备状态
+  6. 重启次数
+  7. 错误率
+  8. 带宽占用
+
+实现：
+  - 设备本地缓存 24h 数据
+  - 远程查询接口
+  - 告警阈值 + 工单触发
+  - 现场人员带数据去找问题
+```
+
+### 实战 ROI
+
+```text
+可自诊断 vs 不可自诊断：
+  不可自诊断：
+    - 每次故障派人上站
+    - 平均 4 小时 / 站
+    - 现场测量、排查
+    - 全凭经验
+    
+  可自诊断：
+    - 远程看数据 30 分钟
+    - 现场直奔问题
+    - 2 小时搞定
+    - ROI = 8x
+```
+
+### BLE 工业 4 维排查 SOP（综合）
+
+```text
+4 维独立排查（gutab.cn 实战）：
+
+1. 射频物理层
+   - VSWR（天线匹配）
+   - AFH 信道图（自适应跳频）
+   - LOS（视距）
+   - 多径 / 阻挡
+
+2. 协议栈 GAP / GATT
+   - 广播间隔 vs 扫描窗口
+   - 连接参数交集
+   - 配对 MAC 白名单
+   - Service UUID 匹配
+
+3. 电源管理
+   - 瞬时跌落（TX 峰值）
+   - USB Selective Suspend（Host 端）
+   - ACPI 策略（OS 端）
+   - 电池内阻
+
+4. 固件 / 驱动
+   - HCI 队列溢出
+   - MTU 协商
+   - 状态机占线
+   - ISR 阻塞
+
+4 维并行 = 快速定位
+```
+
+### 关键认知
+
+```text
+- "可自诊断" = 部署级硬需求
+- 共享 ISM 频段无法独占 = 必须假设邻居会干扰
+- 邻居 OTA = 直接拖垮你
+- 4 维排查 = 工业 BLE 故障定位 SOP
+- HCI 错误码比应用错误码值钱 10 倍
+- ACPI 切蓝牙电源 = 工业 OS 隐藏地雷
+```
+
+### 复盘
+
+- **可自诊断 = 部署级硬需求**（不是 nice-to-have）
+- 共享频段无法独占 = 必须自适应
+- 4 维排查 SOP = 工业 BLE 实战工具
+- 远程诊断 = 部署 ROI 关键
+- 跟 #1 (DEWINE lab→field) + #2 (spörk overnight) 配套 = lab→field 完整闭环
+
+### 来源
+
+- _Inbox/BLE-2026-08-30-candidates.md 候选 1 + 候选 2 + 候选 4
+- DEWINE Labs 工业 BLE blog
+- LinkedIn Michael Spörk
+- gutab.cn 工业平板厂商
+
+---
+
+## 案例 33：BLE sensor 节点 60s 上报能量账本——精确到 µA
+
+### 现象
+
+某 BLE sensor 节点（nRF52 / STM32WB / ESP32-C3 任一选型）：
+
+- 设计目标：CR2032 续航 2 年
+- 实际测试：1 年掉链
+- 续航差 50%
+
+### 抓包 / 能量账本
+
+```text
+60s 上报周期（实测）：
+  - 睡眠 2 µA × 60s = 120 µA·s
+  - 读传感器 5 mA × 15 ms = 75 µA·s
+  - BLE 广播 11 mA × 8 ms = 88 µA·s
+  - 合计：283 µA·s / 60s = 4.7 µA 平均
+  
+CR2032（220 mAh）：
+  - 理论续航：220 / 4.7 × 1 / 24 / 365 = 5.35 年
+  - 折扣后：3-4 年（考虑自放电）
+
+但实际只 1 年？问题在哪？
+```
+
+### 隐藏 µA 漏电（7 项）
+
+```text
+1. LDO 静态电流
+   - 典型 LDO：1-2 µA
+   - 但有些 LDO 在 disable 时漏 50 µA
+   - 修：选 IQ < 1 µA LDO（如 XC6206 = 0.7 µA）
+
+2. I2C 上拉电阻
+   - 默认 10 kΩ 上拉 + 3.3V = 330 µA
+   - sleep 时 I2C device 漏电
+   - 修：1 MΩ 上拉 + I2C switch 控制
+
+3. 状态 LED
+   - 状态 LED 常亮 = 5-20 mA
+   - 修：sleep 关闭 + 触发点亮
+
+4. 大电容漏电
+   - 100 µF 电容漏电 1-5 µA
+   - 多个电容叠加
+   - 修：减小到 10 µF + 选低漏电型号
+
+5. 浮空 GPIO
+   - 单引脚 200 µA
+   - 修：Analog + 下拉
+
+6. 传感器本身漏电
+   - 温湿度传感器 sleep 时 0.5 µA
+   - 但有些国产芯片 5-10 µA
+   - 修：选低功耗型号
+
+7. 调试接口
+   - SWD / UART sleep 时漏电
+   - 修：出货关闭调试接口
+```
+
+### 48h 连续录波案例
+
+```text
+某 IoT 节点 48h 连续录波发现：
+  - 第 23h：触发异常
+  - 5 µA 静态 → 18 µA
+  - 持续 30s
+  - 原因：内部定时器 23h 周期
+  - 修：禁用未用定时器
+
+教训：
+  - 短时间测试看不到长周期异常
+  - 48h 录波才暴露
+  - 量产前 48h 录波 = 必做
+```
+
+### 量产前 7 项必查
+
+```text
+□ 1. 选型决策
+   - MCU: nRF52 / STM32WB / ESP32-C3
+   - LDO: IQ < 1 µA
+   - 传感器: 静态 < 1 µA
+
+□ 2. 电路设计
+   - 100 µF 钽 + 100 nF 陶瓷
+   - I2C 1 MΩ 上拉 + switch
+   - 所有 GPIO 显式配置
+
+□ 3. 固件优化
+   - 禁用 DEBUG 宏
+   - 关闭未用定时器
+   - 关闭未用外设
+   - 关闭状态 LED
+
+□ 4. 报告周期
+   - 60s 起步
+   - 业务侧优化（边缘计算）
+   - dynamic CI（活动/平衡/休眠）
+
+□ 5. 测试方法
+   - Keithley 2450 测静态
+   - TCP0030A 测瞬时
+   - 48h 录波
+   - 实电池续航测试
+
+□ 6. 现场验证
+   - 多平台测试（iOS/Android）
+   - 2.4 GHz 共存
+   - 金属环境
+   - 温度漂移
+
+□ 7. 数据驱动
+   - 7 项 µA 漏电表
+   - 60s 周期能量账本
+   - 续航预测公式
+   - 现场校准
+```
+
+### 复盘
+
+- **能量账本精确到 µA** = L4 sensor 节点核心
+- 60s 周期 + 3 µA 平均 = 3-4 年 CR2032
+- 隐藏 7 项 µA 漏电 = 70 µA 睡眠漏电 = 130 天 vs 2 年
+- 48h 连续录波 = 唯一发现长周期异常
+- 法拉第笼隔离法 = 判内/外因
+- **跟 #27 CH582 1.2mA→5μA 配套** = 国产+国外双示例
+
+### 来源
+
+- _Inbox/BLE-2026-08-30-candidates.md 候选 5
+- wmrh.cn IoT 实战 blog
+- nRF52 / STM32WB / ESP32-C3 选型手册
+
+---
+
+## 案例 34：BLE 工业断连 3 案例合集——Ellisys PHY + Nordic Out-of-Order + EFR32 OTA
+
+### 案例 A：Ellisys 抓 PHY Channel Map 工业频谱避让
+
+```text
+现象：工业现场断连
+抓包：Ellisys（同步 PHY + 协议）
+  - 毫秒级数十次 Channel Map 重协商
+  - PHY 不断在 1M / 2M / Coded 间切换
+  - 工业 Wi-Fi / 变频器噪声逼出 LL_CONNECTION_UPDATE_IND 超时
+  - MIC Failure 反复
+
+根因：
+  - PHY 切换频繁 → MAC 重协商 → 累积延迟
+  - 工业噪声 + 重协商 = 链路瘫痪
+
+修复（3 步）：
+  1. 主动屏蔽工业拥堵频段
+     - 频谱仪扫 2.4 GHz
+     - 排除 Wi-Fi 1/6/11 + 变频器谐波
+  2. 天线远离金属屏蔽罩
+     - 5m 净空
+  3. RF Ground 与 Digital Ground 单点接
+     - 避免高频串扰
+```
+
+### 案例 B：Nordic DevZone BLE Data Integrity Failures（Out-of-Order Segments）
+
+```text
+现象：nRF 网关 BLE → Wi-Fi bridge 800 KB 大文件
+  - 应用层 SAR（Segmentation and Reassembly）
+  - 双 radio 高负载触发 SFP CRC fail
+  - SAR 出现 A1/A2/**A2**/A4 重排序（重复！）
+  - Wi-Fi tcp_window_full 与 BLE CRC 失败时间窗精确对齐
+
+根因：
+  - 双 radio 共存 throughput 互相挤兑
+  - CRC 失败 → 重传 → 乱序
+  - 应用层无 seq 校验
+
+修复（3 件套）：
+  1. SAR 必须自带 seq num
+     - 容忍乱序
+     - 检测丢失
+  2. 双 radio 优先级
+     - BLE 优先（短时突发）
+     - Wi-Fi 限速
+  3. 多路 log 时间戳对齐
+     - 唯一诊断法
+     - 跨 radio 时间同步
+```
+
+### 案例 C：EFR32 NCP OTA 0x19 buffer out
+
+```text
+现象：EFR32MG21 NCP + host + 5 终端并发 OTA
+  - NCP 偶发阻塞 50ms+
+  - host 端报 assert
+  - log：`NCP has run out of buffers, error 0x19`
+
+根因：3 重打爆 NCP buffer
+  - OTA 70min+ 持续传输
+  - 0.5s OTA polling
+  - 主机小时级属性读
+
+修复（3 板斧）：
+  1. `EZSP_CONFIG_PACKET_BUFFER_COUNT = 0xFF`（默认 0x40 = 64）
+  2. 检查 OTA Bootload Cluster
+  3. **禁用 Packet Handoff plugin**
+
+详见 ZigBee 案例 24（同根因，跨主题）。
+```
+
+### 综合教训（3 案例同根因）
+
+```text
+- 工业 BLE = PHY 切换 / 双 radio / NCP 缓冲 三大主坑
+- Ellisys = 工业抓包金标准
+- 双 radio 必须时戳对齐
+- NCP OTA 缓冲区必须 0xFF
+- 跨主题根因复用：ZigBee 案例 24 跟 BLE 案例 C 同根因
+```
+
+### 复盘
+
+- **工业 BLE 三大坑 = PHY / 双 radio / NCP 缓冲**
+- Ellisys = 工业抓包金标准（同步 PHY + 协议）
+- 双 radio 时间戳对齐 = 唯一诊断法
+- NCP buffer 0xFF + 禁用 handoff = 量产必设
+- 跨主题案例 = 根因复用价值高
+
+### 来源
+
+- _Inbox/BLE-2026-09-01-candidates.md 候选 1 + 候选 3
+- tsight.io 实战
+- Nordic DevZone 实战
+- Silicon Labs 社区
+
+---
+
+## 案例 35：BLE 不是协议——5 大系统级错误（事件驱动子系统设计）
+
+### 现象
+
+某部署级 BLE 产品（部署到 1000+ 客户）：
+
+- 现场偶发失联
+- 客户手机端应用崩
+- 售后工单激增
+- 固件团队 + 应用团队各排查 1 周无果
+
+### 5 大系统级错误
+
+```text
+错误 1：BLE 当 transparent pipe
+  现象：app 端写 100 byte，GATT 通知 100 次
+  根因：BLE 当 socket 用
+        → 协议层 chunking / reassembly
+        → 调度复杂
+  解决：
+    - BLE 当事件驱动子系统
+    - 上层只发"事件"
+    - 协议层处理分片 / 重传 / 限流
+
+错误 2：忽略 central 端 OS 后台策略
+  现象：iOS 锁屏后 BLE 链路掉
+        Android 灭屏 5min 后 BLE 通知延迟
+  根因：central 端 OS 调度：
+    - iOS 后台 BLE 受限（需 peripheral 主动通知）
+    - Android Doze 模式切断 BLE
+  解决：
+    - iOS 用 ANCS（Apple Notification Center Service）
+    - Android 用 background scan 限制
+    - 不能假设 central 端永远在线
+
+错误 3：功耗 afterthought
+  现象：硬件设计 OK，固件功耗高
+  根因：功耗优化放在最后
+        架构层面没考虑 low-power
+  解决：
+    - 架构阶段就考虑低功耗
+    - 连接 / 广播 / 扫描分场景
+    - 事件驱动 + sleep
+
+错误 4：状态爆炸 / 老 bond
+  现象：重连失败，bond 信息污染
+  根因：central 端切换 → 旧 bond 残留
+        状态机设计不显式 → 状态爆炸
+  解决：
+    - 状态机必须显式定义
+    - bond 数量限制
+    - 状态转移显式管理
+
+错误 5：安全配置一次定终身
+  现象：早期产品默认 key 终身不变
+  根因：key rotation 没设计
+  解决：
+    - 强制 key rotation
+    - Trust Center Rejoin 改 Secure Rejoin
+    - 量产前重新评估
+```
+
+### 实战设计原则
+
+```text
+1. BLE 当事件驱动子系统
+   - 上层不直接管 GATT
+   - 协议层封装分片 / 重传
+
+2. central 端视为不可信
+   - iOS / Android 端 OS 策略多变
+   - 不能假设链路永远稳定
+   - 必须本地状态自管理
+
+3. 状态转换显式管理
+   - 状态机不变量
+   - 所有转移都显式记录
+   - 测试覆盖所有转移
+
+4. 安全分层
+   - 默认 key 限缩
+   - 强制 key rotation
+   - 远程可升级安全策略
+```
+
+### 复盘
+
+- **BLE 是子系统不是协议**——架构级认知
+- 5 大错误 = 部署级常见坑
+- central 端不可信 = 核心原则
+- 状态机显式 = 长期维护关键
+- 安全分层 = 一次性配置不可取
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-03-candidates.md 候选 4
+- EurthTech 实战
+
+---
+
+## 案例 36：40 万台安全产品 BLE 重设计——按需广播 vs 持久连接
+
+### 现象
+
+某天花板安防产品（40 万台出货）：
+
+- 固件思路：持久连接 + keepalive
+- 问题：电池续航 6 个月 → 期望 2 年
+- 现场：安全产品 silent fail 比 crash 更致命
+- 重设计：把"持久连接"反转为"按需广播 + 控制端常扫"
+
+### 抓包 / 根因
+
+```text
+原方案：持久连接
+  设备：扫描 + 保持连接 + keepalive
+  控制端：始终连着
+  
+问题：
+  - 设备 keepalive 每 30-60s 一次 → 占空比 5-10%
+  - 连接建立 + 维护 = 持续耗电
+  - 中心端 OS 调度限制（iOS 后台）
+  - 累计 100+ mAh / 年
+
+重设计：按需广播
+  设备：周期性广播（5-10s）含状态信息
+  控制端：常扫（iOS 用 ANCS / Android 用 background scan）
+  业务触发：才建立连接 + 传数据
+  
+收益：
+  - 广播 vs 持久连接 = 1/10 功耗
+  - 业务数据传输 < 1s（连接 + 传 + 断开）
+  - 控制端 OS 友好
+```
+
+### 实战设计
+
+```text
+架构：
+  ┌─────────────────────┐
+  │ 设备（电池）         │
+  │  - 5s 周期广播       │  ← 90% 时间
+  │  - 收到控制 → 连接  │  ← 5% 时间
+  │  - 传数据 → 断开    │
+  └─────────────────────┘
+            ↕
+  ┌─────────────────────┐
+  │ 控制端（手机/网关）  │
+  │  - 常扫             │
+  │  - 收广播显示状态   │
+  │  - 用户操作 → 连设备│
+  └─────────────────────┘
+```
+
+### 修复（4 件套）
+
+```text
+1. 重新设计连接 / 扫描 / 广播 / 参数
+   - 不能照抄 SDK 默认
+   - 按场景定制
+
+2. 持久连接 → 按需广播
+   - 业务触发才建链
+   - 数据传完立即断
+
+3. 安全产品 silent fail
+   - 必须有故障指示
+   - 不能默默失败
+   - 配 Boot POST + 周期 self-test
+   - 失败 = loud（LED / 蜂鸣器）
+
+4. build system 隔离驱动与报警
+   - driver 故障 ≠ 报警失能
+   - watchdog 独立线程
+   - 报警比功能优先
+```
+
+### 能量预算重新分配
+
+```text
+原方案：
+  - 维护连接：60%
+  - keepalive：20%
+  - 业务：10%
+  - 待机：10%
+
+重设计：
+  - 广播：30%
+  - 业务触发连接：5%
+  - 待机：65%  ← 提升 55%
+  
+续航：
+  原：6 个月
+  新：2 年（+4x）
+```
+
+### 关键认知
+
+```text
+- "持久连接"是反模式（IoT 电池场景）
+- 按需广播 + 控制端常扫 = 工业标准
+- 安全产品 silent fail 致命
+- 故障指示必须 loud（不能静默）
+- build system 隔离驱动与报警
+- Boot POST + 周期 self-test = 必做
+```
+
+### 复盘
+
+- **按需广播 vs 持久连接** = 6 个月 → 2 年
+- 40 万台出货 = 决策影响巨大
+- 安全产品 silent fail = 致命
+- 故障指示必须 loud（不是 nice-to-have）
+- 业务传输 < 1s 完成
+- 控制端 OS 友好 = iOS ANCS / Android BG scan
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-03-candidates.md 候选 5
+- needCode（产线出货级实战）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
