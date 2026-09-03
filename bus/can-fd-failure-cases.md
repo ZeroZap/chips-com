@@ -507,6 +507,761 @@ send(sock, &frame, sizeof(frame), 0);
 
 ---
 
+## 案例 6：台架通 ≠ 装车通——TDC Stuff Error 200 节点装车后整网报错
+
+### 现象
+
+某主机厂 CAN FD 总线：
+
+- 台架单测：4 节点全部 PASS
+- 装车（200 节点，线束长度增加）：**整网狂报错**
+- 拔节点：报错消失
+- 错码：Stuff Error，集中在 bit 24 / bit 28
+- 抓包：TX-RX 环路延迟变化
+
+### 抓包 / 根因
+
+```text
+示波器抓 TX → RX 环路延迟：
+  台架（线束 30cm）：环路延迟 = 80ns
+  装车（线束 30m + 分支）：环路延迟 = 280ns
+  
+问题：TDC（Transceiver Delay Compensation）默认按台架校准
+  - 装车后线束/分支长度改变环路延迟
+  - SSP（Secondary Sample Point）错位
+  - 数据段采样点错位 → 周期性 Stuff Error
+
+关键约束（ISO 11898-1:2015）：
+  - 采样点 75% - 82% 是硬性范围
+  - TDCO = (PROP + TSEG1) × DBRP
+  - 2 Mbps / 80% 采样点 = TDCO ≈ 400ns
+  - 实际：装车后 TDCO 280ns
+  - 偏差：120ns > SSP 容忍窗
+```
+
+### 定位
+
+```text
+Step 1：示波器量 TDCO
+  - TX 边沿触发 → RX 边沿光标
+  - 多节点测 100 个包取平均
+  - 装车 TDCO = 280ns（台架 80ns）
+  
+Step 2：算 SSP
+  - SSP = TDCO + 80% × bit_time
+  - 80% × 500ns = 400ns
+  - SSP = 280 + 400 = 680ns
+  - 但默认 SSP = 400ns（台架校准）
+  - 偏差 280ns = 整网错位
+
+Step 3：尝试验证
+  - 改 TDCO = 280ns（装车值）
+  - 测试：100 包 PER
+  - 失败 0%
+  - ✅ 修复
+```
+
+### 修复
+
+```c
+// 装车校准 TDCO 流程
+void calibrate_tdco_after_install(void) {
+    uint32_t loop_delay_ns = measure_loop_delay();  // 示波器测
+    uint32_t bit_time_ns = 500;  // 2 Mbps
+    uint32_t sample_pct = 80;
+    
+    uint32_t tdco = loop_delay_ns;
+    uint32_t ssp = tdco + (sample_pct * bit_time_ns / 100);
+    
+    // 写 TDCO 寄存器
+    CAN_FDCAN_TDCV(ssp);
+    CAN_FDCAN_TDCO(tdco);
+    CAN_FDCAN_TDCEN(1);  // enable TDC
+}
+```
+
+### 4 陷阱
+
+```text
+1. 单测思维：台架通 ≠ 装车通
+   - 必须装车后重新校准
+   - 不能用台架 TDCO 装车
+   
+2. 忽略 Loop Delay
+   - 测的是 TX → RX 时间
+   - 不是看 chip spec 兜底
+   - 必须实测
+
+3. TDCO 拍脑袋
+   - 不能填经验值（如 150ns）
+   - 必须示波器实测
+
+4. SSP 落下一位
+   - 采样点位置不对
+   - SSP = TDCO + 采样点% × bit_time
+   - 整网算 SSP，**不是单节点**
+```
+
+### 复盘
+
+- **台架通 ≠ 装车通** = CAN FD 装车第一坑
+- TDC 在台架校准 = 装车失效
+- 线束/分支长度改变环路延迟 = 必须重测 TDCO
+- ISO 11898-1:2015 采样点 75-82% 是硬性范围
+- 4 陷阱 = 4 步装车前 checklist
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 1
+- 电子工程专辑 窦明佳
+- 汽车电子 10+ 年工程师实战
+
+---
+
+## 案例 7：NXP S32K CAN-FD TDC SSP Bit Stuff Error 诊断实战
+
+### 现象
+
+NXP S32K3 + TJA1145 车载 ECU：
+
+- 主采样点 80%
+- 2 Mbps 数据段
+- 实测：Stuff Error 100% 触发
+- 错码集中在 SSP（Secondary Sample Point）
+
+### 抓包 / 根因
+
+```text
+示波器量 TX → RX 延迟：
+  实际：150ns
+  2 Mbps 占位宽：30% × 500ns = 150ns
+  偏移：50ns（占位宽 33%）
+
+主采样点 80% 错位分析：
+  - 默认 SSP = 80% × 500ns = 400ns
+  - 实际 SSP = 400ns + 150ns（环路延迟）= 550ns
+  - 但 TJA1145 实际输出位置 = 550ns
+  - 接收端采样点仍是 400ns
+  - 偏差 150ns > SSP 容忍窗
+  - → 周期性 Stuff Error
+
+关键：SSP 必须 = TDCO + 期望采样点 × bit_time
+  - TDCO（环路延迟）= 150ns
+  - 期望 SSP = 80% × 500ns = 400ns
+  - 实际写入 SSP = 150 + 400 = 550ns
+  - 但 NXP S32K TDCO 寄存器单位 = tq（time quantum）
+  - 1 tq = 系统时钟周期（如 25ns）
+  - 150ns = 6 tq
+  - 但 TDCV 测量显示 = 25 tq（测量时含 TJA1145 收发器延迟）
+```
+
+### 定位
+
+```text
+Step 1：TDCV 测量
+  - NXP S32K 提供 TDCV（Transceiver Delay Compensation Value）
+  - 测量时 TJA1145 收发器延迟 100ns
+  - TDCV = 100ns + 50ns（线束）= 150ns
+  
+Step 2：算 TDCO
+  - TDCO = TDCV - 期望 SSP offset
+  - 期望 SSP = 80% × 500ns = 400ns
+  - 1 tq = 25ns
+  - TDCO = (400 - 150) / 25 = 10 tq
+  - 实际：调试发现 25 tq 才稳定
+  
+Step 3：手动设
+  - TDCEN = 1
+  - TDCO = 25（不是 10）
+  - 测试：1000 包 PER = 0
+```
+
+### 修复
+
+```c
+// NXP S32K TDC 配置
+void canfd_tdc_config(void) {
+    CAN_FDCAN_TDC_Type tdc = {0};
+    
+    tdc.TDCEN = 1;  // enable TDC
+    tdc.TDCO = 25;  // 实测值（不是算的）
+    tdc.TDCV = 0;   // 自动测量
+    
+    // 启用 TDC 必须 fd on
+    if (!canfd_fd_on) {
+        while(1);  // 必须先 enable FD
+    }
+    
+    CAN_FDCAN_SetTDC(can_fd, &tdc);
+    
+    // 验证
+    uint32_t err_count = 0;
+    for (int i = 0; i < 1000; i++) {
+        if (CAN_FDCAN_GetError() != 0) err_count++;
+    }
+    return err_count;  // 期望 0
+}
+```
+
+### 4 陷阱（重点）
+
+```text
+1. 单测思维
+   - 用台架数据装车
+   - 必须装车后校准
+
+2. 忽略 Loop Delay
+   - 收发器延迟 + 线束延迟
+   - 不能省略
+
+3. TDCO 拍脑袋
+   - 算的值（10）≠ 实测值（25）
+   - 必须示波器实测
+
+4. SSP 落下一位
+   - 偏差容忍只有 ±0.1 tq
+   - 错一位就报错
+```
+
+### 复盘
+
+- NXP S32K + TJA1145 组合 TDC 是硬性
+- **TDCO 必须实测，不是算**（10 vs 25）
+- 1000 包 PER = 0 是验证标准
+- 4 陷阱 = 4 步装车前 checklist
+- 调试经验：算 10 不对，试 15 / 20 / 25 才稳定
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 2
+- CSDN 汽车电子 10+ 年工程师
+- NXP S32K Reference Manual
+
+---
+
+## 案例 8：Daimler Buses 铰接巴士 CAN XL 14.5Mbps 真实车装（99% bus load 仍稳定）
+
+### 现象
+
+2022 年夏，Daimler + Bosch + NXP + R&S + Vector 联合演示：
+
+- 真实载客场景：铰接巴士（60+ 米拓扑）
+- CAN FD 全面升级为 CAN XL
+- 演示关键数据：
+  - 仲裁段 500 kbps（兼容 CAN 2.0 / CAN FD）
+  - 数据段 14.5 Mbps（CAN XL）
+  - 60+ 米总线长度
+  - **总线负载 99% 仍稳定通信**
+
+### 关键参数
+
+```text
+CAN XL vs CAN FD：
+  - CAN FD：仲裁 1 Mbps / 数据 5 Mbps / 64B 帧
+  - CAN XL：仲裁 500 kbps / 数据 14.5 Mbps / 2048B 帧
+  
+兼容矩阵：
+  - CAN XL 节点 ↔ CAN XL 节点：14.5 Mbps（最优）
+  - CAN XL 节点 ↔ CAN FD 节点：桥接 1:1 映射 DLC
+  - CAN XL 节点 ↔ CAN 2.0 节点：8B 帧 fallback
+
+拓扑：
+  - 60+ 米（铰接巴士两段连接）
+  - 经典 CAN FD 物理层（差分线 120Ω 终端）
+  - 不需要重新布线
+```
+
+### 桥接设计
+
+```c
+// CAN FD <-> CAN XL 桥接（Node 服务）
+typedef struct {
+    uint8_t fd_to_xl[8][8];    // 8B CAN FD 帧 → 8B CAN XL 帧
+    uint8_t xl_to_fd[8][8];    // 8B CAN XL 帧 → 8B CAN FD 帧
+} can_bridge_t;
+
+void can_bridge_fd_to_xl(can_frame_t *fd, can_xl_frame_t *xl) {
+    // DLC 1:1 映射
+    xl->dlc = fd->dlc;
+    xl->id = fd->id;  // ID 兼容
+    memcpy(xl->data, fd->data, fd->len);
+    xl->crc = can_xl_crc_compute(xl);
+}
+
+void can_bridge_xl_to_fd(can_xl_frame_t *xl, can_frame_t *fd) {
+    if (xl->len > 8) {
+        // CAN FD 8B 限制，超长帧丢弃
+        return;
+    }
+    fd->dlc = xl->dlc;
+    fd->id = xl->id;
+    memcpy(fd->data, xl->data, xl->len);
+}
+```
+
+### 实战数据
+
+```text
+Daimler 演示数据（2022 夏）：
+  - 总线负载：99%
+  - 通信稳定性：< 1 错误/小时
+  - 拓扑长度：60+ 米
+  - 节点数：30+ ECU
+  
+关键发现：
+  - 99% bus load 仍能通信
+  - 数据段延迟 < 1ms
+  - 桥接透明（CAN FD 节点无感）
+  
+对比 CAN FD：
+  - CAN FD @ 5 Mbps / 60 米 / 99% load = 大量错误
+  - CAN XL @ 14.5 Mbps / 60 米 / 99% load = 稳定
+  - 提升 3-5x 容量
+```
+
+### 商用里程碑
+
+```text
+时间线：
+  - 2018：CAN XL 概念发布
+  - 2020：NXP / Bosch / Vector 出原型
+  - 2022：Daimler 巴士真实演示（首次车装）
+  - 2024：Bosch / Continental 出商用 ECU
+  - 2026：开始大规模量产
+
+中国市场：
+  - 2025：国内主机厂开始测试
+  - 2026：长城 / 比亚迪部分车型小规模
+  - 2027+：预计大规模
+```
+
+### 复盘
+
+- **CAN XL 是 CAN FD 的 3-5x 容量升级**——保持物理层兼容
+- **Daimler 巴士是 CAN XL 首个真实车装**——里程碑
+- 桥接 DLC 1:1 映射 = 兼容老节点
+- 99% bus load 仍稳定 = 容量远高于实际需要
+- 国内厂商 2026-2027 量产 = 替代时间窗口
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 4
+- CiA + Daimler Truck 联合报道
+- Bosch 商用 ECU 文档
+
+---
+
+## 案例 9：CAN FD 长距离 50m 非屏蔽线采样点 70%→90% 调参实战
+
+### 现象
+
+重卡 BMS 项目，40m / 50m 非屏蔽双绞线：
+
+- 40m @ 1Mbps：误码率 10⁻³，频繁 Bus-Off
+- 50m @ 2Mbps：采样点 70%→85% 误码率 10⁻⁵→10⁻⁷
+- 调 90% 采样点：反而恶化
+- 终端电阻折腾 2 周
+
+### 抓包 / 根因
+
+```text
+40m / 8 Mbps 极限：
+  - 位时间 = 125ns
+  - 50m 延迟 = 400ns
+  - 400ns >> 125ns = 多 bit 反射叠加
+  - 信号失真严重
+  - 必须降速
+
+50m / 2 Mbps 误码 10⁻⁵→10⁻⁷（70%→85% 采样点）：
+  - 70% 采样点：太早采样
+  - 85% 采样点：临界（已能用但有噪声）
+  - 90% 采样点：太晚，错过 bit
+  - 反射波叠加导致最佳点不固定
+  - 必须用屏蔽双绞线
+```
+
+### 实战参数
+
+```text
+长距离 CAN FD 速查：
+
+| 线缆 | 速率 | 推荐采样点 | 备注 |
+| --- | --- | --- | --- |
+| 10m | 5 Mbps | 75-80% | 屏蔽双绞线 |
+| 20m | 2 Mbps | 75-80% | 屏蔽双绞线 |
+| 40m | 1 Mbps | 80% | 屏蔽双绞线 |
+| 50m | 500 kbps | 80% | 屏蔽双绞线 |
+| 50m+ | 250 kbps | 80% | 必须 CAN XL |
+
+非屏蔽双绞线：
+  - 距离 < 20m
+  - 速率 < 1 Mbps
+  - 否则误码爆
+```
+
+### 关键工程认知
+
+```text
+1. 位时间 vs 距离
+   - 125ns 位时间 @ 8 Mbps
+   - 50m 延迟 400ns = 3.2 bit
+   - 不能跑 8 Mbps
+
+2. 采样点 vs 反射波
+   - 长线缆反射波叠加
+   - 70% 太早
+   - 85% 临界
+   - 90% 太晚
+   - 没有固定最佳点
+
+3. 屏蔽双绞线 = 关键
+   - 50m 不用屏蔽 = 误码爆
+   - 用屏蔽 = 1-2 个数量级改善
+```
+
+### 修复
+
+```text
+1. 降速
+   - 50m 非屏蔽：2 Mbps → 1 Mbps
+   - 50m 屏蔽：1 Mbps → 2 Mbps
+
+2. 用屏蔽双绞线
+   - 替代非屏蔽
+   - 改善 1-2 数量级
+
+3. 换 CAN XL
+   - 距离 > 50m 必选 CAN XL
+   - 工业实践
+
+4. 终端电阻调试
+   - 100Ω ± 5%
+   - 测 60-70Ω
+   - 2 周排查
+```
+
+### 4 实战点
+
+```text
+① 40m / 8Mbps 位时间 125ns vs 50m 延迟 400ns
+② 采样点 vs 反射波
+③ CAN XL 对线缆更严（更高频率）
+④ 终端电阻 2 周折腾
+```
+
+### 复盘
+
+- **长距离 = 降速 + 屏蔽双绞线 + 采样点实验**
+- 50m 非屏蔽 @ 2Mbps = 误码 10⁻⁵→10⁻⁷
+- 50m 屏蔽 @ 1Mbps = 可用
+- 50m+ 必须 CAN XL
+- 采样点 70-90% 没有固定最佳 = 反射波叠加
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 1
+- CSDN 重卡 BMS 实战
+
+---
+
+## 案例 10：CAN 调试实战干货指南——4 层定位（80% 物理层 + STM32 源码）
+
+### 现象
+
+某量产 CAN 节点，1000+ 设备出货后故障率 5%：
+
+- 故障现象：偶发丢帧 / 节点失联 / Bus-Off
+- 看 log 找不到规律
+- 调试 1 周无果
+
+### 抓包 / 4 层定位（80/15/4/1 比例）
+
+```text
+4 层定位（80% / 15% / 4% / 1%）：
+
+1. 物理层（80%）
+   - 终端电阻：万用表量 55-65Ω
+   - 屏蔽 / 接地
+   - 线缆长度 / 反射
+   - 收发器 VCC 稳定性
+
+2. 链路层（15%）
+   - 波特率一致
+   - 采样点一致
+   - BRS（FD）
+   - CAN FD 与 CAN 2.0 混用
+
+3. 协议层（4%）
+   - TEC / REC
+   - 三态：96 / 128 / 256
+   - 自愈逻辑
+
+4. 业务层（1%）
+   - 应用层
+   - 业务数据错误
+```
+
+### TEC/REC 三态详解
+
+```text
+TEC = Transmit Error Counter
+REC = Receive Error Counter
+
+状态机：
+  Error Active：
+    - TEC < 128 且 REC < 128
+    - 主动错误帧（6 bit dominant）
+    - 正常状态
+
+  Error Passive：
+    - 128 ≤ TEC < 256 或 128 ≤ REC < 256
+    - 被动错误帧（6 bit recessive）
+    - 限制发送（仅 7 bit recessive 之后）
+    - 接近故障
+
+  Bus Off：
+    - TEC ≥ 256
+    - 节点脱离总线
+    - 自愈逻辑启动
+    - Reset → Wait 2.8ms × 128 → Recovery
+```
+
+### Reset + Stop + Start 自愈
+
+```text
+// STM32 CAN 错误处理
+void CAN_Error_Process(void) {
+    if (hcan1.ErrorCode & HAL_CAN_ERROR_BOF) {
+        // Bus Off
+        HAL_CAN_Stop(&hcan1);
+        HAL_Delay(10);  // 等待 2.8ms × 128
+        HAL_CAN_Start(&hcan1);
+    }
+    
+    if (hcan1.ErrorCode & HAL_CAN_ERROR_EPV) {
+        // Error Passive
+        log_warning("Error Passive state");
+    }
+    
+    if (hcan1.ErrorCode & HAL_CAN_ERROR_CRC) {
+        // CRC 错误
+        log_warning("CRC error");
+    }
+}
+```
+
+### CANoe 三套参数
+
+```text
+1. Bit Timing Detection
+   - 节点波特率
+   - 节点采样点（隐藏不一致）
+   - 例：所有节点标 1 Mbps，但实际 75% vs 90% 采样点
+
+2. Stress Test
+   - 高负载 100% 测试
+   - 错误注入
+
+3. Network Analysis
+   - 拓扑图
+   - 节点响应时间
+   - 错误分布
+```
+
+### CAN FD 与 CAN 2.0 混用降级
+
+```text
+混用场景：
+  - 旧节点 CAN 2.0
+  - 新节点 CAN FD（BRS）
+  - 仲裁段兼容
+  - 数据段降级到 CAN 2.0
+
+降级后果：
+  - 实际带宽 = CAN 2.0 带宽
+  - 浪费 FD 性能
+  - 必须强制配置
+```
+
+### 修复
+
+```text
+1. 80% 物理层排查
+   - 万用表量终端电阻
+   - 示波器看波形
+   - 查屏蔽 / 接地
+
+2. 15% 链路层
+   - CANoe Bit Timing Detection
+   - 强制统一采样点
+   - 强制 FD 启用
+
+3. 4% 协议层
+   - TEC/REC 监控
+   - 自愈逻辑
+
+4. 1% 业务层
+   - 应用层 CRC
+   - 业务数据校验
+```
+
+### 复盘
+
+- **80/15/4/1 = CAN 故障分布**——物理层 80%
+- 物理层：万用表 + 示波器 = 唯一手段
+- 协议层：TEC/REC 三态 + 自愈
+- CANoe Bit Timing Detection = 隐藏不一致杀手
+- STM32 HAL CAN Error Code = 标准 API
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 2
+- 尧图网络 量产工程师
+- STM32F4 Reference Manual §43.7
+- Bosch CAN Specification 2.0
+
+---
+
+## 案例 11：TEC 256 Bus-Off + VCC 1.5V 跌落——CAN 状态机 + 电源完整性配对
+
+### 现象
+
+某车载网关装车后：
+
+- 每 2-3h 某 ECU 间歇失联
+- ECU 发全 0x00 后 TEC 飙 256
+- 进入 Bus-Off
+- 软件 / 拓扑均正常
+- 排查 1 个月无果
+
+### 抓包 / 根因
+
+```text
+1. 短时监测（看 1h）
+   - 看不出来
+   - 故障偶发
+
+2. 长时监测（看 24h+）
+   - 抓到规律：每 2-3h
+   - 与空调吸合时序一致
+   - 空调吸合 → 电源瞬态变化
+
+3. 示波器量 SN65HVD230 VCC
+   - 空调吸合时：VCC 跌落数十 ms × 1.5V
+   - 标称 5V → 跌到 3.5V
+   - 收发器 VCC 不稳 → 发送失败
+   - TEC 累加 → 256 → Bus-Off
+
+4. 软件 + 拓扑都正确
+   - 不是协议问题
+   - 不是布线问题
+   - 是电源完整性问题
+```
+
+### 修复
+
+```text
+1. VCC 加 100µF 低 ESR 钽电容
+   - 紧挨 VCC 引脚
+   - 短走线 < 5mm
+   - 吸收瞬态
+
+2. 优化电源走线
+   - 加宽走线
+   - 减小电感
+   - 多路去耦
+
+3. 收发器选型
+   - 改用宽 VCC 范围收发器
+   - 4.5V - 5.5V 容差
+   - 抗瞬态
+
+4. 协议层自愈
+   - Bus-Off 自动 Recovery
+   - 2.8ms × 128 后重试
+   - 上报业务层
+```
+
+### TEC/REC 监控
+
+```c
+// 长时监测代码
+void can_error_monitor(void) {
+    static uint32_t last_tec = 0, last_rec = 0;
+    
+    uint32_t tec = CAN->TSR >> 16 & 0xFF;  // 读 TEC
+    uint32_t rec = CAN->ESR >> 16 & 0xFF;  // 读 REC
+    
+    if (tec != last_tec) {
+        log_info("TEC: %d -> %d", last_tec, tec);
+        last_tec = tec;
+    }
+    
+    if (rec != last_rec) {
+        log_info("REC: %d -> %d", last_rec, rec);
+        last_rec = rec;
+    }
+    
+    // REC 缓升 = 接收 EMC（外部干扰）
+    if (rec > 64 && rec < 128) {
+        log_warning("REC climbing: %d (EMC?)", rec);
+    }
+    
+    // TEC 急升 = 发送硬件（自身问题）
+    if (tec > 64) {
+        log_error("TEC rising: %d (check TX)", tec);
+    }
+}
+```
+
+### 关键工程认知
+
+```text
+1. REC 缓升 = 接收 EMC（外部干扰）
+2. TEC 急升 = 发送硬件（自身问题）
+3. Bus Off 冷静期 = 2.8ms × 128 = 358ms
+4. VCC 跌落 1.5V × 数十 ms = 收发器失效
+5. 长时监测 = 必做（短时看不出来）
+```
+
+### 修复代码
+
+```c
+// VCC 跌落检测 + 自愈
+void vcc_brownout_handler(void) {
+    uint32_t vcc_mv = adc_read_vcc_mv();  // ADC 读 VCC
+    
+    if (vcc_mv < 4500) {  // 4.5V 阈值
+        log_warning("VCC low: %d mV", vcc_mv);
+        // 关闭 CAN 收发器
+        CAN_DeInit();
+        // 等待 VCC 恢复
+        while (adc_read_vcc_mv() < 4500) {
+            HAL_Delay(10);
+        }
+        log_info("VCC recovered: %d mV", adc_read_vcc_mv());
+        // 重新初始化
+        CAN_Init();
+    }
+}
+```
+
+### 复盘
+
+- **TEC/REC 反映故障根因**：REC 缓升 = EMC / TEC 急升 = TX
+- VCC 跌落 = 收发器失效 = TEC 急升
+- 100µF 低 ESR 钽电容 = 电源完整性标配
+- 长时监测 = 抓瞬态故障唯一手段
+- 2.8ms × 128 = Bus-Off 冷静期
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 4
+- CSDN 车载网关
+- SN65HVD230 datasheet §7.3
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

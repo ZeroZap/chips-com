@@ -44,4 +44,4 @@ CAN 需要 CAN 收发器连接 `CANH/CANL`。
 - `basic/can-phy.md`
 - `bus/can-canopen-practical.md`
 - `bus/can-canopen-deep-dive.md`
-- `bus/can-fd-failure-cases.md`（CAN FD / CAN XL 产线实战案例：位定时 / 采样点 / BRS / TDC / CRC-17）
+- `bus/can-fd-failure-cases.md`（CAN FD / CAN XL 产线实战案例：位定时 / 采样点 / BRS / TDC / CRC-17；2026 增 6 案例：装车 TDC / S32K SSP / Daimler 铰接巴士 / 50m 长距离 / 4 层定位 / VCC 跌落）
