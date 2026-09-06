@@ -3238,6 +3238,625 @@ CR2032（220 mAh）：
 
 ---
 
+## 案例 37：Zephyr + nRF52840 自制板 SCA 时钟精度 ±500ppm 掉链
+
+### 现象
+
+Laird BL654（nRF52840 SOM）+ Zephyr RTOS：
+
+- 开发板（带 32.768 kHz 晶振）：BLE 连接稳定
+- 自制板（**未贴 32.768 kHz 晶振**）：连接反复掉
+- BOM 差异：晶振
+
+### 抓包 / 根因
+
+```text
+Zephyr 默认 SCA（Sleep Clock Accuracy）：
+  - 50 ppm（要求 32.768 kHz 晶振精度）
+  - nRF52840 内部 RC：±500 ppm
+  - 自制板未贴 32.768 kHz → 默认走 RC
+  - SCA 实际 500 ppm vs 默认 50 ppm → 链路层连接参数违规
+  - 中央端检测到 SCA 超标 → 拒绝连接或频繁掉链
+
+nRF52840 SCA 7 档：
+  - 0 = 250 ppm
+  - 1 = 150 ppm
+  - 2 = 100 ppm
+  - 3 = 75 ppm
+  - 4 = 50 ppm（默认，32.768 kHz 晶振）
+  - 5 = 30 ppm
+  - 6 = 20 ppm
+```
+
+### 修复
+
+```c
+// Zephyr 改 SCA 精度
+// prj.conf
+CONFIG_CLOCK_CONTROL_NRF_K32SRC_RC=y
+CONFIG_CLOCK_CONTROL_NRF_K32SRC_ACCURACY=0  // 250 ppm（用 RC）
+
+// 如果用晶振：
+CONFIG_CLOCK_CONTROL_NRF_K32SRC_XTAL=y
+CONFIG_CLOCK_CONTROL_NRF_K32SRC_ACCURACY=4  // 50 ppm
+```
+
+### 复盘
+
+- **"开发板没事/自制板频繁掉" = 99% BOM/晶振/天线差异**
+- 32.768 kHz 晶振 → 直接进 BLE SCA
+- Zephyr `CLOCK_CONTROL_NRF_K32SRC_ACCURACY` 7 档 = 0-6
+- ppm 越大连接越容易掉
+- 自制板必检 BOM 完整性（晶振/天线/匹配）
+
+### 来源
+
+- _Inbox/BLE-2026-09-04-candidates.md 候选 1
+- MAB Labs 实战
+
+---
+
+## 案例 38：ESP32 Bluedroid vs NimBLE 内存对比 + 错误码表实战
+
+### 现象
+
+某 ESP32 BLE 项目，BLE 服务偶发崩：
+
+- 错误：`ESP_ERR_NO_MEM` / `Guru Meditation`
+- 内存吃紧（220KB 板子）
+- 选 Bluedroid 还是 NimBLE？
+
+### 内存对比
+
+```text
+ESP32 BLE 协议栈选择：
+  - Bluedroid（默认）：110-140 KB SRAM
+  - NimBLE：30 KB SRAM
+  - 节省：80-110 KB
+
+选择决策：
+  - BLE-only 项目：选 NimBLE（30 KB）
+  - 蓝牙经典 + BLE：必须 Bluedroid（110 KB+）
+  - 220 KB 板子：NimBLE 可行
+  - 100 KB 板子：必须 NimBLE
+```
+
+### 错误码表（实战）
+
+```text
+ESP32 BLE 错误码表：
+  0x103  ESP_ERR_NO_MEM
+        - GATT 队列满
+        - notify buffer 满
+        - 多 service 同时操作
+        
+  0x106  ESP_ERR_INVALID_STATE
+        - profile 未注册就调用
+        - service 注册顺序错
+        - 回调未注册
+        
+  0x3008 GATT_INSUF_RESOURCE
+        - MTU 协商失败
+        - characteristic 超过 20 字节
+        - 多个 notify 同时发
+        
+  0x2002 LINK_LAYER_NO_MEM
+        - LL 队列满
+        - 多连接 + 大数据
+        
+  0x2003 LL_HCI_BUF_ALLOC
+        - HCI 缓冲区分配失败
+        - 短时间多个 connectGatt
+```
+
+### 修复（4 件套）
+
+```text
+1. 释放经典蓝牙内存
+   esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
+   // 节省 30 KB
+   // 必须 esp_bt_controller_init() 之后调用
+
+2. 选 NimBLE
+   // menuconfig → Component config → Bluetooth → NimBLE
+   CONFIG_BT_BLUEDROID_ENABLED=n
+   CONFIG_BT_NIMBLE_ENABLED=y
+
+3. 实现 onMtuChanged 回调
+   void mtu_changed(...) {
+       uint16_t mtu = p_mtu->mtu;
+       // 通知应用层更新 buffer
+   }
+   // 不实现 = Guru Meditation 风险
+
+4. 限制 notify 频率
+   - 每个 characteristic < 10 notify/s
+   - 多个 characteristic 总和 < 50 notify/s
+   - 超限 → ESP_ERR_NO_MEM
+```
+
+### 实战代码
+
+```c
+// ESP32 BLE 初始化（推荐 NimBLE 模板）
+void ble_init(void) {
+    esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
+    
+    esp_nimble_hci_init();
+    nimble_port_init();
+    
+    // 注册 GATT 回调
+    ble_svc_gap_init();
+    ble_svc_gatt_init();
+    
+    // 启动
+    nimble_port_freertos_init(ble_host_task);
+}
+
+void ble_host_task(void *param) {
+    nimble_port_run();
+    // 不会返回
+}
+```
+
+### 复盘
+
+- **Bluedroid 110KB vs NimBLE 30KB** = L4 ESP32 BLE 必收表
+- ESP32 BLE 错误码表 = 实战必备
+- 释放经典蓝牙 = 节省 30KB
+- 选 NimBLE = BLE-only 项目标准
+- onMtuChanged 必须实现
+- notify 频率限制 = Guru Meditation 预防
+
+### 来源
+
+- _Inbox/BLE-2026-09-04-candidates.md 候选 2
+- electricalflux.com 实战
+- ESP-IDF 文档 §9.3
+
+---
+
+## 案例 39：工业 BLE 4 维排查 + USB Selective Suspend 隐性断电
+
+### 现象
+
+工业平板（Windows 主机）+ BLE 外设：
+
+- 现场偶发"找不到设备"
+- 重启主机后能连接
+- log 没规律
+
+### 4 维排查
+
+```text
+维度 1：射频物理层
+  - VSWR（天线匹配）
+  - AFH 信道表
+  - LOS（视距）
+  - 工业外壳金属屏蔽
+
+维度 2：协议栈参数
+  - 广播间隔 vs 扫描窗口
+  - 连接参数协商
+  - 安全/白名单
+  - MTU 协商
+
+维度 3：电源管理
+  - 瞬时电流跌落
+  - USB Selective Suspend  ← 关键！
+  - 接地环路
+  - 电池电量
+
+维度 4：固件逻辑
+  - 业务状态机挂起协议栈
+  - SPP-over-BLE MTU 协商
+  - GATT callback 阻塞
+```
+
+### USB Selective Suspend（隐性断电）
+
+```text
+Windows 默认行为：
+  - USB 设备 3-5 分钟无数据
+  - 自动进入 Selective Suspend
+  - 关闭 USB 供电
+  - 蓝牙适配器失电
+
+现象：
+  - 蓝牙"消失"
+  - 设备管理器可见但失联
+  - 重新插拔恢复
+
+修复（4 选 1）：
+  1. 设备管理器 → USB 根集线器 → 属性 → 电源管理
+     取消"允许计算机关闭此设备以节省电源"
+  2. powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2b0ba72180a 0
+  3. 禁用 USB Selective Suspend（控制面板）
+  4. 程序主动 keepalive（每分钟一次 IOCTL）
+```
+
+### "外设极长广播间隔 + 主机短扫描窗口"
+
+```text
+经典"设备找不到"组合：
+  - 外设广播：1000ms（省电）
+  - 主机扫描窗口：100ms
+  - 重叠概率 = 10%
+  - 90% 找不到
+
+修复：
+  - 调整广播间隔（兼容主机扫描窗口）
+  - 或增加扫描窗口（兼容外设广播）
+  - 主动扫描 + 报告
+```
+
+### HCI 日志诊断
+
+```text
+HCI 日志关键 pattern：
+  - "Send HCI Command Failed" → 驱动层 buffer 溢出
+  - "Event Queue Full" → HCI 上行队列满
+  - "Command Disallowed" → 状态机错
+  - "Connection Complete - TIMEOUT" → 链路层超时
+
+HCI 比应用 log 准 10 倍。
+```
+
+### 复盘
+
+- **4 维排查 SOP** = 工业 BLE 必走
+- **USB Selective Suspend** = 工业 OS 隐藏地雷
+- 主机端必须先关"省电"
+- HCI 日志 = 工业 BLE 诊断金标准
+- 广播间隔 vs 扫描窗口 = 必须匹配
+
+### 来源
+
+- _Inbox/BLE-2026-09-04-candidates.md 候选 3
+- gutab.cn 工业平板厂商
+
+---
+
+## 案例 40：4 款 BLE 模块 Wi-Fi 干扰下 30ms 实时性实战对比
+
+### 现象
+
+某工业实时控制系统：
+
+- 需求：100 B / 100 ms 控制环 ≤ 30 ms 延迟
+- 4 款 Nordic 系 BLE 模块横向对比
+- 干净 RF：都过
+- Wi-Fi 干扰：标准 BLE 全崩
+
+### 4 款模块对比
+
+```text
+DEWINE Labs 实测（30 ms 实时约束）：
+
+| 模块 | 干净 RF | Wi-Fi 干扰 | 设计原则 |
+| --- | --- | --- | --- |
+| nRF52840 HCI (标准) | ✅ 通过 | ❌ 超 30ms | 标准协议栈 |
+| BL654 (Laird) | ✅ 通过 | ❌ 超 30ms | 标准协议栈 |
+| Proteus-III (Panasonic) | ✅ 通过 | ❌ 超 30ms | 标准协议栈 |
+| NINA-B112 (u-blox) | ✅ 通过 | ❌ 超 30ms | 标准协议栈 |
+| LinkBlu RT | ✅ 通过 | ✅ 通过 | 双通道隔离 + 自适应干扰处理 |
+
+关键：标准 BLE 在 2.4 GHz 干扰下全超 30ms
+      实时性 ≠ 吞吐量（吞吐能过但实时性不过）
+```
+
+### 根因
+
+```text
+工业 BLE 实时性崩盘根因：
+  1. 固件 best-effort 调度
+     - 默认 RTOS 调度（优先级 + 时间片）
+     - RF 拥塞 → MAC 重传 → 占 CPU 时间
+     - 关键 GATT 操作被延迟
+     
+  2. 控制 / 日志共享队列
+     - 控制指令和日志混用同一队列
+     - 日志拥塞时控制延迟
+     
+  3. late packet = invalid packet
+     - 实时系统 = 过期包无价值
+     - BLE 重传让包过期
+     - 没用 = 丢
+```
+
+### LinkBlu RT 设计原则
+
+```text
+1. bounded latency
+   - 硬性 30ms 延迟上限
+   - 不允许超时
+   - 软实时转硬实时
+
+2. dual-channel isolation
+   - 双通道隔离
+   - 控制 / 数据分离
+   - 不互相影响
+
+3. adaptive interference handling
+   - 实时监测 2.4 GHz 干扰
+   - 动态调整 PHY
+   - 避开拥堵频段
+```
+
+### 复盘
+
+- **实时性 ≠ 吞吐量**——工业 BLE 真实门槛
+- 4 款标准 BLE 全在干扰下超 30ms
+- LinkBlu RT = 双通道隔离 + 自适应 = 唯一解
+- best-effort 调度是工业 BLE 死结
+- late packet = invalid packet（实时铁律）
+- "吞吐量能过 / 实时性不过" = 工业实战
+
+### 来源
+
+- _Inbox/BLE-2026-09-04-candidates.md 候选 4
+- _Inbox/BLE-2026-09-05-candidates.md 候选 1
+- DEWINE Labs 行业 blog
+
+---
+
+## 案例 41：CC254x BLE 4.0 OSAL 调度死锁复盘（8KB RAM + 7.5ms 连接）
+
+### 现象
+
+CC254x（TI BLE 4.0）项目：
+
+- 8 KB RAM
+- 7.5 ms 连接间隔
+- 死锁频繁：单线程 OSAL 遇死亡临界点
+- 现象：连接后几秒断链
+
+### 抓包 / 根因
+
+```text
+CC254x OSAL（Operating System Abstraction Layer）：
+  - 单线程循环
+  - LL 层硬实时 ISR 跑 radio
+  - 应用任务长跑 → 占满时间片
+  - LL 层 ISR 错过 → 链路层超时
+
+时序：
+  Step 1：LL 层 ISR 期待下个连接事件
+  Step 2：应用任务占用 CPU 5-10 ms
+  Step 3：LL 层 ISR 错过窗口
+  Step 4：LL Timeout 触发
+  Step 5：连接断开
+```
+
+### 调试方法（GPIO 翻转 + 逻辑分析仪）
+
+```c
+// OSAL 任务入口翻 GPIO
+void MyApp_ProcessEvent(void) {
+    GPIO_SET(P1_0);  // 任务开始
+    // 业务逻辑
+    MyApp_DoWork();
+    GPIO_CLEAR(P1_0);  // 任务结束
+}
+
+// OSAL 任务出口翻 GPIO
+void MyApp_ProcessEventEnd(void) {
+    GPIO_CLEAR(P1_0);
+}
+
+// LL 层 ISR 入口翻 GPIO
+void LL_ProcessEvent(void) {
+    GPIO_SET(P1_1);  // LL 开始
+    // LL 处理
+    GPIO_CLEAR(P1_1);  // LL 结束
+}
+```
+
+逻辑分析仪观测：
+- P1_0（应用）：占空比 80-90%
+- P1_1（LL）：被错过
+- 7.5ms 是高负载分水岭
+
+### 修复（反直觉 4 步）
+
+```text
+1. 禁用自动连接参数更新
+   - 7.5ms 间隔保持不变
+   - 不要让 central 改
+   - 否则触发更多 ISR 冲突
+
+2. 业务移出 OSAL 循环
+   - 移到定时器 / DMA 中断
+   - OSAL 只做轻量逻辑
+   - 长任务异步化
+
+3. 绕过 GATT 直透传 LL 层
+   - 不走 GATT 协议栈
+   - 直接 LL 层 data PDU
+   - 节省 30-40% CPU
+
+4. 加 LL_TIMEOUT 延长
+   - 默认 6s
+   - 改 10s
+   - 给应用更多处理时间
+```
+
+### 复盘
+
+- **CC254x 8KB RAM = 资源极端受限**
+- OSAL 单线程 = LL ISR 必错过
+- 7.5ms 是高负载分水岭
+- 主动放弃部分标准换稳定
+- 业务移出 OSAL 循环 = 关键
+- GPIO 翻转 + 逻辑分析仪 = 必做调试手段
+
+### 来源
+
+- _Inbox/BLE-2026-09-05-candidates.md 候选 2
+- TrueSight 实战
+- TI OSAL Guide
+
+---
+
+## 案例 42：T20i 产线 A2 线 19.2% 蓝牙不良（KT6368A DMA + 2.4V 倒灌）
+
+### 现象
+
+T20i 产线新开 A2 线蓝牙不良率 19.2%（行业 < 1%）：
+
+- 待机电流：20 mA（正常 3 mA）
+- 看门狗 4s 不复位 = 深度死锁
+- 现场工位 QC 6s 通过，但实际使用 15s 后才崩
+
+### 抓包 / 根因（3 因子）
+
+```text
+因子 1：KT6368A DMA 异常
+  - 蓝牙模组内部 DMA 控制器异常
+  - 触发深度死锁
+  - 看门狗不复位
+  - 修：换料件 + 严格来料检验
+
+因子 2：电压 2.4V
+  - 模组供电不稳（< 2.7V 标称）
+  - 内部逻辑错乱
+  - 修：电源纹波 + 稳压
+
+因子 3：TX/RX 倒灌
+  - 上电时序错乱
+  - 倒灌电流破坏其他模块
+  - 修：串 100Ω 隔离电阻
+```
+
+### 3 因子实战
+
+```text
+1. 串 100Ω 隔离电阻
+   - 在 TX/RX 各串 100Ω
+   - 防止倒灌
+   - 限制瞬态电流
+
+2. 改料件检验
+   - KT6368A 严格来料检验
+   - 烧录后跑老化测试
+   - 烧录异常率 > 1% 拒收
+
+3. 测试延至 20s
+   - 工位 QC 从 6s 延长到 20s
+   - 触发深度死锁需要时间
+   - 20s = 95% 缺陷被暴露
+```
+
+### 复盘
+
+- **A2 线不良 19.2%** = 行业 19 倍（产线异常）
+- 3 因子叠加：DMA + 电压 + 倒灌
+- **QC 6s vs 触发 15s = 测试盲区**——20s 延长时间
+- 倒灌电流破坏上电时序
+- 热风枪复现 = 微裂纹（隐性缺陷）
+- 100Ω 隔离 = 工业标准做法
+
+### 来源
+
+- _Inbox/BLE-2026-09-05-candidates.md 候选 3
+- 人人文库 专项攻关 PPT
+- KT6368A datasheet
+
+---
+
+## 案例 43：仓库 RTL8852BU 0xfcf0 -16 静默失败——单芯片故障放大 $47k
+
+### 现象
+
+某仓库 WMS（仓库管理系统）使用 Linux Fedora 44 + RTL8852BU combo Wi-Fi/BT 芯片：
+
+- 错误：`Opcode 0xfcf0 failed: -16` (=EBUSY)
+- 蓝牙子系统启动 22s 后自终止
+- systemd 停服务
+- WMS 全线瘫 48h
+- 损失 $47k（仓库 throughput 损失）
+
+### 抓包 / 根因
+
+```text
+dmesg 日志 pattern：
+  - bluetoothd 启动 → 22s 后自终止
+  - systemd 停服务
+  - WMS 客户端全部断连
+
+根因（3 个并发）：
+  1. RTL8852BU firmware 初始化失败
+     - 芯片 firmware 加载失败
+     - 蓝牙子系统 init 异常
+  2. Wi-Fi / BT 共存资源争抢
+     - combo 芯片共享 2.4 GHz RF
+     - 一方初始化失败影响另一方
+  3. 24h 周期（猜测：内部定时器 / 证书续期）
+     - 与 Azure IoT Edge LNS 静默卡死同模式
+     - 需要长时监测
+```
+
+### 修复（3 步）
+
+```text
+1. dmesg 抓 pattern
+   - 不看单行错误
+   - 看 24h 日志 pattern
+   - "bluetoothd 启动 → 22s 后自终止" 才是根因
+
+2. 隔离 Wi-Fi / BT
+   - 用 2 个独立芯片
+   - 不要 combo
+   - 单点故障放大 = 高风险
+
+3. 备用路径
+   - 仓库多 gateway
+   - 蓝牙断了用 Wi-Fi 兜底
+   - 不能 100% 依赖单芯片
+```
+
+### 关键认知
+
+```text
+- combo 芯片单点故障放大 = 工业设计禁忌
+- dmesg pattern 比单行错误码更值钱
+- 仓库 throughput ≠ WMS bug
+- 24h 周期故障 = 必长时监测
+- $47k / 48h = 单芯片故障放大代价
+```
+
+### 实战排查
+
+```bash
+# 1. 看 dmesg 24h 日志
+sudo journalctl -k --since "24 hours ago" | grep -E "bluetooth|rtl|firmware"
+
+# 2. 看蓝牙子系统状态
+sudo systemctl status bluetooth
+sudo btmgmt info
+
+# 3. 单独测试 BT（隔离 Wi-Fi）
+sudo modprobe -r rtw_8852bu
+sudo modprobe bluetooth
+sudo systemctl restart bluetooth
+```
+
+### 复盘
+
+- **combo 芯片单点故障放大** = 仓库 48h 瘫
+- dmesg pattern 比单行错误码值钱
+- 仓库 throughput ≠ WMS bug
+- combo = 1 个 chip 失败 = WiFi + BT 全瘫
+- 必须双芯片 + 备用路径
+- 24h 周期故障 = 长时监测
+
+### 来源
+
+- _Inbox/BLE-2026-09-05-candidates.md 候选 4
+- Dre Dyson 物流技术 blog（12 年 IoT 顾问）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

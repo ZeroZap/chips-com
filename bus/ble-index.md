@@ -118,6 +118,13 @@ chips-com/bus/ble-*.md
 | Ellisys PHY + Nordic Out-of-Order + NCP OTA 0x19 | ble-failure-cases.md 案例 34 |
 | BLE 5 大系统级错误 | ble-failure-cases.md 案例 35 |
 | 40 万台安全产品 BLE 重设计 | ble-failure-cases.md 案例 36 |
+| Zephyr 32.768kHz 晶振 ±500ppm SCA | ble-failure-cases.md 案例 37 |
+| ESP32 Bluedroid 110KB vs NimBLE 30KB | ble-failure-cases.md 案例 38 |
+| 工业 4 维排查 + USB Selective Suspend | ble-failure-cases.md 案例 39 |
+| 4 款 BLE 模块 Wi-Fi 干扰 30ms 对比 | ble-failure-cases.md 案例 40 |
+| CC254x 8KB RAM 7.5ms OSAL 死锁 | ble-failure-cases.md 案例 41 |
+| T20i A2 线 19.2% 不良 + KT6368A DMA | ble-failure-cases.md 案例 42 |
+| 仓库 RTL8852BU 0xfcf0 -16 $47k 损失 | ble-failure-cases.md 案例 43 |
 
 ## 关键概念地图
 
