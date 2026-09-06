@@ -111,6 +111,11 @@ chips-com/bus/lora-*.md
 | 农业 SF7 硬编码 6 周放弃 | lora-failure-cases.md 案例 22 |
 | World Bank 城市空气 4 多故障 | lora-failure-cases.md 案例 23 |
 | 私网 LoRa 300 节点 99.8% | lora-failure-cases.md 案例 24 |
+| LR1120+STM32L433 1/10 join 间歇失败 | lora-failure-cases.md 案例 25 |
+| Azure IoT Edge LNS 24h 静默卡死 | lora-failure-cases.md 案例 26 |
+| 商业部署 5 坑（ADR + 移动节点） | lora-failure-cases.md 案例 27 |
+| SX1278 果园 500 亩 120 节点 1 年稳 | lora-failure-cases.md 案例 28 |
+| LoRaWAN 到云端 + DevEUI 大小端 + FCnt | lora-failure-cases.md 案例 29 |
 
 ## 关键概念地图
 

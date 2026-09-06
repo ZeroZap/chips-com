@@ -2509,6 +2509,485 @@ Q5：成本敏感？
 
 ---
 
+## 案例 25：LR1120 + STM32L433 自研板入网 1/10 join 间歇失败
+
+### 现象
+
+STM32L433 + LR1120 PCBA 接私有 LoRaWAN NS：
+
+- join 10 次成功 1 次（10%）
+- 间歇失败
+- 换 NUCLEO + 跳线 → 故障复现到 LR1120 侧
+
+### 根因（Semtech 官方维护者 EddieCarrera 回复）
+
+```text
+US915 区域：
+  - 默认 8 信道
+  - 完整 64 信道
+  - 部分 GW 支持 +8 信道（72 总）
+
+节点跳频列表 vs GW 支持：
+  - 节点按 64+8 跳
+  - GW 旧版本只支持 64
+  - 节点跳到 +8 信道 → GW 不认 → join 失败
+
+HP/LP 走 BSP 层：
+  - High Power / Low Power 切换
+  - 走 `ral_lr11xx_bsp.c`
+  - 不是 AT 指令
+```
+
+### 修复
+
+```c
+// 1. 固定信道（不跳频）
+Radio.SetChannelMask(0x0000FF00);  // 仅 64 信道
+
+// 2. 或选 RA08H / SX1262 等支持 72 信道的 GW
+// 3. 或选支持 LR1120 HP/LP 切换的 BSP
+```
+
+### 复盘
+
+- **US915 64+8 信道 GW 兼容性** = 间歇失败根因
+- 节点跳频列表 vs GW 支持 = 关键检查
+- HP/LP 是 BSP 层不是 AT 指令
+- 90% 间歇失败 = 信道数错配（不是设备坏）
+- 选 GW 必须看完整信道支持
+
+### 来源
+
+- _Inbox/LoRa-2026-09-05-candidates.md 候选 1
+- Semtech 官方 GitHub SWL2001 issue 52
+- LR1120 datasheet §3.2
+
+---
+
+## 案例 26：Azure IoT Edge LNS ENABLE_GATEWAY 缺失致 24h 静默卡死
+
+### 现象
+
+Azure IoT Edge LoRaWAN Starter Kit 生产部署：
+
+- 所有设备 ±24h 断连
+- LNS 端看起来正常
+- 排查 1 周无果
+
+### 抓包 / 根因
+
+```text
+GitHub Issue #292（Azure 官方）：
+  - 1.0.5 → 1.0.5.1 修复
+  - 根因：`ENABLE_GATEWAY` 环境变量缺失
+  - LNS 静默卡死（不报错）
+
+24h 周期：
+  - 内部定时器 / 证书续期
+  - 触发 LNS 内部状态错
+  - 设备无响应
+
+LNS"沉默失败"经典：
+  - 进程跑着
+  - 端口监听
+  - 协议正常
+  - 但功能失效
+```
+
+### 修复（3 步）
+
+```bash
+# 1. docker inspect 看环境变量
+docker inspect azure-iotedge-lorawan-starterkit | grep -A 30 Env
+
+# 2. 添加 ENABLE_GATEWAY
+docker run -d \
+  -e ENABLE_GATEWAY=true \
+  -e GATEWAY_ID=your-gateway \
+  ...
+
+# 3. 升级到 1.0.5.1+（含修复）
+# PR #294 修复版本
+```
+
+### 排查 3 步法
+
+```text
+1. docker inspect → env
+2. 版本（看 release notes）
+3. 24h 周期记录（找时间规律）
+
+任何"沉默失败"：
+  - 进程在跑 ≠ 功能正常
+  - 必须主动验证
+  - 长时监测 = 唯一方法
+```
+
+### 复盘
+
+- **LNS 沉默失败** = 工业 NS 最大杀手
+- 24h 周期 = 内部定时器 / 证书续期
+- docker inspect + 版本 + 监测 = 3 步排查
+- 进程在跑 ≠ 功能正常
+- 默认配置 ≠ 完整配置
+
+### 来源
+
+- _Inbox/LoRa-2026-09-05-candidates.md 候选 2
+- Azure 官方 GitHub iotedge-lorawan-starterkit issue 292
+- PR #294
+
+---
+
+## 案例 27：商业 LoRaWAN 部署 5 坑（ioX-Connect 行业运营商实战）
+
+### 现象
+
+某商业 LoRaWAN 网络运营商总结的部署高频失败：
+
+- 部署后 1-3 个月表现良好
+- 3-12 个月陆续出现各种问题
+- 客户投诉激增
+
+### 5 大坑
+
+```text
+坑 1：网关位置 + RF 噪声
+  现象：丢包 / 延迟
+  根因：
+    - Wi-Fi / 微波炉 / 变频器（VFD）2.4 GHz 噪声
+    - 金属遮挡
+    - 中继器信号覆盖重叠
+  解决：
+    - 现场 RF 勘测
+    - 网关选最高点
+    - 远离 Wi-Fi AP
+
+坑 2：ADR 配错"卡一档"全网拖慢
+  现象：单个节点 RSSI 差 → NS 限速到 SF12
+  根因：NS ADR 算法按最差节点限速
+  解决：
+    - 移除最差节点（部署阶段）
+    - 或手动固定 DR（牺牲边缘）
+    - 分簇隔离
+
+坑 3：移动节点 ADR 失效
+  现象：移动节点频繁 SF 切换 → 死循环
+  根因：移动场景下 RSSI 抖动，ADR 频繁触发
+  解决：
+    - 移动节点关 ADR
+    - 锁 DR_5（SF7/125kHz）
+    - 静态节点保留 ADR
+
+坑 4：弱安全
+  现象：节点被仿冒
+  根因：
+    - ABP（Activation By Personalization）vs OTAA
+    - ABP 硬编码 key 易被嗅探
+  解决：
+    - 用 OTAA
+    - 强制 LE-Style 安全
+    - 定期 key rotation
+
+坑 5："Set & Forget" RF 退化
+  现象：半年后丢包率上升
+  根因：
+    - RF 环境变化（邻居部署）
+    - 硬件老化（晶振漂移）
+    - 季节性变化（树叶 / 雨雪）
+  解决：
+    - 每半年重做 site survey
+    - 监控 RSSI / SNR 趋势
+    - 主动调整
+```
+
+### 实战部署 5 步
+
+```text
+Step 1：选型（NS + 节点 + GW）
+  - NS：自建 / 公有
+  - 节点：移动 = 关 ADR，静态 = 开 ADR
+  - GW：信道数 + RF 性能
+
+Step 2：现场勘测
+  - RF 噪声扫描
+  - 网关位置 + 天线
+  - 节点密度
+
+Step 3：先部署少量
+  - 100 节点试运行 1 个月
+  - 监控 RSSI / SNR / PER
+  - 调整参数
+
+Step 4：批量部署
+  - 复制 100 节点成功的配置
+  - 逐区部署
+  - 监控
+
+Step 5：长期维护
+  - 每半年 site survey
+  - 监控告警
+  - OTA 升级
+```
+
+### 复盘
+
+- **5 坑 = 商业 LoRaWAN 真实写照**
+- "Set & Forget" 心态 = 失败主因
+- 移动节点 = 关 ADR 硬编码
+- RF 环境半年必变 = 必重测
+- 选 GW 必须看完整信道数（US915 64+8）
+
+### 来源
+
+- _Inbox/LoRa-2026-09-05-candidates.md 候选 3
+- ioX-Connect 行业 blog（LoRaWAN 网络运营商）
+
+---
+
+## 案例 28：SX1278 果园 500 亩 120 节点 1 年稳（中文实战模板）
+
+### 现象
+
+某农业项目：
+
+- 部署：8 网关 + 120 节点 + 500 亩
+- 周期：1 年
+- 状态：稳定运行
+
+### 3 套 SF/BW/CR/功率配置
+
+```text
+市区（建筑密集）：
+  SF9 / BW125 / CR5 / 17dBm
+  距离：2-5 km
+  实际丢包：< 5%
+
+郊区（开阔）：
+  SF11 / BW125 / CR7 / 17dBm
+  距离：5-10 km
+  实际丢包：< 3%
+
+室内（工厂 / 仓库）：
+  SF7 / BW500 / CR5 / 10dBm
+  距离：200-500 m
+  实际丢包：< 2%
+```
+
+### 5 大实战点
+
+```text
+1. 频段选择
+   - 470 MHz（中国）
+   - 868 MHz（欧洲）
+   - 915 MHz（北美 / 澳洲）
+   - 频段与法规强绑定
+
+2. SF / BW / CR 组合
+   - SF：扩频因子（7-12）
+   - BW：带宽（125 / 250 / 500 kHz）
+   - CR：编码率（4/5 - 4/8）
+   - 三者联动选距离/速率/灵敏度
+
+3. 功率选型
+   - 10 dBm：低功耗，500m
+   - 14 dBm：平衡，1-2km
+   - 17 dBm：标准，5-10km
+   - 20 dBm：高功率，10-15km
+   - >20 dBm：法规限制
+
+4. 天线选型
+   - 棒状：2 dBi 全向
+   - 吸盘：3-5 dBi 全向
+   - 八木：8-12 dBi 定向
+   - 玻璃钢：5-8 dBi 全向（防水）
+
+5. 部署拓扑
+   - 星型：1 GW 多节点
+   - Mesh：节点互转
+   - 推荐：1 GW + 200 节点（实测稳）
+```
+
+### 实战代码（Arduino + SX1278）
+
+```c
+// 节点初始化
+void setup() {
+    Serial.begin(115200);
+    
+    // LoRa 参数
+    LoRa.setPins(NSS, RESET, DIO0);
+    LoRa.setFrequency(470E6);  // 470 MHz
+    LoRa.setSpreadingFactor(9);  // SF9
+    LoRa.setSignalBandwidth(125E3);  // 125 kHz
+    LoRa.setCodingRate4(5);  // CR 4/5
+    LoRa.setTxPower(17);  // 17 dBm
+    
+    LoRa.begin();
+}
+
+void loop() {
+    // 读传感器
+    float temp = readTemperature();
+    float humi = readHumidity();
+    
+    // 打包
+    String packet = String(temp) + "," + String(humi);
+    
+    // 发送
+    LoRa.beginPacket();
+    LoRa.print(packet);
+    LoRa.endPacket();
+    
+    // 5 分钟一次
+    delay(5 * 60 * 1000);
+}
+```
+
+### 复盘
+
+- **中文实战模板**——跟 #22 iotclass 美国农场对比
+- 3 套配置 = 市区/郊区/室内
+- 1 年稳定 = 中文农业 LoRa 标杆
+- 8 GW + 120 节点 + 500 亩 = 中型规模
+- 5 大实战点 = 频段 / SF / 功率 / 天线 / 拓扑
+- 跟 R6-3 案例 22（iotclass 美国农场 6 周失败）形成"成功/失败"对照
+
+### 来源
+
+- _Inbox/LoRa-2026-09-05-candidates.md 候选 4
+- MakerOnSite 中文实战博客
+- SX1278 datasheet §5
+
+---
+
+## 案例 29：LoRaWAN 到云端全链路——MachineQ US915 + DevEUI 大小端 + FCnt 持久化
+
+### 现象
+
+Heltec LoRa 32 V3（SX1262）+ BME280 + MachineQ US915 接入云端：
+
+- 5 篇系列完结篇
+- 全链路：Cayenne LPP → MQTT → InfluxDB → Grafana
+- 实战踩坑 3 大点
+
+### 3 大实战点
+
+```text
+1. DevEUI 大小端 = 入网失败 #1
+  - 现象：节点 join accept 收不到
+  - 根因：DevEUI 在不同平台字节序不同
+    - 节点：MSB first（典型）
+    - NS：可能 LSB first
+  - 解决：
+    - 节点 + NS 两边 DevEUI 字节序一致
+    - 用 LSB first 通用
+    - 测试用 0x0000000000000001
+    
+  示例：
+    节点 0x70B3D54990B4E4D0（MSB）
+    NS  0xD0E4B49049D5B370（LSB 转换）
+    → 字节序不一致 = 不匹配
+
+2. FCnt 必须持久化到 EEPROM
+  - 现象：节点重启后 NS 报"FCnt 倒退"
+  - 根因：
+    - 默认 FCnt 存 RAM
+    - 断电后 FCnt 归 0
+    - 重新 join 后的 FCnt < NS 记录的
+  - 解决：
+    - 写 EEPROM 每 10 包
+    - 或写 flash sector
+    - 启动时读回
+
+3. 复位原因码 1B 极有价值
+  - 字节：1 字节状态位
+  - 位定义：
+    - bit 0：低电压复位
+    - bit 1：看门狗复位
+    - bit 2：软件复位
+    - bit 3：硬件复位
+    - bit 4：看门狗睡眠
+    - bit 5：硬故障
+  - 实战：每 100 包上报 1 次复位原因
+  - 价值：远程定位死机原因
+```
+
+### 实战代码（FCnt 持久化）
+
+```c
+// EEPROM 持久化 FCnt
+#include <EEPROM.h>
+
+#define FCNT_ADDR 0x00  // EEPROM 地址
+
+uint32_t read_fcnt(void) {
+    uint32_t fcnt;
+    EEPROM.get(FCNT_ADDR, fcnt);
+    return fcnt;
+}
+
+void write_fcnt(uint32_t fcnt) {
+    EEPROM.put(FCNT_ADDR, fcnt);
+    EEPROM.commit();  // 立即写
+}
+
+void lora_send(uint8_t *data, uint8_t len) {
+    static uint32_t fcnt = 0;
+    
+    if (fcnt == 0) {
+        fcnt = read_fcnt();  // 启动时读回
+    }
+    
+    // 发送
+    LoRa.beginPacket();
+    LoRa.write(data, len);
+    LoRa.endPacket();
+    
+    fcnt++;
+    if (fcnt % 10 == 0) {
+        write_fcnt(fcnt);  // 每 10 包存一次
+    }
+}
+```
+
+### Cayenne LPP 格式（云端友好）
+
+```c
+// Cayenne LPP 格式
+struct lpp_data {
+    uint8_t channel;
+    uint8_t type;
+    int32_t value;
+};
+
+// 温度
+lpp_data[0] = {0x01, 0x67, (int32_t)(temp * 10)};
+// 湿度
+lpp_data[1] = {0x02, 0x68, (int32_t)(humi * 10)};
+// 上行
+LoRa.beginPacket();
+LoRa.write((uint8_t*)lpp_data, sizeof(lpp_data));
+LoRa.endPacket();
+```
+
+### 复盘
+
+- **DevEUI 大小端** = L4 LoRa 入网失败 #1
+- FCnt 持久化 = 必备
+- 复位原因码 = 远程诊断金标准
+- Cayenne LPP = 云端友好
+- 全链路 Cayenne LPP → MQTT → InfluxDB → Grafana = 标准架构
+- 跟 R6-1 案例 20（STM32WL LDRO）配套 = 节点配置全栈
+
+### 来源
+
+- _Inbox/LoRa-2026-09-05-candidates.md 候选 5
+- 尧图网络 中文 5 篇系列
+- MachineQ 文档
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
