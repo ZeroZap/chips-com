@@ -106,6 +106,10 @@ chips-com/bus/zigbee-*.md
 | BlackHat 2015 + Aviatrix 2024 安全 | zigbee-failure-cases.md 案例 22 |
 | Green Power 全栈 + GP 失踪 5 根因 | zigbee-failure-cases.md 案例 23 |
 | EFR32 NCP 并发 OTA 0x19 buffer out | zigbee-failure-cases.md 案例 24 |
+| zigbee2mqtt 90 天 4.2h→8min ROI 7.5x | zigbee-failure-cases.md 案例 25 |
+| JN5169 量产回流焊 + 半孔钢网 | zigbee-failure-cases.md 案例 26 |
+| 泓格高雄酸洗吊挂 Router 互转 + VxCOMM | zigbee-failure-cases.md 案例 27 |
+| 智能家居 Mesh 5 条军规 | zigbee-failure-cases.md 案例 28 |
 | Poll Interval | zigbee-practical.md "## End Device 睡眠参数" |
 | SoC vs NCP 差异 | zigbee-deep-dive.md "## SoC vs NCP 调试差异" |
 | 厂商协议栈对比 | zigbee-deep-dive.md "## 厂商协议栈对比" |
