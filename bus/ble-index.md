@@ -125,6 +125,12 @@ chips-com/bus/ble-*.md
 | CC254x 8KB RAM 7.5ms OSAL 死锁 | ble-failure-cases.md 案例 41 |
 | T20i A2 线 19.2% 不良 + KT6368A DMA | ble-failure-cases.md 案例 42 |
 | 仓库 RTL8852BU 0xfcf0 -16 $47k 损失 | ble-failure-cases.md 案例 43 |
+| Linux Kernel BLE 内存泄漏 4 天崩溃 | ble-failure-cases.md 案例 44 |
+| 可穿戴 72h→31h 现场电池 3 因素 | ble-failure-cases.md 案例 45 |
+| 医疗 6 个月 30% 测量丢失 256KB MCU | ble-failure-cases.md 案例 46 |
+| nRF52 GATT notify 5ms→30ms CI 丢包 | ble-failure-cases.md 案例 47 |
+| ESP32 BLE 5 症状矩阵 | ble-failure-cases.md 案例 48 |
+| BLE 4 大根因 + Deloitte 30-40% 调试降 | ble-failure-cases.md 案例 49 |
 
 ## 关键概念地图
 

@@ -3857,6 +3857,674 @@ sudo systemctl restart bluetooth
 
 ---
 
+## 案例 44：Linux Kernel BLE 内存泄漏——4 天崩溃 + kmalloc-1k/-192 持续涨
+
+### 现象
+
+某嵌入式 Linux 平台（v5.13/5.15/6.5）：
+
+- 跑 4 天后系统崩溃
+- 复现条件："BLE 启但 peer 不存在"
+- `kmalloc-1k/-192` 持续涨
+- patch series + STM32 DK2 + QEMU 复现步骤都齐
+- syzbot 2023 已报但无人修
+
+### 抓包 / 根因
+
+```text
+复现链路：
+  1. 启动 BLE 协议栈
+  2. 没有任何 BLE peer 连接
+  3. L2CAP 持续分配内存
+  4. 4 天累计 OOM
+  5. 系统崩溃
+
+复现版本：
+  - v5.13（5.x 系列）
+  - v5.15（5.x LTS）
+  - v6.5（6.x mainline）
+  - 全部复现
+
+kmalloc slab 涨幅：
+  kmalloc-1k  +5 KB / hour
+  kmalloc-192 +2 KB / hour
+  = 7 KB / hour × 96 hour = 672 KB
+  = 系统 OOM
+```
+
+### 调试（5 步法）
+
+```bash
+# 1. 看 slab 实时涨幅
+watch -n 60 "cat /proc/slabinfo | grep -E 'kmalloc-1k|kmalloc-192'"
+
+# 2. 找谁在分配
+sudo ftrace -e 'kmem_cache_alloc' | head
+
+# 3. 找 BLE 协议栈模块
+lsmod | grep bluetooth
+sudo lsof -p $(pidof bluetoothd) | grep -i kern
+
+# 4. 复现补丁
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git
+# 应用 patch series
+make modules SUBDIRS=net/bluetooth
+
+# 5. QEMU 复现
+qemu-system-x86_64 -kernel vmlinux -append "console=ttyS0" -m 1G
+# 启动 BLE
+bluetoothctl scan on
+# 4 天等 OOM
+```
+
+### 修复
+
+```text
+短期方案：
+  - 限制 BLE 启动时长
+  - systemd 每日重启 bluetoothd
+  - 监控 kmalloc slab 涨幅
+  
+中期方案：
+  - 应用 patch series
+  - 升级到修复版本内核
+  
+长期方案：
+  - 永远不要在无 peer 时启 BLE
+  - 应用启动时才 init BLE
+  - 业务逻辑做去 init
+```
+
+### 复盘
+
+- **Linux Kernel BLE 内存泄漏** = L4 内核层实战
+- 4 天才能复现 = 必须长时监测
+- kmalloc slab = 内核级 leak
+- syzbot 已报但无人修 = 关注内核 mailing list
+- 嵌入式 Linux BLE 项目 = 必做 4 天压力测试
+- patch series 复现 = 内核调试金标准
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-07-candidates.md 候选 2
+- Mind 嵌入式团队 bug hunt 复盘
+- syzbot 2023 report
+
+---
+
+## 案例 45：可穿戴 sensor 72h→31h 现场电池续航 3 因素叠加
+
+### 现象
+
+某可穿戴 IoT sensor：
+
+- 设计续航：200 mAh 电池跑 72h（lab）
+- 实际：31h（field，15°C 温差 + 真实 BLE）
+- 续航差 2.3x
+- **固件无 bug**，但**"为 lab 设计"**
+
+### 抓包 / 根因（3 件事叠加）
+
+```text
+3 大 root cause：
+
+1. 手机主动重协商连接间隔
+   - 设计：CI = 200ms
+   - 实际：手机 30min 后请求 CI = 100ms
+   - 后果：radio-on 时间翻倍
+   - 影响：+30% 功耗
+
+2. 弱信号下 PER 8-15% → 重传
+   - 现场 RSSI = -85dBm（弱）
+   - PER 8-15% = 6-10 包重传 1 次
+   - 每次重传 = 100ms radio-on
+   - 后果：+50% 功耗
+
+3. 低温晶振漂移 → sensor/BLE 事件碰撞
+   - 现场 -15°C
+   - 32 kHz 晶振漂移 ±200 ppm
+   - sensor 采样事件 + BLE 广播事件碰撞
+   - MCU 进不了 deep sleep
+   - 后果：+20% 功耗
+```
+
+### 累计功耗账
+
+```text
+理论功耗：200 mAh / 72h = 2.78 mA 平均
+
+实战（field 3 因素叠加）：
+  - 基础：2.78 mA
+  - CI 200→100ms：+30% = 3.61 mA
+  - PER 8-15% 重传：+50% = 5.42 mA
+  - 晶振漂移：+20% = 6.50 mA
+  - 实际：6.50 mA
+
+续航：200 mAh / 6.50 mA = 30.8h ≈ 31h ✅
+```
+
+### 修复（3 件事）
+
+```text
+1. 锁连接间隔
+   - Peripheral 拒绝手机的 CI 协商
+   - 强制 CI = 200ms
+   - iOS 限制 ≥ 15ms 即可
+   - 拒绝后功耗稳定
+
+2. 优化信号链路
+   - 改善天线
+   - 优化 PCB 布局
+   - 提高功率（法规允许）
+   - 减少距离
+   - 加 PA
+
+3. 软件补偿低温漂移
+   - 改用 TCXO（温补晶振）
+   - 软件算法补偿
+   - sensor + BLE 事件错峰
+   - 事件分桶避免碰撞
+```
+
+### 关键工程认知
+
+```text
+- "固件无 bug" ≠ "field 跑得动"
+- lab 续航 50-60% 是常态（40% 缩水）
+- 手机会主动重协商 CI（Peripheral 不知道）
+- 弱信号 PER = radio-on 翻倍
+- 低温晶振漂移 = 事件碰撞 = 醒着
+- 量产前必须 field 续航实测
+```
+
+### 复盘
+
+- **3 因素叠加 = field 续航 50-60% lab** = 典型
+- 手机主动重协商 = 关键工程盲点
+- 锁 CI = 必须（不能让手机决定）
+- 弱信号 = PER 翻倍 = radio-on 翻倍
+- 低温晶振 = 事件碰撞 = 进不了 deep sleep
+- 累计 2.3x 功耗 = 必须 field 实测
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-07-candidates.md 候选 5
+- Promwad 硬件/固件外包团队
+
+---
+
+## 案例 46：医疗血压计 BLE 适配器 6 个月 30% 测量丢失（256KB MCU）
+
+### 现象
+
+某医疗血压计 BLE 适配器：
+
+- 部署后 30% 测量丢失
+- MCU：256KB RAM（nRF52832 级别）
+- Watchdog：8s 自愈
+- 拉一周 470K 行 journal 定位
+
+### 抓包 / 故障分布
+
+```text
+470K 行 journal 分析：
+  - 62 个失败
+  - 33 freeze（53%）
+  - 8 安全 bug（13%）
+  - 21 设备不在场（34%）
+```
+
+### 4 大根因
+
+```text
+根因 1：Central ≠ Peripheral 复杂度差 1 量级
+  - Peripheral 简单：广播 + 连接响应
+  - Central 复杂：扫描 + 主动连 + bond 管理 + 多服务发现
+  - 适配器作为 Central = 复杂度爆炸
+  - 解决：明确角色（能用 Peripheral 别做 Central）
+
+根因 2：Bonding key 必持久化
+  - 默认：RAM 存
+  - 断电丢失 → 用户重新配对
+  - 医疗设备 = 频繁掉电（移动）
+  - 解决：bonding key 存 NVM / flash sector
+
+根因 3：8s watchdog 是商业可靠线
+  - 太短（< 4s）= 误复位
+  - 太长（> 30s）= 用户等待久
+  - 8s = 平衡点
+  - 解决：所有 task 8s 内必须喂狗
+
+根因 4：21 设备不在场（34%）
+  - 医疗设备移动频繁
+  - BluetoothGatt.refresh() 失败
+  - 用户数据无法同步
+  - 解决：本地缓存 + 下次连接补传
+```
+
+### 实战修复
+
+```c
+// 1. Bonding key 持久化
+void save_bond_key(uint8_t *key, uint16_t len) {
+    nvm_flash_write(BOND_ADDR, key, len);
+    nvm_flash_commit();
+}
+
+void load_bond_key(uint8_t *key, uint16_t len) {
+    nvm_flash_read(BOND_ADDR, key, len);
+}
+
+// 2. Watchdog 喂狗
+void feed_watchdog(void) {
+    NRF_WDT->RR[0] = WDT_RR_RR_Reload;
+}
+
+void vTask(void *pvParameters) {
+    while (1) {
+        do_work();
+        feed_watchdog();
+        delay_ms(100);
+    }
+}
+
+// 3. 数据缓存 + 补传
+typedef struct {
+    uint8_t data[256];
+    uint16_t len;
+    bool pending;
+    uint32_t timestamp;
+} pending_data_t;
+
+pending_data_t cache[100];
+
+void cache_data(uint8_t *data, uint16_t len) {
+    for (int i = 0; i < 100; i++) {
+        if (!cache[i].pending) {
+            memcpy(cache[i].data, data, len);
+            cache[i].len = len;
+            cache[i].pending = true;
+            cache[i].timestamp = millis();
+            return;
+        }
+    }
+}
+
+void flush_cache_on_connect(void) {
+    for (int i = 0; i < 100; i++) {
+        if (cache[i].pending) {
+            send_data(cache[i].data, cache[i].len);
+            cache[i].pending = false;
+        }
+    }
+}
+```
+
+### 复盘
+
+- **Central 复杂度差 1 量级** = 工程盲点
+- Bonding key 持久化 = 必做
+- 8s watchdog = 商业可靠线
+- 30% 测量丢失 = 33 freeze + 21 设备不在场
+- 数据缓存 + 补传 = 解决设备不在场
+- 拉一周 log 定位 = 6 个月血泪教训
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-08-candidates.md 候选 1
+- QA Platform 工程 blog
+
+---
+
+## 案例 47：nRF52 GATT notify 5ms 推包被 30ms CI 压制——BLE 吞吐 = Central 协商窗口
+
+### 现象
+
+某 nRF52 BLE 数据流应用：
+
+- 设计：5ms 推一次 notify（200 Hz）
+- 实际：central 谈成 30ms 连接间隔
+- 后果：每 connection event 只发 1 个 notify
+- tx queue 静默溢出
+- 大量丢包
+
+### 根因
+
+```text
+BLE 吞吐公式：
+  每秒包数 = 1000 / CI × 每 event 包数
+  
+  实测：
+    CI = 30ms
+    每 event 包数 = 1
+    实际吞吐 = 33 包/s
+    
+  设计：
+    期望 200 包/s
+    需要 CI ≤ 5ms
+    
+  差距 6x = 大量丢包
+```
+
+### 修复（3 件套）
+
+```text
+1. 请求更短 CI
+   - Peripheral 主动 update_conn_params
+   - iOS 限制 ≥ 15ms（必须 15ms 倍数）
+   - Android 限制 ≥ 7.5ms
+   - 实测：请求 CI = 15ms（iOS 接受）
+
+2. NRF_ERROR_RESOURCES backoff
+   - 通知失败时不要 retry 立即
+   - backoff 100ms
+   - 等 tx queue 释放
+   - 避免风暴
+
+3. 等 TX_COMPLETE 事件
+   - 不要连续发
+   - 等 BLE_GATTS_EVT_HVN_TX_COMPLETE
+   - 确认发送成功再发下一包
+```
+
+### 实战代码
+
+```c
+// 修复版 notify 推包
+static bool tx_busy = false;
+static uint32_t last_send_time = 0;
+static const uint32_t RETRY_BACKOFF_MS = 100;
+
+void send_data_notify(uint8_t *data, uint16_t len) {
+    if (tx_busy) {
+        uint32_t now = millis();
+        if (now - last_send_time < RETRY_BACKOFF_MS) {
+            return;  // backoff 中
+        }
+        // 超时强制清标志
+        tx_busy = false;
+    }
+    
+    uint32_t err_code = ble_nus_data_send(&m_nus, data, &len, m_conn_handle);
+    if (err_code == NRF_SUCCESS) {
+        tx_busy = true;
+        last_send_time = millis();
+    } else if (err_code == NRF_ERROR_RESOURCES) {
+        // 队列满，backoff
+    } else {
+        // 其他错误
+    }
+}
+
+void on_ble_evt(ble_evt_t *p_ble_evt) {
+    switch (p_ble_evt->header.evt_id) {
+        case BLE_GATTS_EVT_HVN_TX_COMPLETE:
+            tx_busy = false;  // 释放锁
+            break;
+    }
+}
+```
+
+### 关键工程认知
+
+```text
+- BLE 吞吐 = central 协商窗口（不是 peripheral 推包频率）
+- iOS 最短 15ms
+- Android 最短 7.5ms
+- hvx 失败必 backoff（不能 retry 风暴）
+- 5ms 推包 = 200 Hz 需 CI ≤ 5ms（iOS 拒）
+- 实际 CI = 15ms（iOS 接受）
+- 实际吞吐 = 1000/15 = 66 包/s
+- 比 5ms 设计 200Hz 少 3x
+```
+
+### 复盘
+
+- **BLE 吞吐 = Central 协商窗口** = 核心铁律
+- 5ms 设计 30ms CI = 6x 丢包
+- hvx 失败 backoff = 必做
+- iOS 15ms 限制 = 真实物理边界
+- 5 件套 backoff + 等 TX_COMPLETE + 请求短 CI = 稳
+- 实战：50% 丢包 = 90% 是 CI 没谈妥
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-08-candidates.md 候选 2
+- moltbook 工程师复盘
+
+---
+
+## 案例 48：ESP32 蓝牙故障诊断 5 症状矩阵（Guru + 2m 内断连 + 堆耗尽）
+
+### 现象
+
+ESP32 BLE 项目 5 大故障：
+
+1. Guru Meditation（崩溃）
+2. Device Not Found
+3. 2m 内断连
+4. 堆耗尽
+5. 距离衰减
+
+### 5 症状 → 根因 → 修复对照
+
+```text
+症状 1：Guru Meditation
+  根因：堆耗尽 / 数组越界 / NULL 指针
+  修复：
+    - 增大 task stack（如 8KB）
+    - ESP_LOGI 替代 printf
+    - 静态分配（避免 malloc）
+    - 看 Guru 反汇编找具体行
+
+症状 2：Device Not Found（找不到）
+  根因：RPA 随机 MAC（每 15 分钟变）
+  修复：
+    - 用 BLE_ADDR_TYPE_PUBLIC（设备真 MAC）
+    - 不用 RANDOM
+    - 配对时绑定
+
+症状 3：2m 内断连
+  根因：发射功率太低 / 板载天线谐振偏移
+  修复：
+    - esp_ble_tx_power_set(ESP_PWR_LVL_P9)  // +9dBm
+    - 不用 P7（仅 +3dBm）
+    - 检查天线匹配网络
+
+症状 4：堆耗尽
+  根因：Bluedroid 110-140KB 占内存
+  修复：
+    - 改 NimBLE（30KB）
+    - 减小服务数量
+    - esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT)
+
+症状 5：距离衰减
+  根因：天线匹配 / PA 不够 / 障碍
+  修复：
+    - 改善天线设计
+    - 加 PA（如 SKY66112）
+    - 减少阻挡
+```
+
+### ESP32-S3 特殊点
+
+```text
+ESP32-S3 = 经典蓝牙硬件不存在
+  - 只能 BLE（不能 SPP 经典蓝牙）
+  - SPP 必须迁 NimBLE
+
+迁移路径：
+  menuconfig → Component config → Bluetooth:
+    [ ] Bluedroid (disable)
+    [x] NimBLE (enable)
+    [x] NimBLE Host (enable)
+```
+
+### iPhone 连接参数硬约束
+
+```text
+iOS 拒收非标连接参数：
+  - CI 必须是 15ms 倍数
+  - Latency ≤ 30
+  - Timeout ≥ 2s
+  - Timeout > (1 + Latency) × CI × 2
+
+放宽策略：
+  esp_ble_gap_update_conn_params(30, 50, 0, 400);
+  // CI_min=30, CI_max=50, latency=0, timeout=400
+  // 给 iOS 选择空间
+```
+
+### HCI 错误码调试
+
+```c
+// Core Debug Level = Verbose 才会暴露 HCI 错误码
+esp_log_level_set("*", ESP_LOG_VERBOSE);
+
+// 关键 HCI 错误码
+#define HCI_ERROR_CODE_CONN_FAILED_TO_BE_ESTABLISHED 0x3E
+#define HCI_ERROR_CODE_AUTHENTICATION_FAILURE       0x05
+#define HCI_ERROR_CODE_PIN_OR_KEY_MISSING           0x06
+```
+
+### 修复代码汇总
+
+```c
+// 1. 选 NimBLE
+void ble_init_nimble(void) {
+    esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
+    esp_nimble_hci_init();
+    nimble_port_init();
+    ble_svc_gap_init();
+    ble_svc_gatt_init();
+    nimble_port_freertos_init(ble_host_task);
+}
+
+// 2. 设最大发射功率
+void ble_set_max_power(void) {
+    esp_ble_tx_power_set(ESP_BLE_PWR_TYPE_DEFAULT, ESP_PWR_LVL_P9);
+    esp_ble_tx_power_set(ESP_BLE_PWR_TYPE_ADV, ESP_PWR_LVL_P9);
+    esp_ble_tx_power_set(ESP_BLE_PWR_TYPE_SCAN, ESP_PWR_LVL_P9);
+}
+
+// 3. 设 public MAC
+void ble_set_public_mac(void) {
+    uint8_t mac[6] = {0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF};
+    esp_base_mac_addr_set(mac);
+}
+```
+
+### 复盘
+
+- **5 症状 → 根因 → 修复** = ESP32 BLE 必收
+- ESP32-S3 经典蓝牙硬件不存在 = SPP 必迁 NimBLE
+- iPhone 拒非标 CI = 必放宽 update_conn_params
+- Core Debug Level = Verbose = 暴露 HCI 错误码
+- `BLE_ADDR_TYPE_PUBLIC` = 修"找不到"
+- `PWR_LVL_P9` = 修"2m 断连"
+- NimBLE = 修"堆耗尽"
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-10-candidates.md 候选 4
+- electricalflux.com 嵌入式 MCU 实战博客
+- ESP-IDF 文档 §9.3
+
+---
+
+## 案例 49：BLE 项目失败 4 大根因 + Deloitte 30-40% 调试降（系统级失败模式）
+
+### 现象
+
+某 IoT 产品 BLE 部署后失败率高：
+
+- 团队按模块割裂（固件 / 应用 / QA）
+- 没人拥有系统级行为
+- 出问题无 single owner
+- 用户信任崩塌
+
+Deloitte 数据：
+
+- 架构良好组织：调试时间降 30-40%
+- 发布后缺陷降 30-40%
+
+### 4 大根因
+
+```text
+根因 1：缺乏系统级设计
+  现象：BLE 当 checkbox feature
+  后果：架构不支撑场景
+  解决：
+    - 跨固件 / 应用 / QA 协作
+    - 系统级 owner
+    - 架构 review 必走
+
+根因 2：QA 遮蔽真实变量
+  现象：QA 通过 ≠ 量产可靠
+  原因：QA 环境与生产环境差异
+  解决：
+    - 现场实测
+    - 24h 长时压力测试
+    - 多场景覆盖
+
+根因 3：应用架构难以调试与扩展
+  现象：GATT 表随固件变更 → central 缓存陈旧
+  后果：看似发现失败实则是缓存 bug
+  解决：
+    - GATT 表版本化
+    - 强制 service change indication
+    - central 缓存失效机制
+
+根因 4：后台 / 真实应用状态重连断裂
+  现象：iOS / Android 后台策略差异
+  后果：通知节流 + 权限变更让 BLE 行为突变
+  解决：
+    - 双端同步状态
+    - 定期重连
+    - 服务发现 + 状态同步
+```
+
+### 实战改进（4 步）
+
+```text
+Step 1：建立系统级 owner
+  - 任命 BLE 架构师
+  - 跨团队 review
+  - 责任明确
+
+Step 2：双轨测试（lab + field）
+  - lab 自动化
+  - field 真实数据采集
+  - 数据驱动决策
+
+Step 3：GATT 版本化
+  - service change 强制
+  - central 缓存失效
+  - 主动推送
+
+Step 4：状态机显式
+  - 应用 + BLE 状态分离
+  - 异常 recovery
+  - 远程诊断
+```
+
+### 复盘
+
+- **4 大根因 = 团队级问题**（不是技术 bug）
+- Deloitte 30-40% 调试降 = 数据支撑
+- 系统级 owner = 第一要务
+- 团队按模块割裂 = 必出问题
+- GATT 缓存陈旧 = 隐性失败
+- 状态机显式 = 长期维护关键
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-10-candidates.md 候选 5
+- Aubergine Solutions（IoT 产品设计咨询）
+- Deloitte 数据
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
