@@ -2884,6 +2884,855 @@ R10-9 智能家居军规：
 
 ---
 
+## 案例 29：Kaspersky Securelist Zigbee 工业环境安全评估
+
+### 现象
+
+Kaspersky Securelist 团队 nRF52840 模拟协调器 + 真实 Z-Stack 设备：
+
+- 评估 Zigbee 工业部署安全性
+- 测试私有 profile 设备对抗
+- Update ID 厂商未定义行为
+
+### 抓包 / 根因
+
+```text
+3 大发现：
+
+1. nRF52840 协调器对私有 profile 设备失效
+   - 厂商自定 Stack Profile（0x00/0x02）
+   - 标准协调器不识别
+   - 直接拒入网
+   - 解决：明确 profile 兼容性
+
+2. Python Scapy 跟不上 MAC ACK 时序
+   - 802.15.4 MAC auto-ACK 192μs
+   - Python 软件层不可达
+   - 必须 C 改写固件
+   - 解决：硬件级实时 ACK
+
+3. Stack Profile 0x00/0x02 不匹配直接拒入网
+   - Zigbee 3.0 强制 Profile 0x02
+   - 厂商自定 Profile 0x00
+   - 协调器 → 设备 入网请求 → Profile 不匹配 → 拒
+   - 解决：明确 Profile 编码
+```
+
+### 实战要点
+
+```text
+1. Profile 兼容表
+   - Profile 0x00：Zigbee（已废弃）
+   - Profile 0x01：Zigbee PRO（早期）
+   - Profile 0x02：Zigbee（3.0 标准）
+   - 厂商私有：Profile 0x40+
+   - 协调器必须明确支持
+
+2. MAC auto-ACK 硬件级
+   - 192μs 超时
+   - 软件层无法响应
+   - 必须 PHY 层硬件 ACK
+   - 解决：用 nRF52840 / EFR32 硬件 ACK
+
+3. Update ID 字段
+   - Beacon 帧中
+   - 厂商未定义 = 攻击面
+   - 必须显式填值
+```
+
+### 复盘
+
+- **nRF52840 模拟协调器** = 安全评估金标准
+- 私有 profile = 工业部署第一坑
+- Profile 0x00/0x02 不匹配 = 拒入网
+- MAC auto-ACK = 192μs 硬件实时
+- Python Scapy = 跟不上 = C 改写
+- 工业 Zigbee = 显式 Profile 兼容
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-07-candidates.md 候选 1
+- Kaspersky Securelist
+- Z-Stack 3.0 Profile 规范
+
+---
+
+## 案例 30：ZigBee 3.0 BDB / ZCL / ZGP 核心 + Reporting + APS_BindReq 实战
+
+### 现象
+
+ZigBee 3.0 开发者必踩 5 类坑：
+
+- 信道
+- 密钥
+- 角色
+- 绑定
+- 内存
+
+### BDB / ZCL / ZGP 三层
+
+```text
+BDB（Base Device Behavior）：
+  - 配网 / 入网 / 复位
+  - 3 模式：
+    - 触摸配网（Touchlink）
+    - 入网（Network Steering）
+    - 找网（Network Finding）
+  - 必走流程
+
+ZCL（ZigBee Cluster Library）：
+  - 标准化 cluster（on/off / level / temperature）
+  - Reporting 机制
+  - 属性读 / 写 / 通知
+  - 控制链核心
+
+ZGP（ZigBee Green Power）：
+  - 能量收集设备
+  - 超低功耗
+  - 见 R6-7 案例 23 Green Power
+```
+
+### 2 大核心机制
+
+```text
+机制 1：Reporting（属性自动上报）
+  - Min Interval：最小上报间隔
+  - Max Interval：最大上报间隔
+  - Reportable Change：变化量触发
+  - 实战：
+    - 温度：Min=10s, Max=60s, Change=0.5°C
+    - 湿度：Min=10s, Max=60s, Change=1% RH
+    - 电池：Min=1h, Max=24h, Change=5%
+  - 触发：时间 OR 变化
+
+机制 2：APS_BindReq（绑定表）
+  - Cluster ID + Endpoint 绑定
+  - 控制端：协调器 / 开关
+  - 响应端：灯 / 锁 / 风扇
+  - 例：开关 S2 绑定灯 L1 的 on/off cluster
+  - 实战：控制链高效关键
+```
+
+### 5 类坑实战
+
+```text
+坑 1：信道
+  - 现象：找不到设备
+  - 修：广播 / 扫描信道一致
+
+坑 2：密钥
+  - 现象：join 后无通信
+  - 修：Install Code 正确 + SHA-256 → Link Key
+
+坑 3：角色
+  - 现象：路由失效
+  - 修：Router / ED / Coordinator 配对
+
+坑 4：绑定
+  - 现象：控制无反应
+  - 修：APS_BindReq 配对
+
+坑 5：内存
+  - 现象：节点 crash
+  - 修：堆栈 / heap 加大 + 释放 BDB
+```
+
+### 实战代码（AppBuilder + Network Analyzer）
+
+```c
+// Reporting 配置
+zclReportCfg_t reportCfg = {
+    .direction = ZCL_SEND_TO_COORDINATOR,
+    .pEndpoint = &zclEntity_ep,
+    .clusterId = ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+    .attrId = ATTRID_MS_TEMPERATURE_MEASURED_VALUE,
+    .minReportInt = 10,  // 10s
+    .maxReportInt = 60,  // 60s
+    .reportableChange = 50,  // 0.5°C
+};
+zcl_configureReporting(&reportCfg);
+```
+
+### 复盘
+
+- **BDB / ZCL / ZGP 三层** = ZigBee 3.0 核心
+- Reporting = 时间 OR 变化触发
+- APS_BindReq = 控制链高效
+- 5 类坑 = 量产常见
+- 内存坑 = Z-Stack 3.0 Resource Pool 必看
+- AppBuilder + Network Analyzer = L4 工具
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-07-candidates.md 候选 4
+- wmrh.cn BitCloud + EFR32MG24 实战
+
+---
+
+## 案例 31：Tuya Private vs Standard 3.0 30s 上报拥塞协调器 crash
+
+### 现象
+
+某 15+ 电表 / 配电箱项目：
+
+- 触发 data storm
+- 协调器 crash
+- 现象：电表数据丢失 + 协调器重启
+
+### 抓包 / 根因
+
+```text
+2 大根因：
+
+根因 1：30s 固定上报 + Tuya Private
+  - 现象：每 30s 上报一次
+  - 对 Standard 3.0：合理（adaptive data packing）
+  - 对 Tuya Private：每属性独立包
+  - 后果：带宽爆炸
+  - 解决：
+    - 改 Standard 3.0
+    - 或开 adaptive packing
+    - 或拉长间隔
+
+根因 2：高密度 + 协调器处理能力
+  - 现象：协调器 crash
+  - 根因：15+ 设备 + 30s 上报 + 多属性 = 高负载
+  - 协调器 CPU / 内存不足
+  - 解决：
+    - 增加协调器资源
+    - 分散到多协调器
+    - 降低上报频率
+```
+
+### Tuya Private vs Standard 3.0 差异
+
+```text
+Tuya Private：
+  - 每属性独立 ZCL 帧
+  - 1 设备 5 属性 = 5 帧 / 上报
+  - 15 设备 × 5 帧 = 75 帧 / 30s = 2.5 帧 / s
+  - 协调器必须处理每帧
+
+Standard 3.0：
+  - adaptive data packing
+  - 多属性合并
+  - 1 设备 5 属性 = 1 帧
+  - 15 设备 × 1 帧 = 15 帧 / 30s = 0.5 帧 / s
+  - 协调器负载降 5x
+```
+
+### 实战修复
+
+```text
+Step 1：选 Standard 3.0
+  - 不用 Tuya Private
+  - 选标准 ZCL
+  - 选 EFR32 / nRF52 / Silicon Labs
+  - 高密度必选标准
+
+Step 2：协调器升级
+  - 旧：嵌入式协调器
+  - 升级：x86 主机 + ChirpStack + 多 worker
+  - 处理能力 10x
+
+Step 3：上报间隔
+  - 30s → 60s（电表场景够用）
+  - 负载降一半
+
+Step 4：多协调器
+  - 15+ 设备分散到 2-3 协调器
+  - 每协调器 5-7 设备
+  - 单点故障消除
+```
+
+### 复盘
+
+- **Tuya Private vs Standard 3.0** = 5x 带宽差异
+- 30s 固定上报 = 电表场景够用
+- 高密度必选 Standard 3.0
+- 协调器升级 = 选 x86 主机
+- 多协调器 = 单点故障消除
+- 选型决策 = 优先 Standard 3.0
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-07-candidates.md 候选 5
+- Bituo-Technik 能源表厂商官方排障文档
+
+---
+
+## 案例 32：仓库 ZigBee mesh 40 跳怪拓扑——router 密度 ≠ robustness
+
+### 现象
+
+某仓库 ZigBee mesh 部署：
+
+- 30 ED + 8 Router + 1 Coordinator
+- 测试 OK
+- 现场一周后延迟爬升 3 秒
+- 最近 20 英尺设备绕 6 节点
+- LQI-based 路由贪婪找"便宜路径"
+- 怪拓扑 = 延迟爆增
+
+### 抓包 / 根因
+
+```text
+LQI（Link Quality Indicator）cost：
+  - 节点选"便宜路径"（LQI 高 = cost 低）
+  - 算法找 6 跳"看似便宜"路径
+  - 实际：每跳累加延迟
+  - 6 跳 = 6 × 50ms = 300ms
+  - 加上 CSMA/CA 退避 = 3s
+  - 远超 1 跳直接路径（50ms）
+
+节点密度 = 双刃剑：
+  - 太少：覆盖差
+  - 太多：路由选择坏
+  - 最佳：1-2 跳内覆盖
+```
+
+### 修复
+
+```text
+Step 1：减半 Router
+  - 8 Router → 4 Router
+  - 网格化（不要散点）
+  - 测试 1 周稳定
+
+Step 2：限制跳数
+  - 设置 max_hops = 2
+  - Z-Stack 3.0：NWK_MAX_DEPTH = 2
+  - 超过 2 跳不允许
+
+Step 3：选 hop count 而非 LQI cost
+  - 算法参数改
+  - 优先"少跳"而非"高 LQI"
+  - 减少怪拓扑
+
+Step 4：监控拓扑变化
+  - 定期看 zigbee2mqtt networkmap
+  - 检测怪拓扑
+  - 自动告警
+```
+
+### 拓扑实战
+
+```text
+修复前：
+  - Coordinator → R1 → R2 → R3 → R4 → R5 → R6 → ED
+  - 6 跳 = 3s 延迟
+
+修复后：
+  - Coordinator → R1 → ED（最近路由）
+  - Coordinator → R2 → ED（备份路由）
+  - 1-2 跳 = 50ms 延迟
+```
+
+### 复盘
+
+- **router 密度 ≠ robustness** = 反直觉
+- LQI cost 算法 = 找便宜路径 = 怪拓扑
+- 减半 router = 改善
+- 限制跳数 = 关键
+- hop count 优先 > LQI cost
+- 监控 topology = 长期维护
+- 工业 mesh 部署 = 1-2 跳优先
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-09-candidates.md 候选 1
+- moltbook 仓库 mesh 实战
+
+---
+
+## 案例 33：Hubitat FF01 广播风暴冲崩协调器（reporting 间隔对齐定时炸弹）
+
+### 现象
+
+某 Hubitat 智能家居部署：
+
+- 11:00:01.583 收到 4 thermostat + 3 I/O module
+- 同毫秒发 FF01 cluster
+- 协调器 radio buffer 满
+- 协调器关机
+- parent-child timeout
+- 设备循环重启
+- 唯一恢复 = 物理 power cycle
+
+### 抓包 / 根因
+
+```text
+触发条件：
+  - 多 endpoint 设备
+  - 同步 reporting 间隔
+  - 毫秒级同时发 FF01 cluster
+  - 协调器 radio buffer 满
+
+FF01 cluster：
+  - 设备 + 协调器能力协商
+  - 必须有
+  - 但同时多发 = 拥塞
+
+11:00:01.583 时间窗：
+  - 7 设备同毫秒
+  - 协调器无线 capacity 12 packets/s
+  - 7 设备 × 1 帧 = 7 帧 / ms = 7000 帧 / s
+  - 协调器 5 帧 = 5 帧满
+  - 后续 2 帧 = radio buffer 满
+  - 协调器 crash
+```
+
+### 修复
+
+```text
+Step 1：错开 reporting 间隔
+  - 设备 1：reporting 5 min
+  - 设备 2：reporting 7 min
+  - 设备 3：reporting 9 min
+  - 错开 = 不同时发
+
+Step 2：物理 power cycle 唯一可靠恢复
+  - 协调器恢复后
+  - 设备重新入网
+  - 配置错开间隔
+
+Step 3：去任一设备仍复现 = 系统性问题
+  - 不是单个设备问题
+  - 是 reporting 同步问题
+  - 修：必须错开
+```
+
+### 实战（4 步）
+
+```text
+1. 找同毫秒发包的设备
+   抓包看时戳
+
+2. 改 reporting 间隔
+   - 设备 1：5 min
+   - 设备 2：7 min
+   - 设备 3：9 min
+   - 错峰
+
+3. 协调器配置
+   - 提高 RF buffer
+   - 增强调度
+
+4. 监控告警
+   - 协调器内存
+   - 设备时戳集中度
+```
+
+### 复盘
+
+- **多 endpoint + 同步 reporting = 定时炸弹** = 真实问题
+- 同毫秒 7 设备 = 协调器 radio buffer 满
+- 物理 power cycle 唯一恢复
+- 错开 reporting = 必做
+- 同步问题 = 系统性不是单设备
+- 毫秒级时戳 = 必看
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-09-candidates.md 候选 3
+- Hubitat 社区
+
+---
+
+## 案例 34：Z-Stack 20240710 BUFFER_FULL 0x11 物理重插——固件回退案例
+
+### 现象
+
+某用户使用 ZBDongle-P + Z-Stack 20240710 固件：
+
+- 网络跑几小时后日志报 `0x11 BUFFER_FULL`
+- 软重启 z2m 不恢复
+- 物理重插协调器才恢复
+- 业务网络不可接受
+
+### 抓包 / 根因
+
+```text
+0x11 BUFFER_FULL：
+  - Zigbee 协议栈内部 buffer 满
+  - 根因疑似：
+    1. 缓冲区管理缺陷
+    2. 内存泄漏
+    3. 异常路径未释放
+
+软重启不恢复：
+  - 重启后 buffer 状态未清
+  - 重新分配 = 同样问题
+  - 必须物理重插（断电清状态）
+
+物理重插恢复：
+  - 断电清全部状态
+  - buffer 完全释放
+  - 协调器正常运行
+```
+
+### 修复
+
+```text
+短期方案（workaround）：
+  1. 回退固件
+     - Z-Stack 20240710 → Z-Stack 20221226
+     - 20221226 测试稳定
+     - 这是 manufacturer 验证过的稳定版
+  2. 配合 zigbee2mqtt 老版本
+     - 老版本 + 老固件 = 兼容
+
+长期方案（root cause）：
+  1. 等待官方 fix
+     - TI 已知问题
+     - 修复版本待发
+  2. 关键业务网络保留稳定版
+     - 不轻易升级
+     - 新版本先小规模灰度
+```
+
+### 关键工程认知
+
+```text
+- 关键业务网络 = 保留已知工作版本
+- 新版本 = 小规模灰度
+- BUFFER_FULL 0x11 = 软重启不恢复
+- 物理重插 = 唯一可靠恢复
+- 固件升级 = 风险操作
+- 协议栈升级 = 必测 1 周稳定性
+```
+
+### 实战
+
+```bash
+# 1. 查看当前固件版本
+Z-Stack 3.0.2 (built 20240710)
+
+# 2. 备份配置
+cp /config/zigbee.db /config/zigbee.db.bak
+
+# 3. 刷老固件
+# 通过 web flasher 刷 20221226 固件
+
+# 4. 启动协调器
+systemctl restart zigbee2mqtt
+
+# 5. 验证
+- 设备重新入网
+- 监控 1 周稳定
+- 不再 BUFFER_FULL
+```
+
+### 复盘
+
+- **Z-Stack 20240710 BUFFER_FULL 0x11** = 已知问题
+- 软重启不恢复 = 状态未清
+- 物理重插 = 唯一可靠恢复
+- 回退 20221226 = 短期修复
+- 关键业务 = 保留稳定版
+- 灰度升级 = 必走流程
+- 协议栈 bug = 等官方 fix
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-09-candidates.md 候选 4
+- GitCode 博客 Z-Stack 实战
+
+---
+
+## 案例 35：ESP32-C6 sniffer RSSI histogram 定位"loud neighbor" desense
+
+### 现象
+
+某 ZigBee 网络 sniffer 一周撞 3 故障：
+
+- 车库 Tuya 设备 -96dBm 直连无 router 备援
+- 整网 NWK_NO_ROUTE 误报，实际 Hue 桥前级 desense
+- 配对停滞
+
+### 抓包 / 根因
+
+```text
+desense（去敏）：
+  - 强信号在空间近（≠频段冲突）压低接收灵敏度
+  - 真实现象：RSSI 极高但 PER 也高
+  - 容易被误判为 NWK_NO_ROUTE（路由问题）
+  - 实际是 receiver 阻塞
+
+Hackaday 实战发现：
+  - 3 类故障混在一起
+  - RSSI histogram 面板定位 loud neighbor
+  - 高帧率 + RSSI 集中 = 物理近
+```
+
+### RSSI histogram 算法
+
+```python
+# sniffer 抓包 1 小时
+# 统计每设备 RSSI 分布
+# 高峰 = 信号源位置
+# 多设备共享高峰 = loud neighbor
+
+import collections
+rssi_hist = collections.Counter()
+for packet in sniffed_packets:
+    rssi_hist[packet.rssi] += 1
+
+# 找高峰
+top_5_rssi = rssi_hist.most_common(5)
+for rssi, count in top_5_rssi:
+    print(f"RSSI {rssi} dBm: {count} packets")
+# 输出：
+# RSSI -45 dBm: 5000 packets  ← loud neighbor
+# RSSI -75 dBm: 200 packets
+# RSSI -96 dBm: 50 packets   ← 远端设备
+```
+
+### 修复
+
+```text
+1. RSSI histogram 定位
+   - 找高峰设备
+   - 物理近 = desense 元凶
+
+2. 空间隔离
+   - 把 loud neighbor 远离协调器
+   - 加吸盘天线
+   - 屏蔽金属反射
+
+3. 加 router 备援
+   - 远端 Tuya 设备加 router
+   - 直连太弱 -96dBm
+   - router 转发 = -75dBm 健康
+
+4. 重置 + 重配
+   - 配对停滞
+   - 协调器重置
+   - 设备重入
+```
+
+### 复盘
+
+- **desense 空间近 ≠ 频段冲突** = 真实坑
+- RSSI histogram = 定位 loud neighbor
+- 高峰 + 高帧率 = 物理近
+- Hue 桥 = 高功率 = 阻塞其他
+- Tuya 远端 -96dBm = 无 router = 死区
+- 修复 = 空间隔离 + router 备援
+- 配对停滞 = 协调器重置
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-10-candidates.md 候选 1
+- Hackaday.io 项目日志
+
+---
+
+## 案例 36：ESP32-C6 遥控器 4 层叠加故障（3 周调试实战）
+
+### 现象
+
+某 ESP32-C6 ZigBee 遥控器：
+
+- 3 周调试
+- 4 层叠加故障
+- 实际：C6 SDK 跨芯片 bug + 配对漏配
+
+### 4 层叠加
+
+```text
+层 1：setReporting 缺配
+  - 现象：sensor 数据不回传
+  - 根因：setReporting 配置缺失
+  - 修复：ZCL Configure Reporting 命令
+
+层 2：C6 SDK 跨芯片 bug（time cluster 缺实现）
+  - 现象：time cluster 调用 null pointer
+  - 根因：C6 SDK 跨芯片移植不完整
+  - 修复：禁用 time cluster 或打补丁
+
+层 3：Z2M converter 编码须与固件一致
+  - 现象：HA 收到乱码
+  - 根因：zigbee2mqtt converter 编码与固件不一致
+  - 修复：检查 converter 与固件 cluster 编码
+
+层 4：GPIO0 浮空需 5MΩ 下拉
+  - 现象：上电 boot 模式错乱
+  - 根因：ESP32 GPIO0 浮空 → boot 模式不确定
+  - 修复：5MΩ 下拉电阻
+  - 注意：兼顾"防浮空" + "键盘弱电压触发"
+```
+
+### NVS 双阶段
+
+```text
+NVS（Non-Volatile Storage）：
+  - 阶段 1：上电初始化
+  - 阶段 2：用户配对后
+
+双阶段重配：
+  1. 配对后存 NVS
+  2. 启动时读 NVS
+  3. 失败 → 重新配对
+  4. 不要：单阶段（容易丢配对）
+```
+
+### 实战代码
+
+```c
+// 1. 5MΩ 下拉 GPIO0
+// hardware: GPIO0 → 5MΩ → GND
+
+// 2. NVS 双阶段
+typedef enum {
+    NVS_PHASE_INIT,
+    NVS_PHASE_PAIRED
+} nvs_phase_t;
+
+void nvs_init_check(void) {
+    nvs_phase_t phase = nvs_read_phase();
+    if (phase == NVS_PHASE_INIT) {
+        // 重新配对
+        start_pairing();
+    } else {
+        // 已配对，复位
+        restore_pairing();
+    }
+}
+```
+
+### 复盘
+
+- **4 层叠加** = 真实调试常态
+- setReporting 缺配 = 头号坑
+- 跨芯片 SDK bug = 必查
+- converter 编码 = 必须一致
+- GPIO0 5MΩ 下拉 = 兼顾防浮空 + 弱电压触发
+- NVS 双阶段 = 配对不丢
+- 3 周调试 = 工业调试真实时长
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-10-candidates.md 候选 3
+- dredyson.com 工程复盘
+
+---
+
+## 案例 37：SNZB-02DR2 Telink 0xf000 OTA 解析失败 + 晓网 WLT 380 节点 99.6%
+
+### A. SNZB-02DR2 OTA 失败
+
+```text
+2025-09 SNZB-02DR2 在 SONOFF 网关 OK：
+  - 升级正常
+  - 控制正常
+
+在 Home Assistant（Z2M + ZHA）三症：
+  - 症状 1：check fail
+  - 症状 2：100% 卡住
+  - 症状 3：推送缺失
+
+根因：
+  - Telink 0xf000 sub-element 插 Tag Info
+  - 导致标准 ZCL OTA offset 错位
+  - 解析失败
+
+修复：
+  - Z2M issue #9963 + #9984
+  - 兼容 Telink 私货 sub-element
+```
+
+### 3 类 OTA 失败
+
+```text
+失败 1：传输失败
+  - 网络问题
+  - 多包丢失
+  - 重传不收敛
+
+失败 2：解析失败
+  - 私货 sub-element
+  - ZCL length 语义破坏
+  - 厂商兼容性
+
+失败 3：版本失败
+  - 固件版本不匹配
+  - 硬件 revision 错
+  - image type 不符
+```
+
+### B. 晓网 WLT 工业模组 380 节点 99.6%
+
+```text
+传统 ZigBee 160 节点：
+  - 离线 9.1%
+  - 延迟 600ms+
+  - AT 无返回 = 工位报废
+
+晓网 WLT 380 节点：
+  - 72h 满载测试
+  - 在线 99.6%
+  - 延迟 < 10ms
+  - 视距 3km
+  - 休眠 < 4μA
+```
+
+### 6 大 AT 无返回原因 + 对策
+
+```text
+1. 上电 3s 内发指令
+   - 模组未初始化完
+   - 对策：上电后延时 3s 再发 AT
+
+2. 信道 25 抗 450MHz 谐波
+   - 现场对讲机谐波
+   - 对策：选信道 15/20/25
+
+3. 串口参数错
+   - 波特率 / 校验位
+   - 对策：固化 115200-8-N-1
+
+4. AT 指令后无 \r\n
+   - 模组要求
+   - 对策：发完加回车换行
+
+5. 协调器地址错
+   - AT+COORD? 查
+   - 对策：校准地址
+
+6. 固件 bug
+   - 旧版本
+   - 对策：升级最新
+```
+
+### 4 硬指标
+
+```text
+工业 ZigBee 模组选型 4 硬指标：
+  1. 节点数容量：> 380
+  2. 延迟：< 10ms
+  3. 视距：> 3km
+  4. 休眠功耗：< 4μA
+```
+
+### 复盘
+
+- **SNZB-02DR2 Telink 0xf000** = 厂商私货 sub-element 突破 length
+- OTA 3 类失败 = 传输 / 解析 / 版本
+- 晓网 WLT 380 节点 99.6% = 工业标杆
+- 6 大 AT 无返回 = 必走清单
+- 4 硬指标 = 选型标准
+- 上电 3s 延时 = 实战经验
+- 私货 sub-element = 适配 checklist
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-10-candidates.md 候选 4 + 候选 5
+- SONOFF 官方博客
+- 电子工程网 晓网科技
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

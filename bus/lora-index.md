@@ -116,6 +116,14 @@ chips-com/bus/lora-*.md
 | 商业部署 5 坑（ADR + 移动节点） | lora-failure-cases.md 案例 27 |
 | SX1278 果园 500 亩 120 节点 1 年稳 | lora-failure-cases.md 案例 28 |
 | LoRaWAN 到云端 + DevEUI 大小端 + FCnt | lora-failure-cases.md 案例 29 |
+| 腾讯云空中资源挤兑 GW 8 上/1 下 | lora-failure-cases.md 案例 30 |
+| SX1278 距离不足 5 步排查 | lora-failure-cases.md 案例 31 |
+| ESP32 LMIC MSB/LSB 字节序 + US915 subband | lora-failure-cases.md 案例 32 |
+| SX1262 vs SX1278 决策树 + 47nH 电感 | lora-failure-cases.md 案例 33 |
+| 拓冰 420 节点 P0 三联 + 470 MHz 扫频 | lora-failure-cases.md 案例 34 |
+| pyMC_Repeater SF11+ airtime.py 死区 | lora-failure-cases.md 案例 35 |
+| LoRaWAN 下行 4 fault domain + MQTT | lora-failure-cases.md 案例 36 |
+| 工业 crane edge FFT LoRaWAN 10 周 | lora-failure-cases.md 案例 37 |
 
 ## 关键概念地图
 

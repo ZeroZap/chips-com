@@ -110,6 +110,15 @@ chips-com/bus/zigbee-*.md
 | JN5169 量产回流焊 + 半孔钢网 | zigbee-failure-cases.md 案例 26 |
 | 泓格高雄酸洗吊挂 Router 互转 + VxCOMM | zigbee-failure-cases.md 案例 27 |
 | 智能家居 Mesh 5 条军规 | zigbee-failure-cases.md 案例 28 |
+| Kaspersky Securelist nRF52840 协调器 + 私有 profile | zigbee-failure-cases.md 案例 29 |
+| BDB/ZCL/ZGP + Reporting + APS_BindReq | zigbee-failure-cases.md 案例 30 |
+| Tuya Private vs Standard 3.0 30s 拥塞 | zigbee-failure-cases.md 案例 31 |
+| 仓库 ZigBee 40 跳 router 密度怪拓扑 | zigbee-failure-cases.md 案例 32 |
+| Hubitat FF01 广播风暴 7 设备同毫秒 | zigbee-failure-cases.md 案例 33 |
+| Z-Stack 20240710 BUFFER_FULL 0x11 物理重插 | zigbee-failure-cases.md 案例 34 |
+| ESP32-C6 sniffer RSSI histogram + desense | zigbee-failure-cases.md 案例 35 |
+| ESP32-C6 遥控器 4 层叠加故障 | zigbee-failure-cases.md 案例 36 |
+| SNZB-02DR2 Telink OTA + 晓网 WLT 380 节点 99.6% | zigbee-failure-cases.md 案例 37 |
 | Poll Interval | zigbee-practical.md "## End Device 睡眠参数" |
 | SoC vs NCP 差异 | zigbee-deep-dive.md "## SoC vs NCP 调试差异" |
 | 厂商协议栈对比 | zigbee-deep-dive.md "## 厂商协议栈对比" |

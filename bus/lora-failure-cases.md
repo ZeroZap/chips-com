@@ -2988,6 +2988,816 @@ LoRa.endPacket();
 
 ---
 
+## 案例 30：LoRaWAN GW 8 上/1 下"挤兑"——三大策略解
+
+### 现象
+
+某 LoRaWAN GW 部署（国内厂商）：
+
+- GW 8 个上行信道 / 1 个下行信道
+- 大量节点同时上电
+- GW 下行严重堵塞
+- Join 失败
+
+### 根因
+
+```text
+GW 资源挤兑：
+  - 上行 8 信道（SX1302 / SX1303）
+  - 下行 1 信道
+  - 大规模同时 join → NS 调度不下行
+  - 节点 join accept 收不到 → 反复重试
+  - 雪崩
+```
+
+### 3 大策略
+
+```text
+策略 1：Unconfirmed + 应用 ACK 释放下行
+  - 业务数据用 Unconfirmed
+  - 应用层加 ACK（不要走 LoRaWAN 确认）
+  - 释放下行带宽
+  - 适合：非关键数据（环境监测）
+
+策略 2：本地 ADR 在 NS 失效时仍能调 SF
+  - 节点端 ADR 算法
+  - 按本地 RSSI / SNR 选 SF
+  - 不依赖 NS 下行
+  - 适合：移动 / 抖动场景
+
+策略 3：按需入网（避免 join storm）
+  - 节点上电后随机延迟 0-60s 再 join
+  - 错开 join 时间
+  - 适合：大量节点同时部署
+```
+
+### 实战
+
+```c
+// 节点端本地 ADR
+typedef struct {
+    uint8_t current_sf;
+    int16_t rssi_avg;
+    int16_t snr_avg;
+} local_adr_t;
+
+void local_adr_update(local_adr_t *adr) {
+    if (adr->rssi_avg < -120 && adr->current_sf < 12) {
+        adr->current_sf++;
+    } else if (adr->rssi_avg > -90 && adr->current_sf > 7) {
+        adr->current_sf--;
+    }
+    
+    radio.set_spreading_factor(adr->current_sf);
+}
+
+// 错开 join
+void staggered_join(void) {
+    uint32_t delay = (esp_random() % 60000);  // 0-60s 随机
+    vTaskDelay(delay / portTICK_PERIOD_MS);
+    lmict.join();
+}
+```
+
+### 复盘
+
+- **GW 8 上/1 下** = 大规模 LoRaWAN 硬件硬约束
+- Unconfirmed + 应用 ACK = 释放下行
+- 本地 ADR = 不依赖 NS 下行
+- 错开 join = 避免 storm
+- 3 策略组合 = 大规模部署必走
+- 国内 LoRaWAN 容量工程模板
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 1
+- 腾讯云开发者社区
+
+---
+
+## 案例 31：SX1278 距离 300m vs 理论 2km 5 步排查（华为云）
+
+### 现象
+
+某 IoT 项目 SX1278 节点：
+
+- 理论距离：2 km
+- 实际距离：300m
+- 链路预算缺口 ≥ 30dB
+
+### 5 步排查
+
+```text
+Step 1：默认发射功率是不是 17dBm
+  - 默认 SX1278 = 17dBm（不是 20dBm）
+  - 3 dB 差距 = 距离 1.4x
+  - 改 PA_BOOST 引脚 → 20dBm
+
+Step 2：发射瞬间 VCC 跌落
+  - 实测：VCC 跌 ≥ 0.3V（瞬态）
+  - 后果：发射功率下降
+  - 修：大电容 + 稳压
+
+Step 3：天线 1m → 2m 提升
+  - 距地面 1m：300m
+  - 距地面 2m：600-900m
+  - 距地面 5m：1500m
+  - 距地面 10m：3000m
+  - 公式：高度 2x = 距离 1.4x
+
+Step 4：馈线损耗
+  - 1m 馈线：~0.5dB 损耗
+  - 3m 馈线：~1.5dB
+  - 5m 馈线：~3dB
+  - 短馈线优先
+
+Step 5：天线方向图错配
+  - 全向 vs 定向
+  - 室内 vs 室外
+  - 增益 vs 带宽
+  - 改：高增益定向天线（点对点）
+```
+
+### 30dB 链路预算缺口
+
+```text
+理论 2km 链路预算：
+  +14 dBm（发射）
+  +2 dBi（天线）
+  +0 dBi（接收天线）
+  -97 dBm（接收灵敏度 SF7）
+  = 2 km
+
+实际 300m 缺口：
+  - 3 dB（默认 17dBm vs 理论 20dBm）
+  - 3 dB（VCC 跌落 0.3V）
+  - 6 dB（地面反射）
+  - 5 dB（馈线损耗）
+  - 6 dB（多径）
+  - 5 dB（植被吸收）
+  - 2 dB（极化失配）
+  = 30 dB
+
+修后 1.5km：
+  - 0 dB（强制 20dBm）
+  - 0 dB（VCC 稳定）
+  - 0 dB（高度 5m）
+  - 0 dB（短馈线）
+  - 3 dB（多径）
+  - 2 dB（植被）
+  = 5 dB 缺口
+  = 1.5km 可达
+```
+
+### 复盘
+
+- **默认 17dBm ≠ 20dBm** = 工程盲点
+- VCC 跌落 0.3V = 瞬态发射功率降
+- 天线高度 2x = 距离 1.4x
+- 馈线损耗 5m 馈线 = 3dB
+- 30dB 缺口 = 5 步排查能修
+- 高度 > 增益（实战铁律）
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 2
+- 华为云 博主
+
+---
+
+## 案例 32：ESP32 LMIC 90% EV_JOIN_FAILED = MSB/LSB 字节序 + US915 subband
+
+### 现象
+
+ESP32（TTGO / Heltec）跑 LMIC 加入 TTN / Helium 失败：
+
+- 90% 案例 = 密钥字节序错
+- US915 64 信道 8 subband，部分 GW 只听 1 个 subband
+- SX1262 ≠ SX1276 初始化序列不同
+
+### 3 大真实坑
+
+```text
+坑 1：MSB / LSB 字节序错
+  - 现象：EV_JOIN_FAILED
+  - 根因：
+    - TTN 控制台显示 MSB
+    - LMIC 内部用 LSB
+    - AppKey 复制时未反转 → MIC 校验失败
+    - 网关静默丢包
+  - 解决：
+    - 手动 reverse 字节对
+    - LMIC_setSession 反转
+  - 实战：
+    uint8_t appkey[16] = {...};
+    reverse_bytes(appkey, 16);
+    LMIC_setAppKey(appkey);
+
+坑 2：US915 64 信道 8 subband
+  - 现象：节点发 64 信道，GW 只听 subband 2
+  - 根因：US915 = 8 个 subband × 8 信道 = 64 信道
+  - 解决：
+    LMIC_selectSubBand(1);  // 选 subband 1
+    // os_init() 之后立即注入
+  - 注意：subband 选错 = 永远 EV_JOIN_FAILED
+
+坑 3：SX1262 ≠ SX1276 初始化序列
+  - 现象：Heltec V3 SX1262 升旧 LMIC 静默 SPI timeout
+  - 根因：
+    - DIO 路径不同
+    - 中断配置不同
+    - 旧库默认 SX1276
+  - 解决：
+    - 升级到 MCCI LMIC 4.x
+    - 或用 RadioLib
+    - 检查 lmic.h 配置
+```
+
+### 修复代码
+
+```c
+// 1. 字节序反转
+void reverse_bytes(uint8_t *data, uint8_t len) {
+    for (uint8_t i = 0; i < len / 2; i++) {
+        uint8_t tmp = data[i];
+        data[i] = data[len - 1 - i];
+        data[len - 1 - i] = tmp;
+    }
+}
+
+// 2. US915 subband
+void setup_lmic_us915(void) {
+    os_init();
+    LMIC_reset();
+    LMIC_setLinkCheckMode(0);
+    LMIC_selectSubBand(1);  // US915 subband 1
+    LMIC_setAdrMode(1);
+    LMIC_setDrTxpow(DR_SF7, 14);
+    
+    // Init keys
+    uint8_t appkey[16];
+    memcpy(appkey, MY_APPKEY, 16);
+    reverse_bytes(appkey, 16);
+    LMIC_setAppKey(appkey);
+}
+```
+
+### 复盘
+
+- **90% EV_JOIN_FAILED = MSB/LSB 字节序** = L4 LoRa 最高频坑
+- US915 64 信道 8 subband = subband 选错必失败
+- SX1262 ≠ SX1276 = 芯片换代必查
+- 字节序反转 = 必须手动
+- `LMIC_selectSubBand(1)` = 必在 `os_init()` 后立即
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 4
+- _Inbox/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 2
+- _Inbox/LoRa-LoRaWAN-2026-09-11-candidates.md 候选 5
+- electricalflux.com 工程师实战
+- MCCI LMIC 文档
+
+---
+
+## 案例 33：SX1262 vs SX1278 选型决策树（智慧水表 8 年 IIoT 实测）
+
+### 现象
+
+8 年 IIoT 实战经验：
+
+- 智慧水表实测：SX1262 通信 4→8 次/日，整体功耗 -23%
+- 山区气象站：多径下 SX1278 反而更稳
+- 选型决策 = 业务需求 + 物理层特性
+
+### 决策树
+
+```text
+Q1：电池寿命 > 3 年？
+  YES → SX1262（接收 5mA vs SX1276 12mA）
+  NO  → SX1278（成熟生态）
+  
+Q2：每日通信 > 20 次？
+  YES → SX1262（DC-DC 模式高效）
+  NO  → SX1278（普通应用）
+  
+Q3：尺寸受限？
+  YES → SX1262（更小封装）
+  NO  → SX1278
+  
+Q4：移动场景？
+  YES → SX1278（多径稳定）
+  NO  → SX1262
+  
+Q5：预算受限？
+  YES → SX1278（便宜 30%）
+  NO  → SX1262
+
+决策示例：
+  智慧水表：电池 10 年 + 8 次/日 + 尺寸 → SX1262
+  山区气象：多径 + 移动 → SX1278
+```
+
+### SX1262 DC-DC 47nH 外部电感
+
+```text
+SX1262 DC-DC 模式：
+  - 内置 DC-DC 转换器
+  - 需要外部 47nH 电感
+  - 错配电感 = brownout 0mA
+
+实战：
+  - 47nH ± 10% 精度
+  - DCR < 0.5Ω
+  - 饱和电流 > 500mA
+  - 屏蔽电感（防耦合）
+
+常见错误：
+  - 用 22nH（不启动）
+  - 用 100nH（DC-DC 失效）
+  - 用 0805 电感（饱和电流不足）
+  - 错配 = 0mA brownout
+```
+
+### 实战数据
+
+```text
+智慧水表项目：
+  - SX1276 → SX1262 切换
+  - 通信 4 次/日 → 8 次/日（+100%）
+  - 整体功耗 -23%（DC-DC 模式高效）
+  - 电池 10 年续航
+
+山区气象站：
+  - 多径 + 移动
+  - SX1278 表现更稳
+  - 不强求 SX1262
+
+功耗对比（接收）：
+  - SX1276：12 mA
+  - SX1262 (LDO)：5 mA
+  - SX1262 (DC-DC)：3 mA
+  - 1/4 功耗
+```
+
+### 修复
+
+```c
+// SX1262 正确初始化（DC-DC 模式）
+void sx1262_init_dcdc(void) {
+    SX126x.Reset();
+    SX126x.SetPackageType(SX126x.PACKAGE_TYPE_SX1262);
+    SX126x.SetRegulatorMode(SX126x.REGULATOR_DCDC);  // DC-DC 模式
+    SX126x.SetTcxoMode(0, 320);  // TCXO 配置
+    SX126x.SetDio3AsTcxoCtrl(SX126x.DIO3_OUTPUT_1_8);  // 1.8V
+    SX126x.SetRfFrequency(470000000);
+    SX126x.SetPaConfig(0x04, 0x07, 0x00, 0x01);  // PA 配置
+    SX126x.SetTxParams(14, SX126x.RADIO_RAMP_200_US);
+    SX126x.SetDioIrqParams(0xFFFF, 0xFFFF, 0xFF, 0xFF);
+}
+```
+
+### 复盘
+
+- **决策树** = 业务需求 + 物理层特性
+- SX1262 = 电池 + 高频 + 尺寸
+- SX1278 = 移动 + 多径 + 预算
+- 47nH DC-DC 电感 = 必选对
+- 智慧水表 SX1262 整体功耗 -23%
+- 山区气象 SX1278 多径更稳
+- 选型 = 业务 + 物理 + 预算三维
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 5
+- CSDN 8 年 IIoT 工程师
+- Semtech SX1262 datasheet §4
+
+---
+
+## 案例 34：拓冰 420 节点 P0 三联 + 470 MHz 频谱前置扫频
+
+### 现象
+
+某 LoRaWAN 智能能源项目（拓冰网络 420 节点）：
+
+- 3 个月后 P0 全网延迟 / 丢失
+- 根因三层并发
+
+### 3 联根因
+
+```text
+联因 1：半信道网关瓶颈
+  - GW 8 信道中 4 个被工业 WiFi 占用
+  - 实际可用 = 4 信道
+  - 节点排队上 → 严重丢包
+  - 解决：8 通道 SX1302 替代半信道 GW
+
+联因 2：ChirpStack PG 连接池溢出
+  - PostgreSQL 连接池配置过小
+  - 大量节点同时上行 → 连接耗尽
+  - NS 静默卡死
+  - 解决：调优 worker 数量 + PG pool
+
+联因 3：ADR SF7 扎堆同秒撞车
+  - ADR 算法降速到 SF7
+  - 全部近端节点同时 SF7 上行
+  - 撞车 = 大量重传
+  - 解决：限 ADR 最低 SF9（避免扎堆 SF7）
+```
+
+### 修复
+
+```text
+Step 1：硬件替换
+  - 旧 SX1301 半信道 GW → 新 SX1302 8 通道
+  - 多 1 倍容量
+
+Step 2：NS 调优
+  - ChirpStack worker 数量 = CPU 核数 × 2
+  - PG max_connections = 200
+  - PG 连接池 resize 监控
+
+Step 3：ADR 限制
+  - 默认 ADR 降到 SF7
+  - 改：限制最低 SF9
+  - 避免大量节点同 SF 撞车
+```
+
+### 470 MHz 频谱前置扫频
+
+```text
+中国 CN470 频段：
+  - 470-510 MHz
+  - 8 个 subband（每个 5 MHz）
+  - 0：470-475
+  - 1：475-480
+  - 2：480-485
+  - 3：485-490
+  - 4：490-495
+  - 5：495-500
+  - 6：500-505
+  - 7：505-510
+
+扫频方法：
+  - 频谱仪扫 470-510 MHz
+  - 找出干净 subband
+  - 配置节点 + GW 同步
+
+FUOTA + Class A↔C 切换：
+  - 节点平时 Class A（省电）
+  - FUOTA 时切 Class C
+  - FUOTA 完成切回 Class A
+  - 节省 90% 接收能耗
+```
+
+### 实战效果
+
+```text
+修复前：
+  - 节点 420
+  - P0 延迟 / 丢失（3 个月后）
+  - 整体吞吐：基线
+
+修复后：
+  - 节点 420
+  - 稳定运行
+  - 整体吞吐：4x
+```
+
+### 复盘
+
+- **3 联并发** = P0 事故标准模式
+- 硬件半信道 = 容量减半
+- NS 连接池 = 静默卡死杀手
+- ADR SF7 扎堆 = 同频撞车
+- 频谱前置扫频 = L4 必走
+- FUOTA + Class A↔C = 省电 + 灵活
+- 拓冰 420 节点 = 大规模组网必踩坑
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-08-candidates.md 候选 1
+- 拓冰网络（kwkd.cn）
+
+---
+
+## 案例 35：pyMC_Repeater SF11+ 不转发——airtime.py 缺 bandwidth_hz
+
+### 现象
+
+某 LoRaWAN 部署：
+
+- pyMC_Repeater（开源中继）
+- SF7/8/9 工作正常
+- SF11+ 不转发
+- 远端高 SF 设备（农业 / 地下室 / 工业死角）整个静默死区
+- 间歇丢包极难发现
+
+### 根因
+
+```text
+pyMC_Repeater 用 airtime.py 计算 airtime：
+  def calc_airtime(sf, bw=125, cr=1, payload=10):
+      # 旧版：默认 bw=125 kHz
+
+低 SF（SF7-10）：
+  - airtime 短（< 1s）
+  - airtime.py 隐式默认值不崩
+  - 转发正常
+
+高 SF（SF11-12）：
+  - airtime 长（1-2.5s）
+  - 隐式默认 bw=125 跟实际不符时 = 精度不够
+  - 转发时间窗错位
+  - 节点收不到 → 静默
+```
+
+### 修复（3 步）
+
+```text
+1. 改 airtime.py
+   - 显式传 bandwidth_hz 参数
+   - 不要默认值
+   - 强制检查
+   
+2. 改 pyMC_Repeater 配置
+   # 旧：
+   airtime = calc_airtime(sf)  # 默认 bw=125
+   
+   # 新：
+   airtime = calc_airtime(sf, bandwidth_hz=actual_bw)
+   
+3. 验证
+   - 跑 SF11 / SF12 短测
+   - 跑 SF7 / SF8 对照
+   - 双向均通
+```
+
+### 实战代码
+
+```python
+# 修复版 airtime 计算
+def calc_airtime_safe(sf, bw_hz, cr=1, pl=10):
+    """显式 bw_hz 参数，避免默认值坑"""
+    bw = bw_hz
+    t_sym = (2**sf) / bw
+    t_preamble = (8 + 4.25) * t_sym
+    payload_sym_nb = 8 + max(
+        math.ceil((8*pl - 4*sf + 28 + 16) / (4*sf)) * cr,
+        0
+    )
+    t_payload = payload_sym_nb * t_sym
+    return t_preamble + t_payload
+
+# repeater 用法
+def on_uplink(packet):
+    sf = packet.sf
+    bw = packet.bandwidth  # 实际 BW（必传）
+    airtime = calc_airtime_safe(sf, bw_hz=bw)
+    
+    if not is_within_window(airtime):
+        return  # 跳过超出窗口的包
+```
+
+### 复盘
+
+- **pyMC_Repeater SF11+ 死区 = 配置/脚本边界 bug**
+- airtime.py 默认值 = 隐性炸弹
+- SF 升高才出现 = 难发现
+- 间歇丢包 = 90% 是配置 bug
+- 显式传参 = 避免默认值
+- 双向验证 = 短测必走
+- 边缘场景静默死区 = 排查清单
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-08-candidates.md 候选 3
+- talkin.icu 实战
+
+---
+
+## 案例 36：LoRaWAN 下行"已调度未发出"4 fault domain 矩阵 + MQTT 调试法
+
+### 现象
+
+LoRaWAN 下行问题：
+
+- 控制台显示 "scheduled"
+- 实际：节点收不到
+- "沉默失败"
+
+### 4 fault domain 矩阵
+
+```text
+Domain A：NS 编码器异常抛错
+  现象：UI 显 "scheduled" 实际 formatter 异步 worker 抛错
+  根因：
+    - encoder throw 异常
+    - 异步 worker 静默吞
+    - UI 不显示中间错误
+  调试：
+    - 订阅 MQTT `+/devices/+/events/#`
+    - 看 as.up.errors 事件
+  修：try/catch + return errors[] 数组（不能 throw）
+
+Domain B：NS 调度器死锁
+  现象：scheduled 但不发出
+  根因：
+    - ChirpStack device lock 锁死
+    - AWS SQS 队列卡
+  调试：
+    - 看 NS log 中的 device lock
+    - 查 AWS queue depth
+  修：清理 lock + 重启 NS
+
+Domain C：单信道 packet forwarder
+  现象：完全不发出
+  根因：
+    - 单信道 ESP32 sketch
+    - 下行频率不匹配
+    - TTN 不支持
+  调试：
+    - 看 packet forwarder log
+    - 验证 channel 配置
+  修：换 8 通道 GW
+
+Domain D：Class A 上行缺失
+  现象：RX1 / RX2 窗口不开
+  根因：
+    - 节点没上行
+    - RX 窗口不存在
+    - 永远不接下行
+  调试：
+    - 看节点是否真的有上行
+    - 查 RSSI / SNR
+  修：先修上行链路
+```
+
+### MQTT 调试法
+
+```bash
+# 1. 订阅所有设备事件
+mosquitto_sub -h localhost -t '+/devices/+/events/#' -v
+
+# 输出：
+# application/1/device/0123/events/down
+# {"deduplication_id":"...","type":"as.down.scheduled",...}
+
+# 2. 看 as.up.errors 关键事件
+mosquitto_sub -h localhost -t 'application/1/device/+/events/up' | grep "as.up.errors"
+
+# 输出错误：
+# {"error":"encoder_failed","message":"..."}
+# {"error":"device_locked","message":"..."}
+```
+
+### 4×5 root cause matrix
+
+```text
+|  Domain  |  根因  |  现象  |  调试  |  修复  |
+| A 编码器 | throw | UI scheduled | MQTT | try/catch |
+| A 编码器 | 异步吞 | 静默 | 查 stack | return errors[] |
+| B 调度器 | lock | 队列卡 | NS log | 清理 lock |
+| B 调度器 | AWS 卡 | 队列满 | queue depth | 扩容 |
+| C 单信道 | 频率错 | 不发出 | packet forwarder log | 换 GW |
+| C 单信道 | TTN 拒 | 静默 | GW type | 换 GW |
+| D Class A | 无上行 | RX 不开 | 节点 log | 修上行 |
+| D Class A | RSSI 差 | RX 失败 | RSSI | 调天线 |
+```
+
+### 实战订阅
+
+```bash
+# 订阅下行事件
+mosquitto_sub -h localhost -t 'application/+/device/+/event/down' -v | head
+
+# 订阅错误
+mosquitto_sub -h localhost -t '+/devices/+/events/#' -v | grep error
+```
+
+### 复盘
+
+- **4 fault domain 矩阵** = 工业现场方法论
+- MQTT wildcard = 比 console UI 强 10x
+- UI 静默 = 实际错误（NS 异步 worker 吞）
+- 单信道 forwarder = TTN 不支持
+- Class A 上行缺失 = 下行永远不开
+- 4×5 矩阵 = L4 教学卡
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 3
+- _Inbox/LoRa-LoRaWAN-2026-09-11-candidates.md 候选 4
+- Industrial Monitor Direct 知识库
+
+---
+
+## 案例 37：工业 crane 振动+温度 LoRa 监测工程化时间表（4+2+4 周）
+
+### 现象
+
+某工业 crane 振动+温度 LoRa 监测系统：
+
+- 真实工程化时间表 = 4 + 2 + 4 = 10 周
+- 不是 1 周 demo
+
+### 时间表（10 周）
+
+```text
+Phase 1：edge FFT 固件（4 周，最大块）
+  - 最大工作量
+  - 特征提取需真实电机振动数据迭代
+  - 不要在办公室闭门造车
+  - 必须现场采集
+
+Phase 2：LoRaWAN 网络+安全（2 周）
+  - GW 部署
+  - NS 配置
+  - 加密（LoRa link + 应用层）
+  - 设备入网
+
+Phase 3：现场安装+基线建立（4 周，第二大块）
+  - 物理安装（吊挂 / 供电 / 天线）
+  - 现场校准（load-context-aware 阈值）
+  - 必观察真实运行模式（非一次性校准）
+
+总周期：10 周
+```
+
+### 4 大工程认知
+
+```text
+1. edge FFT 决定 duty cycle 预算
+   - 不要发原始振动数据
+   - 边缘算 RMS / 峰值 / 频域特征
+   - duty cycle 才能塞进 LoRa 1% 限制
+
+2. 双路径上行 = 关键场景
+   - LoRa 主链路
+   - 蜂窝兜底（故障条件单点失效）
+   - AES-128 链路 + 应用层加密双层
+
+3. EMI 缓解 = 设计阶段
+   - 屏蔽线
+   - 接地
+   - 物理隔离大电流走线
+   - 不能事后补
+
+4. load-context-aware 阈值 = 现场校准必走
+   - 固定阈值高负载误报
+   - 现场观察真实负载模式
+   - 阈值随负载调整
+```
+
+### 误预算错误（"naive" 思维）
+
+```text
+常见错误：
+  - 假设"固件 + 场校"是 sequential phase
+  - 第一轮基线 → 阈值错 → 改固件 → 再校准
+  - 实际需要 2-3 轮迭代
+
+预算预留：
+  - 固件：4 周
+  - 第一轮场校：2 周
+  - 第二轮固件迭代：2 周
+  - 第二轮场校：2 周
+  - 总：10 周
+```
+
+### 27 机器实测教训
+
+```text
+振动传感器 default 装 27 种机器：
+  - 6 台"产生无效数据"
+  - 采样率不匹配转速
+  - 必须按机器转速配采样率
+
+修复：
+  - 高速机器（如 1500 RPM）：≥ 1 kHz 采样
+  - 中速机器（如 500 RPM）：≥ 500 Hz
+  - 低速机器（如 100 RPM）：≥ 100 Hz
+  - 采样率 ≥ 转速 × 10
+```
+
+### 复盘
+
+- **4+2+4 周 = 工业 IoT 真实时间表**（不是 1 周 demo）
+- edge FFT = 必走（原始数据塞不下 LoRa）
+- 现场校准 2-3 轮迭代 = 必做
+- 双路径上行 = 关键场景
+- 27 机器默认装 = 6 台无效数据
+- 采样率 ≥ 转速 × 10 = 工程标准
+- AES-128 链路 + 应用层 = 双层加密
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 5
+- EurthTech 工程博客
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
