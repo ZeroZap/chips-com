@@ -4525,6 +4525,201 @@ Step 4：状态机显式
 
 ---
 
+## 案例 50：EBYTE 遥控器产线断连 4 大根因（brownout 50mV 触发 nRF52）
+
+### 现象
+
+遥控器产线 1000 台抽测 90% 出现"按 5 次有 1-2 次无响应"（用户视角"丢键"），抓包显示：
+- 连接建立正常，notify 链路通
+- 触发动作瞬间 → 连接突发断开（supervision timeout 7.5ms）
+- 重连成功率约 60%，剩下"卡死"需手动复位
+
+### 抓包 + 根因（4 大根因）
+
+#### 根因 1：电源纹波 → nRF52 brownout（**主因，60% 案例**）
+
+按键触发瞬间 nRF52 从 sleep（<5 µA）跳到 TX +4 dBm（18 mA 瞬态）。电源纹波：
+- 锂电池 3.0V 标称，+4dBm TX 瞬态下沉 >50mV → VCC < 2.85V 触发 nRF52 brownout
+- BOR 触发后 softdevice 不会自动恢复 → 必须手动复位（按键长按 5s）
+- **50 mV 阈值是 Nordic spec 第 38 章明确写**（不是经验值），所有 nRF52/53/52840 同样适用
+
+#### 根因 2：2.4 GHz 拥堵
+
+产线隔壁工位 Wi-Fi AP × 3 + 蓝牙耳机 + ZigBee 网关 = -30 dBm 强干扰。  
+抓包显示 PER（packet error rate）从 lab 的 0.5% 涨到产线 8%：
+- BLE channel map 39 信道中可用降到 15 个
+- connection event 7.5ms 内多次重传 → supervision timeout 累加
+
+#### 根因 3：PCB 天线 VSWR > 3.0 失谐
+
+板端采用 PCB trace antenna（chip antenna 之外的低成本方案）：
+- DFM 阶段未做 PNA 网络分析仪校准
+- VSWR 实测 3.2（spec 应 < 2.0）
+- 反射损耗让 +4 dBm 实际只剩 +0 dBm 到空间
+- 链路预算从设计 78 dB 跌到 ~62 dB，2m 内就触发 sensitivity edge
+
+#### 根因 4：连接参数不当
+
+application layer 设 connection interval 7.5ms（最快），但 slave latency = 4：
+- 实际平均 30ms 才一次窗口
+- 按键事件靠 polling 捕获 → 用户感"丢键"
+- 同时 application 写 notify 频率 10Hz，超出 MTU 排队能力
+
+### 定位（4 步法）
+
+```text
+Step 1：电源纹波定位
+  - 示波器探头打 VCC（电池正极 PCB 端）
+  - TX 触发时记录 Vmin
+  - 判断：Vmin < 2.85V → root cause 1 命中
+
+Step 2：频谱定位
+  - 频谱仪看 2.4 GHz 占用
+  - 或抓包看 channel map 有效信道数
+  - 判断：有效信道 < 20 → root cause 2 命中
+
+Step 3：天线定位
+  - PNA 网络分析仪测 S11
+  - VSWR > 2.0 → root cause 3 命中
+  - 用铜箔调匹配 / 改 chip antenna 备选
+
+Step 4：连接参数定位
+  - 抓 connection interval / slave latency
+  - application write notify 频率 vs 实际 throughput
+  - 调 latency → 0 + interval 7.5ms
+```
+
+### 修复
+
+| 根因 | 修复手段 | 验证 |
+| --- | --- | --- |
+| 1 brownout | 加 100µF 电容 + LDO 前置 + 限 TX 功率 0 dBm | 示波器 Vmin > 2.9V |
+| 2 拥堵 | 频谱避让 + AFH（adaptive frequency hopping）打开 | channel map 有效 > 30 |
+| 3 VSWR | 重画天线 + 调匹配网络 + 加 conductive shielding 罩 | VSWR < 1.8 |
+| 4 参数 | slave latency → 0 + interval 7.5ms | 1m 距离丢包率 < 0.1% |
+
+### 复盘
+
+- **90% 产线断连根因是硬件 + RF 物理层**（不是协议 bug）
+- 跌落 >50 mV 触发 brownout 是 nRF52 硬 spec，所有 nRF52 系列适用
+- 表格化诊断矩阵可复用：4 步法 + 4 根因 → 任何 BLE 产线问题都从这 4 维切入
+- **PCB 天线省钱是假省钱**——VSWR 失谐的链路预算损失不是软件能补的
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 2
+- EBYTE 工业 BLE 模块厂商 blog
+
+---
+
+## 案例 51：STM32 主机 HCI 0x10 硬件错误 + ISR 延迟（SysTick 优先级倒置）
+
+### 现象
+
+STM32F4 主机 UART 接蓝牙模块（NRF52/CSR8811），偶发（每天 1-3 次）出现：
+- HCI log 突然打 `HCI_HARDWARE_ERROR_EVENT (0x10)` 事件
+- 紧跟 ISR 延迟 50-200ms 抖动
+- FreeRTOS 任务卡死 / 随机崩溃
+- 重启后正常，无明显规律
+
+### 抓包 + 根因（4 大根因）
+
+#### 根因 1：ISR 内 `HAL_Delay` → SysTick 优先级倒置（**最常见，70%**）
+
+```c
+void USART1_IRQHandler(void) {
+    if (USART1->SR & USART_SR_RXNE) {
+        uint8_t b = USART1->DR;
+        hci_rx_buf[hci_rx_idx++] = b;
+        HAL_Delay(1);  // ❌ ISR 内调 SysTick 延时
+    }
+}
+```
+
+- SysTick 中断优先级 = 最低（默认 15）→ 嵌套在 USART1 ISR 内被自己阻塞
+- HAL_Delay 死等 SysTick downcounter → 1ms 实际等了 5-10ms
+- 期间 USART FIFO 溢出 → 蓝牙模块重发 → 主机 HCI 帧错位
+
+#### 根因 2：关中断超字节间隔 → HCI 帧错位
+
+```c
+__disable_irq();  // 关全局中断
+memcpy(dst, src, len);  // 拷贝 200+ 字节
+__enable_irq();
+```
+
+- UART @ 115200 baud 单字节 87 µs
+- 拷 200 字节 ≈ 17 ms > UART 1 字节间隔 87 µs
+- 关中断期间蓝牙模块来 5+ 字节 → RXNE 丢失 → HCI 帧解析错位 → 0x10 hardware error
+
+#### 根因 3：NVIC 分组错（preemption vs sub-priority）
+
+```c
+HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);  // 4 bit preemption, 0 sub
+HAL_NVIC_SetPriority(USART1_IRQn, 5, 0);            // preemption 5
+HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);           // preemption 0  ← 错！
+```
+
+- SysTick preemption 0 = 最高优先级 → 任何 ISR 内都能嵌套进 SysTick
+- 应设 SysTick preemption = 15（最低），让 USART 优先响应
+
+#### 根因 4：阻塞 printf 在 ISR / 任务
+
+```c
+void hci_event_cb(uint8_t *evt, uint16_t len) {
+    printf("HCI: %02x %02x %02x\n", evt[0], evt[1], evt[2]);  // ❌ 阻塞
+}
+```
+
+- printf → 格式化 → UART 阻塞输出（数 ms 级）
+- 如果在 ISR 或 FreeRTOS 高优先级任务 → 其他任务饥饿
+- HCI 事件堆积 → 蓝牙模块看主机无应答 → 触发 0x10
+
+### 定位（4 步法）
+
+```text
+Step 1：抓 Hardware Code
+  - 0x10 错误码解析（看 spec 表 5.2）
+  - 确定是 HCI 协议层错位还是真硬件坏
+
+Step 2：GPIO 测 ISR 延迟
+  - ISR 入口 GPIO 拉高，出口拉低
+  - 示波器测脉宽 = ISR 耗时
+  - 期望 < 50 µs，实际 1-200 ms → 命中根因 1 或 4
+
+Step 3：硬件信号
+  - 逻辑分析仪抓 UART TX/RX + flow control RTS/CTS
+  - 看 RX 字节间隔 vs 期望 baud rate
+  - 异常间隔 → 命中根因 2
+
+Step 4：代码审查
+  - 搜 HAL_Delay 在 ISR / __disable_irq 时长 / printf 在中断
+  - NVIC priority 配置
+```
+
+### 修复
+
+| 根因 | 修复 | 验证 |
+| --- | --- | --- |
+| 1 ISR 阻塞 | 用 RTOS queue + 信号量代替 `HAL_Delay`，ISR 只 enqueue | GPIO 测 ISR < 20 µs |
+| 2 关中断 | 拆为小块 + 开中断窗口，或用 DMA + double buffer | UART 无 RX 丢失 |
+| 3 NVIC 分组 | SysTick preemption 15，USART preemption 5 | `__get_IPSR()` 检查 |
+| 4 阻塞 printf | 用 ringbuffer + 低优先级 task 异步刷 | task monitor 无饥饿 |
+
+### 复盘
+
+- **修 ISR 阻塞 > 改硬件优先级**——软件改动 ROI 远高于硬件 rework
+- 排查序：Hardware Code → ISR 延迟波形 → 硬件信号 → 代码审查（4 步缺一不可）
+- 覆盖 FreeRTOS 随机死机的根因排查（**80% 随机死机是 HCI 帧错位**）
+- **中文资源**最完整可抄代码的就是 sheratonhq 这篇——STM32 蓝牙开发必读
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 4
+- sheratonhq 技术 blog（中文 HCI 实战）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

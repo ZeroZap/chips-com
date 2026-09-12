@@ -294,3 +294,7 @@ BLE 是"低功耗短距无线的事实标准"，强在功耗、GATT 属性模型
 
 - 2026-08-01: 初版, 5 篇笔记全部完成 (L4 闭环)
   - 来源：_Inbox/BLE-2026-07-31-candidates.md 5 条候选 + 实战补充
+- 2026-09-12: 新增 2 实战案例（50-51）
+  - 案例 50：EBYTE 遥控器产线 90% 断连 4 大根因（brownout 50mV / 2.4GHz 拥堵 / VSWR>3.0 / 连接参数）
+  - 案例 51：STM32 HCI 0x10 硬件错误 + ISR 延迟（SysTick 优先级倒置 / 关中断超字节 / NVIC 分组错 / 阻塞 printf）
+  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 2/4

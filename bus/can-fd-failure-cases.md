@@ -1262,6 +1262,357 @@ void vcc_brownout_handler(void) {
 
 ---
 
+## 案例 12：400ns 边沿率 = $15K 幻影 ECU 保修（OBD-II 介电常数漂移）
+
+### 现象
+
+Stuttgart 实验室，欧洲 Tier 1 telematics 项目，6 周内累计收 63 件幻影保修件（客户反映"ECU 无响应"），累计成本 $15,000+：
+- 客户车发回件，实验室检测**完全正常**（"no fault found"）
+- 客户车替换 ECU 后，**新 ECU 装上又"挂"**
+- 工程师现场复现不出，反复拉锯 8 天
+
+### 抓包 + 根因
+
+#### 根因 1：OBD-II 至 Molex 12-pin 诊断线束 65℃ 介电常数漂移
+
+线束 3m 长，绝缘层材料 PP（polypropylene）：
+- 25℃ 时介电常数 εr ≈ 2.2
+- 65℃ 引擎舱环境 εr 漂移到 2.45
+- 单位长度寄生电容从 11pF/m 涨到 12.3pF/m
+- 3m 总寄生电容 = 36.9pF（超过收发器 spec 25pF 上限）
+
+#### 根因 2：CAN FD 5Mbps 边沿率 400ns 超规格
+
+ISO 11898-2:2024 §5.4 规定：
+- 2 Mbps：边沿率 max 50 ns
+- 5 Mbps：边沿率 max **15 ns**
+- 实际实测 3m + 36.9pF 负载下边沿率 400ns（**超 spec 26 倍**）
+
+#### 根因 3：200ns bit time 被 400ns 边沿吃掉
+
+5Mbps 周期 = 200ns：
+- 边沿 400ns + 稳定时间 100ns = 500ns > 1 个 bit
+- 采样点（70% 位置 = 140ns）落在不确定区
+- 收发器内部 comparator 还在 settling → bit 误判率 30%
+- 误判累积 → CRC error → ECU 不应答 → 客户视角"ECU 无响应"
+
+### 定位（4 步法）
+
+```text
+Step 1：故障件复核（"no fault found" 也要查）
+  - 用 lab 测试设备单独测 ECU：完全正常
+  - 排除 ECU 本身问题
+
+Step 2：现场复现
+  - 装回客户原车（原车完整线束）
+  - 实测线缆端到端 CAN FD 5Mbps 通信：30% CRC error
+  - lab 短缆（<30cm）正常
+
+Step 3：物理层测量
+  - 网络分析仪测线缆 S21（3m + Molex）
+  - 看 -3dB 带宽：< 2 MHz（spec 应 > 25 MHz）
+  - LCR 表测电容：37pF（超 spec）
+
+Step 4：温度漂移
+  - 加热舱 25℃→65℃→85℃
+  - 抓 CAN FD error rate 变化
+  - 65℃ 之后 error rate 30%→50%
+  - 锁因 = 温度敏感介电常数
+```
+
+### 修复
+
+| 手段 | 实施 | 成本 |
+| --- | --- | --- |
+| 短线缆 | OBD-II 转接线 3m→0.5m | $0.5/件 |
+| 高规格线 | FPE/PTFE 介电常数温漂 < 5% | $2.5/件 |
+| 降速 | 5Mbps → 2Mbps | $0 |
+| 缓冲器 | 加中继器隔离线缆 | $8/件 |
+
+### 复盘
+
+- **$15K 幻影保修根因 = 3m 长 OBD-II 诊断线束的物理层失效**——8 天定位
+- 温度敏感介电常数漂移在产线测试时**不显形**（25℃ vs 65℃）
+- 200ns bit time 被 400ns 边沿吃掉 = 经典**带宽 × 距离 trade-off**
+- 产线测试**未覆盖「满容性负载 + 真实收发器」**——必须用 HIL（hardware-in-loop）+ 温度舱
+- 收 63 件 + 工程 8 天 = 单 case 实际 cost $250+——5 个 case 即 $1.25K
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 1
+- obd-cable.com（OBD 线缆工厂）
+- ISO 11898-2:2024 §5.4
+
+---
+
+## 案例 13：工业现场总线 4 大 killer——lab 能用到产线就崩
+
+### 现象
+
+工业自动化（机器人 / CNC / 注塑机）项目，**lab 调试完美，产线装机就崩**。典型表现：
+- 单台 ECU 单独测：通信正常
+- 接入整网（5-30 节点）：error frame 飙到 5%-30%
+- 长时间运行（>4 小时）：偶发 Bus-Off 整段断网
+- 电机/VFD 启停瞬间：100% 通信失败 0.5-2s
+
+### 抓包 + 根因（4 大 killer）
+
+#### Killer 1：地电位差（GND 偏移 1-10V 推出共模）
+
+工业现场**多点接地**是常态（电机外壳、PLC 柜、控制台各自接大地）：
+- 大地本身在工厂里**不是等电位**——电机驱动柜 GND vs 控制台 GND 差 1-10V
+- CAN 收发器共模输入范围 = **-2V ~ +7V**（ISO 11898-2 §6.2）
+- 多点接地把 5V 共模电压直接打到收发器上 → 内部 comparator 饱和
+- 表现：lab 短距离 OK，工业 30m 整网就出错
+
+#### Killer 2：stub 长度违反（1Mbps 限 30cm）
+
+工程师图省事**从主干拉短线到节点**：
+- 1Mbps 时 stub ≤ 1m（ISO 11898-2 §5.3 严格版）
+- 5Mbps 时 stub ≤ **30cm**（每加 10cm 反射增加 5%）
+- 实际项目 stub 普遍 50-200cm → 信号反射叠加 → 采样点偏移
+
+#### Killer 3：终端电阻错（>2/缺一/错位 → 100% 反射）
+
+CAN 总线要求**两端各 120Ω**终端电阻：
+- 多加 1 个终端（3 个 120Ω 并联 = 40Ω）：信号衰减 3 倍，distance 减半
+- 少 1 个：信号在末端全反射，振铃 50% 振幅
+- 错位（终端放中间）：总线一端无终端，反射叠加
+- 现场 50% 项目**至少 1 个错**
+
+#### Killer 4：屏蔽层断路成天线
+
+工业现场强电磁干扰（VFD 谐波 100kHz-30MHz，电机电刷放电）：
+- 屏蔽层单端接地（错）or 多点接地错位 → 屏蔽层电流不平衡 → 50Hz/工频干扰窜入
+- 屏蔽层断路（中间 connector 接触不良）→ 整段屏蔽失效 → 变成接收天线
+- 表现：VFD 启停瞬间整网 error frame 爆炸
+
+### 定位（4 步法）
+
+```text
+Step 1：地电位差测试
+  - 万用表 mV 档测任意两节点 GND 之间电压
+  - 期望 < 50mV
+  - 实际 > 1V → killer 1 命中
+
+Step 2：stub 长度测量
+  - 物理量主干到每个节点的支线长度
+  - 查表：1Mbps < 1m / 5Mbps < 30cm
+  - 超长 → killer 2 命中
+
+Step 3：终端电阻测量
+  - 万用表 Ω 档测 CAN_H - CAN_L 电阻
+  - 总线无电时：60Ω（两个 120Ω 并联）= 正确
+  - 40Ω = 多 1 终端，120Ω = 缺 1 终端 → killer 3 命中
+
+Step 4：屏蔽层检查
+  - 屏蔽层单端/双端接地状态
+  - 屏蔽层连续性（无断点）
+  - 错 → killer 4 命中
+```
+
+### 修复
+
+| Killer | 修复 | 器件选型 |
+| --- | --- | --- |
+| 1 地电位差 | 每节点**隔离收发器** + 独立 DC/DC 供电 | ISO1050（TI）/ ADM3053（ADI）/ TJA1052i（NXP） |
+| 2 stub | 严格按速率算 stub 上限（commissioning 实测） | 重新布主干 + 短 stub |
+| 3 终端 | 标准化 commissioning checklist | 拔/插 120Ω 重新测 |
+| 4 屏蔽 | 屏蔽层**双端接地**（通过 100nF Y 电容） | 重做 connector 压接 |
+
+### 复盘
+
+- **lab 通 ≠ 产线通** = 工业 CAN bus 头号陷阱，4 大 killer 全是物理层
+- 地电位差 vs 电机/VFD 注入电流是最被忽视的——**隔离收发器是工业项目标配**
+- 星形拓扑**隐性违标**（每个节点都是 stub）——必须用 hub/repeater 隔离
+- commissioning checklist 比设计更关键——现场 4 项检查每项 5 分钟
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 2
+- Eurth Tech（工业现场总线供应商）
+- ISO 11898-2:2016 §5.3 / §6.2
+
+---
+
+## 案例 14：Ford 438 万辆 ITRM 召回——CAN race 跨层调试教训
+
+### 现象
+
+2026-02-20 Ford 向 NHTSA 提交召回 **26V104000**：
+- 涉及 4,380,609 辆车（F-150 / F-250 / Expedition / Maverick / E-Transit，MY 2021-2027）
+- 根因：**ITRM（Integrated Trailer Relay Module）与 CAN Standby Control bit (STBCC) 启动时 race**
+- 表现：trailer brake controller 失效（**刹车信号不发**）—— 安全相关
+- 预计 1% 显形率 = **43,000+ 辆**
+
+### 抓包 + 根因
+
+#### 根因 1：STBCC race 9,999 vs 10,000 次启动
+
+- Ford 内部 lab 测试 9,999 次启动 0 显形
+- 第 10,000 次启动**温漂 + 中断时序叠加**触发
+- **non-deterministic race**——单次发生概率 < 0.01%，但**绝对数量大**（438 万 × 启动频率）
+- 10K 测试是 OEM 标准**置信度上限**——传统 HIL 测不出来
+
+#### 根因 2：OEM / supplier 黑盒 + cross-layer observability 鸿沟
+
+- ITRM 由 supplier A 提供，gateway ECU 由 supplier B 提供
+- 两边对 STBCC bit 时序有**不同假设**（supplier A：启动时立刻 ready；supplier B：启动后 5ms 内 ready）
+- 5ms 窗口外**有概率撞上**（温漂 / 中断时序抖动）
+- 黑盒 = 跨厂商 cross-layer observability 几乎不可能
+
+#### 根因 3：软件召回年比 3.3M → 13.4M 翻 4 倍
+
+- NHTSA 2024 年统计：3.3M 辆因软件召回
+- 2025 年 13.4M 辆（**4 倍增长**）
+- 2026 年 Ford 438 万辆单次 = 2024 年全行业 1.3 倍
+- 趋势：汽车软件**复杂度爆炸** >> 测试覆盖能力
+
+### 定位（4 步法）
+
+```text
+Step 1：field 数据收集
+  - 客户报修 → OTA 拉 log（带时间戳的 CAN 总线记录）
+  - 数百例样本聚类：trailer brake 信号丢失前后 5s 的 CAN 帧
+
+Step 2：lab 复现
+  - HIL（hardware-in-loop）+ 温箱 -40℃ ~ 85℃
+  - 1000 次启动 + 温变 → 0 显形
+  - 10000 次启动 + 温变 → 0.1% 显形（命中根因 1）
+
+Step 3：cross-layer trace
+  - ITRM 内部 trace + gateway 内部 trace + 总线 trace
+  - 三方时间戳对齐（误差 < 100µs）
+  - 暴露：STBCC bit 翻转时间 supplier A 早 2ms，supplier B 5ms 才轮询
+
+Step 4：fix 实施
+  - supplier B 加 10ms 启动延迟（保守）
+  - 5 月起 OTA 推送，所有受影响车次更新
+```
+
+### 修复
+
+| 手段 | 实施 | 验证 |
+| --- | --- | --- |
+| 软件修 | supplier B gateway 加 10ms STBCC 等待 | HIL 10K 次启动 0 显形 |
+| OTA 推送 | 5 月起 4.38M 辆分批推 | 推送率 95%+ |
+| 备援方案 | 硬件加 timer 监督 supplier A ready | 即使软件失效不显形 |
+| 测试升级 | HIL + 10K 次启动 + 温变强制入标准 | 未来 supplier 合同加条款 |
+
+### 复盘
+
+- **9,999 vs 10,000** = non-deterministic 量产最难抓的根因——传统 HIL 测不出来
+- **OEM/supplier 黑盒 + cross-layer observability 鸿沟**——跨厂商合作是结构性 root cause
+- 1% 显形率 = 43,000+ 辆 = 安全相关 = 必须召回 = $X 亿美元成本
+- 软件召回年翻 4 倍 = **未来汽车 ECU 设计的核心挑战**
+- **跨层调试** = 应用层（brake signal）+ 协议层（CAN STBCC）+ 物理层（CAN bus 干扰）三方时间戳对齐
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 3
+- NHTSA 26V104000（2026-02-20）
+- logcat.ai（Android Automotive 调试博客，2026-03）
+
+---
+
+## 案例 15：SN65HVD234 量产 4% 失效率——RS pin 隐性 silent mode
+
+### 现象
+
+高压击穿检测仪项目（手持 40kV + 基站），4 芯螺旋线连 2 块 MCU + 1 个 sensor：
+- 4% 出货良率**崩**（目标 0.5%）
+- T24CAN TVS 完好无 PCB 缺陷
+- 失效模式 3 种：
+  - R pin 卡高（**35% 失效**）
+  - 偶有 MCU D pin 损坏（**45% 失效**）
+  - 多颗 IC 烧穿（**20% 失效**）
+- 2 供应商 + 2 MCU 复现 100% 触发 → 排除单器件问题
+
+### 抓包 + 根因
+
+#### 根因 1：SN65HVD234 RS pin 隐性 silent mode（**主因，40%**）
+
+SN65HVD234 的 RS（slope control / silent mode）pin 行为：
+- RS = LOW：正常模式（高速）
+- RS = HIGH（> 0.75 × VCC）：**silent mode**——内部 driver 关闭，**只收不发**
+- 隐性 = datasheet 没明显标"接错就 silent"——只在 §7.3 electrical char 一笔带过
+
+项目 MCU 启动时序：GPIO 默认 HIGH（很多 MCU 启动默认 high-Z + pull-up）→ RS 被拉高 → silent mode → "CAN 无应答"
+
+#### 根因 2：40kV 瞬态耦合到 RS pin
+
+手持 40kV 探头在 sensor 端产生**电弧**：
+- 4 芯螺旋线**长 1.5m + 未屏蔽**（成本考虑）
+- 40kV 瞬态通过分布电容耦合到 RS pin（电容分压）
+- 1.5m 线缆耦合电容 ~ 5pF，40kV 瞬态 → RS pin 瞬态 50-100V
+- 即使 RS pin 有 1kΩ pull-down，瞬态电压足够把 RS 拉到 silent 阈值以上
+
+#### 根因 3：layout 缺陷——RS 走线紧邻 40kV 走线
+
+PCB 布局 RS pin 走线**离 40kV 高压走线 < 1mm**：
+- 40kV 高压走线 PCB 表面电场强度 > 1kV/mm
+- RS 走线通过空气耦合电压 → silent mode
+- 严重时直接击穿 RS pin ESD 保护 → R pin 卡高
+
+#### 根因 4：4V7 齐纳限幅不够 + T24CAN TVS 钳位不够
+
+原本加 4V7 齐纳 + T24CAN TVS 想钳位 RS pin：
+- 4V7 齐纳：5mA 钳位下 4.7V，但**40kV 瞬态能量远超 5mA**
+- T24CAN TVS：spec 24V 钳位，但**响应时间 1µs > 40kV 上升时间 100ns**
+- 钳位失败 → RS pin 被打坏
+
+### 定位（4 步法）
+
+```text
+Step 1：排除电源 latch-up / 短路 / 32V PSU 故障
+  - 量 VCC 3.3V 正常
+  - 量 CAN_H - CAN_L 60Ω 正常
+  - 排除电源 / 总线 / PSU 故障
+
+Step 2：单器件替换测试
+  - 换不同供应商 SN65HVD234
+  - 换不同 MCU（STM32 → NXP LPC）
+  - 4% 失效率不变 → 排除单器件问题
+
+Step 3：40kV 瞬态隔离测试
+  - 拿掉 40kV 探头 / sensor 端断开
+  - 1000 台无失效 → 锁定 40kV 耦合是触发器
+  - 加屏蔽线 / 加 RS pin 100nF 去耦 → 失效率从 4% 降到 0.5%
+
+Step 4：定位到 RS pin
+  - 示波器看 RS pin 电压波形
+  - 40kV 触发瞬间 RS pin 跳到 4.5V（> 0.75 × 3.3V）
+  - 触发 silent mode
+  - 验证：RS pin 加 10kΩ pull-down + 100nF cap → 失效消失
+```
+
+### 修复
+
+| 手段 | 实施 | 验证 |
+| --- | --- | --- |
+| RS pin pull-down | 加 10kΩ pull-down 到 GND | MCU 启动后 RS < 0.5V |
+| RS pin 去耦 | 100nF cap 紧靠 RS pin | 40kV 瞬态 RS < 1V |
+| layout 整改 | RS 走线离 40kV > 5mm | 电场耦合 < 100V |
+| 加 TVS | RS pin 加 PESD3V3L4UG（5ns 响应） | 钳位 < 1µs |
+| 屏蔽线缆 | 4 芯螺旋线 → 屏蔽双绞线 | 耦合电容 < 1pF |
+
+### 复盘
+
+- **4% 失效率 = 良率灾难**（量产项目一般 0.5% 阈值）
+- 两供应商 + 两 MCU 复现**排除单器件**——必然是 system-level 设计缺陷
+- **RS pin 隐性 silent mode（> 0.75 × VCC → 不发只收）** = datasheet 角落陷阱
+- 40kV 瞬态耦合 = 高压项目**默认就要做瞬态抑制**
+- T24CAN TVS spec 看似够（24V），但**响应时间不够**是 TVS 选型常见坑
+- **datasheet 第 7 章 electrical characteristics 必须逐行读**——不能只看 §1 overview
+
+### 来源
+
+- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 4
+- TI E2E 论坛（Mike Page 求助原帖）
+- SN65HVD234 datasheet（TI SLLS877E §7.3）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
