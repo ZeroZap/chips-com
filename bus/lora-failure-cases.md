@@ -3798,6 +3798,608 @@ Phase 3：现场安装+基线建立（4 周，第二大块）
 
 ---
 
+## 案例 38：350→420 智能能源 P0 三因素叠加——FUOTA Class A/C 切换救场
+
+### 现象
+
+智能能源（电表 + 水表 + 气表）项目部署 350 → 420 节点，3 个月稳定后 P0 事故频发：
+- 节点频繁掉线（5% / 日）
+- 抄表成功率从 99% 跌到 75%
+- 网关拥塞（CPU 100%）
+- 客户投诉激增（每天 20+ 工单）
+- P0 事故 = 业务核心链路中断
+
+### 抓包 + 根因（3 因素叠加）
+
+#### 因素 1：半信道网关瓶颈
+
+- 现场部署 6 个网关（理论覆盖 70 节点 / 网关）
+- 实际每网关挂 70-90 节点（超出设计 30%）
+- 单网关只支持 8 信道（out of 40+ 频段可选）
+- 流量高峰时段（早晚抄表）→ **半信道并发超载**
+- 节点 join request + 上行数据混在一起 → **入网成功率 60%**
+
+#### 因素 2：ChirpStack 连接池打满
+
+- ChirpStack 默认 connection pool = 50
+- 420 节点 + 频繁上行 → pool 满
+- 节点排队等连接 → **平均延迟 3 秒**
+- 3 秒 > LoRaWAN 1.5 秒接收窗口 → **downlink 全部丢**
+- 抄表下行命令 80% 失败
+
+#### 因素 3：ADR 全网 SF7 扎堆
+
+- ADR（Adaptive Data Rate）算法逻辑：
+  - 节点离网关近 → 自动降到 SF7（高速）
+  - 离得远 → 升到 SF12（低速但更鲁棒）
+- **实际部署**：
+  - 80% 节点离网关 < 1km → **全部降到 SF7**
+  - SF7 占用相同 6 信道带宽
+  - 70 节点同 SF7 同信道 = **massive collision**
+  - PDR（Packet Delivery Rate）从 95% 跌到 60%
+
+### 定位（4 步法）
+
+```text
+Step 1：网关 CPU 监控
+  - ChirpStack dashboard 看 CPU 占用
+  - 命中 100% → 因素 2 命中
+
+Step 2：连接池监控
+  - ChirpStack metrics → connection_pool
+  - 命中 50/50 满 → 因素 2 命中
+
+Step 3：ADR + SF 分布统计
+  - 看每个网关的 SF 分布
+  - 命中 SF7 > 70% → 因素 3 命中
+
+Step 4：信道使用率
+  - 信道扫描看实际使用
+  - 命中 6 信道 80% 占用 → 因素 1 + 3 叠加
+```
+
+### P0 修复 3 步法
+
+```text
+Step 1：网关联动调度
+  - 流量高峰时段抄表下行分散到 6 个网关
+  - 每网关降负载到 50 节点
+  - 半信道问题缓解
+
+Step 2：ChirpStack 连接池扩到 200
+  - connection_pool = 200
+  - 节点不再排队
+  - 下行成功率从 20% 升到 85%
+
+Step 3：ADR 关闭 + 强制 SF 分配
+  - 关闭全局 ADR
+  - 强制分配：
+    - 离网关 < 1km → SF9（带宽中）
+    - 1-3km → SF10
+    - > 3km → SF12
+  - 避免 SF7 扎堆
+```
+
+### FUOTA 升级 Class A/C 切换（救场关键）
+
+- FUOTA（Firmware Update Over The Air）升级固件
+- **关键改动**：原节点 Class A → Class A/C 切换
+- Class C 优势：
+  - 持续打开 RX2 窗口
+  - 下行随时可达
+  - 抄表下行成功率 95%+
+- FUOTA 灰度策略：
+  - 第一批：100 节点
+  - 验证 1 周 → PDR 95%+ → 全量推送
+  - 全量推送后：抄表成功率从 75% 升到 98%
+
+### 470 MHz 频谱避广电共存
+
+- 现场实测 470 MHz 频段发现广电信号干扰（50 dB 强干扰）
+- 频谱扫描 + 频谱避让：
+  - 470-480 MHz 强干扰 → 弃用
+  - 480-490 MHz 干净 → 主用
+- 信道图谱更新到 ChirpStack
+- 干扰频段下行成功率从 50% 升到 90%
+
+### 复盘
+
+- **P0 = 多因素叠加**——单因素都好，三因素一起 = 雪崩
+- **半信道 + 连接池 + ADR 扎堆 = LoRaWAN 规模化的 3 大隐形杀手**
+- FUOTA Class A/C 切换是**长期救场方案**——Class A 适合上报，Class C 适合下行密集
+- 频谱避让（470 MHz 广电共存）是**国域特殊坑**——欧美 868/915 MHz 没这问题
+- STM32L0 + SX1262 + 50 µA 均流 = 低功耗标杆——值得其他 LoRa 节点参考
+- 节点 > 300 = 必须拆子网 + 多网关 + FUOTA 准备
+- P0 三步修法：网关联动 + 连接池扩 + ADR 关闭 → **吞吐 ×4**，**jitter 削高峰 60%**
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1
+- sheratonhq 技术 blog（中文 LoRa 实战）
+
+---
+
+## 案例 39：Industrial Predictive Maintenance Year-Two 失败——断链→baseline 漂移→信任崩溃
+
+### 现象
+
+欧洲 3 个 IIoT Predictive Maintenance 项目（汽车厂 + 物流 + 能源），**第 2 年全部失败**：
+- 第 1 年：AI 模型 baseline 准确率 85%
+- 第 6-14 个月：baseline 慢慢漂移
+- 第 14-22 个月：AI 预测失效 → 业务部门不信任 → 系统废弃
+- **失败不在 AI/传感器**——根因是**通信链路**
+
+### 抓包 + 根因（3 大根因）
+
+#### 根因 1：网关 12 小时上行断链污染 AI baseline
+
+- 现场 50+ sensor 每 5 分钟上行数据
+- **网关 12 小时断链 1 次**（典型工业现场，包括：网络维护 / 断电 / 升级）
+- 断链期间 sensor 数据全丢（sensor 无本地缓存）
+- 复链后 sensor 数据断点
+- AI 训练 baseline = 缺失数据 + 正常数据混合 → **baseline 漂移**
+- 漂移 3 个月 → 模型预测精度从 85% 跌到 60%
+- 漂移 6 个月 → 模型失效 → **业务部门停止使用**
+
+#### 根因 2：试点未现现场干扰 = 部署后断链
+
+- 案例 A（汽车厂）：试点在会议室 → 部署在车间
+  - 车间 VFD（变频器）干扰 LoRaWAN 470 MHz
+  - LoRaWAN PDR 从 95% 跌到 70%
+  - 30% 数据丢 → baseline 漂移
+- 案例 B（冷库）：原方案 18 个 AP 覆盖
+  - 现场重新评估 → **18 AP 减到 2 个网关**（成本控制）
+  - 2 个网关不够覆盖全部 sensor
+  - 边缘 sensor 永久性低 PDR
+
+#### 根因 3：双 SIM failover + buffer 保 sequence 缺失
+
+- 4G/5G 单一运营商 = 单点故障
+- 工业现场某运营商覆盖好但事故频发
+- **理想方案**：
+  - 双 SIM failover（电信 + 移动）
+  - 断链期间 sensor buffer 到本地
+  - 复链后批量补传 + sequence 保序
+- **实际部署**：几乎所有项目都没做 → 断链数据全丢
+
+### 定位（4 步法）
+
+```text
+Step 1：AI baseline 准确率时间序列
+  - 监控 AI 模型预测准确率
+  - 命中：6-14 个月后准确率持续下降 → 根因 1
+
+Step 2：现场 PDR 实测
+  - 试点 vs 部署现场 PDR 对比
+  - 命中：部署 PDR < 80% → 根因 2
+
+Step 3：网关断链监控
+  - 网关在线时间日志
+  - 命中：> 1 次/周断链 = 频发 → 根因 3 缺失
+
+Step 4：sensor buffer 验证
+  - sensor 断链时是否有本地缓存
+  - buffer size / FIFO / sequence 完整性
+  - 命中：无 buffer = 致命
+```
+
+### 修复 / 实战方案
+
+| 维度 | 修复 | 验证 |
+| --- | --- | --- |
+| 1 双 SIM failover | 电信 + 移动 + 自动切换 | 断链率 < 1 次/月 |
+| 2 sensor buffer | sensor 端 8MB 缓存 + sequence 保序 | 复链后补传完整 |
+| 3 baseline 校准 | AI baseline 季度重训 | 模型准确率恢复 85% |
+| 4 现场 PDR 测试 | 部署前 1 个月现场 PDR 实测 | 接受 < 80% PDR 部署 |
+| 5 网关冗余 | 边缘 sensor 必经 2 个网关之一 | 边缘 PDR > 90% |
+
+### Year-Two 死亡时间线
+
+```text
+T+0：部署上线，baseline 准确率 85%
+T+6 月：网关偶发断链，baseline 缓慢漂移（业务未察觉）
+T+12 月：现场干扰暴露，PDR 跌至 70%
+T+14 月：baseline 准确率跌到 70%，模型开始误报
+T+18 月：业务部门开始不信任模型
+T+22 月：模型失效，系统废弃 = Year-Two 死亡
+```
+
+### 复盘
+
+- **失败不在 AI/传感器**——**根因是通信链路**
+- **Year-Two 死亡** = IIoT 项目最大隐形杀手——**比技术失败更可怕的是信任失败**
+- **断链 → baseline 漂移 → 信任崩溃** = 经典三段式
+- **试点 vs 部署 = 两次 PDR 测试**——现场干扰不会在试点出现
+- **双 SIM + buffer + sequence 保序** = 工业 IIoT **必做三项**
+- AI baseline 必须**季度重训**——任何固定 baseline 半年内必漂移
+- **业务部门信任一旦失** = 系统永久废弃——比技术失败更彻底
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 2
+- techeasily IIoT 博客
+
+---
+
+## 案例 40：LoRaWAN spec vs reality——农场 6-8mi / 林地 1-3mi / 工业 200-600m / 电池 2-3y
+
+### 现象
+
+echolo.io 一线部署商 4 年实战的真实数据 vs 厂商 spec：
+- spec 营销："10 mi / 10 年电池 / 多并发 / 高容量"
+- **现实**：差距巨大
+- **三个不再做的设计**值得深思：
+  - 不再做 WiFi-LoRa 桥
+  - 不再做 sub-minute 采样
+  - 不再做单网关（= 100% 隐患）
+
+### LoRa spec vs 现实对比表
+
+| 维度 | spec 营销 | **现实（4 年 4 场景部署）** | 差距 |
+| --- | --- | --- | --- |
+| 距离（农场） | 10 mi（16 km） | **6-8 mi（10-13 km）** | -25% |
+| 距离（林地） | 10 mi | **1-3 mi（1.6-5 km）** | -70% |
+| 距离（工业） | 10 mi | **200-600m** | -95% |
+| 电池续航 | 10 年 | **2-3 年** | -75% |
+| 多并发 | 100+ | **30-50 / 网关** | -50% |
+| PDR | 99% | **80-90%（部署后）** | -10% |
+| 网络延迟 | < 5 秒 | **5-30 秒（高峰）** | +500% |
+
+### 三大场景的真实数据
+
+#### 场景 1：水产养殖（农场开阔地形）
+
+- **6-8 mi（10-13 km）** 实测稳定
+- 跟 spec 差距 25%（spec 10 mi = 16 km）
+- 原因：开阔地形 + 470 MHz 低损耗 + 高架天线
+- **实际部署**：每个 gateway 覆盖 50-80 节点
+
+#### 场景 2：林业监测（林地密集遮蔽）
+
+- **1-3 mi（1.6-5 km）** 实测稳定
+- 跟 spec 差距 **70%**
+- 原因：树叶 + 树干衰减 470 MHz 信号 8-15 dB
+- **实际部署**：密集 mesh + 每个 gateway 覆盖 20-30 节点
+
+#### 场景 3：工业传感（金属 + 干扰）
+
+- **200-600m** 实测稳定
+- 跟 spec 差距 **95%**
+- 原因：金属罐体 + VFD 干扰 + 多径
+- **实际部署**：每个车间 1-2 gateway + 30 节点
+
+### 电池续航的真相
+
+- spec 假设：1% 占空比（每天 1-2 次上报）
+- 现实：现场实际 5-15% 占空比（多 sensor + heartbeat）
+- **电池寿命公式**：
+  - 实测 2400 mAh 电池
+  - 占空比 5% / 50 mA peak / 5 µA sleep
+  - 续航 = 2.5 年（不算自放电）
+  - 加上自放电 + 温度影响 = **2-3 年**
+- **绝不可能 10 年**——除非占空比 0.1% + 电池 +25℃ + 完美工程
+
+### 不再做的 3 个设计（4 年教训）
+
+#### 设计 1：WiFi-LoRa 桥 = 不做
+
+- 早期设计 WiFi 连接传感器 + LoRaWAN 上传到网关
+- 问题：
+  - WiFi 是耗电大户（20-50 mA vs LoRa 50 mA peak）
+  - WiFi 配置复杂（SSID/密码/证书）
+  - WiFi 故障率高
+- 现实：**直接 LoRaWAN node 更好**
+  - 功耗低 5 倍
+  - 配网简单（DevEUI + AppKey）
+  - 故障率低 5 倍
+
+#### 设计 2：sub-minute 采样 = 不做
+
+- 早期设计 30 秒采样 1 次
+- 问题：
+  - 50 节点 × 30 秒 = 每秒 1.67 次上报
+  - 单 gateway 50 节点 + 30 秒间隔 = 容量极限
+  - PDR 跌到 60%
+- 现实：**5-15 分钟采样是 sweet spot**
+  - 容量够
+  - PDR 90%+
+  - 电池 2-3 年
+
+#### 设计 3：单网关部署 = 不做
+
+- 早期设计 1 gateway 覆盖 50 节点
+- 问题：
+  - 网关故障 = 100% 数据丢
+  - 边缘节点 PDR < 50%
+  - 维护成本高
+- 现实：**2+ gateway 冗余**
+  - 1 主 + 1 备
+  - 边缘节点 2 路径
+  - 维护期可关单 gateway
+
+### 复盘
+
+- **LoRa spec 营销 10mi / 10y 是 lab 极限值**——工业部署**必减半**起步
+- **场景决定一切**：农场 6-8mi / 林地 1-3mi / 工业 200-600m
+- **电池续航 2-3 年**是真实工程值——10 年只占空比 0.1% 才可能
+- **不再做的 3 个设计** = 4 年部署教训的总和
+  - WiFi-LoRa 桥 = 双重复杂度
+  - sub-minute 采样 = 容量极限
+  - 单网关部署 = 单点故障
+- **多 gateway + 5-15 min 采样 + 直接 LoRa** = LoRaWAN 实战最优解
+- 跟 R12-3 案例 36（downlink 4 fault domain）互补——本案例从 **spec vs reality** 视角
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 3
+- echolo.io（一线 LoRa 部署商 4 年实战）
+
+---
+
+## 案例 41：Downlinks Scheduled But Not Sent——4 Fault Domain 矩阵 + ChirpStack device lock
+
+### 现象
+
+NS（Network Server）显示下行命令 "scheduled"，但设备永远没收到：
+- 监控面板：command queued → scheduled → sent
+- 设备端：从未收到下行帧
+- 下行成功率 0%（即使命令显示成功）
+- 4 个 fault domain 都可能触发
+
+### 4 Fault Domain 矩阵
+
+#### Domain A：应用层 Encoder 异常
+
+- 应用层下行命令 encoder 抛异常
+- 异常被 try/catch 吞掉 → "scheduled" 状态是假象
+- **特征**：日志无 error，但 NS queue 没真正写入
+- **修复**：
+  - 取消 try/catch 吞错
+  - encoder 失败时主动 retry
+  - 加单元测试覆盖所有 encoder 异常路径
+
+#### Domain B：ChirpStack Device Lock
+
+- ChirpStack 默认 device session 是 **lock 模式**
+- 多 gateway 部署时，device lock 到某 gateway
+- 其他 gateway 收不到下行命令
+- **特征**：单一 gateway 收不到时，其他 gateway 收得到
+- **修复**：
+  - device session 改 **replace 模式**
+  - 多 gateway 可同时下行（无 lock）
+  - **device_session 配置文件 `replace=true`**
+
+#### Domain C：MQTT Broker 异常
+
+- NS → MQTT broker → Gateway 链路断
+- MQTT topic 订阅错（`application/+/device/+/rx` vs `application/+/device/+/tx`）
+- **特征**：broker log 有 error，gateway log 无下行命令
+- **修复**：
+  - 用 mosquitto_sub 订阅测试
+  - 验证 tx topic 有下行命令
+  - broker reconnect + QoS 2
+
+#### Domain D：Class A 设备无 RX2 窗口
+
+- LoRaWAN Class A **必须有上行才能开 RX2 窗口**
+- 如果设备长时间不上行（如 sensor 故障 / 电池没电）
+- 下行永远等不到 RX2 窗口
+- **特征**：设备日志 24h 无上行 + 下行 100% 失败
+- **修复**：
+  - 触发主动 ping（如有）
+  - 或改 Class C（持续 RX2）
+  - 或加下行超时报警
+
+### 定位（4 步法）
+
+```text
+Step 1：MQTT 订阅定位
+  - mosquitto_sub -h broker -t 'application/+/device/+/tx' -v
+  - 看到下行命令在 broker → 不是 Domain C
+  - 看不到 → Domain C 命中
+
+Step 2：Device session 检查
+  - ChirpStack → device → session
+  - 看 lock 模式 / replace 模式
+  - lock → Domain B 命中
+
+Step 3：应用 encoder 测试
+  - 直接调 encoder 看是否抛异常
+  - 抛异常 → Domain A 命中
+
+Step 4：设备上行时间戳
+  - 看设备最近上行时间
+  - > 1 小时无上行 → Domain D 命中
+  - 但 Class A 是设计如此，不是 bug
+```
+
+### 三平台对比
+
+| 平台 | Device Lock 模式 | 默认行为 | 修复 |
+| --- | --- | --- | --- |
+| ChirpStack | lock / replace 可选 | 默认 lock | 改 replace |
+| TTN (The Things Network) | 强制 lock | 单 gateway 限制 | 多 gateway 不可用 |
+| AWS IoT Wireless | replace | 多 gateway 共享 | OK |
+
+### 实战建议
+
+```text
+□ ChirpStack device session 改 replace
+□ 应用 encoder 单元测试覆盖率 100%
+□ MQTT QoS 2 + reconnect 验证
+□ Class A 设备监控"上次上行时间"
+□ 下行超时报警（> 5 分钟）
+□ 多 gateway 部署必须用 replace
+```
+
+### 复盘
+
+- **4 Fault Domain 矩阵 = 下行问题的标准排查法**——按 A→B→C→D 顺序
+- **Device lock = 多 gateway 部署的隐形杀手**——必须改 replace
+- **MQTT 订阅定位 = 最快诊断法**——1 分钟看到下行命令在哪一层丢
+- **Class A 限制** = 设计层面：必须上行才有 RX2 窗口——监控必须告警
+- 跟 R12-3 案例 36（downlink 4 fault domain）**高度互补**——本案例补充：
+  - ChirpStack device lock vs replace 具体配置
+  - 三个 NS 平台对比
+  - 应用 encoder 异常（Domain A 详细）
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 4
+- Industrial Monitor Direct（LoRa 知识库）
+
+---
+
+## 案例 42：LoRaWAN Gateway 调试——SNR 阈值差异 + 3 丢包 pattern + 4 类隐性硬件故障
+
+### 现象
+
+从 WiFi/Cellular 转 LoRaWAN 的工程师**误用 SNR 阈值**，导致现场大量误判：
+- WiFi 工程师用 SNR ≥ 20 dB 判信号好
+- LoRaWAN 工程师用 SNR ≥ -20 dB（SF12）即可
+- 差距 40 dB！→ **同一个信号两边看法相反**
+- 隐性硬件故障难查：
+  - 电缆进水（PDR 跌 50%）
+  - pigtail 折断（PDR 跌 30%）
+  - 天线 2.4G / 915G 错接（PDR 接近 0%）
+
+### SNR 阈值速查（按 SF）
+
+| SF | 最低 SNR 阈值 | 期望 SNR | 备注 |
+| --- | --- | --- | --- |
+| SF7 | -7.5 dB | > -2 dB | 高速 / 短距 |
+| SF8 | -10 dB | > -5 dB | |
+| SF9 | -12.5 dB | > -7 dB | |
+| SF10 | -15 dB | > -10 dB | |
+| SF11 | -17.5 dB | > -12 dB | |
+| SF12 | -20 dB | > -15 dB | 最低速 / 最远距 |
+
+**关键**：SF7 跟 SF12 阈值差 12.5 dB——同一信号不同 SF 下评估值不同
+
+### 3 种丢包 pattern 根因
+
+#### Pattern 1：随机丢包
+
+- **表现**：PDR 在 80-95% 波动，无规律
+- **根因**：
+  - 偶发干扰（其他 LoRa 节点 / 工业设备）
+  - 网关无线环境噪声（-105 dBm 噪声地板）
+  - 信道扫描切换不连续
+- **修复**：
+  - 信道扫描连续启用
+  - 频谱避让
+  - 加冗余 gateway
+
+#### Pattern 2：周期丢包
+
+- **表现**：每小时某分钟 PDR 跌到 0%（完全丢包）
+- **根因**：
+  - 现场周期性设备（如 PLC / VFD / 焊机）
+  - 周期干扰（50Hz 工频谐波）
+  - 工业 process 周期性启停
+- **修复**：
+  - 找到干扰源 + 避让时段
+  - 错峰上报
+  - 加屏蔽
+
+#### Pattern 3：沉默丢包
+
+- **表现**：某节点 PDR 永远 < 50%（不是断链，是持续差）
+- **根因**：
+  - 节点天线问题
+  - 节点位置被遮挡
+  - 节点硬件故障
+- **修复**：
+  - 现场 RSSI 调查
+  - 更换节点位置
+  - 更换节点硬件
+
+### 4 类隐性硬件故障
+
+#### 隐性故障 1：电缆进水
+
+- 户外 gateway 长期暴露
+- 同轴电缆接头进水（即使"防水"接头也常出问题）
+- 表现：PDR 慢慢跌 50%（随水位）
+- **检测**：N-connector 看氧化 / 万用表测电阻
+- **修复**：换电缆 + 重新做接头 + 灌防水胶
+
+#### 隐性故障 2：pigtail 折断
+
+- pigtail（gateway → 天线跳线）经常被门夹 / 折弯
+- 表现：PDR 跌 30%（不是 0%，因为还有容性耦合）
+- **检测**：时好时坏 + 触摸 pigtail PDR 变化
+- **修复**：换 pigtail
+
+#### 隐性故障 3：天线 2.4G/915G 错接
+
+- **致命**：2.4G WiFi 天线接到 470/868/915 MHz LoRa 端口
+- 表现：PDR 接近 0%（完全不通）
+- **检测**：看天线频段标识
+- **修复**：换正确频段天线
+- **教训**：**天线频段必须用频谱仪/网分验证**
+
+#### 隐性故障 4：网关 GPS 失锁（Class B 必查）
+
+- Class B 用 GPS 同步 beacon
+- GPS 天线位置被遮挡 → beacon 失锁
+- 表现：Class B 设备 PDR 跌 50%
+- **检测**：看 gateway GPS lock 状态
+- **修复**：GPS 天线移室外
+
+### 定位（4 步法）
+
+```text
+Step 1：SNR 阈值核对
+  - 看当前 SF 下 SNR 是否在阈值以上
+  - SF7 期望 > -2 dB → 实际 -10 dB → 信号差
+  - 命中：SF 不匹配 / 信号差
+
+Step 2：丢包 pattern 分类
+  - 看历史 PDR 曲线
+  - 随机 → Pattern 1
+  - 周期 → Pattern 2
+  - 沉默 → Pattern 3
+
+Step 3：隐性硬件检查
+  - 现场 4 类隐性故障检查清单
+  - 电缆 / pigtail / 天线频段 / GPS
+
+Step 4：现场 RSSI 调查
+  - 拿 spectrum analyzer 走现场
+  - 找 -3 dB 覆盖边界
+  - 标记边缘节点
+```
+
+### 修复 Checklist
+
+```text
+□ SNR 阈值速查表（按 SF 查）
+□ 丢包 pattern 分类（随机/周期/沉默）
+□ 电缆防水检查 + N-connector 氧化检查
+□ pigtail 弯曲检查 + 触摸 PDR 变化
+□ 天线频段验证（频谱仪/网分）
+□ GPS 失锁检查（Class B）
+□ 现场 RSSI 调查（边缘节点标记）
+□ 频谱避让 + 冗余 gateway
+```
+
+### 复盘
+
+- **SNR 阈值是 SF-dependent**——**WiFi 工程师转 LoRa 第一道坑**
+- **隐性硬件故障占 LoRa 现场问题 30%+**——比软件问题还多
+- **3 丢包 pattern = 现场诊断的标准分类法**——快速定位
+- **4 类隐性故障 Checklist 必须入 commissioning SOP**
+- **天线频段错接是致命错误**——**但 100% 可预防**（频段标识 + 网分验证）
+- 跟 R12-3 案例 36（下行 4 fault domain）互补——本案例从 **gateway / 物理层** 视角
+
+### 来源
+
+- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 5
+- Robustel 工程级博客
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

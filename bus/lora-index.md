@@ -300,3 +300,10 @@ LoRa / LoRaWAN 是"远距低功耗 IoT 的事实标准"，强在距离、电池�
 - 2026-08-01: 初版, 5 篇笔记全部完成 (L4 闭环)
   - 来源：_Inbox/LoRa-2026-07-31-candidates.md 9 条候选 + 实战补充
   - 覆盖：物理层调制 / Class A/B/C / OTAA / ADR / 频段 / NS / 9 案例
+- 2026-09-14: 新增 5 实战案例（38-42）
+  - 案例 38：350→420 智能能源 P0 三因素叠加（半信道 + ChirpStack 连接池 + ADR SF7 扎堆 + FUOTA Class A/C 切换）
+  - 案例 39：Industrial Predictive Maintenance Year-Two 失败（断链→baseline 漂移→信任崩溃）
+  - 案例 40：LoRaWAN spec vs reality（农场 6-8mi / 林地 1-3mi / 工业 200-600m / 电池 2-3y）
+  - 案例 41：Downlinks scheduled not sent（4 fault domain + ChirpStack device lock + 三平台对比）
+  - 案例 42：Gateway RSSI/SNR/Packet loss（SNR 阈值按 SF + 3 丢包 pattern + 4 类隐性硬件故障）
+  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1-5
