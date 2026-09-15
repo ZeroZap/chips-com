@@ -4720,6 +4720,516 @@ Step 4：代码审查
 
 ---
 
+## 案例 52：Nordic DevZone BLE+WiFi 共存 SAR 包乱序（800KB 大文件传输）
+
+### 现象
+
+BLE→WiFi 网关做 800 KB 大文件传输（GATT notify + 应用层 SAR 分片重组）：
+- 高负载下**包乱序**：预期 A1, A2, A3, A4 → 实际 A1, A2, A2, A4
+- A3 丢 + A2 重复 → SAR 重组 buffer overflow → 文件 CRC fail
+- 客户端多次 retry 都失败
+- 用户视角："传文件 30% 概率失败"
+
+### 抓包 + 根因
+
+#### 根因 1：BLE+WiFi 同 MCU 抢占中断 → `sfp_crc_fail`
+
+- 网关用 Nordic nRF5340（双核：app core + net core）
+- **net core 同时跑 BLE radio + WiFi（通过 SPI 外接 ESP32）**
+- WiFi TX 高峰（每 4 ms burst）→ SPI 中断抢占 BLE radio IRQ
+- BLE radio 正在处理 CRC 计算 → SPI 中断打断 → **CRC 计算结果错位**
+- `sfp_crc_fail` 链路层事件 → link layer 直接丢该帧
+- 应用层 SAR 看：序号缺 + 重复 → 重组失败
+
+#### 根因 2：三方日志时间戳相关法定位
+
+- Gateway 内部日志（包含 SPI 中断时间戳 + BLE radio IRQ 时间戳）
+- Node 端日志（带时间戳的 GATT 接收记录）
+- WiFi TCP 上层日志（TCP ACK 时间戳）
+- **三方时间戳对齐后**：CRC fail 时刻 = WiFi TX burst + SPI 中断时刻
+- 命中根因 1
+- 三方日志对齐是跨协议竞争定位的标准方法
+
+#### 根因 3：SAR 必须把"包乱序"当正常态
+
+- 800 KB / 244B（BLE 4.2 MTU）= 3276 个分片
+- 任一包丢/乱序 → 后续包全部要等重传
+- 默认 SAR 实现 = **按序号严格组装**，遇到缺失就**永久等**
+- 实战必须用**滑动窗口 SAR**：
+  - 窗口大小 N=32
+  - 缺 1 包可以暂时跳过
+  - N 包连续才触发请求重传
+  - 容忍乱序 ≤ N/2
+
+### 定位（4 步法）
+
+```text
+Step 1：抓 nRF5340 radio IRQ 时间戳
+  - GPIO 拉高 radio ISR 入口
+  - 示波器看 radio IRQ 持续时间
+  - 期望 < 50µs
+  - 实际 200µs+ 期间 SPI 中断触发 → 命中根因 1
+
+Step 2：三方日志对齐
+  - gateway log（SPI + radio）
+  - node log（GATT recv）
+  - WiFi TCP log
+  - 时间戳纳秒级对齐
+  - 命中：CRC fail 时刻 = WiFi TX burst + SPI 中断
+
+Step 3：SPI 中断优先级审计
+  - net core SPI 中断优先级 0（最高）
+  - radio 中断优先级 5
+  - SPI 中断打断 radio 中断 → 命中根因 1
+
+Step 4：SAR 算法改造
+  - 改 SAR 为滑动窗口 N=32
+  - 验证 800KB 传输 100% 成功
+```
+
+### 修复
+
+| 根因 | 修复 | 验证 |
+| --- | --- | --- |
+| 1 中断抢占 | SPI 中断降优先级到 6（低于 radio） | radio IRQ 不被打断 |
+| 1 备选 | radio 中断提到 0（最高） | 同上 |
+| 1 备选 | 双核分工：app core 只跑 BLE + SAR，net core 跑 WiFi | 彻底隔离 |
+| 3 SAR | 滑动窗口 SAR N=32 | 800KB 成功率 > 99.9% |
+| 3 备选 | MTU 改大（244B → 512B via BLE 5.0） | 分片数 -50% |
+
+### 复盘
+
+- **三方日志时间戳对齐 = 跨协议竞争定位的金标准**
+- BLE+WiFi 共存是同 MCU 硬坑——**优先级 + 中断时长**决定一切
+- SAR 必须把"包乱序"当正常态——滑动窗口是工业级必须
+- 跟 R7-7 案例 34（Nordic BLE 协议层重传）互补——本案例从**中断竞争 + 三方日志**角度
+- 跟 R12-3 案例 51（STM32 HCI 0x10）对比——同样是协议层错位，但根因一个是 HCI 帧错位，一个是 SAR 重组错位
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 1
+- Nordic Semiconductor 官方 DevZone
+
+---
+
+## 案例 53：华汉仪器 BLE 产线测试三站闭环（复测/维修/报废 + SN 全程追溯）
+
+### 现象
+
+某 OEM 蓝牙模组产线（10K 件/月），测试 fail 流入下站后**无追溯机制**：
+- fail 件混流入成品 → 客户投诉
+- fail 件无 SN 记录 → 召回报废无法定位
+- fail 件无分类 → 复测/维修/报废**一刀切浪费**
+- 引入 MES Fail 跟踪模块 + 三站式闭环后：
+  - 复测通过率 12%（原 0%）
+  - 维修成功率 35%
+  - 报废率从 8% 降到 5.3%
+  - 客户投诉降 70%
+
+### 抓包 + 根因（3 类 Fail）
+
+#### Fail 类型 1：误测（35%）
+
+- 屏蔽箱门未关严（漏 2cm 缝隙）→ RF 性能测试 fail
+- 测试线缆接头氧化（接触电阻 +5Ω）→ 误判为模组故障
+- 测试夹具磨损（弹簧针变形）→ 接触不良
+- **特征：单次 fail / 换机型复测 pass / 多次跑同样 fail pattern**
+- **根因 = 测试环境 + 测试设备**，不是产品
+
+#### Fail 类型 2：参数偏移（40%）
+
+- 晶振频偏 ±30 ppm（spec ±10 ppm）→ BLE 频率测试 fail
+- 天线 VSWR 2.5（spec < 2.0）→ RF 性能 fail
+- LDO 输出 3.1V（spec 3.3V±5%）→ 电压测试 fail
+- **特征：参数在 spec 边缘 / 多次测试稳定 fail / 单台独立可修**
+- **根因 = 元器件一致性问题**，可调可修
+
+#### Fail 类型 3：硬故障（25%）
+
+- IC 烧毁 / 虚焊 / 晶振坏 / 天线断
+- **特征：测试结果异常离谱 / 维修检测不出 / 必须报废**
+- **根因 = 真硬件损坏**
+
+### 定位（3 站闭环）
+
+```text
+Station 1：复测验证站
+  - 目标：识别 Fail 类型 1（误测）
+  - 流程：原测试夹具 → 换机型 1（不同屏蔽箱/线缆/夹具）重测
+  - 决策：换机型后 pass = 误测 → 入良品池
+  - 决策：换机型后仍 fail → 进 Station 2
+
+Station 2：维修与修复验证站
+  - 目标：处理 Fail 类型 2（参数偏移）+ 排查 Fail 类型 3
+  - 流程：参数可调器件（晶振/电容）→ 调参 / 虚焊补焊 / 检查 PCB
+  - 决策：维修后跑完整测试序列 pass → 入良品池
+  - 决策：维修后仍 fail → 进 Station 3
+
+Station 3：报废与统计分析站
+  - 目标：Fail 类型 3 报废 + 失效模式聚类
+  - 流程：报废品贴 SN 入库 → 月度统计 → 反馈供应商 / 设计
+  - 决策：报废率 > 阈值 → 触发 root cause 8D 报告
+```
+
+### 修复 / 流程优化
+
+| Fail 类型 | 处理站 | 关键指标 | 修复 |
+| --- | --- | --- | --- |
+| 1 误测（35%） | Station 1 复测 | 复测通过率 > 30% | 换测试机型 + 屏蔽箱维护 + 线缆定期更换 |
+| 2 参数偏移（40%） | Station 2 维修 | 维修成功率 > 30% | 维修工作台 + 备用元器件库 + 测试序列重跑 |
+| 3 硬故障（25%） | Station 3 报废 | 报废率 < 6% | SN 追溯 + 8D 报告 + 反馈供应商 |
+
+### MES Fail 跟踪模块（关键能力）
+
+```text
+SN 全程追溯：
+  - 模组 SN 唯一
+  - Station 1/2/3 全打点（timestamp + 设备 + 测试结果 + 维修记录）
+  - SN 关联：BOM 版本 / 测试固件版本 / 测试设备 SN / 测试员 ID
+
+MES Fail 跟踪模块：
+  - fail 类型自动分类（按 fail pattern 规则匹配）
+  - 月度 Fail Pareto 图（top 5 root cause）
+  - 实时良率看板（每小时更新）
+  - 自动触发 8D 报告（报废率超阈值）
+```
+
+### 复盘
+
+- **误测站必须换机型复测**——屏蔽箱门/线缆/夹具是产线最大噪声源
+- 维修后**必须跑完整测试序列**——不能只测 fail 项
+- 复测通过率 / 维修成功率 / 报废率 = 产线 3 大指标
+- SN 全程追溯是召回的命脉——**没有 SN = 无法召回**
+- MES Fail 模块是工业 4.0 入门门槛——**没有 MES 的产线 = 没有 fail 分析能力的产线**
+- **产线 3 大指标基线**：误测 30% / 维修成功 30% / 报废 < 6%——超过这个分布说明上游（PCB/芯片）出问题
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 2
+- 华汉仪器（产线测试方案商）
+
+---
+
+## 案例 54：Linux kernel conn_timeout 2s→20s——Volvo 工业压力传感器握手必败
+
+### 现象
+
+Volvo Group 工厂部署 TE Connectivity BLE 压力传感器（监测液压管路）：
+- **握手时间 12.5 秒**（远超 2 秒 Linux 内核默认值）
+- BlueZ + Ubuntu Core 22 + 内核 `hci_conn.c` 硬编码 **conn_timeout = 2s**
+- 用户态 socket option 不覆盖内核 HCI 终止条件
+- 100% 握手必失败 → 产线部署完全卡住
+- patch v3 把 `conn_timeout` 提到 20s 后工业部署上线
+
+### 抓包 + 根因（3 大根因）
+
+#### 根因 1：工业传感器握手 latency 远超 2 秒
+
+- TE 压力传感器冷启动 8 秒（晶振起振 + 内部校准）
+- 之后 association request 0.5 秒
+- 协调器处理 + 加密协商 + commissioning 4 秒
+- **总握手 12.5 秒**（spec 假设 < 100ms 是消费级，工业传感器复杂）
+- 2 秒 timeout 必败
+
+#### 根因 2：userspace 与 kernel HCI timeout 是两套
+
+- BlueZ `l2cap` socket 有 `L2CAP_OPTIONS` 可设 timeout
+- 但 `connect()` 失败回 `ETIMEDOUT` 是 **kernel HCI 层判断**
+- kernel `hci_conn.c` 硬编码：
+  ```c
+  #define HCI_CONN_TIMEOUT msecs_to_jiffies(2000)
+  ```
+- userspace 设再大也救不了
+- **必须改 kernel patch**
+
+#### 根因 3：empirical 证明 + patch v3 流程
+
+- Volvo 工程师 Dajid Morel 实测：
+  - 1000 次握手，**100% 超 2s 必 fail**
+  - 1000 次握手，**100% 12-15s 区间成功**
+- 提交 patch v3：`conn_timeout` → `msecs_to_jiffies(20000)`（20 秒）
+- 经 linux-bluetooth 邮件列表讨论：
+  - 反对声音：timeout 改大会延迟真正失败的诊断
+  - 支持声音：消费级场景 2s 够，工业必须 20s
+- 折中：**保留 2s 默认 + 暴露 sysfs 可调**（更友好）
+
+### 定位（4 步法）
+
+```text
+Step 1：抓握手 timing
+  - sniffer 抓 sensor 端 cold start 时间戳
+  - 抓协调器端 association 收到时间戳
+  - 总耗时 12.5 秒 > 2 秒内核 timeout
+  - 命中根因 1
+
+Step 2：kernel log 审计
+  - dmesg | grep -i hci_conn
+  - 看 HCI_CONN_TIMEOUT 触发 log
+  - "HCI command timeout" + 2 秒精确
+  - 命中根因 2
+
+Step 3：userspace socket option 验证
+  - 设 L2CAP_OPTIONS timeout = 30s
+  - 重新连接 → 仍 2s 失败
+  - 证明 userspace 不覆盖 kernel 终止条件
+  - 验证根因 2
+
+Step 4：patch 测试
+  - 应用 patch 后 conn_timeout = 20s
+  - 重启 sensor + 协调器
+  - 1000 次握手 100% 成功
+  - 验证修复
+```
+
+### 修复
+
+| 手段 | 实施 | 验证 |
+| --- | --- | --- |
+| Kernel patch | `HCI_CONN_TIMEOUT` 改 20s 或 sysfs 可调 | 100% 握手成功 |
+| 协调器 timeout 调整 | BlueZ `l2cap` socket option | 改 kernel 而非 userspace |
+| Sensor 端优化 | 传感器 cold start 8s → 5s（内部校准并行） | 总握手降到 7s |
+| 双保险 | 协调器 2s 超时后**立刻 retry**（不上报失败） | 2s + retry = 实际等 4s |
+
+### 复盘
+
+- **工业传感器握手 latency 远超 2s 默认值**——内核 timeout 默认值是消费级
+- **userspace socket option 不覆盖 kernel HCI 终止条件**——必须改 kernel
+- BlueZ + Ubuntu Core 22 是常见工业部署组合——**kernel 版本 + patch 维护**是长期负担
+- 真实工业部署要查**kernel version + patch 上游状态**——否则 2-3 年后升级内核就出问题
+- **patch v3 流程**值得借鉴：empirical 数据 → 邮件列表讨论 → 折中方案（sysfs 可调）
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 3
+- linux-bluetooth 邮件列表（Volvo Group Dajid Morel patch v3）
+- kernel `hci_conn.c`（linux-bluetooth master）
+
+---
+
+## 案例 55：信号完整性视角重构 BLE 连接——信道图谱跳频剔除 + T_IFS 时序 + ACK 优先级
+
+### 现象
+
+工业现场（电机厂 / 焊接车间）BLE 部署大量断连，Ellisys 抓包看到：
+- 满屏 `LL_CONNECTION_UPDATE_IND` 超时
+- 大量 MIC Failure（Message Integrity Check）
+- 物理层 ACK 优先级被数据处理抢占
+- lab 测不出来，工业现场高频触发
+- **跳频+信道图谱动态剔除**才是被忽视的生存机制
+
+### 抓包 + 根因（3 大根因 + 4 维修复）
+
+#### 根因 1：信道图谱没动态剔除拥堵信道
+
+- BLE 40 信道（0-39）
+- 工业现场 WiFi 集中在信道 1/6/11 → 跟 BLE 36-38 重叠
+- **默认信道图谱 = 全部 40 信道可用** → 算法挑到 WiFi 拥堵信道
+- **修复：动态信道图谱剔除 10-20 个拥堵信道**
+- 跳频只在剩余 20-30 信道 → 鲁棒性 +50%
+
+#### 根因 2：T_IFS 时序偏差
+
+- BLE spec T_IFS = 150µs（帧间间隔）
+- 高负载数据处理抢占 radio ISR → T_IFS 实测 200-300µs
+- T_IFS 偏差 > spec 容忍度 → **对端收帧错位 → CRC fail**
+- **修复：radio ISR 优先级提到最高 + 关中断时长 < 50µs**
+
+#### 根因 3：ACK 优先级 < 数据处理优先级
+
+- 应用数据发送 vs radio ACK 接收
+- 默认情况下数据发送优先级 = ACK 优先级
+- 高数据流时 ACK 收不到（被数据处理挤掉）
+- **修复：ACK 优先级 > 数据优先级**（radio ISR 内做 ACK）
+
+### 4 维修复（实战工程建议）
+
+```text
+1. 信道图谱动态剔除
+   - BLE 启动后扫描 40 信道 RSSI
+   - RSSI > -60 dBm 视为拥堵，剔除
+   - 跳频只在剩余信道
+   - 鲁棒性显著提升
+
+2. T_IFS 时序严控
+   - radio ISR 优先级 = 最高
+   - radio ISR 内禁止任何 > 50µs 操作
+   - 用 DMA + double buffer 代替 memcpy
+   - 测 T_IFS 实际值 < 200µs
+
+3. ACK 优先级 > 数据
+   - radio ISR 单独处理 ACK
+   - 数据发送走低优先级 task
+   - ACK 丢失率 < 0.01%
+
+4. 天线去耦
+   - BLE + WiFi 双天线物理隔离 > 5cm
+   - 不同频段天线方向 90° 错开
+   - BLE 性能 +WiFi 性能都提升
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：Ellisys 抓包 + 信道图谱分析
+  - Ellisys 抓 LL_CONNECTION_UPDATE_IND
+  - 看失败连接的 channel map
+  - 是否集中在 1-3 个信道
+  - 命中：信道图谱固定 = 根因 1
+
+Step 2：T_IFS 实测
+  - 逻辑分析仪抓 radio ISR 时间戳
+  - 测 T_IFS 实际值
+  - 期望 < 200µs
+  - 实际 300µs+ → 命中根因 2
+
+Step 3：ACK 丢失率统计
+  - 抓 radio RX 时刻 vs 期望 ACK 时刻
+  - 期望 ACK 时刻与实际 RX 时刻偏差
+  - 偏差 > 100µs → 命中根因 3
+
+Step 4：信道扫描 + RSSI 图
+  - 启动后扫 40 信道 RSSI
+  - 找拥堵信道（RSSI > -60 dBm）
+  - 验证根因 1
+```
+
+### 修复
+
+| 维度 | 修复 | 验证 |
+| --- | --- | --- |
+| 1 信道图谱 | 启动后动态剔除 10-20 个拥堵信道 | 跳频只在干净信道 |
+| 2 T_IFS | radio ISR 优先级最高 + ISR 长度 < 50µs | T_IFS < 200µs |
+| 3 ACK 优先级 | ACK 在 radio ISR 处理，数据走 task | ACK 丢失 < 0.01% |
+| 4 天线 | BLE + WiFi 双天线 5cm 隔离 | 双方性能 +20% |
+
+### 复盘
+
+- **跳频+信道图谱动态剔除是被忽视的生存机制**——默认全信道 = 不鲁棒
+- **ACK 优先级 > 数据处理优先级**——radio ISR 设计核心原则
+- **Channel Map 屏蔽 10-20 个拥堵信道换鲁棒性**——比单纯换信道更有效
+- T_IFS 时序偏差在低负载时不显形，**高负载才暴露**——必须测 stress 状态
+- Ellisys 抓包是工业 BLE 调试**最有价值投资**——能同时看 PHY + LL + HCI 三层
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 4
+- tsight.io（工业 BLE 协议分析博客）
+
+---
+
+## 案例 56：SweynTooth——12 个 BLE SoC SDK 漏洞影响 480+ 产品
+
+### 现象
+
+2020 年新加坡科技与设计大学（SUTD）披露 **SweynTooth** 漏洞族：
+- **12 个漏洞**，影响 **480+ IoT/可穿戴/医疗产品**
+- 受影响 SoC SDK：
+  - Texas Instruments（CC2640 / CC2650）
+  - NXP（KW41Z / K32W）
+  - Cypress（PSoC 4 / CYW20735）
+  - Dialog（DA14580 / DA14681）
+  - Microchip（ATSAM3 / PIC32）
+  - STMicroelectronics（BlueNRG-2）
+  - Telink（TLSR8258）
+- 受影响产品：Samsung / Fitbit / Xiaomi / Medtronic 起搏器 / VivaCheck 血糖仪等
+- **攻击面**：物理近距 + 协议层 = BLE LL 帧处理 + 配对 + 加密实现缺陷
+- Dialog/Microchip/STM 部分漏洞**至 2026 年仍未修补**
+
+### 抓包 + 根因（12 个漏洞按类型分）
+
+#### 类型 A：LL 帧处理（5 个）
+
+```text
+CVE-2019-16336 / CVE-2019-17419 / CVE-2019-17420 / CVE-2020-13593 等
+- 链路层帧长度校验不严 → 接收超长 LL 帧
+- 攻击：发送超长 LL 帧 → 设备 buffer overflow → crash / RCE
+- 现场实测：5m 范围内发送特定 LL 帧 → Samsung Smart Lock 崩溃
+```
+
+#### 类型 B：配对流程（4 个）
+
+```text
+CVE-2019-17517 / CVE-2019-17518 / CVE-2019-17519 / CVE-2019-17520
+- 配对状态机跳转未校验 → 攻击者伪装成"已配对"设备
+- 攻击：发起 pairing 跳过 authentication → 后续通信被中间人
+- 现场实测：Yale 智能锁被 bypass
+```
+
+#### 类型 C：加密实现（3 个）
+
+```text
+CVE-2019-19193 / CVE-2020-13594 / CVE-2020-13595
+- AES-CCM 加密实现侧信道泄漏 → 恢复加密 key
+- 攻击：长时间物理近距 + 抓加密流量 → 离线解密
+- 现场实测：Medtronic 起搏器编程器流量被解密
+```
+
+### 定位 / 验证（4 步法）
+
+```text
+Step 1：CVE 历史查询
+  - 选型前必查：NIST NVD / CVE.org / 厂商 PSIRT
+  - 查 SDK 历史 CVE：过去 5 年漏洞数 + 修复及时性
+  - 命中：Dialog/Microchip/STM 部分漏洞未修
+
+Step 2：fuzzing 测试
+  - 内部实验室跑 LL 帧 fuzzing（Texas/InternalBlue）
+  - 看设备是否 crash
+  - 命中：CC2640 R2 SDK < 2.40 一打就挂
+
+Step 3：物理近距攻击实测
+  - 5m 范围内发送 CVE payload
+  - 设备是否 crash / 中间人成功
+  - 验证类型 A/B/C
+
+Step 4：patch 跟踪
+  - 跟踪厂商 PSIRT 公告
+  - 看 patch 节奏（季度？半年？一年？）
+  - 命中：未修/节奏慢 = 高风险
+```
+
+### 修复 / 选型防御
+
+| 维度 | 修复 | 验证 |
+| --- | --- | --- |
+| 选型 | SoC 选型必查 CVE 历史 + patch 节奏 | 季度 patch 节奏厂商 |
+| 1 SDK 升级 | 升到最新 SDK（含 patch） | vendor PSIRT 公告 |
+| 2 fuzzing | 内部实验室持续 fuzzing | crash 率 0 |
+| 3 配对加固 | Just Works 配对**禁用** → 必须 Numeric Comparison / Passkey | 攻击无法 bypass |
+| 4 加密 | 加 BLE 5.1+ LE Secure Connections | 防侧信道 |
+| 5 OTA | 设备支持 OTA patch（漏洞出后远程修） | OTA 通道验证 |
+
+### SoC 选型 Checklist（关键决策表）
+
+```text
+□ 厂商过去 5 年 CVE 数（< 10 个 = 好）
+□ Patch 节奏（季度 = 好 / 半年 = 中 / 一年以上 = 差）
+□ 是否支持 BLE 5.1+ LE Secure Connections
+□ 是否支持 LE Privacy（地址随机化）
+□ 是否支持 OTA 升级
+□ InternalBlue / SweynTooth 漏洞暴露情况
+□ 是否有 hardware crypto accelerator
+□ 是否经过 NIST FIPS 140-2 认证
+```
+
+### 复盘
+
+- **BLE SoC 选型不能只看 spec**——**CVE 历史 + patch 节奏**才是关键
+- 医疗/工业/可穿戴被点名——**SweynTooth 漏洞族**对**长期产品**是致命
+- **物理近距 + 协议层 = 攻击面**——攻击成本低（5m 内 + 笔记本），但**设备必须 patch**
+- Dialog/Microchip/STM 部分漏洞**长期未修**——意味着出厂产品永久带洞
+- 选型 Checklist 必查 8 项——CVE 历史是第 1 项
+- **医疗设备漏洞 = 直接关系人命**（Medtronic 起搏器）——任何医疗产品必须 BLE 5.1+ + 严格 patch 节奏
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 5
+- Breach Spot / 新加坡科技与设计大学（SUTD）披露
+- NIST NVD（National Vulnerability Database）
+- 各厂商 PSIRT（Product Security Incident Response Team）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

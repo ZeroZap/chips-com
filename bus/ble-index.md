@@ -298,3 +298,10 @@ BLE 是"低功耗短距无线的事实标准"，强在功耗、GATT 属性模型
   - 案例 50：EBYTE 遥控器产线 90% 断连 4 大根因（brownout 50mV / 2.4GHz 拥堵 / VSWR>3.0 / 连接参数）
   - 案例 51：STM32 HCI 0x10 硬件错误 + ISR 延迟（SysTick 优先级倒置 / 关中断超字节 / NVIC 分组错 / 阻塞 printf）
   - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 2/4
+- 2026-09-13: 新增 5 实战案例（52-56）
+  - 案例 52：Nordic DevZone BLE+WiFi 共存 SAR 包乱序（800KB 三方日志时间戳对齐 + 滑动窗口 SAR）
+  - 案例 53：华汉仪器产线测试三站闭环（误测/参数偏移/硬故障 3 类 + SN 全程追溯 + MES Fail）
+  - 案例 54：Linux kernel conn_timeout 2s→20s patch（Volvo 工业压力传感器 + userspace/kernel 双 timeout）
+  - 案例 55：信号完整性重构 BLE 连接（信道图谱跳频剔除 + T_IFS 时序 + ACK 优先级）
+  - 案例 56：SweynTooth 12 CVE 影响 480+ 产品（SoC 选型必查 CVE 历史 + patch 节奏）
+  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 1-5
