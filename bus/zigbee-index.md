@@ -288,3 +288,6 @@ ZigBee 是"低功耗 mesh 自组网 IoT 协议的事实标准"，强在 Mesh 自
   - 案例 41：HDI 板厂焊后离子残留——ZigBee 休眠 2 µA 飙 20 µA+（PCB 漏电隐形陷阱）
   - 案例 42：JN5169 量产工艺——M00/M03/M06 选型 + 邮票孔内切外延 + 回流焊 TAL 严控
   - 来源：_Inbox/ZigBee-2026-09-13-candidates.md 候选 1-5
+- 2026-09-14: 新增 1 实战案例（43）
+  - 案例 43：50 设备 CPU 过载伪装无线问题 + 树形 vs 纯 Mesh 拓扑（Wiren Board 380% + 协调器角落 + EFR32MG21 vs CC2652P）
+  - 来源：_Inbox/ZigBee-2026-09-14-candidates.md 候选 2
