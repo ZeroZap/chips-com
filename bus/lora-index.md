@@ -307,3 +307,10 @@ LoRa / LoRaWAN 是"远距低功耗 IoT 的事实标准"，强在距离、电池�
   - 案例 41：Downlinks scheduled not sent（4 fault domain + ChirpStack device lock + 三平台对比）
   - 案例 42：Gateway RSSI/SNR/Packet loss（SNR 阈值按 SF + 3 丢包 pattern + 4 类隐性硬件故障）
   - 来源：_Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1-5
+- 2026-09-17: 新增 5 实战案例（43-47）
+  - 案例 43：ESP32 SX1262 LoRaWAN TX brownout + US915 sub-band mask + 470µF bulk cap
+  - 案例 44：Heltec V3 TTN -707/-706（V2/V3 板卡 SPI 映射混淆 + SX1278 vs SX1262）+ MSB/LSB 字节序
+  - 案例 45：STM32WLE5 modem_supervisor_init 卡死（HSE32 + TCXO DIO3 + RCC-CR.HSE32RDY + BUSY 引脚 5 步排查法）
+  - 案例 46：SPI Mode 0 + SX1262 max 16MHz + NSS pull-up + SDR 看 CSS chirp 验 TX + DevEUI 冲突 nonce mismatch
+  - 案例 47：Firmware 三层调试法——RTL-SDR 看空口 + IC880A+Pi 自建 gateway + ChirpStack 栈诊断
+  - 来源：_Inbox/LoRa-2026-09-17-candidates.md 候选 1-5

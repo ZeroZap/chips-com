@@ -4400,6 +4400,709 @@ Step 4：现场 RSSI 调查
 
 ---
 
+## 案例 43：ESP32 SX1262 LoRaWAN——3 大实战故障（sub-band mask / TX brownout / 空载烧毁天线）
+
+### 现象
+
+ESP32 + SX1262/SX1276 LoRaWAN 节点，3 大实战故障：
+1. **Join 失败**（sub-band mask 缺失）
+2. **TX brownout**（电流尖峰）
+3. **RSSI -120dBm**（空载烧毁天线）
+- 90% 工程师卡在前 3 个故障
+
+### 3 大故障
+
+#### 故障 1：sub-band mask 缺失致 join 失败
+
+- US915/AU915 频段**64 信道**（ch0-ch63）
+- 默认 sub-band mask = **全信道** → **网关拒入**
+- US915 实际只允许 **8 个子带**（每个 8 信道）
+- **必须配置**：
+  ```c
+  // US915 sub-band 1
+  const uint8_t subband_mask[] = {0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+  LMIC_setSubBandSelection(subband_mask);
+  ```
+- **不配 sub-band = 100% join 失败**（US915/AU915 必查项）
+- 跟 R12-3 案例 32（ESP32 LMIC 90% EV_JOIN_FAILED = MSB/LSB + US915 subband）**角度相似**但本案例更详细
+
+#### 故障 2：TX 电流尖峰触发 brownout
+
+- SX1262 TX @ +20 dBm → **120 mA 瞬时**
+- SX1276 TX @ +17 dBm → **100 mA 瞬时**
+- SF10-SF12 airtime 长 → **电压跌落超过 200ms**
+- ESP32 USB 5V → AMS1117-3.3 → ESP32 → 电流尖峰瞬态 → **Vmin < 2.85V → brownout**
+- 表现：log 看到 `Brownout detector was triggered`
+- 表现：TX 失败 / join 失败 / 反复重启
+
+**修复：焊 470µF bulk 电容**
+```text
+电容位置：紧靠 SX1262 VCC 引脚
+电容值：470µF（推荐） / 1000µF（更稳）
+电容类型：钽电容（低 ESR）/ 陶瓷 22µF × N 并联
+其他：加 10µF 陶瓷 + 100nF 陶瓷（HIGH FREQ 去耦）
+```
+
+#### 故障 3：空载烧毁天线致 RSSI -120dBm
+
+- SX1262 TX 时如果 **天线未接或开路** → 反射功率 100%
+- 持续 5+ 秒 → 内部 PA 烧毁
+- 表现：RSSI 永远 -120dBm（最大衰减）
+- **预防**：
+  - **TX 前必测天线 SWR**（天线分析仪）
+  - **TX 前必测天线连通**（万用表 continuity）
+  - **固件防呆**：检测到 PA 反射功率过大 → 立即降功率或停 TX
+
+### 修复 Checklist
+
+```text
+□ US915/AU915 必配 sub-band mask（选 1 个 sub-band）
+□ SX1262/SX1276 VCC 紧贴 470µF 钽电容 + 10µF 陶瓷 + 100nF 陶瓷
+□ TX 前 SWR < 2.0（天线分析仪验证）
+□ TX 前天线连通（万用表 continuity）
+□ 固件防呆：PA 反射 > 阈值 → 降功率或停 TX
+□ 选型：RadioLib（API 现代 / 兼容 SX1262）+ MCCI LMIC（API 老旧 / 但广泛）
+□ SX1262 比 SX1276 优（更低功耗 + 更快 airtime）
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：抓 join request
+  - 命中：发 join request → 没收到 join accept → sub-band 错
+  - 验证根因 1
+
+Step 2：示波器测 VCC 瞬态
+  - GPIO 测 SX1262 TX 时刻 VCC
+  - 期望 Vmin > 2.95V
+  - 实际 Vmin < 2.85V → brownout
+  - 验证根因 2
+
+Step 3：天线分析仪测 SWR
+  - 期望 < 2.0
+  - 实际 > 5.0 → 天线烧毁
+  - 验证根因 3
+
+Step 4：万用表测天线连通
+  - 期望连通
+  - 实际开路 → 天线烧毁
+  - 验证根因 3
+```
+
+### 复盘
+
+- **US915/AU915 必配 sub-band mask**——**这是 90% join 失败的根因**
+- **SX1262 TX 120 mA 瞬态**——**bulk cap 470µF 是必须**
+- **TX 前必测 SWR**——空载烧毁 = 永久损坏
+- **RadioLib vs MCCI LMIC**——**RadioLib 现代首选**（SX1262 兼容）
+- **SX1262 > SX1276**——更优但更敏感（需 bulk cap）
+- 跟 R12-3 案例 32（ESP32 LMIC US915 subband）**互补**——本案例从 **bulk cap + TX brownout + 天线烧毁** 视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-17-candidates.md 候选 1
+- electricalflux.com（嵌入式开发者 blog）
+
+---
+
+## 案例 44：Heltec V3 TTN Debugging——错误码排序排查 + V2/V3 板卡混淆 + MSB/LSB 字节序
+
+### 现象
+
+Heltec WiFi LoRa 32 V3 开发板 TTN 接入，90% 初始化失败：
+- 错误码：-707 / -706（LMIC 特定错误）
+- TTN 控制台："MIC Mismatch"
+- 工程师卡 1-2 周
+- 根因 = **V2/V3 板卡混淆 + MSB/LSB 字节序 + 单 channel gateway**
+
+### 错误码排查树
+
+```text
+错误码 -707（LMIC_EV_TXCOMPLETE 之前）
+  → SPI 通信失败（SPI 初始化失败 / NSS 引脚错）
+  → 90% 原因：V2 板卡用了 V3 lmic_pinmap（或反向）
+
+错误码 -706（TX 失败）
+  → join request 后没收到 join accept
+  → 可能原因：
+     a) V2 vs V3 板卡混淆（关键）
+     b) MSB/LSB 字节序错
+     c) Sub-band mask 未配（US915）
+
+"MIC Mismatch"（TTN 显示）
+  → DevEUI / AppKey 字节序错
+  → MSB/LSB 反转
+```
+
+### 三大根因
+
+#### 根因 1：V2/V3 板卡混淆（最致命）
+
+- Heltec V2：SX1276 芯片
+  - SPI 引脚：SCK=5, MISO=19, MOSI=27, NSS=18, RST=14, DIO0=26
+  - lmic_pinmap：`lmic_pinmap Heltec_V2.h`
+- Heltec V3：SX1262 芯片
+  - SPI 引脚：**SCK=9, MISO=11, MOSI=10, NSS=8, RST=12, DIO0=14**
+  - lmic_pinmap：`lmic_pinmap Heltec_V3.h`
+- **SPI 映射完全不同**——用 V2 pinmap 跑 V3 → SPI 完全失败
+- 表现：错误码 -707（SPI 失败）
+
+**关键**：**board variant 必须对应 lmic_pinmap**——这是 90% 失败的根因
+
+#### 根因 2：MSB/LSB 字节序高频坑
+
+- TTN 控制台显示 DevEUI = `A0 B1 C2 D3 E4 F5 67 89`（用户视角）
+- LoRaWAN 协议要求 **大端字节序**（MSB first）
+- Arduino 数组声明：
+  ```c
+  // 错：直接用 TTN 显示顺序
+  static const u1_t PROGMEM DEVEUI[] = { 0xA0, 0xB1, 0xC2, 0xD3, 0xE4, 0xF5, 0x67, 0x89 };
+
+  // 对：必须用 `lmic_eui_byte_t` 宏反转
+  static const u1_t PROGMEM DEVEUI[] = { 0x89, 0x67, 0xF5, 0xE4, 0xD3, 0xC2, 0xB1, 0xA0 };
+  ```
+- 或者用 `printf("%02X", DEVEUI[0])` 验证是否跟 TTN 显示一致
+
+#### 根因 3：单 channel gateway 切换 ABP
+
+- TTN 默认 8 channel gateway（合规）
+- 但有些 dev kit / 第三方 gateway = **单 channel gateway**（8 信道中只用 1 个）
+- OTAA 必须匹配 gateway channel → 单 channel 限制太多 → join 经常失败
+- **解决方案**：切 ABP（Activation By Personalization）跳过 join
+  - 直接配 DevAddr + NwkSKey + AppSKey
+  - 不需要 join accept
+  - **但 ABP 安全性低于 OTAA**
+
+### 修复 Checklist
+
+```text
+□ 确认板卡版本：V2（SX1276）/ V3（SX1262）
+□ lmic_pinmap 必须对应：
+  - V2 → "lmic_pinmap Heltec_V2.h"
+  - V3 → "lmic_pinmap Heltec_V3.h"
+□ DevEUI / AppKey 字节序：用 TTN 显示反序
+□ US915/AU915 必配 sub-band mask
+□ 单 channel gateway → 切 ABP（绕过 join）
+□ join request 后 10 秒无 accept → 检查 RX2 window（默认 SF9/915MHz）
+□ TX power 不要超过 region limit（EU868 = +14 dBm / US915 = +30 dBm）
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：检查板卡版本
+  - 看板卡丝印（V2 / V3）
+  - 看芯片丝印（SX1276 / SX1262）
+  - 命中：版本与代码不匹配 → 根因 1
+
+Step 2：抓 SPI 通信
+  - 逻辑分析仪抓 SCK/MISO/MOSI/NSS
+  - 期望有 SPI 时钟
+  - 实际无 → NSS 引脚错 → 根因 1
+
+Step 3：检查 DevEUI 字节序
+  - log 打印 DevEUI
+  - 对比 TTN 显示
+  - 不一致 → 根因 2
+
+Step 4：检查 gateway 类型
+  - 8 channel gateway 用 OTAA
+  - 单 channel gateway 用 ABP
+  - 不匹配 → 根因 3
+```
+
+### 复盘
+
+- **board variant 必须对应 lmic_pinmap**——**90% 失败根因**
+- **MSB/LSB 字节序**——TTN 显示反序才是 LoRaWAN 协议要求
+- **错误码 -707 / -706** = 标准化排查入口
+- **单 channel gateway** 必查——很多 dev kit 是单 channel
+- **OTAA 安全性 > ABP**——单 channel gateway 才妥协 ABP
+- 跟 R12-3 案例 32（ESP32 LMIC 90% EV_JOIN_FAILED）**互补**——本案例从 **错误码排查树 + 板卡混淆** 视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-17-candidates.md 候选 2
+- electricalflux.com
+
+---
+
+## 案例 45：STM32WLE5 modem_supervisor_init 卡死——HSE32 + TCXO DIO3 + RCC-CR 调试法
+
+### 现象
+
+STM32WLE5 自研板（智能门锁方案），`modem_supervisor_init()` 卡死：
+- 固件跑到 modem init 就死（hang）
+- 1-3 天定位
+- 90% 案例根因 = **HSE32 未起振**
+- 排查 5 步法 1 小时可定位
+
+### 5 步排查法
+
+```text
+Step 1：检查 HSE32 晶振
+  - RCC->CR 寄存器读 HSE32RDY 位
+  - 期望：HSE32RDY = 1（32 MHz HSE 起振）
+  - 实际：HSE32RDY = 0 → HSE32 未起振
+  - 命中根因 1
+
+Step 2：检查 TCXO 供电
+  - TCXO（温度补偿晶振）供电由 DIO3 SX126x 控制
+  - 软件必须先 enable DIO3 才能 TCXO 起振
+  - 若软件未配 → TCXO 永远断电
+  - 实际：DIO3 输出 = 0V → TCXO 不振
+  - 命中根因 2
+
+Step 3：检查 LSE32（32.768 kHz）
+  - LSE 给 RTC 用
+  - modem init 也依赖 RTC
+  - LSE 未起 → modem init 等超时
+  - 实际：LSE 起振慢（典型 2-3 秒）
+  - 命中根因 3
+
+Step 4：检查 NRESET 引脚
+  - 复位电路有问题 → SX126x 内部状态机混乱
+  - 实际：复位时间不足
+  - 命中根因 4
+
+Step 5：检查 SX126x BUSY 引脚
+  - BUSY = HIGH 时 SX126x 内部处理中
+  - 主控读寄存器前必须等 BUSY = LOW
+  - 若不等 → SPI 时序错位 → modem init 卡死
+  - 命中根因 5
+```
+
+### 三大根因详解
+
+#### 根因 1：HSE32 未起振（90% 案例）
+
+- STM32WLE5 默认 HSE = 32 MHz TCXO
+- 32 MHz 起振条件：
+  - 晶振负载电容匹配（CL = 8-12 pF 典型）
+  - PCB 走线短（< 5mm）
+  - 起振使能位 RCC->CR.HSEON 置 1
+- **常见错**：
+  - 用了 16 MHz HSE 而不是 32 MHz（错误 BOM）
+  - 负载电容不匹配（PCB 寄生没考虑）
+  - HSEON 没开（CUBEMX 漏配）
+
+**修复**：
+```c
+// 启动 HSE32
+RCC->CR |= RCC_CR_HSEON;
+while (!(RCC->CR & RCC_CR_HSERDY)) {}  // 等起振，超时 = 硬件问题
+```
+
+#### 根因 2：TCXO 供电由 DIO3 控制（10% 案例）
+
+- SX126x 的 DIO3 可以配置为 TCXO 供电输出（1.6V-3.3V 可配）
+- **SX126x 默认 DIO3 是 IO 功能**——**TCXO 默认不上电**
+- 软件必须先 `SX126xSetDio3AsTcxoCtrl(TCXO_CTRL_3_3V, 320)`（供电 + 启动延迟）
+- 否则 modem 一直等 TCXO 起振 → 卡死
+
+**修复**：
+```c
+// SX126x 配置 DIO3 为 TCXO 供电
+SX126xSetDio3AsTcxoCtrl(
+    SX126X_TCXO_CTRL_3_3V,  // 3.3V 供电
+    320                       // 320 ms 启动时间
+);
+// modem init 前必须先调
+```
+
+#### 根因 3：BUSY 引脚时序（5% 案例）
+
+- SX126x BUSY 引脚 = HIGH 时内部处理中
+- SPI 写命令前必须等 BUSY = LOW
+- 失败 → SPI 数据丢弃 → modem init 卡死
+- STM32WLE5 内置 SUBGHZ peripheral 替代部分 SPI，但 BUSY 仍需检查
+
+### 修复 Checklist
+
+```text
+□ 焊完先查 RCC->CR.HSE32RDY 位（HSE32 是否起振）
+□ SX126xSetDio3AsTcxoCtrl() 配置（TCXO 供电）
+□ LSE32 起振等待（最多 10 秒超时）
+□ NRESET 复位时间 ≥ 100 µs（datasheet 要求）
+□ BUSY 引脚等待 BUSY = LOW 再发 SPI
+□ modem init 前必须先 enable TCXO
+□ 5V 上电到 HSE 启动 ≤ 500ms
+□ HAL_RCC_OscConfig() 返回值检查
+```
+
+### 定位（5 步法）
+
+```text
+Step 1：RCC->CR.HSE32RDY
+  - 0 → 硬件问题（晶振/电容/PCB）→ 根因 1
+  - 1 → HSE OK，进 Step 2
+
+Step 2：DIO3 电压
+  - 0V → TCXO 未供电 → 根因 2
+  - 1.6-3.3V → TCXO OK，进 Step 3
+
+Step 3：LSE32RDY
+  - 0 → LSE 未起振（延时或硬件问题）
+  - 1 → LSE OK，进 Step 4
+
+Step 4：NRESET 时序
+  - 复位时间 < 100µs → 加长复位
+  - 复位时间 ≥ 100µs → 进 Step 5
+
+Step 5：BUSY 时序
+  - SPI 写命令前是否等 BUSY = LOW？
+  - 是 → modem init 仍卡 → 固件逻辑问题
+  - 否 → 加 BUSY 等待
+```
+
+### 复盘
+
+- **HSE32 起振 = 90% 根因**——焊完第一件事是查 RCC->CR.HSE32RDY
+- **TCXO 供电 = 隐藏配置**——SX126x DIO3 默认不上电
+- **BUSY 时序 = SPI 写入前提**——不能跳过
+- **5 步排查法 = 1 小时定位**——比"瞎试 3 天"高效
+- **焊完先查硬件**——软件 init 之前必须确认硬件 OK
+- 跟 R12-3 案例 32（ESP32 LMIC）**完全不同平台**——STM32WLE5 自带 SUBGHZ peripheral
+- 跟 R18-5 节案例 38（智能能源 P0）**角度不同**——本案例从**单节点 init**视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-17-candidates.md 候选 3
+- mhpq.cn（中文实战 blog）
+
+---
+
+## 案例 46：LoRa SPI Wiring + Bus Sniffing——物理层经典故障 + SDR 看 CSS chirp 验 TX
+
+### 现象
+
+LoRa 模块 SPI 通信 + RF 输出调试：
+- 50% 案例 NSS pull-up 缺失
+- 30% 案例 SPI 时钟超 16 MHz
+- 10% 案例 DevEUI 冲突致 NS nonce mismatch
+- SDR 看 CSS 斜线 chirp 验 TX
+
+### 物理层 4 大经典故障
+
+#### 故障 1：NSS pull-up 缺失
+
+- LoRa 芯片 SX1262/SX1276 的 NSS（active low chip select）默认无内部 pull-up
+- 主控 NSS 引脚未配 pull-up → 浮空
+- **浮空导致**：
+  - 上电瞬间 SPI 通信失败
+  - 多设备总线冲突
+  - 休眠唤醒时序错
+- **修复**：NSS 引脚外接 10 kΩ pull-up 到 VCC
+
+#### 故障 2：SPI Mode 错
+
+- LoRa 芯片 SPI Mode 0（CPHA=0, CPOL=0）
+- 主控默认 SPI Mode 0/1/2/3 都可能错配
+- 错配 → SX1262 完全不应答
+- 表现：SPI 读寄存器永远返回 0xFF 或 0x00
+- **修复**：
+  ```c
+  // ESP32 Arduino
+  SPI.beginTransaction(SPISettings(8E6, MSBFIRST, SPI_MODE0));
+  // STM32 HAL
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;  // Mode 0
+  ```
+
+#### 故障 3：SPI 时钟超 16 MHz
+
+- SX1262 SPI max = 16 MHz
+- SX1276/SX1278 SPI max = 10 MHz
+- **长杜邦线（> 10cm）+ 高时钟** → 信号完整性破坏
+- 表现：SPI 时好时坏，温度敏感
+- **修复**：
+  - 板内 SPI ≤ 16 MHz（SX1262）
+  - 杜邦线 ≤ 10 MHz
+  - 杜邦线长度 ≤ 10 cm
+
+#### 故障 4：DevEUI 冲突致 NS nonce mismatch
+
+- 节点 1 用 DevEUI = `70B3D5499XXXXXXXXX`
+- 节点 2 用 DevEUI = `70B3D5499YYYYYYYYY`（前 8 字节相同）
+- **NS nonce 冲突**：
+  - NS 给节点 1 一个 nonce
+  - NS 给节点 2 同一 nonce（hash collision 概率）
+  - 节点 2 收到 join accept 但 MIC 不匹配
+- **修复**：
+  - DevEUI 必须**全球唯一**
+  - 推荐用芯片出厂 MAC 地址
+  - 或者用 IEEE OUI 申请
+
+### SDR 看 CSS chirp 验 TX（实战调试法）
+
+- SDR（Software Defined Radio）= $100 RTL2832 USB dongle
+- SDR 软件：SDR# / SDRangel / GQRX
+- 调中心频率到 LoRa 节点频率
+- 触发 LoRa 节点 TX
+- **观察**：频谱上看到**斜线**（chirp）
+  - chirp 起点低频 → 终点高频 = 上行 chirp（LoRaWAN）
+  - 斜线时间 = `(2^SF) / BW` 秒
+  - 例：SF7 BW=125kHz → 524 ms
+  - 例：SF12 BW=125kHz → 8400 ms（= 8.4 秒）
+
+#### SDR 验 TX 步骤
+
+```text
+Step 1：SDR 接 USB dongle
+Step 2：SDR# 调中心频率（868 / 915 MHz）
+Step 3：BW = 250 kHz（覆盖 chirp 全程）
+Step 4：触发 LoRa 节点 TX（按键 / 命令）
+Step 5：观察频谱图：看到斜线 = TX OK
+  - 看不到斜线 → TX 失败 → 检查 SPI / NSS
+  - 看到平线 → 频率错 → 检查频率配置
+  - 看到斜线但弱 → 功率低 → 检查 PA 配置
+```
+
+### SPI 总线嗅探（bus sniffing）
+
+- 用逻辑分析仪（Saleae / Kingst LA2016）抓 SPI 总线
+- 同时抓 NSS / SCK / MOSI / MISO
+- 解码 SX1262 命令：
+  - GET_STATUS (0xC0) → 期望返回 status
+  - SET_PACKET_TYPE (0x8A) → 配置 LoRa 模式
+  - SET_RF_FREQUENCY (0x86) → 频率配置
+  - SET_TX_PARAMS (0x8E) → 功率 + ramp time
+  - SET_BUFFER_BASE_ADDRESS (0x8F) → TX buffer base
+  - WRITE_BUFFER (0x0E) → 写 payload
+
+### 修复 Checklist
+
+```text
+□ NSS 引脚外接 10 kΩ pull-up
+□ SPI Mode 0（CPOL=0, CPHA=0）
+□ SPI 时钟：板内 ≤ 16 MHz / 杜邦线 ≤ 10 MHz
+□ 杜邦线长度 ≤ 10 cm
+□ DevEUI 全球唯一（用 MAC 地址 / 申请 OUI）
+□ SDR 看 chirp 验 TX
+□ 逻辑分析仪抓 SPI 命令解码
+□ SX1262 status 寄存器读后验证
+```
+
+### 复盘
+
+- **NSS pull-up 缺失 = 50% 案例**——易忽略的硬件坑
+- **SPI Mode 0 是 LoRa 芯片硬要求**——错配直接挂
+- **16 MHz 限速 = SX1262**——**不是 SX127x 的 10 MHz**
+- **DevEUI 唯一性 = NS nonce 防冲突**——hash collision 罕见但有
+- **SDR 看 chirp = 验 TX 最快**——视觉化调试
+- **SPI 嗅探 = 命令级调试**——比日志更直接
+- 跟 R12-3 案例 32（ESP32 LMIC）**互补**——本案例从**物理层 + 调试方法**视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-17-candidates.md 候选 4
+- electricalflux.com
+
+---
+
+## 案例 47：LoRaWAN Firmware 三层调试法——RTL-SDR 看空口 + IC880A 自建 gateway + ChirpStack 栈诊断
+
+### 现象
+
+LoRaWAN 节点开发调试 3 大能力：
+- 看不到 RF 信号 → 猜
+- 看不到协议消息 → 猜
+- 看不到 NS 栈状态 → 猜
+- 实战：**三层调试法** = 空口 + gateway + 栈诊断
+
+### 三层调试法架构
+
+```text
+Layer 1：RF 空口（看得见）
+  - 工具：RTL-SDR（$100 USB dongle）
+  - 软件：SDR# / SDRangel / GQRX
+  - 能力：看 chirp、看频率、看功率
+  - 价值：验 TX 真发了没
+
+Layer 2：协议消息（看得懂）
+  - 工具：$100 自建 gateway（IC880A + Pi）
+  - 软件：packet_forwarder + LoRaWAN protocol 解码
+  - 能力：看 join request/accept、Uplink/Downlink
+  - 价值：验协议消息正确
+
+Layer 3：NS 栈诊断（看得全）
+  - 工具：ChirpStack（开源 NS）
+  - 软件：ChirpStack + Grafana
+  - 能力：看 DevEUI / DevAddr / Frame Counter / MIC
+  - 价值：定位 NS 端问题
+```
+
+### Layer 1：RTL-SDR 看空口
+
+- 设备：RTL2832 USB dongle（$30-100）
+- 软件：SDR#（Windows）/ GQRX（Linux）/ SDRangel（高级）
+- 配置：
+  - 中心频率：868 / 915 MHz（按 region）
+  - 带宽：250 kHz（覆盖 chirp）
+  - 增益：auto
+- 触发节点 TX：
+  - 按键 / AT 命令
+  - 立即看频谱：看到斜线 = TX OK
+
+#### 实战判读
+
+```text
+看到斜线（chirp）
+  → TX OK
+  → 看 SF：B/SF = 2^SF / BW
+  → 看方向：上行 / 下行
+  → 看功率：估算（粗略）
+
+看不到斜线
+  → TX 失败
+  → 检查 SPI / NSS / power
+
+看到平线（恒定频率）
+  → 频率错
+  → 检查频率配置
+
+看到斜线但弱
+  → 功率低
+  → 检查 PA / 天线
+```
+
+### Layer 2：IC880A 自建 Gateway
+
+- 设备：
+  - IC880A concentrator 板（€100）
+  - Raspberry Pi 3/4（€50）
+  - 总成本 ≈ €150
+- 软件：
+  - packet_forwarder（Semtech 官方）
+  - ChirpStack gateway bridge
+- 配置：
+  - 按 region 配置文件
+  - 中心频率 / 信道数 / 信道列表
+- 实战：能解析 join request/accept、Uplink/Downlink 完整消息
+
+#### 实战判读
+
+```text
+看到 join request
+  → 节点 TX OK
+  → 看 join accept：gateway 是否正确应答
+  → 看 MIC：MIC 匹配 = 字节序对
+
+看到 uplink 但 MIC fail
+  → 字节序错（DevEUI / AppKey）
+  → 用 R19-10 案例 44 的字节序 checklist
+
+看到 uplink 但下行失败
+  → RX2 window 错
+  → SF9 / 915 MHz 默认 RX2
+  → 检查节点 SF 配置
+
+看不到任何消息
+  → gateway 跟节点不同频
+  → 检查 frequency / region 配置
+```
+
+### Layer 3：ChirpStack 栈诊断
+
+- 软件：ChirpStack（开源 NS）
+- 数据库：PostgreSQL + Redis
+- UI：ChirpStack Application Server
+- 部署：Docker 一键
+- 能力：
+  - 看 DevEUI / DevAddr / AppSKey / NwkSKey
+  - 看 Frame Counter 递增
+  - 看 MIC 校验结果
+  - 看 device session（lock vs replace）
+  - 看事件日志
+
+#### 实战判读
+
+```text
+DevEUI 列表找不到节点
+  → NS 端未注册节点
+  → 必查：TTN/ChirpStack console 注册
+
+Frame Counter 不递增
+  → 节点 TX 没到
+  → 检查 Layer 1 + 2
+
+MIC fail
+  → 字节序错（参考 Layer 2）
+  → AppKey 错
+  → 看 MIC log 详情
+
+device session = lock
+  → 单 gateway 限制
+  → 改 replace（参考 R12-3 案例 41）
+
+Event log 缺 join
+  → 节点没发送 join request
+  → 检查节点 firmware
+```
+
+### 三层调试法协同流程
+
+```text
+Step 1：Layer 1 SDR 看空口
+  - 触发节点 TX
+  - 验证 chirp 可见
+  - 失败 → 检查 SPI / NSS / power
+
+Step 2：Layer 2 gateway 看协议
+  - 验 join request / accept
+  - 验 MIC 匹配
+  - 失败 → 检查 DevEUI / AppKey 字节序
+
+Step 3：Layer 3 ChirpStack 看 NS
+  - 验 DevEUI 注册
+  - 验 Frame Counter
+  - 验事件日志
+  - 失败 → 检查 NS 配置 / device session
+
+Step 4：联合调试
+  - 三层 log 时间戳对齐
+  - 看消息链路在哪一层断
+```
+
+### 实战 Checklist
+
+```text
+Layer 1（RF 空口）
+  □ RTL-SDR 设备到位
+  □ SDR# / GQRX 软件装好
+  □ 中心频率 + BW 配对
+  □ 触发节点 TX 验 chirp
+
+Layer 2（协议）
+  □ IC880A + Pi 自建 gateway
+  □ packet_forwarder 配 region
+  □ ChirpStack gateway bridge 配对
+  □ 看 join request / accept + MIC
+
+Layer 3（NS）
+  □ ChirpStack 部署（Docker）
+  □ PostgreSQL + Redis 数据存储
+  □ Application Server UI
+  □ 节点 DevEUI 注册
+  □ Frame Counter 监控
+```
+
+### 复盘
+
+- **三层调试法 = 看得见 + 看得懂 + 看得全**——工程师必会
+- **RTL-SDR $100 入门**——最低成本 RF 调试工具
+- **IC880A + Pi 自建 gateway ≈ €150**——可替代 TTN 调试
+- **ChirpStack 开源 NS 首选**——比 TTN 自托管更灵活
+- **三层 log 时间戳对齐** = 跨层调试核心
+- 跟 R12-3 案例 36（downlink 4 fault domain）**互补**——本案例从**调试能力建设**视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-17-candidates.md 候选 5
+- lab5e.com（LoRaWAN 网络服务商）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
