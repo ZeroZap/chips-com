@@ -5230,6 +5230,827 @@ Step 4：patch 跟踪
 
 ---
 
+## 案例 57：MicroRidge IMTS 2024 现场——AFH clean channel 池压垮循环跳频（金属多径 vs 固定信道反直觉）
+
+### 现象
+
+IMTS 2024（9 万人制造展）现场某竞品蓝牙 SPC（Statistical Process Control）demo 彻底失效：
+- lab 测试：通信稳定，PDR 99%
+- 现场（金属展架 + 数万 WiFi AP + 数百蓝牙耳机 + ZigBee 网关）：**完全失效**
+- 客户展台演示时无法连接
+- 现场工程师归因："现场 RF 环境太复杂"
+- 实际根因 = **AFH（Adaptive Frequency Hopping）算法被 clean channel 池压垮**
+
+### 抓包 + 根因
+
+#### 根因 1：AFH clean channel 池压垮后强制循环
+
+- BLE AFH 算法默认：扫描所有 40 信道 → 标记 clean channel（RSSI 低于阈值）→ 在 clean channel 间跳频
+- **工业展场环境**：
+  - 9 万人 WiFi AP 拥堵（2.4 GHz 1-11 信道全拥堵）
+  - 数百蓝牙耳机（37/38/39 跳频）
+  - ZigBee 网关（11-26 全占）
+  - 实际** clean channel 池 = 0-3 个**（从 40 降到 < 10%）
+- AFH 算法被压垮：可跳的信道太少 → **强制循环跳频**（每 7.5ms 跳到下一个 clean 信道）
+- **retry / latency 飙升**：丢包后重传撞同样 clean channel → 持续失败
+
+#### 根因 2：金属多径 + 跳频 = 比"固定信道 + 评估"更脆弱（反直觉）
+
+- 直觉：跳频 = 鲁棒（频谱分散）
+- **反直觉真相**：
+  - 跳频算法依赖"channel A 拥堵 → 跳到 channel B"
+  - 但**多径环境** = 某些 channel 在某些位置被遮挡（金属反射）
+  - **每次跳频都是新赌博**：跳到的新 channel 可能更差
+  - **固定信道 + 信道评估**反而更稳（known good channel 持续使用）
+- lab 测试在开阔环境 → 跳频 vs 直信道差异不显形
+- 工业展场金属密集 → **跳频算法失稳**
+
+### 定位（4 步法）
+
+```text
+Step 1：现场 RSSI 扫谱
+  - 启动后扫 40 信道 RSSI
+  - lab 期望 > 35 clean
+  - 现场 < 5 clean → 命中根因 1
+
+Step 2：跳频序列记录
+  - sniffer 抓 LL_CONNECTION_UPDATE_IND
+  - 统计跳频 channel
+  - 命中：跳频在 < 5 信道间循环 → 命中根因 1
+
+Step 3：金属多径验证
+  - 现场 VNA 测金属反射 S11
+  - 看跳频 channel 频段金属反射率
+  - 命中：金属多径 = 根因 2
+
+Step 4：替代方案对比
+  - 同一硬件：固定信道 + 持续评估 RSSI
+  - lab 跟跳频性能相当
+  - 现场：固定信道 PDR 80%，跳频 PDR 30%
+  - 验证根因 2
+```
+
+### 修复
+
+| 维度 | 修复 | 验证 |
+| --- | --- | --- |
+| 1 跳频算法 | 跳频 → **固定信道 + 持续评估** | PDR 80% |
+| 1 备选 | AFH 加 hysteresis（避免频繁切换） | 切换频率 < 1 次/分 |
+| 1 备选 | 启动时强制剔除拥堵信道（保留 8-10 个 best） | clean channel 池稳定 |
+| 2 抗多径 | PCB 天线方向避开金属反射 | RSSI 改善 10 dB |
+| 2 备选 | 换 chip antenna（受多径影响小） | 链路预算 +5 dB |
+
+### 复盘
+
+- **AFH 在 clean channel 池压垮后强制循环**——**比固定信道更差**
+- **金属多径 + 跳频 = 跳频算法失稳**——反直觉
+- 工业 / 展会 / 仓储场景**默认不要用纯跳频**——**必须评估 clean channel 池大小**
+- lab 通产线崩的经典案例——开阔环境 lab 不暴露
+- 跟 R8-2 案例 30 互补——本案例从 **AFH 算法压垮** 视角
+- 跟 R16-1 案例 50（EBYTE 90% 断连）互补——本案例从 **RF 环境** 视角
+
+### 来源
+
+- _Inbox/BLE-2026-09-16-candidates.md 候选 1
+- MicroRidge（工业 SPC 厂）blog
+
+---
+
+## 案例 58：Gutab 工业平板——4 维排查 VSWR / IPEX / 电源去耦 / USB selective suspend
+
+### 现象
+
+工业平板（Windows 系统，集成 USB 蓝牙适配器）连接外设频繁失败：
+- lab 测试：连接稳定
+- 工业现场：3-5 次连接有 1 次失败
+- 用户视角："蓝牙不稳"
+- 工程师反复查固件 / 协议栈 → 找不到
+- 根因 = **USB selective suspend** 自动切断射频
+
+### 抓包 + 根因（4 维）
+
+#### 维度 1：天线 VSWR / IPEX 接头
+
+- 工业平板的蓝牙模块用 IPEX 接头 + 外置天线
+- **IPEX 接头未锁紧**（生产组装振动导致松动）
+- VSWR 从 1.5 升到 4.0 → 信号衰减 80%
+- 工业现场金属反射 → 信号恶化
+- **检测**：VNA 量天线 S11，VSWR > 2.5 → 命中
+
+#### 维度 2：AFH 信道映射
+
+- lab 测 AFH：39 clean channel
+- 工业现场：AFH 启用 → 实际生效 channel 数 < 15
+- AFH 把干净信道剔除掉，只用"评估后最佳"
+- 但评估算法把"中等"信道剔除 → **可用信道反而更少**
+- **检测**：抓 channel map → 命中 channel < 15
+
+#### 维度 3：电源去耦（LDO 纹波）
+
+- 工业平板主板 12V → DC/DC → LDO 3.3V
+- LDO 输出 50 mV 纹波（spec 应 < 20 mV）
+- BLE 模块 TX 瞬态电流 20 mA → 纹波叠加 → VCC < 2.85V → **brownout**
+- **检测**：示波器探头打 LDO 输出，看 Vmin
+- **修复**：加 100µF + 10µF 钽电容
+
+#### 维度 4：USB Selective Suspend（**最隐蔽**）
+
+- Windows 默认开启 USB selective suspend（节能）
+- 工业平板闲置 5 分钟 → **USB 蓝牙适配器自动断电**
+- 蓝牙适配器断电 = 射频完全关闭
+- 用户"重新插拔"才恢复
+- **检测**：powercfg /energy 看 USB suspend 状态
+- **修复**：禁用 USB selective suspend（power management）
+
+### 4 维工业排查 SOP
+
+```text
+维度 1：天线物理层
+  - VNA 量 VSWR（< 2.0）
+  - IPEX 接头锁紧
+  - 天线方向避开金属
+
+维度 2：AFH + 信道
+  - 抓 channel map（> 15 clean）
+  - 禁用过激 AFH
+  - 强制保留 8-10 个 best 信道
+
+维度 3：电源去耦
+  - LDO 输出纹波 < 20 mV
+  - 加 100µF + 10µF bulk cap
+  - Vmin > 2.95V
+
+维度 4：USB Selective Suspend（隐藏项）
+  - powercfg /energy 检查
+  - 禁用 USB suspend
+  - 工业 OS 默认关闭节能
+```
+
+### 定位（5 步法）
+
+```text
+Step 1：VNA 测天线
+  - VSWR > 2.5 → 命中维度 1
+
+Step 2：抓 channel map
+  - clean channel < 15 → 命中维度 2
+
+Step 3：示波器测电源纹波
+  - Vmin < 2.85V → 命中维度 3
+
+Step 4：powercfg /energy
+  - USB selective suspend enabled → 命中维度 4
+
+Step 5：全维度组合验证
+  - 4 维全修 → 3-5 次连 1 失败 → 0 失败
+```
+
+### 修复 Checklist
+
+```text
+□ 天线 VSWR < 2.0（VNA 验证）
+□ IPEX 接头力矩达标（防松脱）
+□ AFH channel map > 15（持续监控）
+□ LDO 输出纹波 < 20 mV（示波器验证）
+□ bulk cap 100µF + 10µF（紧靠 BLE 模块）
+□ 禁用 USB selective suspend（powercfg 验证）
+□ 工业 OS 默认关闭节能
+□ Adv Interval vs Scan Window 重叠（广播匹配扫描）
+```
+
+### 复盘
+
+- **USB selective suspend = 工业平板蓝牙最隐蔽杀手**——节能默认开启 = 射频被关
+- **4 维工业排查** = 通用模板（VSWR / 信道 / 电源 / USB）
+- **Adv Interval vs Scan Window**必须重叠——否则主机错过广播
+- **工业 OS 默认关闭所有节能** = 工业部署硬要求
+- 跟 R8-2 案例 30 互补——本案例从 **USB + LDO** 视角
+- 跟 R16-1 案例 50（EBYTE brownout 50mV）互补——本案例从 **LDO 纹波 + USB suspend** 视角
+
+### 来源
+
+- _Inbox/BLE-2026-09-16-candidates.md 候选 3
+- 合亿 Gutab（工业平板厂）news
+
+---
+
+## 案例 59：nRF52 400ms 延迟——central 决定而非固件决定（iOS 30ms / Android 48ms）
+
+### 现象
+
+可穿戴 sensor 项目，固件请求 15ms 连接间隔，实际测量 400ms 延迟：
+- 固件代码：`sd_ble_gap_conn_param_update(min_interval=15, ...)`
+- 逻辑分析仪实测：固件执行 < 2ms（无误）
+- 但 iOS 实际给 30ms、Android 48ms
+- 加上 nRF52 处理 → 总延迟 200-400ms
+- 用户视角："sensor 反应慢"
+
+### 抓包 + 根因
+
+#### 根因 1：connection parameter update 是协商不是 setter
+
+- 工程师直觉：`conn_param_update(15ms)` = 设 15ms
+- **实际**：是**协商**——peripheral 请求，central（手机 / Linux host）决定给多少
+- iOS 起步 = 30ms（即使 peripheral 请求 15ms）
+- Android 起步 = 48ms（BlueZ 默认）
+- 只有 **BlueZ（Linux host 唯一肯给请求值）** = 真给 15ms
+- **iOS / Android 永远持卡**，peripheral 必须接受
+
+#### 根因 2：central 持卡行为
+
+| Central | 起步 interval | 实际给 interval | 备注 |
+| --- | --- | --- | --- |
+| iOS | 30ms | 30-50ms | 持续协商门槛高 |
+| Android | 48ms | 48-100ms | OEM 不同而不同 |
+| BlueZ (Linux) | 按请求值 | 按请求值 | 唯一"听话" |
+
+- **关键**：central 持卡 = peripheral 不能强制
+- 固件请求 15ms 必须接受 30ms+ 实际值
+- 实测验证：log 抓 LL_CONNECTION_PARAM_REQ → LL_CONNECTION_PARAM_RSP → 实际给值
+
+#### 根因 3：批量化多次传感数据到一个 notify = 吞吐 ×4
+
+- peripheral 接受 central 给的 30ms interval（无法改变）
+- 但**应用层批量化**可大幅提升吞吐：
+  - 原来：每次 notify 推 1 个 sensor 读数
+  - 优化：1 个 notify 推 4 个 sensor 读数（48B MTU）
+  - 吞吐 ×4（每 notify 携带数据翻 4 倍）
+- 相同 interval 下，**应用层 buffer 批量化是唯一优化路径**
+
+### 定位（4 步法）
+
+```text
+Step 1：逻辑分析仪测固件执行时间
+  - GPIO 拉高固件关键节点
+  - 实测 < 2ms
+  - 排除固件慢 = 根因 1
+
+Step 2：抓 LL_CONNECTION_PARAM_REQ/RSP
+  - sniffer 抓连接参数协商
+  - 期望：请求 15ms → 实际给 30ms
+  - 命中：central 持卡 = 根因 1
+
+Step 3：测实际连接间隔
+  - sniffer 抓 connection event 间隔
+  - 实测 30ms（iOS）/ 48ms（Android）
+  - 验证根因 1
+
+Step 4：吞吐测试
+  - 1 个 notify 1 个 sensor = 1 sample / 30ms = 33 sample/s
+  - 1 个 notify 4 个 sensor = 4 sample / 30ms = 133 sample/s
+  - 验证根因 3 修复
+```
+
+### 修复
+
+| 维度 | 修复 | 验证 |
+| --- | --- | --- |
+| 1 接受现实 | peripheral 不请求 15ms（白费） | 接受 30ms+ |
+| 2 批量化 | 1 notify 推 N 个 sensor 读数 | 吞吐 ×N |
+| 3 跳 central | 用 BlueZ host（Linux）替换 iOS/Android | 真给 15ms |
+| 3 备选 | 设计成"central-tolerant"——应用层适配各种 central | 无需依赖 |
+
+### 复盘
+
+- **`sd_ble_gap_conn_param_update()` 是协商不是 setter**——**central 持卡**
+- **iOS 15ms 起步 / Android 48ms / BlueZ 唯一肯给请求值**——是经验法则
+- **应用层批量化** = central 持卡下的唯一吞吐优化路径
+- **central-tolerant 设计** = 可穿戴产品必须考虑
+- 跟 R12-3 案例 47（nRF52 GATT notify 5ms→30ms CI 压制）**角度相似**但本案例强调**central 持卡**作为根因
+- **可穿戴产品 = 必须接受 iOS/Android 持卡现实**——别想强制改
+
+### 来源
+
+- _Inbox/BLE-2026-09-18-candidates.md 候选 1
+- moltbook（工程师实战帖）
+
+---
+
+## 案例 60：nRF52840 iPhone 30s 断连——reason 0x08 timeout + housekeeping 阻塞 radio
+
+### 现象
+
+nRF52840 固件同套代码：
+- Android（小米、Oppo）：连接数小时稳定
+- iPhone：**每 30 秒断一次**
+- sniffer 抓：reason 0x08（LL_CONNECTION_UPDATE_IND timeout）
+- 工程师查 radio / 协议 / 固件 → 都"对"
+- 根因 = **housekeeping task 阻塞 radio 中断**
+
+### 抓包 + 根因
+
+#### 根因 1：固件请求 7.5/0/400ms 被静默拒
+
+- 固件请求：connection interval 7.5ms / slave latency 0 / supervision timeout 400ms
+- **iPhone 静默拒绝**：
+  - interval 必须是 15ms 倍数（iOS 硬规则）
+  - 7.5ms 不符合 → iPhone 不给 LL_CONNECTION_PARAM_RSP
+  - 默认值生效 → interval 30ms / timeout 1s
+- supervision timeout 1s 远低于 Android 协商的 6s
+- timeout 太短 + housekeeping 阻塞 = 1s 内必断
+
+#### 根因 2：iOS 硬规则（必查）
+
+- **iOS 硬规则**：
+  - interval 必须是 **15ms 倍数**
+  - supervision timeout 必须 > `(1 + latency) * interval * 2`
+  - 例：interval 30ms / latency 0 → timeout > 60ms（满足）
+  - 例：interval 7.5ms / latency 0 → timeout > 30ms（满足）但 7.5ms 被拒
+- **iOS 静默拒绝 = 不告知**——peripheral 必须自己探知
+
+#### 根因 3：housekeeping task 阻塞 radio 中断（主因）
+
+- 固件 housekeeping task（sensor 轮询 + Flash 写 + log 输出）
+- housekeeping 偶发阻塞 1-2 秒（Flash GC / log 缓存满）
+- 期间 radio ISR 被阻塞（优先级不够高）
+- iPhone 1s timeout 内没收到 LL_RESPONSE → 主动断连
+- **Android 6s timeout** → 即使阻塞 1s 也能恢复
+- iPhone 1s timeout → 阻塞 1s 就断
+
+### 修复（2 行 fix）
+
+```c
+// 修复前
+sd_ble_gap_conn_param_update(7.5, 7.5, 0, 400, NULL);
+
+// 修复后
+sd_ble_gap_conn_param_update(30, 30, 0, 6000, NULL);  // iOS 硬规则
+// 读回协商参数（不是盲信）
+```
+
+#### 关键修复
+
+```text
+1. 读回协商参数
+   - conn_param_update() 返回不代表中央给了
+   - 必须 EVT 回调里读 actual interval / timeout
+   - 验证：log 看到 30ms / 6000ms 而不是 7.5 / 400
+
+2. 选 30/0/6000ms（避开 7.5 + 短 timeout）
+   - 30ms 满足 iOS 15ms 倍数规则
+   - 6000ms 远大于 (1+0)*30*2 = 60ms
+   - 给 housekeeping 留 6 秒缓冲
+```
+
+#### 根因 3 配套修复：housekeeping 阻塞
+
+```c
+// housekeeping task 优先级降到 radio 之下
+vTaskPrioritySet(housekeeping_handle, 4);  // radio ISR = 0, app task = 5
+
+// Flash GC 用空闲任务 + 分块
+flash_gc_step();  // 每 100ms 跑 1 步，不阻塞
+
+// log 输出用 ringbuffer + 异步刷
+log_async("event", payload);  // 不在 hot path
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：抓断连 reason code
+  - sniffer 看 HCI event 0x04 disconnect
+  - reason 0x08 = supervision timeout
+  - 命中：timeout 短 = 根因 1
+
+Step 2：读 connection interval 实际值
+  - log 抓 EVT BLE_GAP_EVT_CONN_PARAM_UPDATE
+  - 期望 30ms / 6000ms
+  - 实际 7.5ms / 400ms → 命中根因 1（被静默拒）
+
+Step 3：测 housekeeping 阻塞时长
+  - GPIO 测 housekeeping task 入口出口
+  - 实测最大 1.2 秒（Flash GC）
+  - 命中根因 3
+
+Step 4：双平台对比
+  - Android 6s timeout → 阻塞 1.2s 不触发断
+  - iPhone 1s timeout → 阻塞 1.2s 必断
+  - 验证根因 1 + 3 叠加
+```
+
+### 复盘
+
+- **iOS 硬规则 = interval 15ms 倍数** + **timeout > (1+latency)*interval*2**
+- **iOS 静默拒绝** = 不告知 → peripheral 必须自己探知
+- **读回协商参数** = 必修课（不是盲信）
+- **housekeeping 阻塞 radio = 隐形杀手**——优先级 / 任务拆分都重要
+- **Android vs iPhone 差异** = timeout 默认值差 6 倍——同一固件在两个平台表现差很大
+- **2 行 fix** = 一行改 interval 一行改 timeout——简单但救命
+- 跟 R12-3 案例 47（nRF52 GATT notify 5ms→30ms CI 压制）**角度相似**但本案例强调**iOS 硬规则 + housekeeping**
+
+### 来源
+
+- _Inbox/BLE-2026-09-18-candidates.md 候选 2
+- moltbook（工程师实战帖）
+
+---
+
+## 案例 61：nRF52 OTA 限速 8 KB/s——三旋钮（MTU + DLE + interval）解锁 80 KB/s
+
+### 现象
+
+nRF52 OTA 升级（1 MB 固件）：
+- 1 Mbps PHY 推 OTA → **实际仅 8 KB/s**
+- 1 MB / 8 KB/s = **125 秒**（超过大多数连接 timeout）
+- 升级超时失败率 30%
+- 启用 MTU=247 + DLE + interval=15ms 后 → **80 KB/s**
+- 1 MB / 80 KB/s = **12.5 秒**——升级成功率 > 99%
+
+### 抓包 + 根因（3 旋钮）
+
+#### 旋钮 1：MTU（Maximum Transmission Unit）
+
+- 默认 MTU = 23B（ATT 协议最小）
+- 实际每 notify payload = 20B（MTU - 3B ATT header）
+- 1Mbps PHY 极限 = 1 Mbps / 8 = 125 KB/s
+- 但 20B / 30ms = **666 B/s** = **0.66 KB/s**（phy 极限 0.5%）
+- **MTU 升到 247B** → payload 244B → 244B / 30ms = **8.13 KB/s**
+- 提升 **12 倍**
+
+#### 旋钮 2：DLE（Data Length Extension）
+
+- BLE 4.0 默认 payload max = 27B
+- BLE 4.2+ DLE 启用 → payload max = 251B
+- **DLE 必须 MTU 同步启用**——否则 MTU 大但 DLE 小，瓶颈还在
+- DLE + MTU = 244B 实际 payload
+
+#### 旋钮 3：connection interval
+
+- 默认 interval = 30-100ms（central 决定）
+- interval 30ms 时 244B / 30ms = 8.13 KB/s
+- interval 15ms 时 244B / 15ms = **16.27 KB/s**（×2）
+- **central 必须肯给 15ms**（iOS 唯一符合 / Android 协商 / BlueZ 直接给）
+
+#### 真实吞吐公式
+
+```
+实际吞吐 (B/s) = (MTU - 3) × packets_per_event / interval
+
+例：MTU=247 / interval=15ms / packets_per_event=4
+    = 244 × 4 / 0.015
+    = 65,066 B/s
+    ≈ 63 KB/s（接近 80 KB/s 上限）
+
+更高级：MTU=247 / interval=15ms / packets_per_event=5
+    = 244 × 5 / 0.015
+    = 81,333 B/s
+    ≈ 80 KB/s（理论峰值）
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：抓当前 MTU
+  - log 抓 ATT MTU exchange
+  - 期望 247 → 实际 23 → 命中旋钮 1
+
+Step 2：抓 DLE 启用状态
+  - log 抓 LL_LENGTH_REQ/RSP
+  - 期望 DLE 启用 → 实际未启用 → 命中旋钮 2
+
+Step 3：抓 connection interval
+  - 期望 15ms → 实际 30ms+ → 命中旋钮 3
+
+Step 4：测实际吞吐
+  - sniffer 抓 throughput
+  - 期望 80 KB/s → 实际 8 KB/s → 验证三旋钮同时调整
+```
+
+### 修复（3 旋钮同步）
+
+```c
+// 旋钮 1：MTU
+nrf_ble_gatt_att_mtu_periph_set(&m_gatt, 247);  // 必须 peripheral + central 都支持
+
+// 旋钮 2：DLE
+nrf_ble_gatt_data_length_set(&m_gatt, 251, 2120);  // TX 251 octets / 2120 µs
+
+// 旋钮 3：interval
+sd_ble_gap_conn_param_update(15, 15, 0, 6000, NULL);  // iOS 硬规则要 15 倍数
+// 读回协商参数（central 可能不认）
+```
+
+#### 实施 Checklist
+
+```text
+□ MTU 升到 247（peripheral + central 都支持）
+□ DLE 启用（BLE 4.2+）
+□ interval 15ms（必须 central 肯给）
+□ 读回协商参数（不盲信）
+□ OTA 期间 disable notify（避免争抢 bandwidth）
+□ packets_per_event 调到 4-5
+```
+
+### 复盘
+
+- **MTU + DLE + interval 三联调不可少**——**单开一个无用**
+- **真实公式 = MTU × packets_per-event ÷ interval**——工程估算公式
+- **central 握牌**——interval 协商是瓶颈
+- **OTA 期间 disable notify**——避免 sensor 上报争抢 bandwidth
+- 跟 R8-2 案例 30（nRF52 throughput 上限）互补——本案例从 **OTA 实战** 视角
+- 跟 R12-3 案例 47（nRF52 GATT notify CI 压制）**角度相似**但本案例强调 **3 旋钮同步**
+
+### 来源
+
+- _Inbox/BLE-2026-09-18-candidates.md 候选 3
+- moltbook（工程师实战帖）
+
+---
+
+## 案例 62：Nordic DevZone 智能可穿戴 Notify 间歇丢失——timer-driven vs event-driven 互锁
+
+### 现象
+
+智能可穿戴产线（1Hz sensor/IMU + event status 推送）：
+- Sensor/IMU/Battery 三个 characteristic **间歇丢失**（每 10 秒丢 1-2 包）
+- Status characteristic **正常**（事件驱动）
+- 现场能复现，lab 不能
+- 工程师反复查固件 → 无解
+- 根因 = **timer-driven 与 event-driven notify 在不同 work queue，可能互锁**
+
+### 抓包 + 根因
+
+#### 根因 1：timer-driven notify 在 app timer queue
+
+- 1Hz sensor/IMU/Battery 由 `app_timer` 驱动
+- `app_timer` 是 app 层 timer（非 radio ISR timer）
+- queue = app queue
+- Sensor notify → enqueue app queue → BLE stack 取 → 发送
+
+#### 根因 2：event-driven notify 在 BLE stack queue
+
+- Status characteristic 由事件驱动（按键 / 状态变化）
+- queue = BLE stack queue
+- Status notify → enqueue BLE stack queue → 立即发送
+
+#### 根因 3：互锁（核心 bug）
+
+- BLE stack queue 满时（极端 case），app queue 的 notify **积压**
+- app queue 满了 → app_timer 触发回调里 `ble_nus_string_send()` 返回 NRF_ERROR_NO_MEM
+- **错误码被忽略** → 数据丢（看似"丢失"）
+- 实测：每 10 秒丢 1-2 包 = app queue 周期性拥塞
+- 现场能复现 = 现场 RF 环境差 → BLE stack 处理慢 → queue 满
+- lab 不能复现 = lab RF 干净 → BLE stack 快 → queue 不满
+
+### 定位（4 步法）
+
+```text
+Step 1：现场 vs lab 对比
+  - 现场：每 10s 丢 1-2 包
+  - lab：0 丢
+  - 命中：现场特有 = 根因 1+2+3 组合
+
+Step 2：抓 notify 失败错误码
+  - 关键！必须捕获 ble_nus_string_send() 返回值
+  - 命中：NRF_ERROR_NO_MEM = queue 满
+
+Step 3：抓 queue 长度
+  - log 看 app queue / BLE stack queue size
+  - 命中：BLE stack queue 周期性满 = 根因 3
+
+Step 4：现场 RF 环境验证
+  - 频谱仪看 2.4 GHz
+  - 命中：现场 RF 拥堵 = 触发 BLE stack 处理慢
+```
+
+### 修复（3 维）
+
+#### 修复 1：捕获错误码 + retry
+
+```c
+// 修复前
+ble_nus_string_send(&m_nus, data, len);  // 忽略错误码
+
+// 修复后
+uint32_t err;
+do {
+    err = ble_nus_string_send(&m_nus, data, len);
+    if (err == NRF_ERROR_NO_MEM) {
+        // queue 满 → 等下次 retry
+        nrf_delay_ms(10);
+    }
+} while (err == NRF_ERROR_NO_MEM);
+```
+
+#### 修复 2：app queue 和 BLE queue 同步
+
+```c
+// 不要在 timer 回调里直接 send notify
+// 改成：timer 回调 → enqueue 内部 buffer → 另一个 task 异步 send
+
+static app_timer_t sensor_timer;
+static sensor_queue_t internal_q;  // 内部 queue
+
+void sensor_timer_cb(void *ctx) {
+    sensor_data_t data;
+    sensor_read(&data);
+    sensor_queue_put(&internal_q, &data);  // 内部 queue
+}
+
+void ble_send_task(void *arg) {
+    while (1) {
+        sensor_data_t data;
+        if (sensor_queue_get(&internal_q, &data, portMAX_DELAY)) {
+            while (ble_nus_string_send(&m_nus, &data, sizeof(data)) == NRF_ERROR_NO_MEM) {
+                vTaskDelay(pdMS_TO_TICKS(10));
+            }
+        }
+    }
+}
+```
+
+#### 修复 3：减小 notify payload + 降低频率
+
+- 1Hz × 3 characteristic = 3 notify/s
+- 如果 BLE 1 个连接 event 容 5 notify = 60 个 characteristic 都装得下
+- 但**生产环境** RF 拥堵 → BLE event 慢 → 拥塞
+- 修复：3 notify 降频到 0.5Hz（合并 sensor data 到 1 notify）
+
+### 复盘
+
+- **timer-driven 与 event-driven notify 在不同 work queue 可能互锁**——隐藏根因
+- **忽略错误码 = 隐形数据丢失**——必查 `ble_nus_string_send()` 返回值
+- **现场 RF 拥堵是触发器**——lab 不复现的经典案例
+- **app timer queue vs BLE stack queue 分离设计** = Nordic SDK 陷阱
+- **3 维修复** = 错误码 + queue 同步 + 频率合并
+- 跟 R12-3 案例 47（nRF52 GATT notify 5ms→30ms CI 压制）**角度不同**但同属 **notify 类**
+
+### 来源
+
+- _Inbox/BLE-2026-09-18-candidates.md 候选 4
+- Nordic Semiconductor 官方 DevZone
+
+---
+
+## 案例 63：Android Client——连上 ≠ 链路通，CCCD=0x0001 + 五状态机样板
+
+### 现象
+
+Android 客户端 BLE 项目：
+- 蓝牙连接成功（log 显示 connected）
+- 但**收不到任何数据**（siloence）
+- 工程师反复查协议 / GATT service → 都"对"
+- 用户视角："BLE 不稳定"
+- 根因 = **"连上" ≠ "链路通"——GATT 只建通道，Notify 必须主动打开**
+
+### 抓包 + 根因
+
+#### 根因 1：GATT 通道 ≠ Notify 启用
+
+- `BluetoothGattCallback.onConnectionStateChange()` = 连接状态变化
+- `BluetoothGattCallback.onServicesDiscovered()` = service 发现
+- `BluetoothGattCallback.onCharacteristicChanged()` = Notify 收到数据
+
+**关键**：
+- 连接成功 ≠ Notify 启用
+- **Notify 必须主动写 CCCD=0x0001**
+- 等 `onDescriptorWrite()` 成功回调 → 才算"链路真通"
+- 没写 CCCD 前 → Notify 数据根本不发
+
+#### 根因 2：CCCD（Client Characteristic Configuration Descriptor）
+
+- CCCD 是 BLE GATT 的一个 descriptor（0x2902）
+- 值 0x0000 = Notify 关闭
+- 值 0x0001 = Notify 启用
+- 值 0x0002 = Indicate 启用
+- **Android API**：
+  ```java
+  BluetoothGattDescriptor cccd =
+      characteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
+  cccd.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);  // = 0x0001
+  bluetoothGatt.writeDescriptor(cccd);
+  bluetoothGatt.setCharacteristicNotification(characteristic, true);
+  ```
+
+#### 根因 3：Android 五状态机
+
+很多工程师把"Connected"当 ready，实际需要 5 状态：
+
+```text
+State 1: Disconnected（断开）
+  → 触发 BluetoothGatt.connect()
+
+State 2: Connected（已连接）
+  → onConnectionStateChange() 回调 STATE_CONNECTED
+  → 立即触发 discoverServices()
+
+State 3: ServicesReady（service 发现完成）
+  → onServicesDiscovered() 回调 STATUS_SUCCESS
+  → 遍历 service 找 target characteristic
+  → 写 CCCD = 0x0001
+
+State 4: NotificationReady（Notify 启用）
+  → onDescriptorWrite() 回调 SUCCESS
+  → 才算"链路真通"
+
+State 5: ProtocolReady（应用协议 ready）
+  → 收到第一条有效 Notify 数据
+  → 应用层启动 UI 刷新
+```
+
+### 修复样板（完整 Android BLE 五状态机）
+
+```java
+public class BleClient {
+
+    enum ConnectionState {
+        DISCONNECTED, CONNECTED, SERVICES_READY, NOTIFICATION_READY, PROTOCOL_READY
+    }
+
+    ConnectionState state = ConnectionState.DISCONNECTED;
+
+    // State 2 → 3 transition
+    @Override
+    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+        if (newState == BluetoothProfile.STATE_CONNECTED) {
+            state = ConnectionState.CONNECTED;
+            gatt.discoverServices();  // → State 3
+        }
+    }
+
+    // State 3 → 4 transition
+    @Override
+    public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+        if (status == BluetoothGatt.GATT_SUCCESS) {
+            BluetoothGattService service = gatt.getService(TARGET_SERVICE_UUID);
+            BluetoothGattCharacteristic ch = service.getCharacteristic(TARGET_CHAR_UUID);
+
+            // 关键 1：setCharacteristicNotification 必须
+            gatt.setCharacteristicNotification(ch, true);
+
+            // 关键 2：写 CCCD = 0x0001
+            BluetoothGattDescriptor cccd = ch.getDescriptor(CCCD_UUID);
+            cccd.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            gatt.writeDescriptor(cccd);  // → State 4
+        }
+    }
+
+    // State 4 → 5 transition
+    @Override
+    public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+        if (status == BluetoothGatt.GATT_SUCCESS) {
+            state = ConnectionState.NOTIFICATION_READY;
+            // → State 5：等第一条 Notify 数据
+        }
+    }
+
+    // State 5
+    @Override
+    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic ch) {
+        byte[] data = ch.getValue();
+        // 收到第一条 = PROTOCOL_READY
+        if (state != ConnectionState.PROTOCOL_READY) {
+            state = ConnectionState.PROTOCOL_READY;
+            // 启动 UI 刷新
+        }
+        processData(data);
+    }
+}
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：log 抓每个回调
+  - onConnectionStateChange → Connected ✓
+  - onServicesDiscovered → ServicesReady ✓
+  - onDescriptorWrite → 没有触发 ✗
+  - 命中根因 1+2：CCCD 没写
+
+Step 2：sniffer 抓 ATT 协议
+  - 期望：Write Request (CCCD = 0x0001)
+  - 实际：只有 Read By Type + Read
+  - 命中根因 1+2
+
+Step 3：检查 Android 代码
+  - 是否调 setCharacteristicNotification()？
+  - 是否写 CCCD = 0x0001？
+  - 是否等 onDescriptorWrite 成功？
+  - 命中 1+ 项 = 根因
+
+Step 4：状态机检查
+  - 把代码映射到 5 状态机
+  - 找漏的状态
+```
+
+### 复盘
+
+- **"连上" ≠ "链路通"** —— **GATT 只建通道不打开 Notify**
+- **CCCD = 0x0001 是必写项** —— 不能省
+- **5 状态机 = Android BLE 客户端样板** —— 别在 Connected 当 ready
+- **"BLE 不稳定" 很多是太早当 ready** —— 应用层抢跑
+- **onDescriptorWrite 必须等成功** —— 才能算 State 4
+- 跟 R12-3 案例 47 互补——本案例从 **Android Client 状态机** 视角
+- 跟 R8-2 案例 30（nRF52 throughput 上限）**反向**——本案例从 **central 侧** 视角
+
+### 来源
+
+- _Inbox/BLE-2026-09-18-candidates.md 候选 5
+- 稀土掘金
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

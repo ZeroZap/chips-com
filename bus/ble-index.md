@@ -305,3 +305,14 @@ BLE 是"低功耗短距无线的事实标准"，强在功耗、GATT 属性模型
   - 案例 55：信号完整性重构 BLE 连接（信道图谱跳频剔除 + T_IFS 时序 + ACK 优先级）
   - 案例 56：SweynTooth 12 CVE 影响 480+ 产品（SoC 选型必查 CVE 历史 + patch 节奏）
   - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 1-5
+- 2026-09-16: 新增 2 实战案例（57-58）
+  - 案例 57：MicroRidge IMTS 2024 现场 AFH clean channel 池压垮循环跳频（金属多径反直觉）
+  - 案例 58：Gutab 工业平板 4 维排查（VSWR / IPEX / 电源去耦 + USB selective suspend 隐藏杀手）
+  - 来源：_Inbox/BLE-2026-09-16-candidates.md 候选 1/3
+- 2026-09-18: 新增 5 实战案例（59-63）
+  - 案例 59：nRF52 400ms 延迟 central 决定（iOS 30ms/Android 48ms + 协商不是 setter）
+  - 案例 60：nRF52840 iPhone 30s 断连 reason 0x08 + housekeeping 阻塞 radio（iOS 硬规则 2 行 fix）
+  - 案例 61：nRF52 OTA 8 KB/s → 80 KB/s 三旋钮（MTU=247 + DLE + interval=15ms）
+  - 案例 62：Nordic DevZone Notify 间歇丢失（timer-driven vs event-driven 互锁 + 错误码 NRF_ERROR_NO_MEM）
+  - 案例 63：Android 连上≠链路通——CCCD=0x0001 五状态机样板（Disconnected→Connected→ServicesReady→NotificationReady→ProtocolReady）
+  - 来源：_Inbox/BLE-2026-09-18-candidates.md 候选 1-5
