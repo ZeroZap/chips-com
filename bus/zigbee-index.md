@@ -291,3 +291,6 @@ ZigBee 是"低功耗 mesh 自组网 IoT 协议的事实标准"，强在 Mesh 自
 - 2026-09-14: 新增 1 实战案例（43）
   - 案例 43：50 设备 CPU 过载伪装无线问题 + 树形 vs 纯 Mesh 拓扑（Wiren Board 380% + 协调器角落 + EFR32MG21 vs CC2652P）
   - 来源：_Inbox/ZigBee-2026-09-14-candidates.md 候选 2
+- 2026-09-16: 新增 1 实战案例（44）
+  - 案例 44：Inovelli OTA 25% abort + 跨代 OTA 不直跳 + air-gap 复位配方（zha_ota_update_request_interval: 10 + 跨代先 2.18 再 3.0）
+  - 来源：_Inbox/ZigBee-2026-09-16-candidates.md 候选 4（候选 1/2/3/5 重复已写）

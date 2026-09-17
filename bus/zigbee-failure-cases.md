@@ -4311,6 +4311,110 @@ Step 4：拓扑改造
 
 ---
 
+## 案例 44：Inovelli OTA 25% abort——跨代 OTA 不直跳 + air-gap 复位配方
+
+### 现象
+
+Inovelli VZM31-SN Blue 智能开关（zigbee 3.0 协议栈）OTA 升级：
+- v1.01 固件 OTA **25% abort 率**（10 次重试仍失败）
+- 部分设备反复 abort 多次
+- 客户视角："OTA 不稳"
+- 根因 = **旧 Zigbee 3.0 栈 + ZHA OTA 块过快撞 buffer**
+
+### 抓包 + 根因（3 大根因）
+
+#### 根因 1：旧 Zigbee 3.0 栈 buffer 不够大
+
+- Inovelli 早期 Zigbee 3.0 SDK 内存受限
+- OTA 块大小 = 64KB（标准）
+- buffer 默认 32KB → 一次装不下完整 OTA 块
+- 必须拆块 → 拆太小 → 协调器反复发送请求 → 雪崩
+
+#### 根因 2：ZHA OTA 块传输速率太快
+
+- ZHA（Zigbee Home Assistant）默认 OTA block request interval = 1 秒
+- 旧栈处理速度跟不上 → OTA 进程频繁超时
+- 表现：OTA 进度 25% 突然 abort
+- 同步表现：协调器 log 看到 "transfer timeout"
+
+#### 根因 3：跨代 OTA 不直跳 = 致命
+
+- 旧版本（1.x） → 新版本（3.0）跨代 OTA
+- 旧栈 bootloader 不认识 3.0 镜像格式
+- 直接跳 → OTA 完成但 bootloader 校验失败 → 设备变砖
+- 必须 **先升 2.18（中间版本）→ 再升 3.0**
+
+### air-gap 复位配方（救砖 / 中断重置）
+
+```text
+配方 1：air-gap 复位
+  - 完全断电 30 秒（拔电池 or 物理断开）
+  - 重新连接协调器
+  - 重新配对入网
+  - 重新尝试 OTA（可能成功）
+
+配方 2：降速 OTA 块
+  - ZHA 配置 zha_ota_update_request_interval: 10  # 10 秒一次
+  - 协调器 YAML：
+    zha:
+      ota:
+        update_request_interval: 10
+
+配方 3：跨代 OTA 两段走
+  - 第一步：OTA 到 2.18（中间版本）
+  - 第二步：OTA 到 3.0（目标版本）
+  - 不要直跳
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：看协调器 OTA log
+  - 命中：transfer timeout 频繁 → 根因 2
+
+Step 2：sniffer 抓 OTA 块大小
+  - 期望 64KB 块
+  - actual 8KB 块（拆小）→ 根因 1
+
+Step 3：尝试降速
+  - 改 update_request_interval = 10
+  - 重试 OTA
+  - 命中：成功 = 验证根因 2
+
+Step 4：跨代 OTA 路径检查
+  - 当前 v1.01 → 目标 v3.0
+  - 必须经过 v2.18
+  - 命中：直跳 = 根因 3
+```
+
+### 修复 Checklist
+
+```text
+□ 中间版本 2.18 先升（不能直跳 v1.x → v3.0）
+□ ZHA 配置 update_request_interval: 10（10 秒一次）
+□ air-gap 复位（断电 30s）作为救砖手段
+□ 大网 OTA 分批（避免雪崩）
+□ 协调器 + 节点 OTA 进程不冲突（错峰）
+□ OTA 期间禁 reporting（避免 buffer 争抢）
+□ 监控 OTA 失败率 > 10% 触发告警
+```
+
+### 复盘
+
+- **OTA 块大小 + 块间隔 = 关键参数**——必须实测调
+- **跨代 OTA 不直跳 = Zigbee 设备升级必记**——必须经过中间版本
+- **air-gap 复位 = 救砖通用配方**——物理断电 30 秒
+- **OTA 失败率 > 10% 必查**——可能是 SDK 内存 / 协调器拥塞
+- 跟 R12-3 案例 37（SNZB-02DR2 Telink 0xf000 OTA 解析失败）**互补**——本案例从**协议栈版本管理 + 节流调参**视角
+- 跟 R12-3 案例 34（Z-Stack 20240710 BUFFER_FULL 0x11）**互补**——本案例从 **OTA 流程** 视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-16-candidates.md 候选 4
+- Inovelli 官方社区
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
