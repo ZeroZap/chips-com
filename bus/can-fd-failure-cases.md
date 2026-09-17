@@ -1797,6 +1797,411 @@ Step 4：决策
 
 ---
 
+## 案例 18：STM32H5 FDCAN + 收发器 4 模式原子切换——5Mbps 反射 + 2000 msg/s Bus-Off
+
+### 现象
+
+STM32H562 多传感器边缘平台，CAN FD 部署：
+- 仲裁段 1Mbps + 数据段 5Mbps
+- 产线出货后**帧丢失** + **2000 msg/s 触发 Bus-off**
+- 5Mbps 数据段反射问题
+- 收发器模式机时序违例
+- 根因 = **5Mbps 信号反射 + 收发器 4 模式原子切换缺失**
+
+### 抓包 + 根因
+
+#### 根因 1：5Mbps 信号反射致 Bus-off
+
+- 数据段 5Mbps = 200ns bit time
+- 反射叠加到边沿过渡区 → 采样点失败
+- 错误计数（TEC/REC）迅速累加 → 256 = Bus-off
+- **2000 msg/s** 速率 = **典型触发 Bus-off 阈值**
+- 表现：ECU 频繁断网 1-2 秒恢复
+
+**修复**：降到保守时序 + SP 余量
+
+```c
+// STM32H5 FDCAN 配置（保守 + 鲁棒）
+hfdcan1.Init.NominalPrescaler = 16;    // 1Mbps 仲裁段 = 64MHz / 16 = 4 Mbps Tq
+hfdcan1.Init.NominalTimeSeg1 = 14;     // SP 75%
+hfdcan1.Init.NominalTimeSeg2 = 5;
+hfdcan1.Init.DataPrescaler = 4;        // 5Mbps 数据段 = 64MHz / 4 = 16 MHz Tq
+hfdcan1.Init.DataTimeSeg1 = 12;        // SP 80%
+hfdcan1.Init.DataTimeSeg2 = 4;
+hfdcan1.Init.TXCfgFdCan = FDCAN_TXCFGFD_CAN;
+hfdcan1.Init.TxDelayCompensation = ENABLE;  // TDC enable
+```
+
+#### 根因 2：收发器 4 模式原子切换缺失
+
+- 收发器（典型如 TJA1145 / ISO1050）有 4 模式：
+  - **SLEEP**：最低功耗，仅监控 wake-up
+  - **STANDBY**：待命，可监控 wake-up
+  - **LISTEN**：只听不发（silent mode）
+  - **NORMAL**：正常收发
+- 模式切换时**收发器内部状态机有 10ms 稳定延迟**
+- **如果原子切换**（SLEEP → NORMAL 立即收发）→ 收发器未稳定 → 第一帧丢失
+- 表现：每次模式切换后**第一帧 100% 丢**
+
+**修复**：原子切换 + 10ms 延迟
+
+```c
+// 4 模式原子切换（关键）
+void canfd_set_normal_mode(CANFD_Handle_t *hcan) {
+    // Step 1: SLEEP
+    HAL_GPIO_WritePin(CANFD_STB_PIN, GPIO_PIN_SET);     // STB = HIGH
+    HAL_GPIO_WritePin(CANFD_EN_PIN, GPIO_PIN_RESET);    // EN = LOW
+    delay_ms(10);  // SLEEP 稳定
+    
+    // Step 2: STANDBY
+    HAL_GPIO_WritePin(CANFD_STB_PIN, GPIO_PIN_RESET);   // STB = LOW
+    delay_ms(10);  // STANDBY 稳定
+    
+    // Step 3: LISTEN
+    HAL_GPIO_WritePin(CANFD_EN_PIN, GPIO_PIN_SET);      // EN = HIGH
+    delay_ms(10);  // LISTEN 稳定
+    
+    // Step 4: NORMAL
+    HAL_GPIO_WritePin(CANFD_STB_PIN, GPIO_PIN_SET);     // STB = HIGH
+    delay_ms(10);  // NORMAL 稳定 → 可收发
+}
+```
+
+### 修复 Checklist
+
+```text
+□ STM32H5 FDCAN 寄存器配置（Prescaler=16 / SP=87.5% / TDC enable）
+□ 数据段 SP 加余量（80% → 87.5%）
+□ 收发器模式切换加 10ms 稳定延迟
+□ 收发器模式切换顺序：SLEEP → STANDBY → LISTEN → NORMAL
+□ Bus-off 后等待 128 次 11 位 recessive（128 × 200ns = 25.6µs）
+□ 量产测试 2000 msg/s 压力
+□ 错峰上报避免瞬时高负载
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：抓 FDCAN 寄存器配置
+  - 期望 Prescaler=16 / SP=87.5% / TDC enable
+  - 实际错 → 命中根因 1
+
+Step 2：抓收发器 STB/EN 引脚
+  - 期望 4 模式切换各 10ms 延迟
+  - 实际立即切换 → 命中根因 2
+
+Step 3：抓 Bus-off 触发时刻
+  - 期望 ≤ 5 Mbps 错峰
+  - 实际 2000 msg/s 触发 → 命中根因 1
+
+Step 4：抓 Bus-off 恢复时间
+  - 期望 128 × 11-bit recessive = 25.6 µs
+  - 实际更长 → 检查电源固件
+```
+
+### 复盘
+
+- **STM32H5 FDCAN 寄存器模板**——**Prescaler=16 / SP=87.5% / TDC enable** 是鲁棒配方
+- **收发器 4 模式原子切换 + 10ms 稳定**——**第一帧丢的隐形原因**
+- **数据段 SP 加余量**——**80% → 87.5%** 更鲁棒
+- **Bus-off 触发条件 = 2000 msg/s**——错峰上报避免
+- 跟 R16-4 案例 13（4 大 killer lab 通产线崩）**互补**——本案例从 **STM32H5 寄存器**视角
+- 跟 R18-12 案例 16（TDCO 指纹）**互补**——本案例从**收发器模式机**视角
+
+### 来源
+
+- _Inbox/CAN-FD-2026-09-17-candidates.md 候选 2
+- Hoomanely Tech Blog（STM32H562 多传感器边缘平台）
+
+---
+
+## 案例 19：CAN 错误状态机——TEC/REC 阈值 + REC↑=EMC/TEC↑=硬件 + FreeRTOS 监控模板
+
+### 现象
+
+车载网关装车后**每 2-3 小时某 ECU Bus-off**：
+- SN65HVD230 VCC 在空调/ABS 启动时跌落 1.5V
+- 加 100µF 钽电容修复
+- **实战经验总结**：
+  - **REC↑ = EMC 问题**
+  - **TEC↑ = 发送端硬件缺陷**
+- FreeRTOS 监控任务模板
+
+### CAN 错误状态机详解
+
+#### 3 个状态阈值
+
+```text
+TEC/REC 0-95：Error Active（主动错误）
+  - 可正常收发
+  - 错误时发 Active Error Flag（6 位显性位）
+
+TEC/REC 96-127：Error Passive（被动错误）
+  - 仍可收发
+  - 错误时发 Passive Error Flag（6 位隐性位）
+  - **警告！需排查**
+
+TEC/REC ≥ 128：Error Passive
+  - 仍可收发（但仍 passive）
+  - **严重警告**
+
+TEC ≥ 256 OR REC ≥ 256：Bus-Off
+  - 完全禁止收发
+  - 等待 128 次 11 位 recessive 信号后才尝试恢复
+  - **必须排查根因**
+```
+
+#### REC↑ vs TEC↑ 的实战意义
+
+| 指标 | 含义 | 排查方向 |
+| --- | --- | --- |
+| **REC↑（接收错）** | 收到的帧有 CRC 错误 / 位错误 / ACK 错误 | **EMC 问题**（外部干扰 / 总线噪声） |
+| **TEC↑（发送错）** | 发送的帧被 ACK 否定 / 位错误 / 仲裁失败 | **发送端硬件问题**（收发器 / VCC / 时序） |
+| **REC 和 TEC 同时↑** | 双向问题 | 总线物理层（共模 / 终端 / stub） |
+
+### 真实车载案例
+
+- 车载网关装车后 2-3 小时某 ECU Bus-off
+- VCC 测量：3.3V 正常时 TEC/REC = 0
+- 空调/ABS 启动瞬间：VCC 跌到 1.5V（**电源跌落**）
+- VCC < 2.85V → 收发器 SN65HVD230 进入 shutdown 模式
+- 收发器不工作 = 帧丢失 → 错误计数累加 → Bus-off
+- **修复**：收发器 VCC 加 100µF 钽电容（局部稳压）
+- **预防**：加 power waveform 测试，CI 验证 CAN 通信
+
+### FreeRTOS 监控任务模板
+
+```c
+// can_monitor_task.c
+void can_monitor_task(void *arg) {
+    CAN_ErrorCounters_t ec;
+    
+    while (1) {
+        // 每 100ms 读一次错误计数器
+        vTaskDelay(pdMS_TO_TICKS(100));
+        
+        CAN_GetErrorCounters(&hcan1, &ec);
+        
+        // REC↑ 警告（EMC）
+        if (ec.REC > 96 && ec.REC < 128) {
+            log_warning("CAN REC %d (EMC 警告)", ec.REC);
+        }
+        
+        // TEC↑ 警告（硬件）
+        if (ec.TEC > 96 && ec.TEC < 128) {
+            log_warning("CAN TEC %d (发送端硬件警告)", ec.TEC);
+        }
+        
+        // 5s 节流报警
+        static uint32_t last_alert = 0;
+        if ((ec.REC >= 96 || ec.TEC >= 96) &&
+            (HAL_GetTick() - last_alert) > 5000) {
+            can_send_dtc_to_app(ec.REC, ec.TEC);  // 故障码上报
+            last_alert = HAL_GetTick();
+        }
+        
+        // Bus-Off 自动恢复
+        if (hcan1.Instance->PSR & FDCAN_PSR_BO) {
+            log_error("CAN Bus-Off detected");
+            // 主动复位
+            CAN_ResetBusOff(&hcan1);
+        }
+    }
+}
+```
+
+### 错误计数器判读决策树
+
+```text
+REC > 96
+  ├─ 仅 REC↑（TEC 0-50）
+  │   → EMC 排查
+  │   → 检查总线 noise、屏蔽、接地
+  │
+  └─ REC 和 TEC 同时↑
+      → 总线物理层
+      → 检查终端电阻、stub 长度、屏蔽
+
+TEC > 96
+  ├─ 仅 TEC↑（REC 0-50）
+  │   → 发送端硬件
+  │   → 检查 VCC、收发器、时钟、SP 配置
+  │
+  └─ REC 和 TEC 同时↑
+      → 总线物理层（双向）
+
+TEC ≥ 256 OR REC ≥ 256
+  → Bus-Off
+  → 等待自动恢复
+  → 检查根因（上面任意一项）
+  → 上报应用层
+```
+
+### 修复 Checklist
+
+```text
+□ FreeRTOS 监控任务 100ms 检查 TEC/REC
+□ REC↑ = EMC 排查（屏蔽 / 接地 / 噪声）
+□ TEC↑ = 硬件排查（VCC / 收发器 / 时序）
+□ 收发器 VCC 加 100µF 钽电容（防跌落）
+□ VCC 监控（电压跌落 < 2.85V 报警）
+□ Bus-Off 自动恢复 + 上报
+□ 错误码 DTC 上传到应用层
+□ 5s 节流报警（避免 spam）
+```
+
+### 复盘
+
+- **TEC/REC 阈值 = 状态机的关键数据**——必须监控
+- **REC↑=EMC / TEC↑=硬件**——实战经验总结，跨项目通用
+- **VCC 跌落 = 收发器 shutdown**——收发器 VCC 加 bulk cap
+- **FreeRTOS 监控任务模板**——100ms 检查 + 5s 节流报警
+- **Bus-Off 自动恢复**——128 × 11-bit recessive 后重连
+- **错误码 DTC 上传**——业务层能看到
+- 跟 R12-3 案例 11（TEC 256 Bus-Off + VCC 1.5V 跌落）**同源**但本案例强调 **TEC/REC 决策树**
+- 跟 R18-12 案例 16（TDCO 指纹）**互补**——本案例从**状态机监控**视角
+
+### 来源
+
+- _Inbox/CAN-FD-2026-09-17-candidates.md 候选 4
+- CSDN（汽车电子项目）
+
+---
+
+## 案例 20：STM32 FDCAN UDS——硬件 CRC 含位填充 vs 软件不含 + 2Mbps 才出现的 CRC 错
+
+### 现象
+
+STM32H7 车载网关量产项目，OEM 工厂 Vector CANoe v11 `CheckCRC()` 报 CRC 错误：
+- 研发环境 100% 通过
+- 量产工厂 100% 报 CRC 错
+- OEM 客户工厂跟研发环境分别 100% 通过
+- 同一个项目，3 个环境**结果完全不一致**
+- 根因 = **STM32 硬件 CRC 含位填充 + 软件算法不含 + 2Mbps 才出现**
+
+### 抓包 + 根因（3 大根因）
+
+#### 根因 1：STM32 硬件 CRC 包含位填充
+
+- CAN FD 协议规定：**CRC 计算覆盖位填充后的位流**
+- 位填充：连续 5 个同极性位插入 1 个反极性位
+- STM32 FDCAN 硬件 CRC 单元：**覆盖位填充后的整个位流**（包括 stuffed bits）
+- **CANoe 软件算法**：`CheckCRC()` **覆盖** stuffing bits **但计算方式不同**
+- 研发环境 vs 量产 = **测试工具算法不一致** → CRC 不匹配
+
+#### 根因 2：2Mbps 速率下才出现
+
+- 1Mbps @ 短帧：位填充触发次数少（5 个同极性位出现少）
+- 2Mbps @ 长帧：位填充触发次数多
+- **2Mbps 才暴露**是因为位填充概率与数据段长度/速率正相关
+- 实测：1Mbps 完全 OK，2Mbps 100% CRC 错
+
+#### 根因 3：UDS 栈集成时序坑
+
+- UDS（Unified Diagnostic Services）基于 CAN/CAN-FD
+- P2 Server timer（默认 50ms）：响应等待时间
+- P2* Server timer（默认 5000ms）：NRC 0x78 响应等待时间
+- S3 Server timer（默认 5000ms）：会话保持时间
+- **常见错**：
+  - tester 等待 P2 = 50ms 但 server 处理慢（>50ms）→ tester 报超时
+  - tester 不识别 NRC 0x78 → 误判 server 无响应
+  - server 不发 NRC 0x78 → tester 真超时
+
+### 修复（4 维）
+
+#### 修复 1：FDCAN 寄存器配置
+
+```c
+// FDCAN_CCCR.RETRAN 关闭 + 软件重传 + TIM16 超时控制
+hfdcan1.Instance->CCCR &= ~FDCAN_CCCR_RETRAN;  // 关闭硬件自动重传
+// 软件层处理重传 + 50ms 超时
+```
+
+#### 修复 2：FDCAN_TXBC.TFQS 配置
+
+```c
+// FDCAN_TXBC.TFQS ≥ 16（传输 FIFO 队列大小）
+hfdcan1.Instance->TXBC |= FDCAN_TXBC_TFQS_16;
+// 优先处理流控帧（避免 BRS 切换丢帧）
+HAL_FDCAN_ConfigTxQueueFifo(&hfdcan1, FDCAN_TX_PRIORITY_HIGH, 0);
+```
+
+#### 修复 3：UDS 时序参数
+
+```c
+// P2 Server timer = 50ms（响应等待）
+// P2* Server timer = 5000ms（NRC 0x78 等待）
+// S3 Server timer = 5000ms（会话保持）
+#define UDS_P2_SERVER_TIMER_MS 50
+#define UDS_P2_STAR_SERVER_TIMER_MS 5000
+#define UDS_S3_SERVER_TIMER_MS 5000
+```
+
+#### 修复 4：CRC 算法统一
+
+```c
+// 软件 CRC 必须跟硬件 CRC 算法一致
+// CRC-17（CAN FD 数据段 ≤ 16B）：多项式 0x1685B
+// CRC-21（CAN FD 数据段 17-64B）：多项式 0x102899
+// CRC 算法必须包含位填充位流
+```
+
+### 量产 SOP 4 类验证清单
+
+```text
+□ 电气特性验证
+  - Vmin/Vmax 边界
+  - 共模电压范围
+  - 终端电阻匹配
+
+□ 协议一致性验证
+  - CANoe CheckCRC() 100% pass
+  - 多 firmware 版本兼容
+  - 多 OEM 测试工具兼容（Vector / ETAS / CANalyzer）
+
+□ 环境适应性验证
+  - 高温（85℃）运行 24h
+  - 高湿（85% RH）运行 24h
+  - EMC 注入干扰
+
+□ 产线专用验证
+  - 自动化测试覆盖率 100%
+  - 测试固件版本对齐
+  - 测试设备校准
+  - 失败率统计 + 8D 报告
+```
+
+### 修复 Checklist
+
+```text
+□ FDCAN_CCCR.RETRAN 关闭 + 软件重传
+□ FDCAN_TXBC.TFQS ≥ 16
+□ 优先处理流控帧
+□ CRC 算法统一（包含位填充）
+□ UDS P2/P2*/S3 timer 严格配置
+□ NRC 0x78 必发 + tester 必识别
+□ 量产 SOP 4 类验证清单全过
+□ 工具差异（Vector vs ETAS）兼容性测试
+```
+
+### 复盘
+
+- **STM32 硬件 CRC 含位填充**——**软件算法必须同步**
+- **2Mbps 长帧位填充概率高**——1Mbps 不暴露的坑
+- **UDS P2/P2*/S3 timer**——时序坑最隐蔽
+- **NRC 0x78 是诊断协议响应**——必须识别
+- **量产 SOP 4 类验证**——电气 + 协议 + 环境 + 产线
+- **工具差异（CANoe vs ETAS）**——算法不一致会出 CRC 错
+- 跟 R18-12 案例 16（TDCO 指纹）**互补**——本案例从**软件/算法/时序**视角
+- 跟 R12-3 案例 7（NXP S32K SSP）**互补**——本案例从**UDS / CRC**视角
+
+### 来源
+
+- _Inbox/CAN-FD-2026-09-17-candidates.md 候选 5
+- CSDN（STM32H7 车载网关量产经验）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
