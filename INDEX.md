@@ -103,6 +103,10 @@
 - `bus/mqtt-deep-dive.md`
 - `bus/pcie-practical.md`
 
+## 无线 / 私有 2.4 GHz 协议
+
+- `wireless-2g4/nrf2401.md`：Nordic nRF24L01+ ShockBurst 协议（2.4 GHz 私有轻量收发器，SPI 接口 + 6 pipe + ACK payload）
+
 ## 图像与显示
 
 - `bus/mipi-csi-dsi-debug.md`

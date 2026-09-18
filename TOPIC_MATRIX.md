@@ -92,6 +92,12 @@
 | One-Wire | 2 | 1 篇 2.8 KB practical | L2 |
 | SDIO | 2 | 1 篇 3.4 KB practical | L2 |
 
+### wireless-2g4/ 2.4 GHz 私有 / 轻量协议
+
+| 主题 | 分 | 现状 | 升级目标 |
+| --- | --- | --- | --- |
+| nRF2401 (Nordic ShockBurst) | 2 | wireless-2g4/nrf2401.md ~18 KB 单篇完整 | L3 (补 deep-dive + failure-cases) |
+
 ### bus/ 新建 L4 闭环 (5 分) (2026-08-01 新建)
 
 | 主题 | 分 | 现状 | 升级目标 |
@@ -122,11 +128,12 @@
 ## 横向 / 纵向汇总
 
 ```
-横向覆盖: 49 协议, 87/100 分
+横向覆盖: 50 协议, 87/100 分
 纵向深度:
   L4 闭环: 15 个   (I2C / SPI / UART / CAN / J1939 / USB / BLE / ZigBee / Matter / Thread / LoRa / LTE-IoT / Satellite-IoT / PLB / Rescue-Comms)
   L3 实战: 4 个    (UDS / EtherNet/IP / Profinet / FPD-Link)
   L2 原理: 10+ 个
+  L2 原理（新主题）: 1 个 (nRF2401)
   L1 速查: 大量
   L0 简介: 大量
   0 空白: 5 个    (CAN FD / FlexRay / SENT / USB 3.x / HDMI 2.1)
