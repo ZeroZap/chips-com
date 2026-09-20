@@ -6051,6 +6051,592 @@ Step 4：状态机检查
 
 ---
 
+## 案例 64：SKNP 标签一致性检测——树莓派3B + bleak + BlueZ 双扫码枪 8 类踩坑
+
+### 现象
+
+标签一致性检测系统（车间线），树莓派3B + BLE 双扫码枪 7×24 长连接：
+- 双枪并发扫描
+- SIGKILL 假连接（Zombie connection）
+- 双枪 InProgress 异常
+- Notify 分包截断
+- 异常反复，**Uptime < 90%**
+- 工程师反复调参 → 找不到根因
+
+### 8 类踩坑（实战清单）
+
+#### 坑 1：单 HCI 适配器必串行化握手
+
+- 1 个 BLE USB dongle（HCI adapter）= **1 个硬件并发能力**
+- 双扫码枪并发连接 = HCI 适配器**实际串行化**处理（时分复用）
+- 应用层如果误用 asyncio.gather() 并发 → adapter 内部排队 → 超时
+- **修复**：显式 await 串行化 + 应用层 mutex
+
+#### 坑 2：SIGKILL 假连接（Zombie connection）
+
+- 进程 SIGKILL 终止 → BLE socket 没正常 close
+- 内核 BLE stack **仍保留 handle**，但没有 user process 持有
+- 重新启动应用 → 试图 connect 同一 device → **失败**（handle 已用）
+- **修复**：
+  - 启动时 `bluetoothctl remove <MAC>` 清残留
+  - 或 `dbus-send` 强 disconnect
+  - 或重启 HCI adapter：`sudo hciconfig hci0 reset`
+
+#### 坑 3：双枪 InProgress 异常
+
+- bleak `connect()` 抛 `BleakError: Already connecting`
+- 两个 scanner 异步竞争 connect → adapter 拒绝并发
+- **修复**：用 `asyncio.Lock()` 串行化 connect
+
+#### 坑 4：Notify 分包截断
+
+- GATT Notify 一帧最大 244B（BLE 5 DLE）
+- sensor 数据 > 244B → 拆多帧发送
+- 应用层 read 第一次 → 拿到首 244B → 立即处理（漏掉后续帧）
+- **修复**：read 直到收到完整数据（应用层 framing + length prefix）
+
+#### 坑 5：3 档退避（指数 + jitter）
+
+- 失败 retry 必须有 backoff：
+  - 短退避：100ms × 3 次
+  - 中退避：1s × 3 次
+  - 长退避：5s + jitter（避免雪崩同步）
+- 立即 retry → HCI adapter 过载 → 全失败
+- **修复**：exponential backoff + random jitter
+
+#### 坑 6："首帧 Notify"判定连接可用
+
+- bleak `connect()` 返回 True ≠ **链路真通**
+- 必须等**第一条 Notify 数据**到达 = 链路 ready
+- 否则命令发了但丢了（链路未真通）
+- **修复**：连接后等首 Notify，timeout 5s 没收到 = 重连
+
+#### 坑 7：BlueZ D-Bus 信号监听
+
+- `dbus-monitor` 监听 `org.bluez.Device1` 信号
+- 抓 `PropertiesChanged` (RSSI) + `ServicesResolved`
+- 比 bleak log 更底层，能抓 bleak 漏掉的 edge case
+
+#### 坑 8：物理 USB 干扰
+
+- 工业现场 USB 延长线 > 3m + 旁边 VFD → USB 数据包 CRC 错
+- 表现：HCI adapter 偶发 disconnect
+- **修复**：USB 线 < 1m + 加磁环 + 远离 VFD
+
+### 定位（4 步法）
+
+```text
+Step 1：dbus-monitor 抓底层信号
+  - 看 PropertiesChanged / ServicesResolved 频率
+  - 命中：底层信号异常 = 根因在 BlueZ/D-Bus 层
+
+Step 2：bleak log 抓应用层异常
+  - BleakError 类型统计
+  - 命中：SIGKILL / InProgress 频次 = 根因 1+2+3
+
+Step 3：USB 信号质量检查
+  - 逻辑分析仪抓 USB D+/D- 信号
+  - 看包重传率
+  - 命中：USB CRC 错 = 根因 8
+
+Step 4：网络层 sniffing
+  - tcpdump/wireshark 抓应用层 MQTT/payload
+  - 看完整 Notify 链路
+  - 命中：Notify 截断 = 根因 4
+```
+
+### 修复 Checklist
+
+```text
+□ 单 HCI adapter 串行化握手（asyncio.Lock）
+□ 启动时清 Zombie connection（bluetoothctl remove）
+□ 双枪 connect 互斥（避免 InProgress）
+□ Notify framing + length prefix 完整读
+□ 3 档退避（100ms / 1s / 5s+jitter）
+□ "首帧 Notify" 判定连接可用
+□ dbus-monitor 底层信号监控
+□ USB 线 < 1m + 磁环 + 远离 VFD
+```
+
+### 复盘
+
+- **单 HCI adapter 并发能力有限**——硬件层不是真并发
+- **SIGKILL 后必清残留**——Zombie connection 是隐形杀手
+- **bleak 不是底层**——dbus-monitor 必须配
+- **USB 物理环境**——**1m + 磁环 + 远离 VFD** 三件套
+- **"首帧 Notify"**——**判定连接可用**的硬指标
+- 跟 R19-7 案例 63（Android 五状态机）**互补**——本案例从 **Linux server 端 + 双并发** 视角
+- 跟 R18-6 案例 62（Nordic DevZone Notify 间歇丢失）**角度相似**——本案例从 **Linux + BlueZ** 视角
+
+### 来源
+
+- _Inbox/BLE-2026-09-19-candidates.md 候选 3
+- SKNP 个人博客（车间现场实测）
+
+---
+
+## 案例 65：Frontline X240 物理层时序异常——BLE 5.x 2Mbps PHY μs 级还原 + L2CAP 静默丢
+
+### 现象
+
+BLE 5.x 2Mbps PHY 高吞吐场景（OTA / 大文件传输 / 高频 sensor）：
+- 实验室吞吐 80 KB/s
+- 现场吞吐跌到 20 KB/s（**4 倍降**）
+- 偶发完全卡死 1-2 秒（**Anchor Point 漂移**）
+- 现场 L2CAP 静默丢包（应用层完全无感）
+- lab 完全不复现
+
+### 抓包 + 根因（4 大异常）
+
+#### 异常 1：T_IFS 偏移（Inter Frame Space）
+
+- BLE spec T_IFS = 150µs（连接事件内帧间隔）
+- 2Mbps PHY 下实测 165-180µs（**+15-30µs 偏移**）
+- T_IFS 偏移 → 接收端 sampling 错位 → 后续帧 CRC fail
+- 表现：吞吐量降 50%
+
+#### 异常 2：Anchor Point 漂移
+
+- 连接事件 anchor point（中心时间点）应稳定
+- 2Mbps PHY 高负载 → 32 kHz 晶振 PPM 漂移 + Anchor Point 累计漂移
+- 漂移 > 30µs → 接收端 next connection event 错过 → 1-2 秒卡死
+- **根因**：32 kHz 晶振 ±40 ppm 在 -40~+85 °C 漂移超补偿
+
+#### 异常 3：Connection Param Update 失败
+
+- 高速 2Mbps 应用请求 connection interval 7.5ms
+- central（手机 / Linux host）静默拒绝
+- 但应用层误以为协商成功 → 仍按 7.5ms 发包 → 全失败
+
+#### 异常 4：L2CAP 静默丢包
+
+- L2CAP Credit-Based Channel（BLE 5.x 新增）静默丢包
+- credit 流控耗尽 → 帧丢弃但 **不发 error response**
+- 应用层 0 反馈 → 难以定位
+- **根因**：非 credit-based L2CAP channel（legacy L2CAP）溢出 = 静默丢
+
+### Frontline X240 实战（μs 级时序还原）
+
+- 工具：Frontline X240 BPA（Bluetooth Protocol Analyzer）
+- 硬件：价格 $5K-$15K（工业级）
+- 能力：
+  - PHY 层 μs 级时序还原（远高于 Ellisys）
+  - T_IFS 偏移精确测量（ns 级）
+  - Anchor Point 漂移可视化
+  - Channel Map 实时显示
+
+#### 实战步骤
+
+```text
+Step 1：X240 抓 2Mbps PHY 全连接
+  - 捕获整个 connection event 序列
+  - 看每一帧 T_IFS 实测值
+
+Step 2：T_IFS 偏移统计
+  - 期望 150µs ± 1µs
+  - 实际 165-180µs
+  - 命中异常 1
+
+Step 3：Anchor Point 漂移跟踪
+  - 看 connection event 间间隔
+  - 期望稳定 30ms
+  - 实际漂移 ±50µs（累计）
+  - 命中异常 2
+
+Step 4：credit 跟踪
+  - L2CAP credit-based channel 信用跟踪
+  - 看 credit 耗尽时刻
+  - 命中异常 4
+```
+
+### 修复
+
+| 维度 | 修复 | 验证 |
+| --- | --- | --- |
+| 1 T_IFS 偏移 | 优化 radio ISR 处理时间（< 30µs）+ 关中断时长 < 50µs | T_IFS < 160µs |
+| 2 Anchor Point 漂移 | 32 kHz 晶振 ±20 ppm 替换 + 温度补偿 | 漂移 < 10µs |
+| 3 Param Update 失败 | 读回协商参数 + central-tolerant 设计 | 实际 interval 验证 |
+| 4 L2CAP 静默丢 | 改 credit-based L2CAP + 监控 credit 余量 | 静默丢 = 0 |
+
+### 复盘
+
+- **2Mbps PHY 时序问题 μs 级**——**Ellisys 看不到，要 X240**
+- **T_IFS 偏移 165-180µs**——**spec 150µs 容忍度外**
+- **Anchor Point 漂移**——**32 kHz 晶振 ±40 ppm 不可接受**
+- **L2CAP 静默丢**——**应用层完全无感，必须底层监测**
+- **Frontline X240 = 物理层时序实战投资**——$5K-15K 但回报高
+- 跟 R18-4 案例 55（信号完整性重构 BLE）**互补**——本案例从 **μs 级时序** 视角
+- 跟 R19-4 案例 60（iPhone 30s 断连 + housekeeping 阻塞）**角度相似**但本案例从**晶振 ppm + Anchor** 视角
+
+### 来源
+
+- _Inbox/BLE-2026-09-19-candidates.md 候选 5
+- TrueSight 技术博客（Frontline X240 实测）
+
+---
+
+## 案例 66：EBYTE Optimizing Bluetooth Receivers——工业 IoT 4 大硬件根因 + 量化门限
+
+### 现象
+
+工业 IoT BLE 接收机常见 4 大硬件根因，工程师凭经验无量化标准：
+- 电源纹波致 nRF52 brownout
+- 天线失配
+- 2.4 GHz 共信道阻塞
+- 温漂晶振符号同步失败
+- 反复试错，**返修率高**
+
+### 4 大硬件根因 + 量化门限
+
+#### 根因 1：电源纹波（VCC 纹波 < 50 mVpp）
+
+- 工业电源 DC/DC 输出纹波 **> 50 mVpp** → nRF52 brownout 触发
+- BLE TX burst 18 mA 瞬态 → VCC 跌落 > 50 mV
+- **修复**：
+  - 加 100µF 钽电容 + 10µF 陶瓷 + 100nF 陶瓷（HIGH FREQ 去耦）
+  - 用 LDO 前置（纹波 5 mV）
+- **量化门限**：
+  - VCC 纹波 **< 50 mVpp**
+  - Vmin 在 TX 时刻 > 2.95V
+
+#### 根因 2：天线失配（RSSI > -85 dBm）
+
+- 工业现场金属反射 + PCB 天线 VSWR 失谐
+- 链路预算从设计 78 dB 跌到 62 dB
+- **修复**：
+  - VNA 量 S11，VSWR < 1.8
+  - chip antenna 比 PCB trace 抗金属反射强
+  - 加 conductive shielding 罩
+- **量化门限**：
+  - 距离 1m 时 RSSI **> -50 dBm**
+  - 距离 10m 时 RSSI **> -85 dBm**
+  - VSWR < **2.0**
+
+#### 根因 3：2.4 GHz 共信道阻塞
+
+- 工业现场 WiFi AP × 多 + 蓝牙耳机 + ZigBee 网关
+- 跳频算法被 clean channel 池压垮
+- **修复**：
+  - AFH channel map 持续剔除 10-20 个拥堵信道
+  - 频谱避让（找现场最干净 5-8 个信道）
+- **量化门限**：
+  - PER **< 5%**（稳态）
+  - 突发丢包率 < **20%**
+
+#### 根因 4：温漂晶振（±40 ppm = 符号同步失败）
+
+- 工业 -40 ~ +85℃ 温变
+- 32 kHz 晶振 ±40 ppm 漂移 → BLE anchor point 累计漂移 > 30µs
+- 符号同步失败 → 后续帧 CRC fail
+- **修复**：
+  - 换 ±20 ppm 晶振
+  - 或加温度补偿
+- **量化门限**：
+  - 32 kHz 晶振 **±20 ppm**
+  - 16 MHz HSE **±10 ppm**
+
+### 示波器 → 频谱 → 抓包 三段隔离法
+
+```text
+Step 1：示波器（时间域）
+  - 探头打 VCC
+  - 看 TX 时刻 Vmin
+  - 验证根因 1
+
+Step 2：频谱（频率域）
+  - 频谱仪看 2.4 GHz 占用
+  - 验证根因 3
+
+Step 3：抓包（协议域）
+  - sniffer / Ellisys / X240
+  - 看 HCI 错误 + connection state
+  - 验证根因 4
+
+Step 4：天线 S11（阻抗域）
+  - VNA 测 S11 / VSWR
+  - 验证根因 2
+```
+
+### 工业 BLE 接收机硬件 Checklist
+
+```text
+□ VCC 纹波 < 50 mVpp（示波器）
+□ Vmin 在 TX 时刻 > 2.95V
+□ RSSI 10m > -85 dBm
+□ VSWR < 2.0（VNA 验证）
+□ 2.4 GHz PER < 5%（稳态）
+□ 32 kHz 晶振 ±20 ppm
+□ 16 MHz HSE ±10 ppm
+□ bulk cap 100µF 钽 + 10µF 陶瓷 + 100nF 陶瓷
+□ chip antenna + conductive shielding
+□ AFH channel map 持续剔除拥堵信道
+```
+
+### 复盘
+
+- **4 大硬件根因 + 量化门限 = 标准化排错**——不靠经验
+- **VCC 纹波 < 50 mVpp**——硬指标，工业设计必查
+- **RSSI > -85 dBm**——10m 距离的最低门槛
+- **温漂晶振 ±40 ppm 不可接受**——必须 ±20 ppm
+- **示波器 → 频谱 → 抓包 三段隔离**——每段对应根因域
+- 跟 R16-1 案例 50（EBYTE 4 大根因）**同源**但本案例强调**量化门限 + Checklist 标准化**
+- 跟 R19-1 案例 57（AFH 池压垮）**互补**——本案例从**接收机硬件**视角
+
+### 来源
+
+- _Inbox/BLE-2026-09-20-candidates.md 候选 2
+- EBYTE 工业 IoT
+
+---
+
+## 案例 67：Nordic DevZone 多连接掉线——9 外设 / 3 iOS 中心 + HCI 错误字典 + LFXTAL Cpin 重算
+
+### 现象
+
+nRF52 项目：
+- 9 个 peripheral 外设
+- 3 个 iOS central（iPhone/iPad）
+- 实测**掉线与人数/距离正相关**
+- HCI 错误码：`0x08 / 0x3E / 0x28`（全部丢包/重传类）
+- 多次重连无果
+- 根因 = **2 Mbps PHY 长距多连缺陷 + 32 kHz 晶振负载电容不匹配**
+
+### 抓包 + 根因
+
+#### HCI 错误码字典
+
+| 错误码 | 含义 | 排查方向 |
+| --- | --- | --- |
+| **0x08** | HCI Command Timeout | 上层命令超时 → housekeeping / log 阻塞 |
+| **0x3E** | Connection Failed To Be Established | 连接建立失败 → RF / 距离 / 配对 |
+| **0x28** | Connection Rejected Due To Limited Resources | 资源耗尽 → 多连接超出能力 |
+| 0x22 | LMP Response Timeout | Link Layer 协议超时 → 物理层 L2CAP |
+
+- **实战**：HCI 错误码字典**必须背熟**，否则定位无从下手
+
+#### 根因 1：2 Mbps PHY 长距多连缺陷
+
+- 2 Mbps PHY 在 lab 短距稳定
+- **9 外设 + 长距（5-10m）** = 2 Mbps PHY 鲁棒性不足
+- 2 Mbps PHY 对 Link Budget 要求更严格（每 +2 dB 多连接衰减）
+- 表现：长距外设频繁掉线（每隔 10-30 秒断 1 次）
+- **修复**：
+  ```c
+  // 2 Mbps → 1 Mbps PHY（牺牲吞吐换稳定）
+  sd_ble_gap_phy_update(conn_handle,
+      BLE_GAP_PHY_AUTO,    // TX PHY auto
+      BLE_GAP_PHY_AUTO,    // RX PHY auto
+      BLE_GAP_PHY_1MBPS);  // 1 Mbps
+  ```
+
+#### 根因 2：LFXTAL Cpin 重算（32 kHz 晶振负载电容）
+
+- 32 kHz 晶振负载电容匹配是 BLE 稳定关键
+- **晶振公式**：
+  ```
+  C = 2·Cl − Cpin − Cpcb
+
+  Cl = 晶振标称负载电容（datasheet 标）
+  Cpin = MCU 引脚电容（datasheet 标，通常 5 pF）
+  Cpcb = PCB 走线电容（layout 设计，通常 1-3 pF）
+  C = 实际外接电容值
+  ```
+- **实战案例**：Cl=12pF, Cpin=5pF, Cpcb=2pF → C = 17pF
+- 工程师误用 12pF → 晶振频率偏移 → BLE 时基漂移 → 掉线
+
+#### 根因 3：多连接资源耗尽
+
+- nRF52 同时多连接数 = 20+ 理论
+- **实战** 8+ 连接受限：
+  - RAM 不足（GATT 服务表 / CCCD 状态）
+  - radio 时间槽冲突
+  - CPU 调度拥堵
+- 表现：连第 9 个时偶发掉前 8 个
+
+### 修复（3 维）
+
+#### 修复 1：PHY 降速
+
+```c
+// 默认 2 Mbps PHY → 改 1 Mbps
+sd_ble_gap_phy_update(conn_handle,
+    BLE_GAP_PHY_AUTO, BLE_GAP_PHY_AUTO, BLE_GAP_PHY_1MBPS);
+```
+
+#### 修复 2：LFXTAL 负载电容重算
+
+```c
+// 假设 datasheet Cl = 12 pF, Cpin = 5 pF, Cpcb = 2 pF
+// C = 2 * 12 - 5 - 2 = 17 pF
+// PCB 实测 17 pF 电容并联到 XTAL
+nrf_gpio_cfg_input(20, NRF_GPIO_PIN_PULLUP);  // 不变
+// 在 32kHz XTAL 引脚对 GND 加 17pF 电容
+```
+
+#### 修复 3：多连接资源规划
+
+```text
+□ 多连接数 ≤ 8 实战上限
+□ GATT service table 精简（按需裁剪）
+□ RAM 占用规划（连 8 个 sensor + service + CCCD ≈ 32 KB）
+□ radio 时间槽规划（多连接 interval 错开）
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：抓 HCI 错误码
+  - log 抓 HCI event 0x04 disconnect reason
+  - 命中 0x08/0x3E/0x28 = 多连接问题
+
+Step 2：PHY 检查
+  - sniffer 看 PHY 选择
+  - 期望 1 Mbps → 实际 2 Mbps → 命中根因 1
+
+Step 3：LFXTAL 电容检查
+  - 万用表量晶振两端电容
+  - 期望 datasheet 公式计算值
+  - 实际不匹配 → 命中根因 2
+
+Step 4：多连接资源监控
+  - log 抓 nRF52 RAM 占用
+  - 连第 9 个时 RAM > 80% → 命中根因 3
+```
+
+### 复盘
+
+- **HCI 错误码字典**——多连接问题**必须背**
+- **2 Mbps PHY 长距多连缺陷**——**短距可，长距必降为 1**
+- **LFXTAL 公式 C = 2·Cl − Cpin − Cpcb**——**晶振选型必查**
+- **多连接实战上限 = 8**（nRF52）——超过不稳定
+- **LFXTAL 负载电容不匹配是隐形杀手**——掉线但 HCI 不报具体原因
+- 跟 R19-4 案例 60（iPhone 30s 断连 + housekeeping）**角度不同**——本案例从**多连接 + LFXTAL** 视角
+- 跟 R18-6 案例 62（Nordic DevZone Notify 间歇丢失）**互补**——本案例从 **HCI 错误字典 + LFXTAL** 视角
+
+### 来源
+
+- _Inbox/BLE-2026-09-20-candidates.md 候选 3
+- Nordic Semiconductor 官方 DevZone
+
+---
+
+## 案例 68：STM32WBA65 Matter 设备 BLE 配网失败——Service UUID 0xFFF6 + Android/iOS 权限差异
+
+### 现象
+
+STM32WBA65 Matter 设备（智能门锁 / 智能照明）：
+- BLE 配网（commissioning）失败
+- Alexa / Google Home 扫不到设备
+- 用户视角："Matter 配不上"
+- 工程师反复查 Matter SDK → 找不到
+- 根因 = **Matter commissioning 必经 BLE + Service UUID 0xFFF6 + Android/iOS BLE 权限差异**
+
+### 抓包 + 根因
+
+#### Matter 协议架构（必备）
+
+```text
+Matter 应用层
+   ↓（commissioning via）
+┌──────────────────┐
+│  BLE 5.x GATT    │  ← **必经路径**
+└──────────────────┘
+   ↓
+Wi-Fi / Thread    ← 配网完成后切换到 IP 网络
+   ↓
+IPv6 + Matter 协议
+```
+
+- **关键事实**：Matter 设备**首次配网必经 BLE GATT**
+- 即使设备最终走 Wi-Fi/Thread，commissioning 阶段也必须 BLE
+- BLE 配网 = Matter 协议栈 0xFFF6 Service UUID 识别
+
+#### 根因 1：Service UUID 0xFFF6 缺失
+
+- Matter spec 定义 BLE commissioning service UUID = **0xFFF6**
+- 工程师误以为 Matter = Wi-Fi 配网 → 跳过 BLE Service
+- 设备广播不含 0xFFF6 → Alexa / Google Home 扫不到
+- **修复**：
+  ```c
+  // STM32WBA65 Matter commissioning GATT service
+  uint8_t matter_service_uuid[16] = {
+    0xFB, 0x34, 0x9B, 0x5F, 0x80, 0x00, 0x00, 0x80,
+    0x00, 0x10, 0x00, 0x00, 0xF6, 0xFF, 0x00, 0x00
+  };
+  aci_gatt_add_service(UUID_TYPE_128, matter_service_uuid,
+                      PRIMARY_SERVICE, 12, &matter_service_handle);
+  ```
+
+#### 根因 2：Android/iOS BLE 权限差异
+
+- **Android**：
+  - 蓝牙权限 `BLUETOOTH_SCAN` + `BLUETOOTH_CONNECT`（API 31+）
+  - 不需位置权限（API 31+）
+- **iOS**：
+  - 蓝牙权限 `NSBluetoothAlwaysUsageDescription`（Info.plist）
+  - iOS 14+ 必须填，否则静默拒绝 BLE
+- **工程师陷阱**：Android 调试 OK → iOS 失败 → 误判为硬件问题
+
+#### 根因 3：Matter QR Code + Setup Passcode 缺失
+
+- Matter 设备需**配对二维码**（QR code）+ Setup Passcode
+- 二维码内容：Device ID + Vendor ID + Product ID + Setup Passcode
+- 工程师遗漏 Passcode → commissioning 必失败
+- **修复**：产线必须打印 QR + Passcode
+
+### 验证脚本（Python bleak）
+
+```python
+from bleak import BleakScanner
+
+async def scan_matter():
+    devices = await BleakScanner.discover(timeout=10)
+    matter_devices = []
+    for d in devices:
+        # 0xFFF6 是 Matter commissioning service UUID
+        if d.metadata and d.metadata.get('uuids'):
+            if '0000fff6-fff6-fff6-fff6-fff6fff6fff6' in d.metadata['uuids']:
+                matter_devices.append(d)
+                print(f"Found Matter device: {d.name} ({d.address})")
+    return matter_devices
+```
+
+### 修复 Checklist
+
+```text
+□ STM32WBA65 BLE Service UUID 0xFFF6 配齐
+□ Matter commissioning GATT service 实装
+□ Android Manifest 权限（API 31+）：
+  - BLUETOOTH_SCAN
+  - BLUETOOTH_CONNECT
+□ iOS Info.plist 权限：
+  - NSBluetoothAlwaysUsageDescription
+  - NSBluetoothPeripheralUsageDescription
+□ Matter QR Code + Setup Passcode 产线必打印
+□ Python bleak 扫描验证脚本
+□ Multi-Admin / Commissioning Flow 测试
+□ Network Commissioning Cluster（Wi-Fi / Thread 配置）
+□ Operational Credentials Cluster（CSA 证书）
+```
+
+### 复盘
+
+- **Matter commissioning = BLE 必经**——**首次配网必走 BLE**
+- **Service UUID 0xFFF6 = Matter 识别锚**——缺失即配不上
+- **Android/iOS BLE 权限差异**——**调试 OK 不代表产品 OK**
+- **QR Code + Setup Passcode**——**Matter 设备产线必配**
+- **Matter ≠ Wi-Fi 配网**——先 BLE → 后 Wi-Fi/Thread
+- 跟 R19-7 案例 63（Android 五状态机）**角度相似**——本案例从 **Matter commissioning** 视角
+- **跟 bus/matter-deep-dive.md 主题互补**——本案例补 BLE commissioning 细节
+
+### 来源
+
+- _Inbox/BLE-2026-09-20-candidates.md 候选 4
+- CSDN（STM32WBA65 Matter 实战）
+- Matter Core Spec §5.4（commissioning）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

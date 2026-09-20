@@ -316,3 +316,12 @@ BLE 是"低功耗短距无线的事实标准"，强在功耗、GATT 属性模型
   - 案例 62：Nordic DevZone Notify 间歇丢失（timer-driven vs event-driven 互锁 + 错误码 NRF_ERROR_NO_MEM）
   - 案例 63：Android 连上≠链路通——CCCD=0x0001 五状态机样板（Disconnected→Connected→ServicesReady→NotificationReady→ProtocolReady）
   - 来源：_Inbox/BLE-2026-09-18-candidates.md 候选 1-5
+- 2026-09-19: 新增 2 实战案例（64-65）
+  - 案例 64：SKNP 树莓派3B + bleak + BlueZ 双扫码枪 8 踩坑（SIGKILL 假连接 + 双枪 InProgress + Notify 分包截断 + 3 档退避）
+  - 案例 65：Frontline X240 BLE 5.x 2Mbps PHY 物理层时序（T_IFS 偏移 + Anchor Point 漂移 + L2CAP 静默丢包）
+  - 来源：_Inbox/BLE-2026-09-19-candidates.md 候选 3/5
+- 2026-09-20: 新增 3 实战案例（66-68）
+  - 案例 66：EBYTE Optimizing Bluetooth Receivers 4 维硬件 + 量化门限（VCC 纹波 < 50mVpp + RSSI > -85 dBm + 32 kHz ±20 ppm）
+  - 案例 67：Nordic DevZone 多连接掉线（9 外设/3 iOS + HCI 0x08/0x3E/0x28 + 2 Mbps→1 Mbps PHY + LFXTAL C = 2·Cl − Cpin − Cpcb）
+  - 案例 68：STM32WBA65 Matter BLE 配网失败（Service UUID 0xFFF6 + Android/iOS 权限差异）
+  - 来源：_Inbox/BLE-2026-09-20-candidates.md 候选 2/3/4（候选 1 重复已写）
