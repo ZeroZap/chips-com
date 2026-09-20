@@ -314,3 +314,10 @@ LoRa / LoRaWAN 是"远距低功耗 IoT 的事实标准"，强在距离、电池�
   - 案例 46：SPI Mode 0 + SX1262 max 16MHz + NSS pull-up + SDR 看 CSS chirp 验 TX + DevEUI 冲突 nonce mismatch
   - 案例 47：Firmware 三层调试法——RTL-SDR 看空口 + IC880A+Pi 自建 gateway + ChirpStack 栈诊断
   - 来源：_Inbox/LoRa-2026-09-17-candidates.md 候选 1-5
+- 2026-09-19: 新增 5 实战案例（48-52）
+  - 案例 48：LoRa SF/带宽/编码率配置不当电池续航雪崩（万亩农田 3y→4 月 + 6000 水表 9→48 月 + SF 速查表）
+  - 案例 49：车间无线 3 大杀手——VFD 谐波 + 电焊机拉弧 + 多径驻波（JYLN061 SF10+BW125+CR4/5+27dBm 1h 0 丢包）
+  - 案例 50：12km LOS ok / 400m 仓库失败——VFD 拉噪声底（RSSI+SNR 双轨 + cavity filter LNA 前 + SNR -3→+7 dB）
+  - 案例 51：12km LOS ok / 400m 停车场失败——40 节点 RTC 同步唤醒 ALOHA 同频碰撞（chip unique ID 0-45s 偏移 + 丢包 95%→<3%）
+  - 案例 52：SX1262 SF5 6 月 147 测试 4 隐形坑（RadioLib TX +11dBm bug + sync word 0x34 + boosted RX 未开 + 配置顺序错位）
+  - 来源：_Inbox/LoRa-2026-09-19-candidates.md 候选 1-5

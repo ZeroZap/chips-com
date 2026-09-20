@@ -5103,6 +5103,580 @@ Layer 3（NS）
 
 ---
 
+## 案例 48：LoRa SF/带宽/编码率配置不当——电池续航雪崩（万亩农田3y→4月 / 6000 水表 9→48月）
+
+### 现象
+
+三个 LoRa 项目"电池续航雪崩"真实案例：
+
+#### 案例 A：万亩农田（SF 盲调 12 致 4 月失联）
+
+- 项目承诺 3 年续航（客户合同）
+- 4 个月即大面积失联
+- 根因：SF 盲调 12（最远 SF）+ 100B 帧 = **6554 ms airtime**
+- 20000 mAh 电池 → 实际用 4 个月
+- **修复**：根据距离调 SF（近端 SF7 + 远端 SF10），AA 电池 **18 个月**
+
+#### 案例 B：气象站（SF7→SF10）
+
+- 气象站 100 节点
+- 工程师凭经验 SF7→SF10（怕信号差）
+- AA 电池 **18 个月 → 5 个月**
+- **修复**：实测 RSSI > -85 dBm 节点用 SF7，< -85 dBm 加 router
+
+#### 案例 C：智慧水务 6000 水表（SF10→SF8 + 自适应）
+
+- 6000 户水表，3 月后 P0 事故
+- 工程师统一 SF10（怕距离不够）
+- 实际 SF10 airtime 长 + 频繁重传
+- **修复**：实测距离 + ADR 自适应 → 6000 水表 **48 个月续航**
+
+### LoRa 功耗铁三角
+
+```
+电池续航 = f(SF, BW, CR, payload_size, TX_interval, 环境温度)
+
+三者 trade-off：
+  ↑ SF    → ↑ airtime → ↓ 续航（4-32 倍）
+  ↓ BW    → ↑ airtime → ↓ 续航（2-4 倍）
+  ↑ CR    → ↑ airtime → ↓ 续航（1.3-1.6 倍）
+  ↑ payload → ↑ airtime → ↓ 续航（线性）
+  ↑ TX 间隔 → ↓ 平均功耗 → ↑ 续航（线性倒数）
+```
+
+### SF airtime 速查表（@125 kHz BW, CR=4/5, 10B payload）
+
+| SF | airtime | vs SF7 | 适用场景 |
+| --- | --- | --- | --- |
+| SF5 | 17 ms | ×0.5 | 极短距（< 500m） |
+| SF6 | 26 ms | ×0.7 | 短距 |
+| SF7 | 51 ms | ×1.0 | 短距（默认） |
+| SF8 | 92 ms | ×1.8 | 中距 |
+| SF9 | 187 ms | ×3.7 | 中长距 |
+| SF10 | 371 ms | ×7.3 | 长距 |
+| SF11 | 743 ms | ×14.6 | 远距 |
+| SF12 | 1483 ms | ×29.1 | 最远（仅极端场景） |
+
+### 实战参数配方
+
+#### 配方 1：智慧农业（农业 + 中距）
+
+```c
+// 距离 1-3 km
+{
+  .spreading_factor = 9,  // SF9
+  .bandwidth = 125000,    // 125 kHz
+  .coding_rate = 5,       // 4/5
+  .tx_power = 14,         // +14 dBm
+  .payload_size = 12,
+  .tx_interval = 600,     // 10 分钟
+  // airtime = 247ms × 1/600 = 0.04% duty cycle
+  // 续航 5+ 年（AA 电池）
+}
+```
+
+#### 配方 2：智能水表（楼宇内 + 短距）
+
+```c
+// 距离 < 500m
+{
+  .spreading_factor = 7,  // SF7
+  .bandwidth = 250000,    // 250 kHz（更高吞吐）
+  .coding_rate = 5,
+  .tx_power = 14,
+  .payload_size = 10,
+  .tx_interval = 3600,    // 1 小时
+  // airtime = 41ms × 1/3600 = 0.001% duty cycle
+  // 续航 10+ 年（锂电池）
+}
+```
+
+#### 配方 3：户外追踪（远距 + 高频）
+
+```c
+// 距离 5-10 km
+{
+  .spreading_factor = 10, // SF10
+  .bandwidth = 125000,    // 125 kHz
+  .coding_rate = 5,
+  .tx_power = 20,         // +20 dBm
+  .payload_size = 20,
+  .tx_interval = 60,      // 1 分钟
+  // airtime = 411ms × 1/60 = 0.7% duty cycle
+  // 续航 6 月（18650 电池）
+}
+```
+
+### 修复 Checklist
+
+```text
+□ 实测距离 → 选 SF（不要凭经验选 SF12）
+□ RSSI > -85 dBm 用 SF7，< -85 dBm 加 router
+□ BW 实测：现成 250 kHz vs 125 kHz
+□ ADR 自适应（动态选 SF）
+□ payload 精简（不要传未压缩 JSON）
+□ TX 间隔按业务需求（不要 1 秒一次）
+□ TX power 14 dBm 足够（不要 20 dBm 浪费）
+□ Duty cycle 法规合规（EU868 < 1%）
+```
+
+### 复盘
+
+- **SF 盲调 12 = 续航灾难**——**29 倍 airtime 翻倍**
+- **100B 帧 + SF12 = 6554 ms**——**实测过**
+- **SF/BW/CR 铁三角**——**不可全要**
+- **ADR 自适应**——**SF/BW/CR 动态调**
+- **距离实测 > 凭经验**——**3 案例教训**
+- **智慧水务 6000 = 48 月续航**——**自适应方案正确**
+- 跟 R12-3 案例 36（LoRaWAN 下行 4 fault domain）**互补**——本案例从**功耗铁三角**视角
+- 跟 R18-5 案例 38（智能能源 P0）**互补**——本案例从**单节点功耗**视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-19-candidates.md 候选 1
+- CSDN（LoRa 项目翻车实录）
+
+---
+
+## 案例 49：车间无线 3 大杀手——VFD 谐波 + 电焊机拉弧 + 多径驻波（JYLN061 实战配方）
+
+### 现象
+
+汽车车间无线通信（LoRa 工业终端 JYLN061）：
+- 产线通信频繁断连
+- 工程师反复查"协议 + 模组"
+- 找不到根因
+- 实际 = **3 大车间杀手叠加**：VFD / 电焊机 / 多径
+
+### 3 大杀手 + 量化门限
+
+#### 杀手 1：VFD（变频器）IGBT 2-16 kHz 谐波
+
+- VFD = 变频器（电机调速核心）
+- IGBT 开关频率 2-16 kHz → **谐波干扰 868/915 MHz LoRa**
+- 谐波能量 = -30 dBm（远高于 LoRa 灵敏度 -90dBm）
+- **表现**：
+  - LoRa SNR 从 +5 dB 跌到 -10 dB
+  - PDR 从 95% 跌到 50%
+- **修复**：
+  - VFD 加 EMI 滤波器
+  - LoRa 天线远离 VFD > 3m
+  - 加 cavity filter（868 MHz 带通）
+
+#### 杀手 2：电焊机拉弧宽带脉冲
+
+- 电焊机工作 = 拉弧（IGBT 高频开关）
+- 拉弧产生**宽带 RF 脉冲**（10 MHz - 1 GHz）
+- 距离 5m 内 LoRa **完全失败**
+- **修复**：
+  - 焊接区物理隔离 LoRa 节点 > 5m
+  - 加屏蔽（铜网 + 钢架）
+  - 焊接时 LoRa 节点休眠（sensor 加加速度传感器检测焊接振动）
+
+#### 杀手 3：多径驻波（移动 30cm 差 20 dB）
+
+- 车间金属反射（金属架 / 金属地面 / 移动车辆）
+- **移动 30cm 信号差 20 dB**
+- 固定天线位置困难（产线每天变化）
+- **修复**：
+  - 天线高于金属架（车顶）
+  - 分集天线（双天线 + 选择最强）
+  - SF/BW 自适应（差时 SF9/125kHz → 好时 SF7/250kHz）
+
+### 实战配方（JYLN061 200×80m 汽车车间）
+
+```text
+参数配置：
+  - SF10 + BW125 + CR4/5 + +27 dBm
+  - 实际 airtime = 411 ms
+  - 占空比 < 1%（合规 EU868）
+
+硬件配置：
+  - 天线高于金属架 30cm
+  - RS485 隔离 + 单点接地
+  - 加 cavity filter（868 MHz 带通）
+
+现场验证：
+  - 1 小时 0 丢包（实测）
+  - 焊机工作时不丢包
+  - 5m 距离 RSSI > -85 dBm
+```
+
+### 实战参数速查
+
+| 距离 | RSSI | SF | BW | TX Power |
+| --- | --- | --- | --- | --- |
+| 50m | > -45 | SF7 | 250 kHz | 14 dBm |
+| 200m | > -65 | SF9 | 125 kHz | 14 dBm |
+| 500m | > -75 | SF10 | 125 kHz | 17 dBm |
+| 1000m | > -85 | SF10 | 125 kHz | 20 dBm |
+| 2000m | > -95 | SF12 | 125 kHz | 20 dBm |
+
+**关键**：距离 + 金属反射 → 实测 RSSI → 选 SF
+
+### 修复 Checklist
+
+```text
+□ VFD 加 EMI 滤波器 + 天线远离 > 3m + cavity filter
+□ 电焊机物理隔离 > 5m + 加速度传感器检测焊接
+□ 多径：天线高于金属 + 分集天线 + SF 自适应
+□ RS485 隔离 + 单点接地
+□ 实测车间 RSSI 矩阵（≥ 5 个点）
+□ SF/BW 选型按 RSSI 不是按距离
+□ 焊接时节点休眠策略
+```
+
+### 复盘
+
+- **VFD 谐波 2-16 kHz**——**LoRa 868/915 频段干扰**
+- **电焊机拉弧**——**5m 内 LoRa 完全失败**
+- **多径驻波**——**移动 30cm 差 20 dB**
+- **车间部署 = 抗干扰 + 物理隔离 + 自适应**
+- **JYLN061 配方 1h 0 丢包**——**实战验证**
+- **天线高于金属 30cm**——**金属多径通用方案**
+- **RS485 隔离 + 单点接地**——**工业总线标配**
+- 跟 R12-3 案例 32（ESP32 LMIC 90% join fail）**互补**——本案例从**车间干扰源**视角
+- 跟 R18-8 案例 37（工业 crane 振动+温度）**互补**——本案例从**VFD/电焊机干扰**视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-19-candidates.md 候选 2
+- CSDN（车间无线 LoRa 实战 JYLN061）
+
+---
+
+## 案例 50：LoRa 12km LOS ok / 400m 仓库失败——VFD 拉噪声底（RSSI+SNR 双轨 + cavity filter）
+
+### 现象
+
+SX1276 SF9 +14dBm LoRa：
+- 户外 12 km LOS（line-of-sight）通信稳定
+- 仓库内 400 m **丢一半**（不在 spec 上）
+- 工程师反复查"距离不够"、"功率不够"
+- 实际 = **VFD 变频器把 868 MHz 噪声底拉满**
+
+### 抓包 + 根因
+
+#### 根因：VFD 拉噪声底（核心）
+
+- 仓库大量 VFD 变频器（传送带 / HVAC / 升降机）
+- VFD IGBT 开关 → 868 MHz 谐波叠加
+- 实测 868 MHz 噪声底：
+  - lab 噪声底：-110 dBm
+  - 仓库噪声底：**-85 dBm**（拉高 25 dB）
+- LoRa SF9 解调门限：**SNR ≥ -7.5 dB**
+- 仓库 RSSI 看着还可以 -85 dBm，但 SNR = -3 ~ -8 dB
+- **过不了 SF9 解调门限 → 丢一半**
+
+#### RSSI + SNR 双轨记录
+
+```text
+RSSI（信号强度）：
+  - lab：RSSI -75 dBm @ 12 km
+  - 仓库：RSSI -85 dBm @ 400 m
+  - 单看 RSSI 看似正常
+
+SNR（信噪比）：
+  - lab：SNR +10 dB（清晰）
+  - 仓库：SNR -3 ~ -8 dB（被噪声底淹没）
+  - 单看 SNR 揭示根因
+
+实战：**RSSI + SNR 双轨必须同时记录**
+```
+
+### 修复
+
+#### 修复 1：天线位置升高
+
+```text
+原版：传感器延迟 2m 高
+修复：天线升 3m 高（超过 VFD）
+效果：RSSI 改善 5 dB
+```
+
+#### 修复 2：cavity filter（带通滤波器）
+
+```text
+原版：868 MHz antenna → 直接 SX1276
+修复：868 MHz cavity filter（带通 868±10 MHz）→ SX1276
+  - cavity filter 抑制带外 VFD 噪声
+  - 选 filter 插入损耗 < 1.5 dB
+
+实测：
+  - 加 cavity filter 前：SNR -3 ~ -8 dB
+  - 加 cavity filter 后：SNR +7 dB（**提升 10-15 dB**）
+```
+
+#### 修复 3：LNA 前置
+
+```text
+cavity filter → LNA（低噪声放大器，+15 dB）→ SX1276
+  - LNA 增益 +15 dB
+  - LNA NF < 1 dB
+
+实战：cavity filter + LNA = 最佳组合
+```
+
+### 站点勘测 SOP
+
+```text
+Step 1：RSSI + SNR 双轨记录
+  - 现场 5+ 点位
+  - 同时记录
+
+Step 2：识别干扰源
+  - 频谱仪 868 MHz 噪声底
+  - 看 VFD / 电焊机 / Wi-Fi / 蓝牙
+
+Step 3：cavity filter 选型
+  - 868 MHz 带通
+  - 插入损耗 < 1.5 dB
+  - 抑制 > 40 dB @ ±50 MHz
+
+Step 4：LNA 部署
+  - cavity filter → LNA → SX1276
+  - LNA NF < 1 dB
+
+Step 5：实测 SNR
+  - 加 filter + LNA 后 SNR > +5 dB
+  - 现场 1 小时 0 丢包
+```
+
+### 复盘
+
+- **RSSI + SNR 双轨必须同时记录**——单 RSSI 不可靠
+- **868 MHz 噪声底被 VFD 拉满**——lab 不复现
+- **cavity filter 抑制 40 dB @ ±50 MHz**——**VFD 干扰关键**
+- **LNA 前置 + filter**——**最佳组合**
+- **天线升 3m**——**超过干扰源高度**
+- **站点勘测 SOP**——**5 步系统化**
+- 跟 R12-3 案例 32（ESP32 LMIC 90% join fail）**互补**——本案例从**噪声底**视角
+- 跟 R21-15 案例 49（车间 3 大杀手）**互补**——本案例从**仓库 VFD** 视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-19-candidates.md 候选 3
+- moltbook（LoRa 仓库调试实战）
+
+---
+
+## 案例 51：LoRa 12km LOS ok / 400m 停车场失败——40 节点 RTC 同频碰撞 + ALOHA 数学
+
+### 现象
+
+SX1276 SF7 +14dBm LoRa：
+- 户外 12 km LOS 稳定
+- 停车场 400m 混凝土 几乎 0 包（**不到户外 1%**）
+- 工程师反复查 RF / 距离 / 功率
+- 实际 = **40 节点同 RTC 边界唤醒 + ALOHA 同频碰撞**
+
+### 抓包 + 根因
+
+#### 根因 1：40 节点同 RTC 边界唤醒（核心）
+
+- 停车场部署 40 sensor
+- **所有节点同一个 RTC 芯片 + 默认 0 点醒 1 次**
+- 唤醒时刻 = 整点 0 分 0 秒（**所有节点完全同步**）
+- 2 秒窗口内 40 节点**同频同时间**发包
+- **ALOHA 同频碰撞** = massive collision
+
+#### 根因 2：capture effect 强吃弱包
+
+- 2.4 GHz 同频碰撞中：
+  - 最强包吃弱包
+  - 弱包全部被捕获
+  - 表现："0 包" = 弱节点 100% 被吃
+- 强节点（近端）正常收到 50%
+- 弱节点（远端）几乎全部失败
+
+#### 根因 3：ALOHA 数学
+
+- ALOHA pure throughput max = 18.4% @ 50% load
+- Slotted ALOHA = 36.8%
+- 40 节点同 2 秒窗口 + pure ALOHA = throughput < 5%
+- 实际现场 0.4%（**接近 0**）
+
+### 修复：chip unique ID 随机 0-45s 偏移
+
+#### 修复 1：随机唤醒偏移
+
+```c
+// 基于 ESP32 / STM32 unique chip ID
+uint32_t chip_id = *(uint32_t *)0x1FFFF7AC;  // STM32 unique ID
+// or ESP.getEfuseMac();  // ESP32 unique ID
+uint32_t random_offset = (chip_id % 45);  // 0-45 秒偏移
+
+// 写到 RTC 存储
+rtc_store_wakeup_offset(random_offset);  // 重启后保留
+
+// 唤醒时刻 = 整点 + random_offset
+// 40 节点均匀分布到 45 秒窗口
+```
+
+#### 修复 2：实测效果
+
+```text
+修复前：
+  - 40 节点同 0 秒唤醒
+  - 丢包率 = 95%（massive collision）
+  - 现场只有 2/40 节点数据
+
+修复后（随机 0-45 秒偏移）：
+  - 40 节点分散在 45 秒窗口
+  - 丢包率 < 3%
+  - 现场 38/40 节点数据正常
+```
+
+### ALOHA 容量模型
+
+```
+吞吐量 (throughput) = G × e^(-2G)
+
+G = packet_rate × packet_time
+  - packet_rate = packets/sec
+  - packet_time = airtime (sec)
+
+例：
+  - packet_rate = 40 nodes / 2 sec = 20 packets/sec
+  - packet_time = 41ms (SF7 125kHz 10B)
+  - G = 20 × 0.041 = 0.82
+
+吞吐量 = 0.82 × e^(-1.64) = 0.82 × 0.194 = 0.16 = 16%
+  - 实际 16% throughput
+  - 84% collision
+```
+
+### 修复 Checklist
+
+```text
+□ 用 chip unique ID 生成随机唤醒偏移（0-45 秒）
+□ 偏移写入 RTC 存储（重启保留）
+□ 验证 45 秒窗口均匀分布
+□ 40 节点实测丢包率 < 5%
+□ ALOHA 容量计算（避免超载）
+□ Tx interval 错峰（避免同步）
+□ Frequency hopping 避让
+```
+
+### 复盘
+
+- **同 RTC 唤醒 = LoRa 密集部署最大杀手**——**ALOHA 数学必然**
+- **capture effect**——**强吃弱，弱节点 0 包**
+- **chip unique ID 偏移**——**实战修复方案**
+- **随机 0-45s 偏移 + ALOHA 容量**——**实测丢包 95% → <3%**
+- **密集部署 = 必须算 ALOHA**——**否则就是 0 包**
+- 跟 R12-3 案例 33（ESP32 LMIC 90% join fail）**互补**——本案例从**密集 ALOHA** 视角
+- 跟 R18-5 案例 38（智能能源 P0）**互补**——本案例从**密集节点**视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-19-candidates.md 候选 4
+- moltbook（LoRa 密集部署实战）
+
+---
+
+## 案例 52：SX1262 SF5 6 月 147 测试——4 隐形坑（RadioLib bug + sync word + boosted RX + 配置顺序）
+
+### 现象
+
+SX1262 SF5 LoRa 模块，6 个月 147 测试完整复盘：
+- 实测距离 = **spec 的 1/10**
+- 工程师反复查 antenna / 功率 / 信道
+- 实际 = **4 隐形坑**叠加
+
+### 4 隐形坑
+
+#### 坑 1：RadioLib bug 锁 TX +11dBm 丢 19% 距离
+
+- RadioLib（Arduino LoRa 库）默认 `SX126x::setOutputPower(11)`
+- **已知 bug**：实际写入 +11 dBm 时功率限制错误
+- 实测：**TX 仅 +8 dBm**（**3 dB 损失 = 距离 × 0.7**）
+- 距离对比：spec 2km → 实测 1.6 km
+- **修复**：用 SX126x register 直接写 power（绕过 RadioLib）
+  ```c
+  // SX126x register 0x02 (TX power)
+  uint8_t tx_power_reg = 0x02;  // +14 dBm
+  sx126x_write_register(0x02, &tx_power_reg, 1);
+  ```
+
+#### 坑 2：sync word 默认 0x34 收邻居包 → CRC 错
+
+- SX1262 默认 sync word = **0x34**
+- 邻居模块也是 0x34 → **收到邻居的包**
+- 但邻居 payload 不同 → CRC fail
+- 表现：丢包率 50%
+- **修复**：
+  ```c
+  // 改 sync word = 0xF1（自定义）
+  sx126x_set_sync_word(0xF1);
+  ```
+
+#### 坑 3：SX1262 boosted RX 未开白丢 3dB
+
+- SX1262 **boosted RX 模式**额外 +3 dB 灵敏度
+- 默认关闭
+- 工程师没开 → 实际灵敏度 -90dBm（spec -93dBm = -3dB）
+- **修复**：
+  ```c
+  // SX126x boosted RX mode
+  sx126x_set_rx_boosted_gain(true);  // -90dBm → -93dBm
+  ```
+
+#### 坑 4：配置顺序错位引发 CRC
+
+- SX1262 配置顺序：
+  ```
+  1. set_packet_type (LoRa)
+  2. set_frequency
+  3. set_modulation_params (SF/BW/CR)
+  4. set_packet_params (preamble/length/CRC)
+  5. set_sync_word  // ← 必须在 set_packet_params **之后**
+  ```
+- 工程师误先 set_sync_word → 后 set_packet_params → **sync word 被 reset**
+- **修复**：严格按 SX126x datasheet 顺序配置
+
+### SF5 范围 × SF12 增益
+
+| SF | SF5 → SF12 增益 | 距离倍数 |
+| --- | --- | --- |
+| SF5 vs SF12 | **+26 dB** | **×40** |
+| SF7 vs SF12 | +20 dB | ×20 |
+| SF10 vs SF12 | +10 dB | ×3 |
+
+- SF5 是**最快但距离最短**（短距高吞吐）
+- SF12 是**最慢但距离最远**（远距低吞吐）
+- **实战**：依距离 + 业务吞吐需求选 SF
+
+### 修复 Checklist
+
+```text
+□ 绕过 RadioLib bug 直接写 SX126x register
+□ sync word 改自定义（避免邻居包）
+□ boosted RX mode 开启（+3 dB 灵敏度）
+□ 配置顺序严格按 datasheet
+□ 6 个月 147 测试验证
+□ RSSI + SNR + 距离 三维实测
+□ SF 选型按业务需求（吞吐 vs 距离）
+```
+
+### 复盘
+
+- **RadioLib bug**——**绕过 SDK 直接写 register**
+- **sync word 默认冲突**——**改自定义**
+- **boosted RX 默认关**——**SX1262 必须开**
+- **配置顺序错位**——**按 datasheet 严格顺序**
+- **SF5 vs SF12 = ×40 距离**——**SF 选型关键**
+- **4 坑叠加 = spec 距离 1/10**——**典型"距离 90%"案例**
+- 跟 R12-3 案例 32（ESP32 LMIC 90% join fail）**互补**——本案例从 **SX1262 + RadioLib** 视角
+- 跟 R21-15 案例 49（车间 3 大杀手）**互补**——本案例从 **RadioLib 故障实战** 视角
+
+### 来源
+
+- _Inbox/LoRa-2026-09-19-candidates.md 候选 5
+- dredyson.com（SX1262 SF5 6 月 147 测试）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
