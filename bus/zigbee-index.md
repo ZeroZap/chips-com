@@ -294,3 +294,15 @@ ZigBee 是"低功耗 mesh 自组网 IoT 协议的事实标准"，强在 Mesh 自
 - 2026-09-16: 新增 1 实战案例（44）
   - 案例 44：Inovelli OTA 25% abort + 跨代 OTA 不直跳 + air-gap 复位配方（zha_ota_update_request_interval: 10 + 跨代先 2.18 再 3.0）
   - 来源：_Inbox/ZigBee-2026-09-16-candidates.md 候选 4（候选 1/2/3/5 重复已写）
+- 2026-09-18: 新增 5 实战案例（45-49）
+  - 案例 45：全国产 ZigBee 模组选型 + 自研协议栈（天线下净空区 + 2007→3.0 升级 + CC2530 OTA 严苛）
+  - 案例 46：ZigBee 3.0 集群部署 4 大参数（u8ScanAttempts/u16TimeBwScans/u8ParentRetryThreshold/u16RejoinInterval + 100 节点上限 + RSSI < -85 dBm 不稳）
+  - 案例 47：NXP JN516x/517x + ZCL Diagnostics Cluster（MAC/APS + TX retry/fail + NWK_FC_Failure + LQI/RSSI 听诊器 + EZ-mode Commissioning）
+  - 案例 48：zigbee2mqtt + wireshark 农场实战（Uptime 94.2%→99.8% + MTTR 6.5h→45min + 60% sensor failure = routing loop）
+  - 案例 49：MGI Computers 工业 ZigBee 安全评估（fake coordinator + PAN ID + Update ID undefined behavior + Python responder 延迟）
+  - 来源：_Inbox/ZigBee-2026-09-18-candidates.md 候选 1-5
+- 2026-09-20: 新增 3 实战案例（50-52）
+  - 案例 50：zigbee2mqtt Docker `--restart=always` 10s 自愈（USB 松动致温控 2h 中断 → 10s 自愈）
+  - 案例 51：SiLabs EmberZNet PAN ID 冲突 + EPID 字节反转（Simplicity Studio 抓包 + 63/min 阈值 + EPID 字节序肉眼对比）
+  - 案例 52：SLZB-06 自动更新 Dev/Beta 固件伏击 + MAC_BAD_STATE(0x19) + database.db.backup 救命 + PAN ID 显式 yaml
+  - 来源：_Inbox/ZigBee-2026-09-20-candidates.md 候选 2/4/5（候选 1/3 重复已写）

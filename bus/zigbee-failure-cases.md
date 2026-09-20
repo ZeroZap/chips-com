@@ -4415,6 +4415,977 @@ Step 4：跨代 OTA 路径检查
 
 ---
 
+## 案例 45：全国产 ZigBee 模组选型——天线下净空区 + 2007→3.0 升级必要 + CC2530 OTA 严苛
+
+### 现象
+
+客户要求**关键元器件全国产**（国产化率 100% 政策）：
+- ZigBee 模组从 TI CC2530 / CC2538 切换到国产（TLSR8258 / ZB25 / 卓胜微等）
+- 协议栈从 TI Z-Stack 移植到国产 SDK
+- 产线发现**多个未预见的硬坑**
+
+### 抓包 + 根因（4 大根因）
+
+#### 根因 1：天线下净空区 + 禁走信号线
+
+- 国产 ZigBee 模组 PCB layout 紧凑
+- **天线下方必须有净空区**（地平面也要掏空）
+- 信号线 / VCC 走线穿过天线下方 → **天线性能 -10 dB**
+- 国产模组比 TI CC2530 对 layout **更敏感**（PA 输出更小）
+
+**修复**：
+```text
+- 天线下方 5mm 净空区（地平面也要掏）
+- 天线周围 10mm 禁走任何信号线
+- VCC / GND 走线绕开天线区域
+```
+
+#### 根因 2：ZigBee 2007 → 3.0 升级必要
+
+- 国产模组默认 SDK = **ZigBee 2007**（老 spec）
+- 现代网关（如 Tuya / Aqara / Amazon Echo）只接受 **ZigBee 3.0**
+- 2007 设备入网 3.0 网关 = 100% 被拒
+- **必须升级协议栈到 3.0**
+- 升级成本：
+  - 重写 ZCL cluster 处理
+  - 重写 commissioning 流程
+  - 重写 APS encryption（3.0 比 2007 更严）
+  - 实测 **3-6 月移植**
+
+#### 根因 3：CC2530 OTA 严苛
+
+- CC2530 OTA 要求：
+  - bootloader 升级**前必须备份**
+  - OTA 过程中**断电 = 永久变砖**
+  - Image header 校验严格（任何位错失败）
+- 国产模组 OTA 兼容性：
+  - TLSR8258 OTA image format 与 Z-Stack **不兼容**
+  - 必须用各自厂商 OTA 工具
+  - **不能混合生态 OTA**
+
+#### 根因 4：国产模组 SDK 文档 + 工具链不成熟
+
+- TI Z-Stack 有 **15 年文档沉淀**
+- 国产 SDK 文档：
+  - 英文文档 ≤ 50%
+  - 中文文档侧重 API，缺实战
+  - **bug tracker 不公开**
+- 工具链：
+  - 国产 IDE 不成熟（断点 / 内存视图）
+  - 仿真器兼容性差
+
+### 修复 / 替代方案
+
+```text
+方案 A：纯国产（合规优先）
+  - 国产模组 + 国产 SDK + 3.0 升级
+  - 成本：3-6 月移植 + 文档补全
+  - 风险：高（产线遇坑无解）
+
+方案 B：混合（ZigBee 国产 + MCU 进口）
+  - 国产 ZigBee 模组 + STM32 / NXP MCU
+  - 部分国产化，部分进口
+  - 成本：1-2 月集成
+  - 风险：中
+
+方案 C：完全 TI/进口（性能优先）
+  - CC2530/CC2652 + Z-Stack
+  - 文档 / 工具链成熟
+  - 但政策不合规
+```
+
+### 复盘
+
+- **国产 ZigBee 模组 ≠ 即插即用**——移植成本 3-6 月
+- **天线下净空区**——**layout 是硬性最严要求**
+- **2007 → 3.0 升级必要**——网关兼容性问题
+- **OTA 严苛**——**变砖 = 报废 + RMA 成本**
+- **国产 SDK 文档 + 工具链**——**是真正决策点**
+- **政策合规 vs 技术成熟**——客户决策要权衡
+- 跟 R19-8 案例 44（Inovelli OTA 25% abort）**互补**——本案例从**国产化移植**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-18-candidates.md 候选 1
+- CSDN 博主（项目实战）
+
+---
+
+## 案例 46：ZigBee 3.0 集群部署参数——4 大核心参数 + 100 节点上限
+
+### 现象
+
+工业物联网 ZigBee 3.0 集群部署（100+ sensor / 智能路灯 / 智能楼宇）：
+- 部分 sensor 入网成功率 < 50%
+- 部分 sensor 入网后频繁掉线
+- 工程师调不出根因
+- 根因 = **4 大核心参数没调好** + **100 节点上限**
+
+### 4 大核心参数
+
+#### 参数 1：u8ScanAttempts
+
+- **单次扫描尝试次数**（默认 3）
+- 工业现场 RF 复杂 → 调到 **5**
+- 太少 → 弱信号 sensor 找不到
+- 太多 → 入网延迟
+- **公式**：`扫描时长 = u8ScanAttempts × 单次耗时`
+
+#### 参数 2：u16TimeBwScans
+
+- **扫描间隔**（ms，默认 100ms）
+- 工业现场 30 sensor 抢入网 → 调到 **200ms**（错峰）
+- 太短 → sensor 之间碰撞
+- 太长 → 入网慢
+- **公式**：`总扫描时长 = 次数 × 单次时长 + (次数-1) × u16TimeBwScans`
+
+#### 参数 3：u8ParentRetryThreshold
+
+- **父节点 retry 阈值**（默认 1）
+- sensor 找不到父节点 → retry 多少次后触发 rejoin
+- 工业现场 → 调到 **2 或 3**
+- 太少 → 偶发失败就 rejoin（路由抖动）
+- 太多 → 长期挂死无响应
+
+#### 参数 4：u16RejoinInterval
+
+- **Rejoin 间隔**（默认 60 秒）
+- sensor 触发 rejoin 后多久再尝试
+- 工业现场 → 调到 **30 秒**（快速恢复）
+- 太短 → rejoin 风暴
+- 太长 → 业务中断
+
+### 100 节点上限
+
+- ZigBee 3.0 协调器默认节点数限制：
+  - 路由表 size：典型 40-60 项
+  - 终端节点：可支持 100+
+  - **但实际部署 100 节点 = 路由拥塞 + 协调器 CPU 满**
+- **实战上限**：
+  - 单协调器 = **80 节点**（稳定）
+  - 100+ 节点 = **拆子网 / 多协调器**
+
+### RSSI 阈值
+
+- **RSSI < -85 dBm = 不稳定**
+- sensor 远离协调器，频繁掉线
+- **实战**：
+  - RSSI > -75 dBm = 优秀
+  - RSSI -75 ~ -85 dBm = 可接受
+  - RSSI < -85 dBm = 必须加 router
+
+### 实战参数配方
+
+```c
+// 工业 50 节点标准配方
+ZDO_Config_PowerOnZdoCallbacks();  // ZDO 回调开
+
+// Scan 参数
+bdb_setScanChannelMask(BDB_DEFAULT_SCAN_CHANNEL_MASK);  // 所有信道
+// or bdb_setScanChannelMask(0x07FFF800)  // 11-26 信道 (2.4 GHz)
+
+bdb_attribute_set_defaults(zb_bdb_attr_scan_duration_t, 0x05);  // 5 (3 跳频? scan)
+// 用下面的 4 大参数：
+{
+  .u8ScanAttempts = 5,
+  .u16TimeBwScans = 200,
+  .u8ParentRetryThreshold = 2,
+  .u16RejoinInterval = 30,
+}
+
+// 路由节点配置
+{
+  .u8MaxChildren = 10,
+  .u8MaxRouter = 5,
+  .u16RouteAgeLimit = 600,  // 路由老化时间（秒）
+}
+```
+
+### 修复 Checklist
+
+```text
+□ u8ScanAttempts = 5（默认 3 → 5）
+□ u16TimeBwScans = 200ms（默认 100 → 200 错峰）
+□ u8ParentRetryThreshold = 2（默认 1 → 2）
+□ u16RejoinInterval = 30 秒（默认 60 → 30）
+□ 节点 RSSI 验收 > -85 dBm
+□ 协调器节点数 < 80（避免路由表满）
+□ 100+ 节点 = 拆子网 + 多协调器
+□ 工业现场 RF 勘测（频谱避让）
+```
+
+### 复盘
+
+- **4 大核心参数**——**ScanAttempts / TimeBwScans / ParentRetryThreshold / RejoinInterval**
+- **RSSI 阈值 -85 dBm**——**sensor 入网硬指标**
+- **100 节点上限**——单协调器 **80 上限**
+- **扫描时长公式**——`次数 × 单次 + (次数-1) × 间隔 × 信道数`
+- **路由表 size 40-60**——超过必然拥塞
+- 跟 R18-6 案例 43（50 设备 CPU 过载）**互补**——本案例从**4 参数**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-18-candidates.md 候选 2
+- CSDN 技术社区（ZigBee 3.0 集群实战）
+
+---
+
+## 案例 47：NXP JN516x/517x + ZCL Diagnostics Cluster——网络听诊器 + EZ-mode Commissioning
+
+### 现象
+
+NXP JN516x/517x ZigBee 项目调试：
+- 节点掉线 / 路由失败 / 入网超时
+- 工程师反复打 log → 无有效信息
+- 根因 = **没启用 ZCL Diagnostics Cluster（ZigBee 网络听诊器）**
+
+### ZCL Diagnostics Cluster（ZigBee 网络听诊器）
+
+- ZigBee 3.0 标准 cluster
+- 实时暴露网络诊断属性
+- 相当于 ZigBee 版的 "Prometheus 监控"
+
+#### 听诊器属性分类
+
+```text
+硬件层属性
+  - MAC 收发包计数（rxCounter, txCounter）
+  - 丢包计数（rxLossCounter, txLossCounter）
+  - RSSI（per-channel）
+  - LQI（per-link）
+
+网络层属性
+  - APS 收发包
+  - TX retry 计数
+  - TX fail 计数
+  - NWK_FC_Failure（网络层 frame control 失败）
+  - PacketBufferAllocateFailure（包 buffer 分配失败）
+
+路由属性
+  - 路由表 size
+  - 路由请求/应答计数
+  - 路由错误计数
+```
+
+#### "先链路后参数再数据"排查顺序
+
+```text
+Step 1：链路层（MAC/APS）
+  - 看 rxCounter / txCounter / rxLossCounter / txLossCounter
+  - 命中 loss 率高 → 物理层问题（RF / 距离 / 干扰）
+
+Step 2：参数层（路由 + 配置）
+  - 看 TX retry / NWK_FC_Failure / PacketBufferAllocateFailure
+  - 命中 retry 高 → 路由不稳定或协调器拥塞
+
+Step 3：数据层（业务）
+  - 看业务 attribute 读写是否正常
+  - 命中：业务失败 = 应用层 bug
+```
+
+### EZ-mode Commissioning（ZigBee 3.0 简化模式）
+
+- 传统 ZigBee commissioning = complex（需要 BDB commissioning cluster）
+- EZ-mode = 简化版，针对**简单设备**（sensor / 灯）：
+  - 1 个按键触发入网
+  - 自动 select 信道
+  - 自动 rejoin
+- **实战**：
+  - 智能灯 / sensor 必用 EZ-mode
+  - 工业网关 / Router 用 BDB full commissioning
+
+### 实战案例：NXP JN5169 入网超时
+
+- 现象：sensor 入网需要 30+ 秒
+- 排查：启用 ZCL Diagnostics → 看 PacketBufferAllocateFailure = 10/min
+- 根因：buffer size 16 太小 → 大量包 buffer 分配失败 → 入网超时
+- **修复**：
+  ```c
+  // JN516x SDK 增大 buffer
+  tsZPSetBufferSuccess =
+      ZPS_psAplZdoAddReplaceEndpoint(
+          endpoint,  // 端点
+          64,        // buffer size 16 → 64
+          0,         // flags
+          &endpoint_record);
+  ```
+
+### 听诊器使用步骤
+
+```text
+Step 1：协议栈初始化时启用 ZCL Diagnostics Cluster
+  ZCL_clusterRegList[0] = ZCL_CLUSTER_DIAGNOSTICS_SERVER;
+
+Step 2：周期读属性（10-60 秒一次）
+  - zcl_DiagnosticsRead(&mac_rxpacketcount);
+  - zcl_DiagnosticsRead(&mac_txLossCounter);
+  - zcl_DiagnosticsRead(&aps_rxpacketcount);
+  - zcl_DiagnosticsRead(&nwk_txretry);
+
+Step 3：上报到云端
+  - MQTT / HTTP 上报
+  - Grafana / Prometheus 看板
+
+Step 4：异常告警
+  - 丢包率 > 10% → 告警
+  - 重试率 > 30% → 告警
+  - buffer 分配失败 > 5/min → 告警
+```
+
+### 修复 Checklist
+
+```text
+□ ZCL Diagnostics Cluster 实装（协议栈初始化）
+□ 周期读属性（10-60 秒）
+□ MQTT 上报到云端
+□ Grafana 看板：丢包率 / 重试率 / buffer 失败
+□ EZ-mode Commissioning（简单设备）
+□ BDB full Commissioning（复杂设备）
+□ Buffer size 16 → 64（增大）
+□ "先链路后参数再数据"排查顺序
+```
+
+### 复盘
+
+- **ZCL Diagnostics = ZigBee 网络听诊器**——**实时暴露属性**
+- **"先链路后参数再数据"**——**ZigBee 调试顺序**
+- **EZ-mode vs BDB**——**简单 vs 复杂设备**
+- **Buffer 大小**——**入网慢常见原因**
+- **NXP JN516x vs CC2652**——**国产替代**选型参考
+- 跟 R12-3 案例 34（Z-Stack BUFFER_FULL 0x11）**互补**——本案例从 **ZCL Diagnostics + EZ-mode** 视角
+- 跟 R21-11 案例 50（zigbee2mqtt Docker 自愈）**互补**——本案例从**芯片端**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-18-candidates.md 候选 3
+- CSDN（NXP ZigBee 产品线实战）
+
+---
+
+## 案例 48：zigbee2mqtt + wireshark——农场 ZigBee Uptime 94.2%→99.8% 实战（60% sensor failure = routing loop）
+
+### 现象
+
+户外农场 ZigBee 部署（农业 + 制造业案例）：
+- 60% sensor failures 来自 routing loop
+- Uptime 94.2% → 目标 99.8%
+- Debug cost $2500/incident → $150/incident
+- MTTR 6.5h → 45min
+- 根因 = **Python 关联 2h vs 人工 8 月漏诊 + 60% failures = routing loop**
+
+### 抓包 + 根因（3 大根因）
+
+#### 根因 1：60% sensor failures = routing loop
+
+- 户外农场 sensor 大规模（> 50 节点）
+- **路由循环**（routing loop）：sensor 1 → router 2 → router 3 → router 2 → ... → 死循环
+- 表现：sensor 数据上报延迟 / 丢失，但 sensor 本身"在线"
+- 工程师传统调试：现场手动查 8 个月漏诊
+- **Python 关联 2 小时识别 routing loop**
+
+#### 根因 2：Python 关联分析（核心实战法）
+
+- 工具组合：
+  - **zigbee2mqtt**（Linux 协调器 / 协议转换）
+  - **Wireshark + zigbee dissector**（协议分析）
+  - **Python 关联脚本**（MQTT log + Wireshark capture 时间戳对齐）
+- 流程：
+  1. 抓 24h 网络 capture（pcap 文件）
+  2. zigbee2mqtt 输出 MQTT 消息（带时间戳）
+  3. Python 脚本按时间戳对齐
+  4. 检测 routing loop（A → B → C → A 模式）
+
+#### 根因 3：路由表老化 + max children 配置错
+
+- 默认 ZigBee 路由表老化时间 10 分钟
+- max children 数 = 5（限制 router 子节点）
+- 大网络：
+  - 路由老化太快 → 频繁 rejoin
+  - max children 太少 → router 拒绝 → routing loop
+
+### 修复（3 维）
+
+#### 修复 1：Python 关联分析脚本
+
+```python
+import json
+import subprocess
+from datetime import datetime
+
+# 1. 抓 Wireshark capture 24h
+subprocess.run(['tshark', '-i', 'monitor', '-w', 'capture.pcap', '-a', 'duration:86400'])
+
+# 2. 解析 MQTT log
+mqtt_msgs = []
+with open('mqtt.log') as f:
+    for line in f:
+        # 解析 zigbee2mqtt 消息
+        msg = json.loads(line)
+        mqtt_msgs.append(msg)
+
+# 3. 解析 Wireshark capture
+# tshark -r capture.pcap -T fields -e frame.time -e zigbee.nwk.short_addr -e zigbee.nwk.dst_addr
+result = subprocess.run(
+    ['tshark', '-r', 'capture.pcap', '-T', 'fields', '-e', 'frame.time',
+     '-e', 'zigbee.nwk.short_addr', '-e', 'zigbee.nwk.dst_addr'],
+    capture_output=True, text=True
+)
+
+# 4. 检测 routing loop
+import networkx as nx
+G = nx.DiGraph()
+for line in result.stdout.strip().split('\n'):
+    parts = line.split('\t')
+    if len(parts) == 3:
+        src = parts[1]
+        dst = parts[2]
+        G.add_edges(src, dst)
+
+# 检测循环
+cycles = list(nx.simple_cycles(G))
+if cycles:
+    print(f"FOUND {len(cycles)} ROUTING LOOPS:")
+    for cycle in cycles[:5]:
+        print(f"  {cycle}")
+```
+
+#### 修复 2：zigbee2mqtt 配置优化
+
+```yaml
+# zigbee2mqtt configuration.yaml
+zigbee:
+  # 路由老化时间（默认 10 分钟 → 30 分钟）
+  # 网络越大老化越慢，避免频繁 rejoin
+  # 注：实际配置通过协调器 SDK 设置
+
+advanced:
+  # 路由老化时间
+  route_table_age: 1800  # 30 分钟
+  # max children 调大
+  max_children: 10
+  # max router 数
+  max_router: 8
+  # 报告间隔
+  report_interval: 60
+```
+
+#### 修复 3：MQTT 数据持久化 + Grafana
+
+```text
+□ zigbee2mqtt → MQTT broker（Mosquitto）
+□ InfluxDB 时间序列数据库
+□ Grafana 看板：Uptime / packet loss / MTTR
+□ Prometheus 告警：routing loop 检测
+```
+
+### 修复前后对比
+
+| 指标 | 修复前 | 修复后 |
+| --- | --- | --- |
+| **Uptime** | 94.2% | **99.8%** |
+| **Debug cost** | $2500/incident | **$150/incident** |
+| **MTTR** | 6.5 小时 | **45 分钟** |
+| **Sensor failure 根因** | 60% routing loop | 找到 + 修 |
+
+### 复盘
+
+- **60% sensor failure = routing loop**——**大网络默认假设**
+- **Python 关联 2h vs 人工 8 月**——**关联分析效率**
+- **Uptime 94.2% → 99.8%**——**+5.6 百分点** = 6 倍可靠性
+- **Debug cost $2500 → $150**——**17 倍成本降低**
+- **MTTR 6.5h → 45min**——**8.6 倍快速响应**
+- **zigbee2mqtt + Wireshark + Python 三件套**——**ZigBee 实战调试标配**
+- **路由表老化 + max children**——**调优两个关键参数**
+- 跟 R19-8 案例 44（Inovelli OTA 25% abort）**互补**——本案例从**网络监控**视角
+- 跟 R21-8 案例 47（ZCL Diagnostics Cluster）**互补**——本案例从 **z2m + Wireshark 上层** 视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-18-candidates.md 候选 4
+- johal.in（农业 + 制造业 zigbee2mqtt 实战）
+
+---
+
+## 案例 49：MGI Computers 工业 ZigBee 安全评估——fake coordinator + PAN ID + Update ID undefined behavior
+
+### 现象
+
+工业 ZigBee 安全评估（pentest）实战：
+- 复盘 fake coordinator 攻击端点
+- 厂商私有行为（Update ID undefined behavior）
+- Python responder 延迟坑
+- 端点频繁掉线
+
+### 抓包 + 根因（3 大根因）
+
+#### 根因 1：fake coordinator 攻击端点
+
+- **fake coordinator**：用 RTL2832 / CC2531 模拟 ZigBee 协调器
+- 攻击者：
+  - 1. 广播 commissioning 邀请
+  - 2. 端点信以为真 → 申请入网
+  - 3. 攻击者获取 link key / NWK key
+  - 4. 解密后续通信
+- **危害**：数据泄露 + 中间人攻击
+
+#### 根因 2：PAN ID + Update ID 联合利用（**核心实战**）
+
+- ZigBee 协调器 beacon：
+  - **PAN ID**（16 位）+ **Extended PAN ID**（64 位）+ **Update ID**（8 位）
+- 多数 ZigBee 栈行为：
+  - **优先接受 Update ID 较高的 beacon**
+  - 但 Update ID 跨厂商**undefined behavior**（spec 没强制）
+- **联合攻击**：
+  - fake coordinator 发出 Update ID = 0xFF（最高）的 beacon
+  - 端点重新关联 → 离开真协调器
+  - 真实网络被"吸走"
+
+#### 根因 3：Python responder 延迟坑
+
+- pentest 工具用 **Python responder** 模拟端点响应
+- 三跳 round-trip 时间 = 3 × 5ms = **15ms**
+- 端点内部 timer（典型 7.5ms）已超时 → 端点判 responder 失败 → 掉线
+- **根因**：Python 太慢，必须用 **Zephyr C 跑 MAC/ACK**
+
+### 防御 / 修复
+
+```text
+□ 启用 ZigBee 3.0 加密（APS encryption + NWK key rotation）
+□ Bind + Install Code（防 fake coordinator）
+□ TC Link Key（出厂预置信任证书）
+□ 定期 NWK key rotation
+□ 端点 cert verification（ZigBee 3.0 spec）
+□ Monitor beacon 异常（Update ID 跳变）
+□ MAC layer anti-spoofing（厂商私有实现）
+```
+
+### pentest 实战工具栈
+
+```text
+硬件层：
+  - RTL2832 SDR dongle 看空口
+  - CC2531 USB dongle 做 fake coordinator
+  - nRF52840 dongle 做 fake end device
+  - KillerBee（KBTools）做协议注入
+
+协议层：
+  - Zephyr C 跑 MAC/ACK（实时性）
+  - Wireshark + zigbee dissector
+  - Scapy + python-zb（协议层攻击）
+
+应用层：
+  - zigbee2mqtt 看 MQTT 行为
+  - MQTT 自定义攻击 payload
+```
+
+### 复盘
+
+- **fake coordinator = ZigBee 攻击标配**——**所有 ZigBee 设备默认面临**
+- **Update ID undefined behavior**——**ZigBee 3.0 spec 跨厂商陷阱**
+- **Python responder 慢**——**MAC / ACK 必须 Zephyr C**
+- **Bind + Install Code**——**fake coordinator 防御核心**
+- **NWK key rotation**——**长期产品安全必修**
+- 跟 R17-8 案例 39（Cubex 工业 ZigBee 渗透）**互补**——本案例从 **fake coordinator + Update ID** 视角
+- 跟 R21-7 案例 46（ZigBee 3.0 集群参数）**互补**——本案例从**安全**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-18-candidates.md 候选 5
+- MGI Computers（pentest / 安全评估）
+
+---
+
+## 案例 50：zigbee2mqtt Docker `--restart=always`——USB 松动致温控中断 2h，10s 自愈
+
+### 现象
+
+汽车车间 ZigBee 协调器（zigbee2mqtt + USB dongle）：
+- 偶发 2 小时温控中断
+- 工程师反复重启 → 仍偶发
+- 根因 = **USB dongle 物理松脱** + **进程没自愈**
+
+### 抓包 + 根因
+
+#### 根因 1：USB dongle 物理松脱
+
+- 工业车间 USB dongle（CC2652 / ZBDongle-E）物理震动
+- USB 接口松脱 → **zigbee2mqtt 完全失联**
+- 表现：MQTT 主题沉默
+- 工程师排查：人工插拔修复
+
+#### 根因 2：zigbee2mqtt 进程没自愈
+
+- 进程仍运行但 USB 设备丢失
+- **进程不重启 = 永久失联**
+- 工程师 manual restart 才能恢复
+- **MTTR 2 小时**——车间温控完全失控
+
+### 修复：Docker 容器化 + `--restart=always`
+
+```yaml
+# docker-compose.yml
+version: '3'
+services:
+  zigbee2mqtt:
+    image: koenkk/zigbee2mqtt:latest
+    container_name: zigbee2mqtt
+    restart: always  # **关键**
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0  # USB dongle
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data:/app/data
+      - ./configuration.yaml:/app/configuration.yaml:ro
+    mem_limit: 512m  # 内存限制
+    cpus: 0.5        # CPU 限制
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+```
+
+#### 关键配置
+
+```text
+□ restart: always                # **核心**：进程退出后自动重启
+□ --memory=512m                  # 内存限制（防内存泄漏崩溃）
+□ --cpus=0.5                     # CPU 限制（防 CPU 满影响别的）
+□ devices: /dev/ttyUSB0          # USB 设备映射
+□ volumes: 持久化                # 重启不丢 state
+□ logging: max-size              # 日志限制（防 disk full）
+```
+
+### 修复效果
+
+- **故障 → 重启 → 恢复** = **10 秒内**
+- MTTR 从 **2 小时 → 10 秒**
+- 完全自动恢复，不需要人工介入
+
+### 部署模式对比
+
+| 模式 | 自愈能力 | 复杂度 | 适用 |
+| --- | --- | --- | --- |
+| **单实例 Docker + restart=always** | ✅ 进程级自愈（10s） | 低 | 单协调器部署 |
+| **多实例 Docker** | ✅ 协调器冗余 | 中 | 大型项目 |
+| **主备切换** | ✅ 协调器 + 软件冗余 | 高 | 关键业务 |
+| **裸机 systemd** | ⚠️ 进程退出可拉起 | 中 | Linux 老项目 |
+
+### 产线部署配方
+
+```text
+方案 A：单实例 + Docker（推荐起点）
+  - restart: always
+  - mem_limit: 512m
+  - 1 个 USB dongle
+
+方案 B：双实例 + keepalived（推荐升级）
+  - 2 个 USB dongle
+  - keepalived VIP 切换
+  - 故障切换 < 5 秒
+
+方案 C：Kubernetes（大型项目）
+  - Deployment + DaemonSet
+  - 自动 rolling update
+  - 服务发现 + 健康检查
+```
+
+### 修复 Checklist
+
+```text
+□ Docker container 用 restart: always
+□ mem_limit + cpus 限制
+□ USB device 显式映射（不要用 privileged）
+□ 日志 max-size 限制
+□ 持久化 volumes（state 不丢）
+□ 健康检查（curl MQTT broker）
+□ keepalived（双实例）
+□ watchdog script（可选）
+```
+
+### 复盘
+
+- **USB dongle 物理松脱是产线最大隐患**——**必然发生**
+- **`restart: always` = 必备**——任何进程都可能挂
+- **mem_limit 防内存泄漏**——OOM 时强制重启
+- **MTTR 2h → 10s**——**720 倍提升**
+- **容器化是 ZigBee 协调器产线标配**——不再裸机跑
+- 跟 R21-9 案例 48（zigbee2mqtt + wireshark）**互补**——本案例从**容器化产线**视角
+- 跟 R12-3 案例 33（Hubitat FF01 广播风暴）**互补**——本案例从**进程级自愈**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-20-candidates.md 候选 2
+- GitCode 博客（zigbee2mqtt 容器化实战）
+
+---
+
+## 案例 51：SiLabs EmberZNet PAN ID 冲突 + EPID 字节反转（Simplicity Studio + 63/min 阈值）
+
+### 现象
+
+商用楼宇 ZigBee 网关，SiLabs EmberZNet 协议栈：
+- 网络撕裂：部分节点重选 PAN，部分原节点不重选
+- 端点掉线 + 重连循环
+- 工程师 1 周定位
+- 根因 = **EPID 字节反转触发 63/min 阈值** + **Simplicity Studio 抓包差异**
+
+### 抓包 + 根因
+
+#### 根因 1：EPID 字节反转（核心 bug）
+
+- EmberZNet 协议栈 Extended PAN ID（EPID）字节序处理：
+  - 部分设备大端
+  - 部分设备小端
+  - **同一网络中两种字节序混合** → EPID 翻转
+- 表现：协调器看到"两个"网络（实则同一 EPID 翻转）
+
+#### 根因 2：63/min 阈值工程权衡
+
+- EmberZNet 协调器维护**被动 ACK 阈值**：
+  - 默认 **63 个 ACK / 分钟**才触发 PAN 重选
+  - 阈值太高 → 重选慢
+  - 阈值太低 → 抖动敏感
+- EPID 翻转触发 **63 ACK/min** → 协调器频繁 PAN 重选
+- **网络撕裂**
+
+#### 根因 3：Simplicity Studio 抓包差异
+
+- Simplicity Studio 5 + Network Analyzer
+- 抓包显示 EPID 字节序**与协议栈内部表示相反**
+- 工程师肉眼对比两台设备 beacon → EPID 字节反转
+
+### 修复（3 维）
+
+#### 修复 1：EPID 统一字节序
+
+```c
+// EmberZNet 强制 EPID 小端
+emberNetworkExtendedPanId_t epid = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+emberSetExtendedPanId(&epid);  // 统一字节序
+```
+
+#### 修复 2：调阈值
+
+```c
+// emberZNetConfig.h
+#define EMBER_PASSIVE_ACK_THRESHOLD 100  // 默认 63 → 100
+```
+
+#### 修复 3：Simplicity Studio 抓包分析
+
+```text
+1. 抓两台设备的 beacon
+2. 比对 EPID 字节序
+3. 找出字节反转的设备
+4. 重新烧录（统一 EPID）
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：Simplicity Studio 抓所有节点 beacon
+  - 看 EPID 字节序
+  - 命中：部分节点 EPID 反转 = 根因 1
+
+Step 2：看协调器 PAN 重选日志
+  - 重选频率 > 1/min
+  - 命中：触发 63/min 阈值 = 根因 2
+
+Step 3：对比两台设备的 EPID
+  - Simplicity Studio 显示字节序不同
+  - 命中：肉眼对比 = 根因 3
+
+Step 4：统一 EPID
+  - 重烧录 + 重启
+  - 验证：网络稳定
+```
+
+### 修复 Checklist
+
+```text
+□ 所有设备 EPID 字节序统一（小端 / 大端 一致）
+□ 协调器 EMBER_PASSIVE_ACK_THRESHOLD 调高
+□ Simplicity Studio 抓包对比
+□ 重烧所有 EPID 不一致的设备
+□ 协调器 PAN 重选频率 < 1/小时
+□ Network Analyzer 持续监控
+```
+
+### 复盘
+
+- **EPID 字节反转 = 经典生产 bug**——**字节序混用**
+- **63/min 阈值** = **EmberZNet 默认值**
+- **Simplicity Studio 抓包差异**——**肉眼对比字节序**
+- **字节序统一是根本**——**必须统一小端或大端**
+- 跟 R21-9 案例 48（zigbee2mqtt wireshark）**互补**——本案例从**SiLabs 协议栈**视角
+- 跟 R17-8 案例 39（Cubex 工业 ZigBee 渗透）**互补**——本案例从 **PAN ID 冲突** 视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-20-candidates.md 候选 4
+- dev.to（SiLabs EmberZNet 实战）
+
+---
+
+## 案例 52：SLZB-06 自动更新刷入 Dev/Beta 固件——70 设备迁移 + MAC_BAD_STATE(0x19) 伏击
+
+### 现象
+
+70 设备 ZigBee 协调器从 SLZB-06 旧固件迁移到新版本：
+- 自动更新刷入 dev/beta 固件（用户误操作）
+- 生产 mesh 出现 **`MAC_BAD_STATE(0x19)`**
+- RX 正常、TX 全死
+- 4 天后才发现
+- 工程师 + 团队反复复现 1 周定位
+
+### 抓包 + 根因（4 大根因）
+
+#### 根因 1：MAC_BAD_STATE ≠ MAC_NO_ACK
+
+- **MAC_BAD_STATE(0x19)**：MAC 状态机卡死（**TX 全死**）
+- **MAC_NO_ACK**：ACK 没收到（**链路问题**）
+- 工程师误判为 MAC_NO_ACK → 查 RF → 找不到
+- 实际 MAC_BAD_STATE = 固件卡死状态
+
+#### 根因 2：Dev/Beta 细标藏在 picker 三层菜单
+
+- SLZB-06 自动更新 picker 菜单：
+  - **Stable 通道**（推荐）
+  - **Beta 通道**（隐藏菜单）
+  - **Dev 通道**（隐藏菜单）
+- 用户不知道 picker 三层菜单有 Dev/Beta 选项
+- 误点 → 刷入 dev/beta 固件
+
+#### 根因 3：`database.db.backup` 是 re-pair 救命稻草
+
+- zigbee2mqtt 协调器内部数据库 `database.db`
+- 升级固件时 zigbee2mqtt **自动备份**到 `database.db.backup`
+- 固件卡死 → **回退固件 + 恢复 backup** = 恢复 70 设备
+- 不备份 → 必须手动 re-pair 70 设备（**2 小时**）
+
+#### 根因 4：PAN ID 显式写入 yaml 必备
+
+- 默认 zigbee2mqtt 随机 PAN ID
+- 升级固件后 PAN ID 可能改变 → 70 设备不识别
+- **必须显式配置**：
+  ```yaml
+  advanced:
+    pan_id: 0x1234
+    ext_pan_id: [0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0]
+  ```
+
+### 修复（4 维）
+
+#### 修复 1：固件自动更新治理
+
+```text
+□ 锁定 Stable 通道（不升级 Dev/Beta）
+□ 升级前查看 CHANGELOG（确认无 dev/beta-only features）
+□ 升级前备份 database.db
+□ 升级前快照整个系统
+```
+
+#### 修复 2：MAC_BAD_STATE 恢复
+
+```text
+□ 断电重启协调器（reset MAC 状态机）
+□ 等待 30 秒
+□ TX 测试（如果仍 BAD = 固件问题，回退）
+```
+
+#### 修复 3：数据库备份恢复流程
+
+```bash
+# 1. 备份当前 database.db
+cp zigbee2mqtt/data/database.db zigbee2mqtt/data/database.db.pre-upgrade
+
+# 2. 升级固件（不成功的话回退）
+# 3. 如果升级失败：
+cp zigbee2mqtt/data/database.db.backup zigbee2mqtt/data/database.db
+# 重启 zigbee2mqtt
+docker restart zigbee2mqtt
+```
+
+#### 修复 4：PAN ID 显式配置
+
+```yaml
+# configuration.yaml
+advanced:
+  pan_id: 0x1234
+  ext_pan_id:
+    - 0x12
+    - 0x34
+    - 0x56
+    - 0x78
+    - 0x9A
+    - 0xBC
+    - 0xDE
+    - 0xF0
+  # channel 默认 11（2.4 GHz 信道 11-26）
+  channel: 11
+```
+
+### 定位（4 步法）
+
+```text
+Step 1：看协调器 MAC state log
+  - 命中：MAC_BAD_STATE(0x19) = 固件卡死
+
+Step 2：看 zigbee2mqtt log
+  - log 显示 channel/PAN ID 异常
+  - 命中：固件变了
+
+Step 3：看 SLZB-06 固件版本
+  - 期望 Stable → 实际 dev/beta
+  - 命中：固件不对
+
+Step 4：恢复 backup + 锁定 Stable 通道
+  - database.db.backup 恢复
+  - 锁定 Stable 通道
+  - 验证：70 设备恢复
+```
+
+### 产线协调器迁移配方
+
+```text
+迁移前 Checklist：
+  □ 锁定当前固件版本（备份 .bin）
+  □ 备份 zigbee2mqtt/data/ 整个目录
+  □ 记录 PAN ID / ext_pan_id / channel
+  □ 记录 70 设备的 MAC + ZigBee IEEE
+  □ 测试升级路径（不要直接 prod 升级）
+
+迁移中：
+  □ 选 Stable 通道
+  □ 阅读 CHANGELOG
+  □ 逐步升级（不要跳版本）
+
+迁移后：
+  □ 验证 PAN ID 不变
+  □ 验证 70 设备全部 in
+  □ 验证 RX/TX 都正常
+  □ 保留 database.db.backup 至少 30 天
+```
+
+### 复盘
+
+- **MAC_BAD_STATE ≠ MAC_NO_ACK**——**状态机卡死 vs 链路问题**
+- **Dev/Beta picker 菜单**——**必须锁定 Stable**
+- **`database.db.backup` 是救命稻草**——**升级前必看**
+- **PAN ID 显式配置**——**避免固件变后 PAN 变**
+- **协调器迁移 = 升级 + 备份 + 验证**——**三件套**
+- 跟 R19-8 案例 44（Inovelli OTA 25% abort）**互补**——本案例从**协调器迁移**视角
+- 跟 R21-11 案例 50（zigbee2mqtt Docker 自愈）**互补**——本案例从**固件更新**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-20-candidates.md 候选 5
+- Casey Berlin 工程师博客
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |
