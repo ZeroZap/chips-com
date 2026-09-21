@@ -321,3 +321,9 @@ LoRa / LoRaWAN 是"远距低功耗 IoT 的事实标准"，强在距离、电池�
   - 案例 51：12km LOS ok / 400m 停车场失败——40 节点 RTC 同步唤醒 ALOHA 同频碰撞（chip unique ID 0-45s 偏移 + 丢包 95%→<3%）
   - 案例 52：SX1262 SF5 6 月 147 测试 4 隐形坑（RadioLib TX +11dBm bug + sync word 0x34 + boosted RX 未开 + 配置顺序错位）
   - 来源：_Inbox/LoRa-2026-09-19-candidates.md 候选 1-5
+- 2026-09-21: 新增 4 实战案例（53-56）
+  - 案例 53：Okumura-Hata 链路预算 ×1/10~1/30 农田 40+ 节点 / 最远 2.8 km + 6 条现场踩坑速查表
+  - 案例 54：亿佰特 E22 FEC+LBT 丢包 15% → 0.5% 工厂案例 + 5 个 AT 指令 + 「天线>速率>LBT/FEC>功率>重传」排查优先级
+  - 案例 55：TrueSight 80% 集成商金属厂房 500m 稳不住 + VNA+TDMA+Hopping+磁珠/LDO 4 件套
+  - 案例 56：技象科技 CSS 抗噪 +20dB vs FSK -8dB + 硅谷 50km 城市穿透 + 变频器车间 LoRa 稳而 Wi-Fi 失效 + 4 大缓解策略
+  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 1-4
