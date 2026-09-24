@@ -327,3 +327,9 @@ LoRa / LoRaWAN 是"远距低功耗 IoT 的事实标准"，强在距离、电池�
   - 案例 55：TrueSight 80% 集成商金属厂房 500m 稳不住 + VNA+TDMA+Hopping+磁珠/LDO 4 件套
   - 案例 56：技象科技 CSS 抗噪 +20dB vs FSK -8dB + 硅谷 50km 城市穿透 + 变频器车间 LoRa 稳而 Wi-Fi 失效 + 4 大缓解策略
   - 来源：_Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 1-4
+- 2026-09-24: 新增 4 实战案例（57-60）
+  - 案例 57：Concept13 欧企设施管理几千节点 join-storm + DevEUI/AppKey 配置错级联 + 配置基线 + 流量画像
+  - 案例 58：EU868 1% duty cycle 锁死——lgw_send Busy + tshark 定位 + Python 日志注入复现
+  - 案例 59：TrueSight 工业三维度排障——多径 + 时间同步漂移 + 天线极化（冷库 EM300-TH 挂铁门 -110dBm → -120dBm）
+  - 案例 60：LoRaWAN 智能电表 100 节点——300 节点散列 ID 随机化防碰撞 + LoRa 拉低 3.3V 干扰 ADC 钽电容 + 精简 MAC Payload 取代 DL/T 645
+  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 1-4
