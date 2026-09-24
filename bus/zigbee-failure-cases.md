@@ -5386,6 +5386,961 @@ Step 4：恢复 backup + 锁定 Stable 通道
 
 ---
 
+## 案例 53：TrueSight 链路状态表 N² 增长 + RREQ 风暴——LQI 抖动父节点切换 + 7×24 隐性运维成本
+
+### 现象
+
+化工园区 ZigBee 网络：
+- 关键路由节点重启后 RREQ 风暴
+- 无休止 RREQ 循环死锁
+- 丢包 + 跳数抖动
+- 工程师反复重启无果
+- 根因 = **链路状态表开销随节点数平方增长 + LQI 抖动父节点切换**
+
+### 抓包 + 根因
+
+#### 根因 1：链路状态表广播 N² 增长（**核心**）
+
+- ZigBee 路由节点维护**链路状态表**（LSA）
+- N 个路由节点 → 链路状态表项 = N²
+- 100 路由节点 → 10000 表项
+- 节点故障触发链路状态重算 → 广播 N² 条
+- 网络带宽被链路状态广播**耗尽**
+- 表现：业务数据丢包（链路状态广播占用带宽）
+
+#### 根因 2：LQI 波动 → 路由代价跳变 → 父节点频繁切换
+
+- 工业现场金属反射 + 温漂
+- LQI（Link Quality Indicator）**持续波动** ±30
+- 路由算法每次 LQI 变化 → 重算路由代价
+- 父节点切换 → 子节点重新入网
+- 反复入网 = 反复 RREQ（Route Request）
+
+#### 根因 3：关键路由节点重启触发 RREQ 风暴
+
+- 关键路由节点断电重启
+- 周围 50 子节点同时发起 RREQ 找新路径
+- 50 RREQ 同时广播 → 网络拥塞
+- 网络无法收敛 → 死锁
+
+### 链路状态表 N² 增长量化
+
+```
+N 路由节点 → 链路状态表项 = N(N-1) ≈ N²
+
+N=10 →  90 项
+N=20 → 380 项
+N=30 → 870 项
+N=50 → 2450 项
+N=100 → 9900 项  ← 100 路由节点 ~10000 表项
+```
+
+- 工业 100 路由节点 → 1 万链路状态表项
+- 每次重算广播 = **1 万 LSA 帧**
+- 802.15.4 MAC 帧最大 127B → **1 万帧 = 1.3 MB 网络流量**
+- 网络带宽瞬时崩溃
+
+### 修复（3 维）
+
+#### 修复 1：限制 RREQ 范围（Radius）
+
+```c
+// 限制 RREQ 最大跳数（默认 30 → 改为 5）
+nwkRadius = 5;  // 路由请求只扩散 5 跳
+```
+
+#### 修复 2：LQI 抖动滞回
+
+```c
+// LQI 切换阈值（避免 LQI ±5 抖动就切换）
+LQI_hysteresis = 20;  // 切换必须 LQI 变化 ≥ 20
+```
+
+#### 修复 3：分簇管理（多协调器）
+
+```text
+100 路由节点 → 拆 4 个子网（每个 25 路由节点）
+每个子网链路状态表 = 25² = 625 项（远小于 9900）
+```
+
+### 工业 Mesh 选型决策
+
+| 规模 | 推荐 |
+| --- | --- |
+| < 30 节点 | 单协调器 + mesh（默认） |
+| 30-80 节点 | 单协调器 + LQI 滞回 |
+| 80-150 节点 | **分簇 + 多协调器**（硬约束） |
+| 150+ 节点 | 改 LoRa + 4G 或工业总线 |
+
+### 7×24 隐性运维成本
+
+- 工业 ZigBee 部署"自愈"卖点有代价
+- 实际 = **隐性 7×24 人工监控 + 周期重启 + 调参**
+- 工程师 1 人/周维护 100 节点
+- 隐性成本 ~ **$3000/年/100 节点**
+
+### 修复 Checklist
+
+```text
+□ nwkRadius = 5（限制 RREQ 范围）
+□ LQI hysteresis = 20（避免抖动切换）
+□ 分簇管理（> 80 路由节点）
+□ 多协调器部署（> 150 节点）
+□ 工业规模选型（> 150 节点改 LoRa/4G）
+□ LSA 表项监控（< 1000）
+□ 7×24 人工 + 自动监控
+□ 周期重启（每月 1 次）
+```
+
+### 复盘
+
+- **链路状态表 N² 增长**——**100 路由节点 = 1 万表项**
+- **LQI 抖动**——**父节点频繁切换 = 反复入网**
+- **关键节点重启 RREQ 风暴**——**死锁根因**
+- **nwkRadius = 5**——**限制 RREQ 范围**
+- **LQI hysteresis = 20**——**避免抖动切换**
+- **分簇 + 多协调器**——**80+ 路由节点硬约束**
+- **7×24 隐性运维成本**——**1 人/周 / 100 节点**
+- **工业规模 > 150 节点改 LoRa/4G**——**不是技术问题，是经济学**
+- 跟 R17 案例 38（化工厂自愈变自杀）**互补**——本案例从**链路状态表**视角
+- 跟 R21-13 案例 52（SLZB-06 Dev/Beta 固件伏击）**互补**——本案例从**协议机制**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-21-candidates.md 候选 2
+- TrueSight（链路状态表 + RREQ 风暴实战）
+
+---
+
+## 案例 54：johal.in SmartSpace zigbee2mqtt 200+ 设备——WiFi 6E channel 25 迁移 + warn 80 / critical 40 红线
+
+### 现象
+
+SmartSpace 智能工厂 zigbee2mqtt 桥接 200+ 设备：
+- 凌晨频繁丢包
+- Wireshark + 日志联动定位 3 因：
+  - Wi-Fi ch11 与 ZigBee ch15 重叠
+  - 路由器电源不稳连带 47 终端失联
+  - 占位传感器错配 100 ms 上报
+- 诊断时长 **4.2 小时 → 8 分钟**（31 倍提速）
+
+### 抓包 + 根因
+
+#### 根因 1：Wi-Fi ch11 与 ZigBee ch15 重叠（**核心**）
+
+- 默认 Wi-Fi 路由器 = **channel 11**（2.4 GHz 中心频率 2.462 GHz）
+- ZigBee 默认 channel 15 中心频率 2.430 GHz
+- 实际：
+  - Wi-Fi ch11 带宽 22 MHz
+  - ZigBee ch15 带宽 2 MHz
+  - **2.4-2.5 GHz 频段大量重叠**（60% 频段冲突）
+- 表现：ZigBee 节点丢包 50%+（凌晨高峰）
+
+#### 根因 2：路由器电源不稳连带 47 终端失联
+
+- 现场 1 台 Wi-Fi 路由器供电不稳
+- 该路由器下游 47 ZigBee 终端 → 失联
+- 表现：47 终端同时离线
+- 修复：换 UPS + 冗余供电
+
+#### 根因 3：占位传感器错配 100 ms 上报
+
+- 现场 10 个"占位"sensor（实际是 sensor 调试占位）
+- 工程师配置上报间隔 = **100 ms**（10 Hz）
+- 10 个占位 sensor × 100 ms = **每秒 100 次上报**
+- zigbee2mqtt 处理拥塞 → 全网延迟
+
+### Wi-Fi 6E channel 25 迁移
+
+**核心修复**：Wi-Fi 从 ch11 → **ch25**（2.4 GHz 后向）
+- Wi-Fi ch25 中心频率 2.500 GHz
+- ZigBee ch15 中心频率 2.430 GHz
+- **频段间隔 70 MHz**（远大于冲突阈值）
+- 几乎无频段重叠
+
+**实战**：Wi-Fi 6E 路由器支持**后向 channel 25**（很多老路由器不支持），迁移后 ZigBee 丢包 50% → 5%
+
+### warn 80 / critical 40 三层管线
+
+```python
+import paho.mqtt.client as mqtt
+
+class ZigBeeMonitor:
+    """三层管线：Wireshark + 日志 + 阈值"""
+    
+    THRESHOLD_WARN = 80  # LQI < 80 警告
+    THRESHOLD_CRITICAL = 40  # LQI < 40 严重
+    RETRY_RATE_WARN = 0.05  # 重传率 5% 警告
+    RETRY_RATE_CRITICAL = 0.15  # 重传率 15% 严重
+    
+    def __init__(self):
+        self.warnings = []
+    
+    def check_lqi(self, lqi_value, device_id):
+        if lqi_value < self.THRESHOLD_CRITICAL:
+            self.warnings.append(f'CRITICAL: {device_id} LQI={lqi_value}')
+        elif lqi_value < self.THRESHOLD_WARN:
+            self.warnings.append(f'WARN: {device_id} LQI={lqi_value}')
+    
+    def check_retry_rate(self, retry_rate):
+        if retry_rate > self.RETRY_RATE_CRITICAL:
+            self.warnings.append(f'CRITICAL: retry_rate={retry_rate:.1%}')
+        elif retry_rate > self.RETRY_RATE_WARN:
+            self.warnings.append(f'WARN: retry_rate={retry_rate:.1%}')
+    
+    def report(self):
+        return self.warnings
+```
+
+### 重传率 5% / 15% 红线
+
+| 重传率 | 状态 | 行动 |
+| --- | --- | --- |
+| < 5% | OK | 监控 |
+| 5-15% | WARN | 查 RF 环境 / Wi-Fi 协调器 |
+| > 15% | CRITICAL | 立即干预 |
+
+### Wi-Fi 与 ZigBee 信道隔离表
+
+| Wi-Fi ch | 中心频率 | 冲突（隔离 ZigBee） |
+| --- | --- | --- |
+| 1 | 2.412 | 11-15 重叠 |
+| 6 | 2.437 | 12-19 重叠 |
+| 11 | 2.462 | **15-21 重叠**（最差） |
+| 13 | 2.472 | 16-22 部分重叠 |
+| **25** | **2.500** | **19-26 后向**（几乎无冲突） |
+
+**实战**：Wi-Fi 选 ch25 + ZigBee 选 ch15/20/25 → 频段间隔最大
+
+### 修复 Checklist
+
+```text
+□ Wi-Fi 6E 后向 channel 25（不是 ch1/6/11）
+□ ZigBee 选 ch15/20/25（远离 Wi-Fi）
+□ LQI 三层管线（80/40 阈值）
+□ 重传率红线（5%/15%）
+□ 占位 sensor 配错上报间隔（100ms → 5min）
+□ 路由器冗余供电（UPS）
+□ 诊断 4.2h → 8min 提速 31 倍
+```
+
+### 复盘
+
+- **Wi-Fi 6E channel 25 迁移**——**频段隔离硬指标**
+- **Wi-Fi vs ZigBee 信道表**——**实战必备**
+- **三层管线**——**Wireshark + 日志 + 阈值**
+- **warn 80 / critical 40 红线**——**LQI 阈值**
+- **重传率 5% / 15% 红线**——**业务门槛**
+- **诊断 4.2h → 8min**——**31 倍提速**
+- 跟 R21-9 案例 48（zigbee2mqtt wireshark 农场）**互补**——本案例从 **200+ 设备 Wi-Fi 6E** 视角
+- 跟 R21-11 案例 50（zigbee2mqtt Docker 自愈）**互补**——本案例从**诊断管线**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-21-candidates.md 候选 4
+- johal.in（SmartSpace 智能工厂 zigbee2mqtt 实战）
+
+---
+
+## 案例 55：通信人家园 450MHz 对讲机 2.4GHz 谐波——2000m² 仓库 300 节点 + 自愈 5min→30s
+
+### 现象
+
+2000 平米仓库部署 300 个 ZigBee 温湿度传感器：
+- 上线 1 个月后凌晨批量掉线
+- 30% 节点凌晨 3-5 点集体离线
+- 工程师反复重启无果
+- 改造后：**自愈 5min → 30s / 在线率 92% → 99.8%**
+
+### 抓包 + 根因（3 因）
+
+#### 根因 1：450MHz 对讲机 2.4GHz 谐波（**核心**）
+
+- 仓库清洁工每天凌晨 3-5 点用 **450 MHz 大功率对讲机**
+- 450 MHz 是 2.4 GHz 的 **5.33 倍频**（450 × 5.33 = 2400）
+- 对讲机的非线性放大器产生**谐波**，覆盖 2.4 GHz ISM 频段
+- 谐波能量 -30 dBm（远高于 LoRa 灵敏度）
+- ZigBee 节点**凌晨集体死亡**
+
+#### 根因 2：路由老化 vs NVM 密钥擦除两种"沉默离线"
+
+- 工程师排查发现两类"沉默离线"：
+  - **A 类**（路由老化）：节点 1 小时无活动 → 协调器判离线 → 实际可恢复
+  - **B 类**（NVM 密钥擦除）：协调器强制擦 bonding 密钥 → 节点永久失联（**真离线**）
+- A 类 vs B 类需要**区分对待**——但默认都按离线处理 → 误判
+
+#### 根因 3：路由器插头松动
+
+- 仓库路由器供电线松脱
+- 部分区域 ZigBee 节点通信异常
+- 修复：紧固插头 + UPS 冗余
+
+### 修复（5 维）
+
+#### 修复 1：对讲机频段避让（最关键）
+
+```text
+- 清洁工改用 868/915 MHz 频段对讲机（避开 5.33 倍频谐波）
+- 或：对讲机使用线性放大器（消除谐波）
+- 或：仓库凌晨 3-5 点禁用对讲机（运营妥协）
+```
+
+#### 修复 2：Z-Stack / Ember 父节点 LQI 配置
+
+```c
+// 加大 LQI 切换阈值（避免 LQI 抖动误切换）
+LQI_switch_threshold = 80;  // 默认 50 → 80
+```
+
+#### 修复 3：A 类 vs B 类"沉默离线"区分
+
+```c
+// A 类：路由老化（可恢复）
+if (node_last_seen > 1h) {
+    send_rejoin_request();  // 重连尝试
+}
+
+// B 类：NVM 密钥擦除（永久失联）
+if (bonding_key_missing()) {
+    pairing_recovery();  // 重新配对
+}
+```
+
+#### 修复 4：路由器插头 + UPS
+
+```text
+- 紧固供电插头
+- 加 UPS（小型 1kVA）
+- 监控电压（< 11V 告警）
+```
+
+#### 修复 5：自愈时间优化
+
+```text
+- 5min → 30s 提速
+- 关键：rejoin interval 缩短
+- 关键：路由发现超时缩短
+```
+
+### 450MHz 对讲机谐波频率表
+
+```
+450 MHz × 5 = 2250 MHz (5 次谐波)
+450 MHz × 6 = 2700 MHz (6 次谐波)
+450 MHz × 7 = 3150 MHz (7 次谐波)
+
+→ 5 次谐波 2250 MHz 接近 ZigBee 频段
+→ 6 次谐波 2700 MHz 接近 Wi-Fi
+→ 7 次谐波 3150 MHz 远离 ISM 频段
+```
+
+### Z-Stack vs Ember 父节点 LQI 配置对比
+
+| 协议栈 | 配置文件 | 切换阈值 |
+| --- | --- | --- |
+| **Z-Stack** | `f8wConfig.h` | `NWK_LINK_QUALITY_THRESHOLD = 80` |
+| **EmberZNet** | `ember-configuration.h` | `MAX_NEIGHBOR_LQI_THRESHOLD = 80` |
+| **ZBOSS**（ESP32） | `zb_config.h` | `ZB_CONFIG_LQI_THRESHOLD = 80` |
+
+### 修复 Checklist
+
+```text
+□ 对讲机频段避让（不用 450 MHz 或线性放大器）
+□ Z-Stack / Ember 父节点 LQI 阈值 = 80
+□ A 类（路由老化）vs B 类（NVM 密钥擦除）区分
+□ 路由器 UPS 冗余
+□ 自愈时间 5min → 30s
+□ rejoin interval 缩短
+□ 凌晨 3-5 点对讲机禁用（运营妥协）
+□ 2000m² 仓库 99.8% 在线率验证
+```
+
+### 复盘
+
+- **450MHz 5 次谐波 2250 MHz 接近 ZigBee**——**非线性放大器杀手**
+- **A 类 vs B 类"沉默离线"**——**必须区分对待**
+- **LQI 切换阈值 80**——**避免抖动误切换**
+- **UPS + 紧固插头**——**电源完整性**
+- **自愈 5min → 30s**——**rejoin interval 缩短**
+- **在线率 92% → 99.8%**——**夜间批量死亡修复**
+- 跟 R21-15 案例 49（车间 3 大杀手）**互补**——本案例从 **450MHz 谐波**视角
+- 跟 R17 案例 38（化工厂自愈变自杀）**互补**——本案例从 **2000m² 仓库**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-21-candidates.md 候选 5
+- 通信人家园（论坛实战帖）
+
+---
+
+## 案例 56：SonoffLAN ZBMINIL2 偶发 411——RSSI 良好 ≠ 链路可靠 + 信道 15/20 隔离 WiFi 1/6/11
+
+### 现象
+
+ZBMINIL2（Sonoff 智能开关）通过 SonoffLAN Zigbee Pro Bridge 连接：
+- 偶发 411 错误（设备不可达，eWeLink 自定义码）
+- RSSI 测得 **-60 ~ -70 dBm**（优秀）
+- 工程师反复查"硬件"、"距离" → 无效
+- 修复后：手动指定信道 **15/20/25/26**，稳定 72 小时+
+
+### 抓包 + 根因
+
+#### 根因 1：RSSI 良好 ≠ 链路可靠（**核心**）
+
+- RSSI（信号强度）只测**单包 RSSI**
+- 实际链路稳定度 = **RSSI + SNR + 干扰 + 信道冲突 + 重传**
+- RSSI -65 dBm 但同频段 Wi-Fi 拥堵 → 实际 PDR 50%
+- 表现：RSSI 看着 OK，偶发 411 错误
+
+#### 根因 2：2.4 GHz 信道冲突
+
+- 默认 Zigbee channel = 11/15/20/25
+- 默认 Wi-Fi router channel = 1/6/11
+- ZigBee 15 中心频率 2.430 GHz
+- Wi-Fi ch1 中心频率 2.412 GHz，**带宽 22 MHz**
+- 2.412 + 11 = 2.423 GHz 仍在 Wi-Fi 带宽内
+- **ZigBee 15 + Wi-Fi ch1 部分重叠**
+
+#### 根因 3：eWeLink 自定义码 411
+
+- eWeLink 私有状态码 = **411 设备不可达**
+- 跟 ZigBee spec 错误码无关
+- 含义：bridge 在 retry 3 次后无法触达 ZBMINIL2
+- 实际根因 = **链路冲突 + 重传**
+
+### 信道隔离矩阵：
+
+| Wi-Fi ch | 中心频率 | 冲突 ZigBee |
+| --- | --- | --- |
+| 1 | 2.412 | 11-15 重叠 |
+| 6 | 2.437 | 12-19 重叠 |
+| 11 | 2.462 | 15-21 重叠 |
+| **13** | **2.472** | 16-22 部分 |
+| **25** | **2.500** | 19-26 后向（**几乎无**） |
+
+**实战**：Wi-Fi 选 ch1 + ZigBee 选 ch15/20/25/26 → 频段隔离最大
+
+### 修复（3 维）
+
+#### 修复 1：手动指定 Zigbee channel = 15/20/25/26
+
+```yaml
+# configuration.yaml
+advanced:
+  channel: 15  # 或 20/25/26
+  pan_id: 0x1234
+  ext_pan_id:
+    - 0x12
+    - 0x34
+    - 0x56
+    - 0x78
+    - 0x9A
+    - 0xBC
+    - 0xDE
+    - 0xF0
+```
+
+#### 修复 2：debug 日志 + 信道扫描定位
+
+```text
+□ 抓 ZNP log 看 LQI 抖动
+□ Wi-Fi 信道扫描看实时占用
+□ 选最干净 Zigbee channel
+□ 手动指定后稳定度测试
+```
+
+#### 修复 3：SonoffLAN eWeLink 容错
+
+```text
+□ retry 机制：411 错误后 5 秒重试
+□ watchdog：30 分钟无响应后报警
+□ 离线判定：实际是 retry 失败 3 次
+□ 重新配对：NVM 密钥擦除后
+```
+
+### SonoffLAN vs ZHA 选型
+
+| 平台 | 优势 | 劣势 |
+| --- | --- | --- |
+| **SonoffLAN** | 私有云端控制 + eWeLink 集成 | 偶发 411（私有码） |
+| **ZHA** | ZigBee spec 严格 + open source | 配置复杂 |
+| **zigbee2mqtt** | MQTT 标准 + 灵活 | 需自建 broker |
+
+### 修复 Checklist
+
+```text
+□ 手动指定 Zigbee channel 15/20/25/26
+□ Wi-Fi 频段隔离（避开 1/6/11）
+□ debug 日志 + 信道扫描
+□ retry 机制（411 错误后 5s 重试）
+□ watchdog 30 分钟报警
+□ 离线判定 retry 失败 3 次
+□ SonoffLAN / ZHA / zigbee2mqtt 选型
+□ 72 小时+ 稳定度验证
+```
+
+### 复盘
+
+- **RSSI 良好 ≠ 链路可靠**——**核心认知**
+- **RSSI + SNR + 干扰 + 信道冲突 + 重传** = 链路稳定度
+- **Wi-Fi ch1 + ZigBee ch15 部分重叠**——**频段隔离硬约束**
+- **手动指定 channel 15/20/25/26**——**实战方案**
+- **411 = eWeLink 私有码**——**bridge retry 3 次失败**
+- **SonoffLAN vs ZHA vs zigbee2mqtt**——**选型决策**
+- 跟 R21-9 案例 48（zigbee2mqtt 农场实战）**互补**——本案例从 **RSSI ≠ 可靠**视角**
+- 跟 R23-7 案例 54（johal.in SmartSpace 200+ 设备）**互补**——本案例从**单设备偶发**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-23-candidates.md 候选 4
+- GitCode 博客（SonoffLAN 用户 + 官方沟通）
+
+---
+
+## 案例 57：ESP32-C6 ED 模式 zbPressureSensor ZCL 断言——3.2.0-rc2 修复 + EP10 绑定表验证
+
+### 现象
+
+ESP32-C6-DevKitC-1（Espressif ESP-IDF + esp-zboss ZigBee 协议栈）：
+- 调用 `zbPressureSensor.report()` 触发协议栈 assertion
+- 设备频繁重启
+- assertion 在 `esp_zigbee_zcl_command.c:340`
+- 修复：**esp-zboss 3.2.0-rc2**
+
+### 抓包 + 根因（3 大根因）
+
+#### 根因 1：esp-zboss ZCL 断言触发
+
+```c
+// 触发 assertion 的代码
+zb_ret_t ret = zb_zcl_report_attr_cmd(
+    EP_10,                          // 端点 10
+    ZB_ZCL_CLUSTER_ID_MS_PRESSURE,  // 压力测量集群 0x0403
+    ZB_ZCL_ATTR_PRESSURE_VALUE_ID,  // 属性 ID 0x0000
+    &pressure_value,
+    ZB_ZCL_CMD_REPORT_AUTO);
+
+// 实际触发 assertion：esp_zigbee_zcl_command.c:340
+```
+
+- `esp_zigbee_zcl_command.c:340` 是**端点 10** 不存在的断言
+- ESP32-C6 ED 模式下默认端点 = 8
+- 报告时如果指定 EP10 = **未定义的端点** → assertion
+
+#### 根因 2：EP10 绑定表验证
+
+```c
+// 检查绑定表是否注册 EP10
+zb_zdo_bind_table_entry_t binding;
+uint8_t idx = zb_zdo_find_binding(
+    &binding,
+    ZB_ZCL_CLUSTER_ID_MS_PRESSURE,
+    EP_10,
+    0x1234);  // 目标设备短地址
+
+if (idx == ZB_ZDO_INVALID_INDEX) {
+    // 端点 10 未绑定！
+    ESP_LOGE(TAG, "EP10 not bound!");
+}
+```
+
+#### 根因 3：压力测量集群 0x0403 规范
+
+- ZigBee Cluster Library (ZCL) spec
+- 0x0403 = `MS_PRESSURE`（压力测量）
+- 属性 0x0000 = `MeasuredValue`（测量值）
+- 数据类型：**int16**（sint16，单位 0.1 kPa）
+- 范围：-32767 ~ +32767（即 -3276.7 ~ +3276.7 kPa）
+
+### 修复（3 维）
+
+#### 修复 1：升级 esp-zboss 3.2.0-rc2
+
+```text
+# ESP-IDF 中升级 esp-zboss
+git submodule update --init --recursive
+cd components/esp-zboss
+git checkout v3.2.0-rc2
+git pull
+```
+
+#### 修复 2：端点注册正确
+
+```c
+// 注册端点 10（必须先注册才能用）
+zb_endpoint_config_t ep_config = {
+    .endpoint = 10,
+    .app_profile_id = ZB_AF_HA_PROFILE_ID,
+    .app_device_id = ZB_HA_IAS_ZONE_ID,
+    .cluster_list = ZB_ZCL_CLUSTER_LIST(
+        ZB_ZCL_CLUSTER_ID_MS_PRESSURE,
+        ZB_ZCL_CLUSTER_ID_MS_TEMPERATURE
+    ),
+    .cluster_count = 2,
+};
+
+zb_endpoint_register(&ep_config);
+```
+
+#### 修复 3：报告前先校验
+
+```c
+// 报告前必须校验 EP 是否注册
+if (!zb_endpoint_is_registered(EP_10)) {
+    ESP_LOGE(TAG, "EP10 not registered, skip report");
+    return ZB_RET_INVALID_PARAMETER;
+}
+
+// 校验 cluster 是否在该 EP 上
+if (!zb_cluster_is_in_endpoint(ZB_ZCL_CLUSTER_ID_MS_PRESSURE, EP_10)) {
+    ESP_LOGE(TAG, "Cluster 0x0403 not in EP10");
+    return ZB_RET_INVALID_PARAMETER;
+}
+
+zb_zcl_report_attr_cmd(
+    EP_10,
+    ZB_ZCL_CLUSTER_ID_MS_PRESSURE,
+    ZB_ZCL_ATTR_PRESSURE_VALUE_ID,
+    &pressure_value,
+    ZB_ZCL_CMD_REPORT_AUTO);
+```
+
+### ESP32-C6 ZCL 集群快速参考
+
+| 集群 ID | 名称 | 属性 | 数据类型 |
+| --- | --- | --- | --- |
+| 0x0403 | MS_PRESSURE（压力测量） | 0x0000 MeasuredValue | sint16 |
+| 0x0402 | MS_TEMPERATURE（温度） | 0x0000 MeasuredValue | sint16 |
+| 0x0405 | MS_HUMIDITY（湿度） | 0x0000 MeasuredValue | uint16 |
+| 0x0006 | ON_OFF（开关） | 0x0000 OnOff | bool |
+| 0x0008 | LEVEL_CONTROL（亮度） | 0x0000 CurrentLevel | uint8 |
+
+### 修复 Checklist
+
+```text
+□ ESP-IDF 升级 esp-zboss 3.2.0-rc2
+□ 端点注册正确（zb_endpoint_register）
+□ 报告前 EP 校验
+□ 报告前 cluster 校验
+□ ZCL 集群 ID 正确（0x0403 压力 / 0x0402 温度）
+□ 属性 ID 正确（0x0000 MeasuredValue）
+□ 数据类型匹配（int16 for 压力）
+□ BIND 绑定表完整
+```
+
+### 复盘
+
+- **esp-zboss 3.2.0-rc2 修复**——**版本升级必要性**
+- **EP10 assertion**——**端点未注册根因**
+- **报告前校验**——**zb_endpoint_is_registered + zb_cluster_is_in_endpoint**
+- **0x0403 压力 / 0x0402 温度 / 0x0405 湿度**——**ZCL 集群速查**
+- **属性 0x0000 MeasuredValue**——**统一规范**
+- **数据类型 int16**——**单位 0.1 kPa**
+- 跟 R21-12 案例 51（SiLabs PAN ID 冲突）**互补**——本案例从**ESP32-C6 + ZCL**视角
+- 跟 R17-7 案例 39（Cubex 工业渗透）**互补**——本案例从**esp-zboss SDK** 视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-24-candidates.md 候选 2
+- 鲲鹏昇腾开发者社区（ESP32-C6 + esp-zboss 实测）
+
+---
+
+## 案例 58：STM32 RC 振荡器温漂心跳偏差近 4%——单向广播无 ACK + AF_DataRequest 语义陷阱
+
+### 现象
+
+工厂 200+ 温湿度传感器假离线：
+- 传感器物理在线，但协调器标记"离线"
+- 凌晨批量假离线
+- 工程师反复查 RF / 距离
+- 实际 = **STM32 RC 振荡器温漂致心跳偏差近 4%**
+
+### 抓包 + 根因
+
+#### 根因 1：RC 振荡器温漂（**核心**）
+
+- STM32 sensor 默认时钟 = **内部 RC 振荡器**（HSI）
+- HSI 精度 ±1% @ 25℃
+- **温漂**：±2% / 25°C → 0℃ 时偏差近 4%
+- 心跳定时器基于 HSI 计数 → 实际 100 s vs 期望 96 s
+- 协调器判超时 → **误判离线**
+
+#### 根因 2：单向广播无 ACK 协调器误判
+
+```c
+// 默认心跳：单向广播 + 无 ACK
+zb_zdo_send_heartbeat_broadcast();  // 广播到所有节点
+// 无 ACK → 协调器不知道 sensor 是否收到
+```
+
+- 协调器发"心跳"到 sensor
+- sensor 收到但**不需要 ACK**
+- 协调器判 sensor "在收到"
+- 实际 sensor 收到后未处理就睡眠
+- **协调器不知 sensor 是否真的"心跳"**
+
+#### 根因 3：AF_DataRequest 返回值语义陷阱
+
+```c
+zb_ret_t ret = AF_DataRequest(
+    &dstAddr,
+    &ep_desc,
+    ZB_CLUSTER_ID_MS_PRESSURE,
+    12,
+    (uint8_t *)&buffer,
+    &transId,
+    AF_DISCV_ROUTE,
+    AF_DEFAULT_RADIUS);
+
+// ret = ZB_SUCCESS 或 ZB_RET_BUSY 或 ZB_RET_TABLE_FULL
+// 工程师误以为：ZB_SUCCESS = 对方收到
+// 实际：ZB_SUCCESS = 本地队列接受（不一定对端收到）
+```
+
+- **ZB_SUCCESS = 本地 accept**
+- **对方收到 ≠ 真的收到**（链路层有重传机制）
+
+### 修复（4 维）
+
+#### 修复 1：换外部晶振（**最有效**）
+
+```c
+// HSE 32.768 kHz + 16 MHz
+RCC_HSECmd(ENABLE);
+RCC_PLLConfig(RCC_PLLSource_HSE, ...);
+RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+
+// 心跳定时器用 TIM + HSE 时基
+TIM_TimeBaseInitTypeDef TIM_Init;
+TIM_Init.TIM_Prescaler = 0;
+TIM_Init.TIM_Period = SystemCoreClock / 1 - 1;  // 1 秒
+TIM_TimeBaseInit(TIM2, &TIM_Init);
+```
+
+#### 修复 2：心跳 vs CDC 权衡
+
+| 场景 | 心跳间隔 | CDC 间隔 | 备注 |
+| --- | --- | --- | --- |
+| **工业** | 10-30s | 5-15min | 误判容忍低 |
+| **家居** | 30-60s | 30-60min | 节电优先 |
+| **医疗** | 1-5s | 实时 | 不可误判 |
+
+#### 修复 3：单向广播 → 请求 + ACK
+
+```c
+// 修复：发心跳请求 + 等 ACK
+zb_ret_t ret = AF_DataRequest(
+    &dstAddr,
+    &ep_desc,
+    ZB_CLUSTER_ID_HEARTBEAT_REQ,
+    0,
+    NULL,
+    &transId,
+    AF_DISCV_ROUTE,
+    AF_DEFAULT_RADIUS);
+
+// 等 ACK with timeout
+wait_ack_with_timeout(ACK_TIMEOUT_MS);
+```
+
+#### 修复 4：AF_DataRequest 语义理解
+
+```c
+// ZB_SUCCESS ≠ 对方收到
+// 真正确认 = 等对方 ACK + ZB_APS_ACK
+
+// 增加重试
+for (int i = 0; i < MAX_RETRY; i++) {
+    zb_ret_t ret = AF_DataRequest(...);
+    if (ret == ZB_SUCCESS && wait_ack(timeout_ms) == OK) {
+        break;
+    }
+    vTaskDelay(pdMS_TO_TICKS(RETRY_DELAY_MS));
+}
+```
+
+### 心跳 vs CDC 决策
+
+```text
+Step 1：判断业务 critical 程度
+  - 医疗 / 安全 = 1-5s 心跳
+  - 工业监控 = 10-30s 心跳
+  - 智能家居 = 30-60s 心跳
+  - 长寿命 sensor = 30-60min 心跳
+
+Step 2：选心跳 + ACK 协议
+  - 工业 = ZB_APS_ACK（强一致）
+  - 家居 = 普通 broadcast（弱一致）
+
+Step 3：测试温漂
+  - 0℃ / 25℃ / 50℃ 实测 HSI 偏差
+  - 必要时换 HSE 晶振
+
+Step 4：协调器 timeout 设宽松
+  - timeout = 心跳 × 3（避免误判）
+```
+
+### 修复 Checklist
+
+```text
+□ STM32 换 HSE 晶振（避免 HSI 温漂）
+□ 心跳 / CDC 间隔按业务 critical
+□ 单向广播改 请求 + ACK + timeout
+□ AF_DataRequest ZB_SUCCESS ≠ 对端收到
+□ 真正确认 = 等对方 ACK + ZB_APS_ACK
+□ 重试机制（MAX_RETRY）
+□ 0℃ / 25℃ / 50℃ 温漂测试
+□ 协调器 timeout = 心跳 × 3
+```
+
+### 复盘
+
+- **STM32 HSI 温漂 ±2% / 25℃**——**温漂 4% 致 96s 实际 100s**
+- **单向广播无 ACK**——**协调器误判离线**
+- **AF_DataRequest ZB_SUCCESS ≠ 收到**——**语义陷阱**
+- **外部晶振 HSE**——**温漂修复**
+- **心跳 vs CDC**——**业务 critical 决定**
+- **工业心跳 10-30s / 家居 30-60s**——**决策表**
+- **等对方 ACK + ZB_APS_ACK**——**真确认**
+- 跟 R21-13 案例 52（SLZB-06 Dev/Beta 固件伏击）**互补**——本案例从 **STM32 HSI 温漂**视角
+- 跟 R21-10 案例 49（MGI Computers 工业 ZigBee 安全评估）**互补**——本案例从**嵌入式心跳机制**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-24-candidates.md 候选 4
+- CSDN 文库（STM32 心跳机制实战）
+
+---
+
+## 案例 59：高密度 Zigbee 500+ 光照传感器——边缘联动 T1=15-40ms 丢包 0.8% vs 云端 12%
+
+### 现象
+
+单网关 500+ 光照传感器部署：
+- 雷雨 / 遮阳突变时数据"截断"
+- 默认云端上报：
+    - T1 = **150-300 ms**（central round-trip）
+    - 丢包率 **12%**
+- 边缘联动优化后：
+    - T1 = **15-40 ms**（本地决策）
+    - 丢包率 **0.8%**
+- **15 倍提速 + 15 倍丢包降低**
+
+### 抓包 + 根因
+
+#### 根因 1：CSMA/CA 退避过长致缓冲溢出
+
+- 500+ sensor 共享 1 个网关
+- ZigBee CSMA/CA 退避时间 = **150-300 ms**
+- 实测密集部署：50-80 ms（理论值）
+- 但**突发数据**时（雷雨 → 500+ sensor 同时上报）
+- 退避累加 → 缓冲溢出 → 丢包
+
+#### 根因 2：APS 端到端拥塞损耗
+
+- 500+ sensor × 1 Hz 上报 = 500 pkt/s
+- ZigBee APS 端到端确认（ZB_APS_ACK）= 1000 pkt/s
+- 网络带宽 = **理论值 1000 pkt/s**
+- 实际负载率 = **100%** → **APS 拥塞**
+- **APS ACK 超时** → 数据丢
+
+#### 根因 3：CSMA/CA + APS 双重拥塞
+
+- CSMA/CA 信道争用
+- APS ACK 端到端
+- 两者叠加 → **双重拥塞**
+- 实测丢包率 12%（远超 spec 1%）
+
+### 边缘联动架构（核心修复）
+
+```text
+云端架构（默认）：
+  Sensor → Coordinator → MQTT → Cloud → 业务决策
+  路径：500ms+ / 丢包 12%
+  问题：网络拥塞 + 远端决策
+
+边缘联动架构（修复）：
+  Sensor → Coordinator → 边缘本地决策 → 立即动作
+  路径：15-40ms / 丢包 0.8%
+  优势：本地决策 + 边缘实时
+```
+
+#### 边缘联动实现
+
+```c
+// 边缘节点直接处理（不经过云端）
+void edge_decision_lighting_control(zb_uint16_t light_lux) {
+    if (light_lux > 10000) {  // 强光
+        // 关灯
+        zb_zcl_on_off_set_value(EP_LIGHT, 0);
+    } else if (light_lux < 100) {  // 暗
+        // 开灯
+        zb_zcl_on_off_set_value(EP_LIGHT, 1);
+    }
+}
+
+// ZigBee 协调器内决策（无需云端）
+void coordinator_local_decision(zb_uint16_t sensor_endpoint, zb_uint16_t lux_value) {
+    // 本地缓存 lookup table（5ms 内）
+    lookup_table[sensor_endpoint] = lux_value;
+    
+    // 本地控制联动（直接发到灯 EP）
+    if (lux_value < 100) {
+        // 自动开灯
+        zb_zcl_on_off_set_value(EP_LIGHT, 1);
+    }
+}
+```
+
+### Zigbee 信道 26 避 WiFi 1/6/11
+
+- 500+ 光照 sensor 在仓库天花板
+- Wi-Fi 路由器 ch1/6/11（典型家用）
+- ZigBee 默认 ch11-26
+- 实战：
+  - ZigBee 选 **ch26**（2.480 GHz）
+  - Wi-Fi ch1（2.412 GHz）
+  - **频段间隔 68 MHz**（无重叠）
+
+### 边缘 vs 云端决策对比
+
+| 决策点 | 单延迟 | 丢包率 | 适用 |
+| --- | --- | --- | --- |
+| **云端**（默认） | 150-300ms | 12% | 非实时（统计 / 报表） |
+| **边缘**（修复） | 15-40ms | 0.8% | 实时控制（灯 / 阀 / 安全） |
+
+### 修复 Checklist
+
+```text
+□ 边缘本地决策（不经过云端）
+□ ZigBee 选 ch26 避 WiFi 1/6/11
+□ APS ACK 优化（减少端到端拥塞）
+□ CSMA/CA 退避调优
+□ lookup table 本地缓存
+□ 协调器内直接控制
+□ T1 验证 ≤ 40ms
+□ 丢包率验证 ≤ 1%
+```
+
+### 复盘
+
+- **CSMA/CA + APS 双重拥塞**——**500+ 节点根因**
+- **云端 150-300ms / 12%**——**vs 边缘 15-40ms / 0.8%**
+- **15 倍提速 + 15 倍丢包降低**——**边缘联动核心**
+- **ZigBee ch26 避 WiFi ch1**——**频段隔离**
+- **lookup table 本地缓存**——**协调器内决策**
+- **雷雨 / 遮阳突变**——**突发数据触发 12% 丢包**
+- 跟 R21-9 案例 48（zigbee2mqtt 农场）**互补**——本案例从**500+ 高密度**视角
+- 跟 R23-7 案例 54（johal.in SmartSpace 200+ 设备）**互补**——本案例从**边缘 vs 云端**视角
+
+### 来源
+
+- _Inbox/ZigBee-2026-09-24-candidates.md 候选 5
+- TrueSight（高密度 Zigbee 实战）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

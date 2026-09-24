@@ -306,3 +306,16 @@ ZigBee 是"低功耗 mesh 自组网 IoT 协议的事实标准"，强在 Mesh 自
   - 案例 51：SiLabs EmberZNet PAN ID 冲突 + EPID 字节反转（Simplicity Studio 抓包 + 63/min 阈值 + EPID 字节序肉眼对比）
   - 案例 52：SLZB-06 自动更新 Dev/Beta 固件伏击 + MAC_BAD_STATE(0x19) + database.db.backup 救命 + PAN ID 显式 yaml
   - 来源：_Inbox/ZigBee-2026-09-20-candidates.md 候选 2/4/5（候选 1/3 重复已写）
+- 2026-09-21: 新增 3 实战案例（53-55）
+  - 案例 53：TrueSight 链路状态表 N² 增长 + RREQ 风暴 + LQI 抖动父节点切换 + 7×24 隐性运维成本（100 路由节点 ≈ 10000 LSA）
+  - 案例 54：johal.in SmartSpace zigbee2mqtt 200+ 设备（Wi-Fi 6E channel 25 迁移 + warn 80/critical 40 + 重传率 5%/15% 红线 + 诊断 4.2h→8min 31 倍提速）
+  - 案例 55：通信人家园 450MHz 对讲机 2.4GHz 谐波 2000m² 仓库 300 节点（自愈 5min→30s + 在线率 92%→99.8% + LQI 阈值 80）
+  - 来源：_Inbox/ZigBee-2026-09-21-candidates.md 候选 2/4/5（候选 1/3 重复已写）
+- 2026-09-23: 新增 1 实战案例（56）
+  - 案例 56：SonoffLAN ZBMINIL2 偶发 411——RSSI 良好 ≠ 链路可靠 + Zigbee 信道 15/20 隔离 WiFi 1/6/11（手动指定 72h+ 稳定）
+  - 来源：_Inbox/ZigBee-2026-09-23-candidates.md 候选 4（候选 1/2/3/5 重复已写）
+- 2026-09-24: 新增 3 实战案例（57-59）
+  - 案例 57：ESP32-C6 ED 模式 zbPressureSensor ZCL 断言（esp-zboss 3.2.0-rc2 修复 + EP10 绑定表验证 + 集群 0x0403 规范）
+  - 案例 58：STM32 RC 振荡器温漂心跳偏差近 4%（单向广播无 ACK 协调器误判 + AF_DataRequest 语义陷阱 + 心跳 vs CDC 工业 10-30s / 家居 30-60s）
+  - 案例 59：高密度 Zigbee 500+ 光照传感器边缘联动（云端 T1=150-300ms 12% → 边缘 T1=15-40ms 0.8% + Zigbee ch26 避 WiFi 1/6/11 + APS 端到端拥塞）
+  - 来源：_Inbox/ZigBee-2026-09-24-candidates.md 候选 2/4/5（候选 1/3 重复已写）
