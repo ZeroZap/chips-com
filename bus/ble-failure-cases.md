@@ -6637,6 +6637,586 @@ async def scan_matter():
 
 ---
 
+## 案例 69：Omi 可穿戴 BLE audio ghost connection——Flutter 4 层状态混乱 + Native BLE Transporter 重构
+
+### 现象
+
+Omi 可穿戴 BLE audio streaming
+- 表现：**"app 显示 connected 但音频断流"** ghost connection
+- Flutter 补丁堆 4 层状态混乱（provider / service / plugin / transport）
+- 崩溃率高
+- 修复：Native BLE Transporter 替换 flutter_blue_plus
+
+### 抓包 + 根因（4 层状态混乱）
+
+#### 根因 1：4 个 connection state 真值源冲突
+
+```text
+Layer 1: Provider（状态管理）
+  - isConnected = true
+  - 由 BLE 事件回调写入
+
+Layer 2: Service（业务层）
+  - connection_state = "connected"
+  - 由 Provider 推送 + 业务逻辑判断
+
+Layer 3: Plugin（flutter_blue_plus）
+  - connection state 内置
+  - 设备侧真实状态（但不一定与 Provider 同步）
+
+Layer 4: Transport（OS-level BLE stack）
+  - CoreBluetooth / Android Bluetooth
+  - 物理层真实连接
+
+→ 4 个 source 各自维护 state，app 显示 connected 时 audio 已 silent
+```
+
+#### 根因 2：audio streaming 15s 重连 timer in-pocket 持续开 radio
+
+- 蓝牙 audio 应用进入 in-pocket 状态
+- 15s timer 触发重连 → radio 持续开 → **电池电耗 5×**
+- 用户放口袋过夜 → 早上电池耗尽
+
+#### 根因 3：ghost connection 物理层
+
+- 连接协议层显示 connected
+- 但 audio data 链路 GATT notify 实际断了（MTU mismatch / buffer overflow）
+- app 不知，audio 不响
+
+### Native BLE Transporter 重构
+
+```dart
+// 重构前（Flutter 4 层混乱）
+class AudioState extends ChangeNotifier {
+  bool isConnected = false;
+  // provider layer
+}
+
+class AudioPlugin extends StreamAudio {
+  // flutter_blue_plus wrapper
+  // plugin layer
+}
+
+// 重构后：单真值源
+class NativeBLETransporter {
+  final MethodChannel _channel = MethodChannel('ble_transport');
+  
+  // 唯一 connection state 真值源
+  Stream<BLEConnectionState> get connectionState =>
+      _channel.invokeMethod('observeConnectionState')
+          .asStream()
+          .map((event) => BLEConnectionState.values[event]);
+  
+  // audio data 链路 monitor
+  Stream<AudioData> get audioData =>
+      _channel.invokeMethod('observeAudioNotify')
+          .asStream()
+          .map((raw) => AudioData.fromBytes(raw));
+}
+
+// Native side (Swift / Kotlin)
+class BLETransporter: NSObject {
+  // CBPeripheral state 是唯一真值源
+  var peripheral: CBPeripheral?
+  var isConnected: Bool { peripheral?.state == .connected }
+  var isAudioNotifyActive: Bool { audioChar?.isNotifying == true }
+  
+  // 关键：isConnected && isAudioNotifyActive = 真 connected
+  // 否则 ghost connection
+}
+```
+
+### 修复 Checklist
+
+```text
+□ 单一 connection state 真值源（不要 4 层）
+□ Native BLE Transporter 替换 flutter_blue_plus
+□ ghost connection 判定：isConnected AND isAudioNotifyActive
+□ in-pocket 状态关 radio timer（不要 15s 持续开）
+□ audio 链路 monitor（GATT notify ptr 验证）
+□ battery 利用率 2× → 5× 优化
+□ BLE ghost connection 用户体验警示
+```
+
+### 复盘
+
+- **4 个 connection state 真值源 = 4 重隐患**——**单源才安全**
+- **ghost connection**——**协议层 connected ≠ 数据链路通**
+- **isConnected AND isAudioNotifyActive** = 真 connected（**双条件**）
+- **Native BLE Transporter**——**Flutter 高频音频必须**
+- **in-pocket 关 radio**——**节电核心**
+- 跟 R18-6 案例 62（Nordic DevZone Notify 间歇丢失）**互补**——本案例从**Flutter + 可穿戴 audio** 视角
+- 跟 R19-7 案例 63（Android 五状态机）**互补**——本案例从 **ghost connection + 真值源** 视角
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 2
+- mohsin.xyz（Omi 可穿戴实战）
+
+---
+
+## 案例 70：CSDN RFCEO 40ms 间隔时序错位——nRF52 配对 + listen delay=1 + 主扫窗 ≥ 从广播间隔
+
+### 现象
+
+nRF52 固件请求广播间隔 40ms（标准），实际偶发连接失败：
+- 100 次配对 → 5 次失败
+- 失败后需重启才能恢复
+- 工程师反复查"信号弱"、"协议错"
+- 实际 = **40ms ±10% 抖动 + 主从时序窗口错位**
+
+### 抓包 + 根因
+
+#### 根因 1：40ms ±10% 抖动导致窗口错位
+
+- spec advertising interval = 40ms
+- **实测抖动 ±10%** = 36-44ms
+- central（手机 / 网关）scan window 与 peripheral adv 窗口**错位**
+- 表现：scanner 一开 → peripheral 还没广播 → scanner 关闭 → 错位
+
+#### 根因 2：主从时序窗口错位（spec 隐式）
+
+```
+期望时序：
+  Peripheral  adv[0] ──────── adv[1] ──────── adv[2]
+              │                │                │
+  Central     scan_window ON   OFF              ON
+              └─────────┘      └─────┘
+              完美对齐 100% 捕获
+
+实际时序（peripheral 抖动 ±10%）：
+  Peripheral  adv[0] ──── adv[1] ──── adv[2]
+                        |
+                       耗时 +4ms (jitter)
+  Central     scan_window ON      OFF  ON
+              │        │           │
+              ON 100ms  │ 漏接!     ON
+              └─────────┘
+              漏接 adv[1]
+```
+
+#### 根因 3：listen delay 设置不当
+
+- listen delay = 0（默认）→ central 立即开始扫描
+- listen delay = 1 → **延迟 1 个 interval 后扫描** → 时序窗口对齐
+- 实战：listen delay=1 + scan interval=2 × advertising interval
+
+### nRF52 固件修复
+
+```c
+// 修复 1：interval 随机化（防 40ms 同步抖动）
+sd_ble_gap_adv_set_configure(
+    &adv_handle,
+    &gap_adv_params,
+    BLE_GAP_ADV_SET_CONFIGURATION_ON,
+    // 添加 jitter: 40ms ±10%
+    {.adv_interval = MSEC_TO_UNITS(40 + (rng_get() % 8) - 4, UNIT_0_625_MS)});
+
+// 修复 2：全 3 个 primary advertising channel（37/38/39）
+sd_ble_gap_adv_set_configure(
+    &adv_handle,
+    &gap_adv_params,
+    BLE_GAP_ADV_SET_CONFIGURATION_ON,
+    {.channel_mask = { .value = 0x07 }});  // 全部 3 个信道
+
+// 修复 3：listen delay=1
+sd_ble_gap_scan_start(
+    BLE_GAP_SCAN_TYPE_CONTINUOUS,
+    &scan_params,
+    BLE_GAP_SCAN_FILTER_DUPLICATES_EXTENDED,
+    NULL);  // listen delay 默认 0
+// 改：
+sd_ble_gap_scan_start_extended(
+    BLE_GAP_SCAN_TYPE_CONTINUOUS,
+    &scan_params,
+    NULL,
+    BLE_GAP_SCAN_FILTER_DUPLICATES_EXTENDED,
+    {.listen_delay = 1});  // listen delay = 1
+```
+
+### 4 维故障对策表（配对 / 安全 / 射频 / 供电 / 时序）
+
+| 维度 | 故障 | 对策 |
+| --- | --- | --- |
+| **配对** | 配对失败 5% | interval 随机化 + 全信道 + listen delay=1 |
+| **安全** | 配对过程中断 | Just Works vs Passkey Entry（场景选） |
+| **射频** | 连接后 RSSI 弱 | antenna diversity + PA 模式 |
+| **供电** | 配对瞬间 VCC 跌落 | 100µF bulk cap |
+| **时序** | 配对延迟波动 | 主扫窗 ≥ 从广播间隔 × 2 |
+
+### 配对降功耗配方
+
+```text
+配对阶段：40ms 广播间隔（快速连接）
+成功阶段：100ms 广播间隔（节电）
+传输阶段：connection interval 30ms + slave latency 0（稳定）
+空闲阶段：connection interval 100ms + slave latency 4（更节电）
+```
+
+### 修复 Checklist
+
+```text
+□ interval 随机化 ±10%
+□ 全 3 个 primary advertising channel
+□ listen delay=1
+□ 主扫窗 ≥ 从广播间隔 × 2
+□ 配对 40ms / 成功 100ms（双段式）
+□ 配对瞬间 VCC 100µF bulk
+□ Just Works vs Passkey Entry 按场景选
+□ antenna diversity + PA 模式
+```
+
+### 复盘
+
+- **40ms ±10% 抖动**——**central 配对失败 5% 根因**
+- **listen delay=1**——**时序窗口对齐核心**
+- **主扫窗 ≥ 从广播间隔 × 2**——**spec 隐式规则**
+- **配对 40ms / 成功 100ms**——**双段式节电**
+- **interval 随机化**——**避免同步抖动**
+- **4 维故障对策表**——**配对 / 安全 / 射频 / 供电 / 时序**
+- 跟 R18-1 案例 52（Nordic DevZone BLE+WiFi 共存）**互补**——本案例从**时序**视角
+- 跟 R19-3 案例 59（central 决定 400ms 延迟）**互补**——本案例从**配对阶段**视角
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 4
+- CSDN RFCEO（nRF52 实测）
+
+---
+
+## 案例 71：hubble 10 Most Common BLE Bugs——永久 troubleshooting checklist（supervision timeout ≥ 6× CI）
+
+### 现象
+
+BLE 工程师常见 10 类 bug 反复踩坑：
+- 连接参数算错
+- 跨厂商配对不一致
+- MTU 静默失败
+- CCCD 未写
+- sleep 毫安级
+- Advertising 不可发现
+- 字节序 / buffer 失效
+- GATT 变更缓存
+- bonding 残留
+- debug print 阻塞 HCI
+
+### 10 Most Common BLE Bugs（永久 Checklist）
+
+#### Bug 1：连接参数算错
+
+- 现象：connection interval = 期望 30ms，实际协商 100ms+（iOS / Android 默认）
+- 关键：**`supervision timeout ≥ 6 × connection interval`**
+- 例：CI 30ms × 6 = 180ms → timeout ≥ 200ms
+- 例：CI 7.5ms × 6 = 45ms → timeout ≥ 50ms
+- 修复：读回协商参数（不盲信）
+
+#### Bug 2：跨厂商配对不一致
+
+- 现象：iOS 能配对，Android 失败
+- 关键：iOS Passkey Entry vs Android Just Works
+- 修复：选 Just Works（默认通用）+ iOS 配对密码
+
+#### Bug 3：MTU 静默失败
+
+- 现象：peripheral 默认 23B MTU，application 写 244B → 写失败无报错
+- 关键：**MTU 必须 request + handle response**，否则 fallback 23B
+- 修复：peripheral + central 都启用 BLE 5.0 + exchange MTU
+
+#### Bug 4：CCCD 未写
+
+- 现象：Notify 永远不触发
+- 关键：**CCCD 必须 central 写 0x0001**，peripheral 不能代劳
+- 修复：Android `writeDescriptor(cccd, ENABLE_NOTIFICATION_VALUE)` + 等 onDescriptorWrite 成功
+
+#### Bug 5：sleep 毫安级
+
+- 现象：sensor sleep 应该 < 5µA，实测几毫安
+- 关键：systick / WDT / GPIO 中断没关
+- 修复：deinit 所有外设 + 锁相环停振 + RAM retention 检查
+
+#### Bug 6：Advertising 不可发现
+
+- 现象：广播发了但 scanner 看不到
+- 关键：advertiser type 应该是 `ADV_NONCONN_IND` vs `ADV_IND` 配置错
+- 修复：用 BLE scanner 抓包 + 检查 advertiser type
+
+#### Bug 7：字节序 / buffer 失效
+
+- 现象：parsed 数据全错 / GATT notify 截断
+- 关键：小端 / 大端 / buffer length 检查
+- 修复：length prefix + byte order 标准化
+
+#### Bug 8：GATT 变更缓存
+
+- 现象：GATT service discovery 缓存老数据
+- 关键：service 变更后 central 缓存失效
+- 修复：central 启动时强制 re-discover + service change indication
+
+#### Bug 9：bonding 残留
+
+- 现象：bonding 后设备无法重新配对
+- 关键：bonding 信息存储在 NVM，旧设备 bond 后无法重新配对
+- 修复：factory reset 流程 + bonding delete 命令
+
+#### Bug 10：debug print 阻塞 HCI
+
+- 现象：debug print 太多 → HCI buffer 满 → 数据丢
+- 关键：print 应放低优先级 task，不要在 ISR
+- 修复：ringbuffer + 异步刷 + 限频
+
+### Troubleshooting Checklist 永久参考
+
+```text
+□ CI 协商实际值（不盲信 request）
+□ supervision timeout ≥ 6 × CI
+□ MTU exchange 启用（peripheral + central）
+□ CCCD central 写 0x0001（不代劳）
+□ sleep 电流 < 5µA（systick / WDT / GPIO 全停）
+□ advertising type 配对（ADV_IND vs ADV_NONCONN_IND）
+□ byte order / buffer length 检查
+□ GATT change indication 启用
+□ bonding factory reset 流程
+□ debug print 异步 + 限频
+```
+
+### 复盘
+
+- **10 BLE Bug 永久 checklist**——**工程师必背**
+- **supervision timeout ≥ 6× CI**——**核心安全指标**
+- **CCCD central 写**——**peripheral 不能代劳**
+- **MTU exchange 必须双端**——**静默失败常见**
+- **bonding 残留**——**factory reset 必备**
+- **debug print 阻塞 HCI**——**低优先级**
+- 跟 R18-1 案例 52（Nordic DevZone BLE+WiFi 共存）**互补**——本案例从 **10 bug 清单**视角
+- 跟 R8-3 案例 35（BLE 系统级 5 大错误）**互补**——本案例从**故障字典**视角
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 5
+- hubble（BLE 社区 bug 库）
+
+---
+
+## 案例 72：27 量产项目 19 蓝牙卡点——JLINK 5000 片 3000 错 + 车壳 1.2mm 谐振偏移 70MHz + SPP 18→127ms
+
+### 现象
+
+27 个量产项目里 19 个卡点在蓝牙——**70% 项目都中招**：
+- 烧录一致性
+- 射频漂移
+- SPP 老化丢包
+- EMC 传导
+
+### 4 大量产卡点 + 量化数据
+
+#### 卡点 1：JLINK 烧录一致性（5000 片 3000 校验错）
+
+- 工程师烧写 5000 片 sensor
+- **3000 片校验错**（60% 良率）
+- 根因：JLINK 治具 PCB **长 8 mm**，致 SPI 上升沿 **3.2 ns**
+- SPI spec 上升沿 ≤ 2ns → 超 spec
+- 表现：烧写时序错乱，校验失败
+
+**修复**：
+```text
+- 治具 PCB 缩短到 ≤ 3 mm
+- 加 22 Ω 串联电阻抑制过冲
+- SPI 时钟 ≤ 8 MHz（保守）
+- 烧写速度 50% → 80%
+```
+
+#### 卡点 2：射频漂移（车壳铜箔 1.2 mm 谐振偏移 70 MHz）
+
+- 工程师设计 sensor PCB，调试 OK
+- 装入**金属车壳**后：sensor 性能下降
+- 根因：车壳内壁铜箔距天线 **1.2 mm**
+- 1.2 mm 等效电感 / 电容改变天线谐振频率
+- 谐振偏移 **70 MHz**（2.4 GHz → 2.47 GHz 偏移）
+- 辐射效率 **掉 63%**（3 dB → 5 dB）
+
+**修复**：
+```text
+- 车壳内壁铜箔远离天线 ≥ 10 mm
+- 加 conductive shielding 隔离
+- sensor 装配后整机 OTA 实测（不是单独 sensor OTA）
+```
+
+#### 卡点 3：SPP 老化丢包（30ms 时跳到 127ms）
+
+- 工程师产线老化测试 24 小时
+- BLE 广播间隔 30ms 时 SPP（Serial Port Profile）延迟从 18ms 跳到 127ms
+- 根因：BLE 广播占用 slot → SPP 时槽压缩
+- 30ms 时 SPP 期望 ≤ 20ms，实测 127ms
+
+**修复**：
+```text
+- BLE 广播间隔 ≥ 50ms
+- SPP 与 BLE 时槽错开
+- 老化测试 24h / 168h / 720h 三档
+```
+
+#### 卡点 4：EMC 传导（电源纹波致 RF 性能下降）
+
+- 工程师 EMC 测试不通过
+- 电源纹波传导到 RF 前端
+- 表现：RF 灵敏度降 3-5 dB
+
+**修复**：
+```text
+- VCC 加磁珠（Ferrite bead 100 MHz 1 kΩ）
+- 数字地 vs 模拟地分割
+- LDO 前置
+```
+
+### 修复 Checklist（量产 BLE 必过）
+
+```text
+□ 治具 PCB 缩短 ≤ 3 mm
+□ SPI 串联电阻 22 Ω
+□ SPI 时钟 ≤ 8 MHz 保守
+□ 烧写良率 ≥ 95%
+□ 车壳铜箔距天线 ≥ 10 mm
+□ 加 conductive shielding
+□ sensor 整机 OTA 实测
+□ 老化测试 24h / 168h / 720h
+□ BLE 广播间隔 ≥ 50ms（避免 SPP 时槽压缩）
+□ EMC 测试 VCC 磁珠 + 地分割
+□ 量产 1000 片良率 ≥ 95%
+```
+
+### 复盘
+
+- **70% 项目卡在蓝牙**——**27 个项目 19 卡点**
+- **JLINK 治具 8 mm 致 SPI 3.2 ns**——**硬件细节致命**
+- **车壳铜箔 1.2 mm 谐振偏移 70 MHz**——**装机 vs 单板差异**
+- **老化测试 24h / 168h / 720h 三档**——**长期可靠性验证**
+- **BLE 广播间隔 ≥ 50ms**——**避免 SPP 时槽压缩**
+- **EMC 磁珠 + 地分割**——**量产必修**
+- 跟 R17 案例 41（HDI 离子残留 2µA→20µA）**互补**——本案例从**量产良率**视角
+- 跟 R18-2 案例 53（华汉仪器产线三站闭环）**互补**——本案例从**硬件设计**视角
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 2
+- CSDN（27 量产项目实战）
+
+---
+
+## 案例 73：nRF52840 + Wireshark 抓包——OTA Write Command 总长度比对 + SM Identity Address + 广播间隔异常
+
+### 现象
+
+nRF52840 Dongle + Wireshark 抓包实战：
+- 工程师手工验证 OTA 失败
+- 心率带 iPhone 反复重连
+- 睡醒后连接失效
+- **3 类典型场景都靠抓包定位**
+
+### 3 类典型场景
+
+#### 场景 1：OTA 用 Write Command + 总长度比对 = 高干扰下必翻车
+
+- nRF52840 Dongle OTA 1 MB 固件
+- 用 **Write Command** 传固件（不用 Write Request）
+- 工程师单帧对比正常
+- 实际：高干扰下：
+  - 部分 Write Command 帧丢失
+  - **总长度比对不匹配** → OTA 失败
+- 工程师手工重试才意识到
+
+**修复**：
+```text
+□ 用 Write Request（含 ACK）不用 Write Command
+□ 总长度比对 + CRC32 全程校验
+□ 长 OTA 用 Execute Write Request（commit）
+□ 分块传输（< 244B）+ sliding window
+□ 失败自动回退 + retry 3 次
+```
+
+#### 场景 2：心率带 Android OK / iPhone 13 反复重连
+
+- 心率带（HRP）用 Nordic nRF52832
+- Android 手机连接稳定
+- **iPhone 13 反复重连**（1-2 分钟一次）
+- 抓包定位：**SM（Security Manager）层 Identity Address 字段错**
+- iPhone 严格要求 Identity Address = device's static address
+- Android 容忍 ER（random）address
+
+**修复**：
+```c
+// nRF52 Identity Address 修复
+ble_gap_privacy_params_t privacy_params = {
+    .privacy_mode = BLE_GAP_PRIVACY_MODE_DEVICE_PRIVACY,
+    .private_addr_type = BLE_GAP_ADDR_TYPE_RANDOM_PRIVATE_RESOLVABLE,
+    .private_addr_cycle_s = 900,  // 15 分钟一换
+    .irk = bonding_IRK,  // 与配对 IRK 一致
+};
+```
+
+#### 场景 3：睡醒后连接失效——广播间隔异常
+
+- 穿戴设备进入 sleep → wake up
+- 原本 CI=30ms 的连接突然失效
+- 抓包：广播间隔变成 200ms（**异常拉长**）
+- 根因：wake up 时 radio 没完全初始化 → broadcast 抖动
+- 工程师只看代码日志没看出来，抓包直接看到
+
+**修复**：
+```c
+// wake up 后 radio 重新初始化
+nrf_radio_state_reset();
+sd_ble_gap_adv_set_configure(&adv_handle, &gap_adv_params,
+    BLE_GAP_ADV_SET_CONFIGURATION_ON, NULL);
+```
+
+### Wireshark + nRF52840 Dongle 实战
+
+```text
+硬件：
+  - nRF52840 Dongle（$10）
+  - USB 接 PC
+  - 烧录 nRF Sniffer 固件
+
+软件：
+  - Wireshark
+  - 配合 nRF Sniffer 协议分析
+
+使用：
+  1. 启动 Wireshark → 选 nRF Sniffer 接口
+  2. 配置 channel filter（37/38/39）
+  3. 触发 BLE 事件
+  4. 抓包分析
+```
+
+### 修复 Checklist
+
+```text
+□ OTA 用 Write Request + CRC32 全程校验
+□ Identity Address 字段正确（RP/RPA/Static）
+□ Privacy Mode + IRK
+□ 睡醒后 radio 重新初始化
+□ 广播间隔 wake up 后校验
+□ Wireshark + nRF Sniffer 工具链
+□ 3 类典型场景匹配
+```
+
+### 复盘
+
+- **OTA 用 Write Request 不用 Write Command**——**高干扰下必胜**
+- **Identity Address 字段**——**iOS vs Android 差异**
+- **Privacy Mode + IRK**——**iOS 兼容性**
+- **wake up 后 radio 复位**——**广播异常根因**
+- **Wireshark + nRF52840 Dongle**——**$10 入门工具链**
+- 跟 R19-1 案例 57（Frontline X240 物理层时序）**互补**——本案例从**$10 入门**视角
+- 跟 R19-6 案例 62（Nordic DevZone Notify 间歇丢失）**互补**——本案例从**抓包定位**视角
+
+### 来源
+
+- _Inbox/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 5
+- CSDN（nRF52840 + Wireshark 实战）
+
+---
+
 ## 案例汇总
 
 | # | 现象 | 根因 | 难度 |

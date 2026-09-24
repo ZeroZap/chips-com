@@ -325,3 +325,12 @@ BLE 是"低功耗短距无线的事实标准"，强在功耗、GATT 属性模型
   - 案例 67：Nordic DevZone 多连接掉线（9 外设/3 iOS + HCI 0x08/0x3E/0x28 + 2 Mbps→1 Mbps PHY + LFXTAL C = 2·Cl − Cpin − Cpcb）
   - 案例 68：STM32WBA65 Matter BLE 配网失败（Service UUID 0xFFF6 + Android/iOS 权限差异）
   - 来源：_Inbox/BLE-2026-09-20-candidates.md 候选 2/3/4（候选 1 重复已写）
+- 2026-09-22: 新增 3 实战案例（69-71）
+  - 案例 69：Omi 可穿戴 ghost connection（Flutter 4 层状态混乱 + Native BLE Transporter 重构 + isConnected AND isAudioNotifyActive）
+  - 案例 70：CSDN RFCEO 40ms 间隔时序错位（listen delay=1 + 配对 40ms / 成功 100ms + 主扫窗 ≥ 从广播间隔 × 2）
+  - 案例 71：hubble 10 Most Common BLE Bugs 永久 checklist（MTU exchange + CCCD central 写 + supervision timeout ≥ 6× CI）
+  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 2/4/5（候选 1/3 重复已写）
+- 2026-09-23: 新增 2 实战案例（72-73）
+  - 案例 72：27 量产项目 19 蓝牙卡点——JLINK 治具 8mm SPI 3.2ns + 车壳铜箔 1.2mm 谐振偏移 70MHz 辐射效率掉 63% + SPP 老化 18→127ms
+  - 案例 73：nRF52840 + Wireshark 抓包——OTA Write Command 总长度比对 + SM Identity Address 字段 + 睡醒后广播间隔异常
+  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 2/5（候选 1/3/4 重复已写）
