@@ -10,6 +10,43 @@
 - `modbus-tcp-deep-dive.md`：Modbus TCP MBAP、事务 ID、Unit ID、并发连接和 RTU 网关转换。
 - `rs485-modbus-rtu-practical.md`：RS485 方向控制、终端/偏置、Modbus RTU 帧、CRC 和调试流程。
 - `rs485-modbus-rtu-deep-dive.md`：RS485 半双工、隔离防护、帧间隔、寄存器偏移、主站轮询和现场排障。
+
+### RTU 设备协议全集（远动终端）
+
+- `rtu-protocols.md`：RTU 设备协议支持矩阵——电力（IEC 101/104、DNP3、IEC 61850）、水利/环保（SL651、SZY206、HJ212）、表计/楼宇/IoT（DL/T 645、CJ/T 188、BACnet、MQTT、OPC UA），含典型场景协议组合和 chips-com 补齐路线图。
+- `rtu-gateway-design.md`：RTU 网关总体设计——内部 Point 模型、协议转换策略、数据流。
+
+#### 电力调度协议
+
+- `iec104.md` / `iec104-practical.md` / `iec104-deep-dive.md` / `iec104-index.md` / `iec104-failure-cases.md`：IEC 60870-5-104，国内 RTU 上行标配（L4 完整闭环）。
+- `iec101.md` / `iec101-practical.md` / `iec101-deep-dive.md` / `iec101-index.md` / `iec101-failure-cases.md`：IEC 60870-5-101，IEC 104 的串行版本。
+- `dnp3.md` / `dnp3-practical.md` / `dnp3-deep-dive.md` / `dnp3-index.md` / `dnp3-failure-cases.md`：DNP3，北美电力 SCADA / 出海电力标配。
+- `iec61850.md` / `iec61850-practical.md` / `iec61850-deep-dive.md` / `iec61850-index.md` / `iec61850-failure-cases.md`：IEC 61850，变电站自动化高端。
+
+#### 水利 / 环保监测协议
+
+- `sl651.md` / `sl651-practical.md` / `sl651-deep-dive.md` / `sl651-index.md` / `sl651-failure-cases.md`：SL 651-2014，水文监测国标。
+- `szy206.md` / `szy206-practical.md` / `szy206-deep-dive.md` / `szy206-index.md` / `szy206-failure-cases.md`：SZY 206-2016，水资源监测。
+- `slt427.md` / `slt427-practical.md` / `slt427-deep-dive.md` / `slt427-index.md` / `slt427-failure-cases.md`：SL/T 427，水资源监测补充。
+- `hj212.md` / `hj212-practical.md` / `hj212-deep-dive.md` / `hj212-index.md` / `hj212-failure-cases.md`：HJ 212-2017，环保联网。
+
+#### 表计 / 楼宇 / IoT 协议
+
+- `dlt645.md` / `dlt645-practical.md` / `dlt645-deep-dive.md` / `dlt645-index.md` / `dlt645-failure-cases.md`：DL/T 645，国内电表协议。
+- `cjt188.md` / `cjt188-practical.md` / `cjt188-deep-dive.md` / `cjt188-index.md` / `cjt188-failure-cases.md`：CJ/T 188，水气热量表协议。
+- `bacnet.md` / `bacnet-practical.md` / `bacnet-deep-dive.md` / `bacnet-index.md` / `bacnet-failure-cases.md`：BACnet，楼宇自动化国际标准。
+- `opcua.md` / `opcua-practical.md` / `opcua-deep-dive.md` / `opcua-index.md` / `opcua-failure-cases.md`：OPC UA，工业 4.0 信息建模。
+
+#### RTU 跨协议网关设计
+
+- `modbus-rtu-iec104-gateway.md`：Modbus RTU ↔ IEC 104（电力主站最常见）。
+- `dlt645-iec104-gateway.md`：DL/T 645 ↔ IEC 104（电表接入电力主站）。
+- `modbus-rtu-mqtt-gateway.md`：Modbus RTU ↔ MQTT（工业 IoT 上云）。
+- `hj212-mqtt-gateway.md`：HJ 212 ↔ MQTT（环保 RTU 上云）。
+- `dnp3-iec104-gateway.md`：DNP3 ↔ IEC 104（双栈 / 出海 + 国内）。
+- `bacnet-opcua-gateway.md`：BACnet ↔ OPC UA（楼宇 + 工业 4.0）。
+- `iec61850-iec104-gateway.md`：IEC 61850 ↔ IEC 104（变电站双栈）。
+
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
 - `dmx512-practical.md`：DMX512 Break、Start Code、通道地址、灯具模式、刷新率和终端调试。
 - `dmx512-deep-dive.md`：DMX512 时序、通道模型、RDM、多 Universe、抗干扰和灯光系统排查。

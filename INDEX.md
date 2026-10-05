@@ -49,6 +49,35 @@
 - `bus/modbus-tcp-deep-dive.md`
 - `bus/rs485-modbus-rtu-practical.md`
 - `bus/rs485-modbus-rtu-deep-dive.md`
+- `bus/rtu-protocols.md`：RTU 设备协议全集总览——电力 / 水利 / 表计 / 楼宇 / IoT 协议覆盖矩阵。
+
+### RTU 协议全集（电力 / 水利 / 表计 / 楼宇 / IoT）
+
+每个协议 L4 完整闭环：总览 / 实战 / 深度 / 导航 / 故障案例。
+
+- `bus/iec104.md` / `iec104-practical.md` / `iec104-deep-dive.md` / `iec104-index.md` / `iec104-failure-cases.md`：IEC 60870-5-104。
+- `bus/iec101.md` / `iec101-practical.md` / `iec101-deep-dive.md` / `iec101-index.md` / `iec101-failure-cases.md`：IEC 60870-5-101。
+- `bus/dnp3.md` / `dnp3-practical.md` / `dnp3-deep-dive.md` / `dnp3-index.md` / `dnp3-failure-cases.md`：DNP3（IEEE 1815）。
+- `bus/iec61850.md` / `iec61850-practical.md` / `iec61850-deep-dive.md` / `iec61850-index.md` / `iec61850-failure-cases.md`：IEC 61850 变电站自动化。
+- `bus/sl651.md` / `sl651-practical.md` / `sl651-deep-dive.md` / `sl651-index.md` / `sl651-failure-cases.md`：SL 651-2014 水文监测。
+- `bus/szy206.md` / `szy206-practical.md` / `szy206-deep-dive.md` / `szy206-index.md` / `szy206-failure-cases.md`：SZY 206-2016 水资源监测。
+- `bus/slt427.md` / `slt427-practical.md` / `slt427-deep-dive.md` / `slt427-index.md` / `slt427-failure-cases.md`：SL/T 427 水资源监测补充。
+- `bus/hj212.md` / `hj212-practical.md` / `hj212-deep-dive.md` / `hj212-index.md` / `hj212-failure-cases.md`：HJ 212-2017 环保联网。
+- `bus/dlt645.md` / `dlt645-practical.md` / `dlt645-deep-dive.md` / `dlt645-index.md` / `dlt645-failure-cases.md`：DL/T 645 电能表。
+- `bus/cjt188.md` / `cjt188-practical.md` / `cjt188-deep-dive.md` / `cjt188-index.md` / `cjt188-failure-cases.md`：CJ/T 188 水气热量表。
+- `bus/bacnet.md` / `bacnet-practical.md` / `bacnet-deep-dive.md` / `bacnet-index.md` / `bacnet-failure-cases.md`：BACnet 楼宇自动化。
+- `bus/opcua.md` / `opcua-practical.md` / `opcua-deep-dive.md` / `opcua-index.md` / `opcua-failure-cases.md`：OPC UA 工业 4.0。
+
+### RTU 跨协议网关设计
+
+- `bus/rtu-gateway-design.md`：RTU 网关总体设计（内部 Point 模型 / 协议转换策略）。
+- `bus/modbus-rtu-iec104-gateway.md`：Modbus RTU ↔ IEC 104（电力主站最常见）。
+- `bus/dlt645-iec104-gateway.md`：DL/T 645 ↔ IEC 104（电表接入电力主站）。
+- `bus/modbus-rtu-mqtt-gateway.md`：Modbus RTU ↔ MQTT（工业 IoT 上云）。
+- `bus/hj212-mqtt-gateway.md`：HJ 212 ↔ MQTT（环保 RTU 上云）。
+- `bus/dnp3-iec104-gateway.md`：DNP3 ↔ IEC 104（双栈 / 出海 + 国内）。
+- `bus/bacnet-opcua-gateway.md`：BACnet ↔ OPC UA（楼宇 + 工业 4.0）。
+- `bus/iec61850-iec104-gateway.md`：IEC 61850 ↔ IEC 104（变电站双栈）。
 - `bus/can.md`
 - `bus/canopen.md`
 - `bus/can-canopen-practical.md`
