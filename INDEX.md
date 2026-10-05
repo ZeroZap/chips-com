@@ -78,6 +78,22 @@
 - `bus/dnp3-iec104-gateway.md`：DNP3 ↔ IEC 104（双栈 / 出海 + 国内）。
 - `bus/bacnet-opcua-gateway.md`：BACnet ↔ OPC UA（楼宇 + 工业 4.0）。
 - `bus/iec61850-iec104-gateway.md`：IEC 61850 ↔ IEC 104（变电站双栈）。
+
+### RTU 协议厂商对标
+
+- `bus/iec104-vendor-bench.md`：IEC 104 厂商对标（南瑞 / 四方 / ABB / Siemens / SEL）。
+- `bus/iec101-vendor-bench.md`：IEC 101 厂商对标。
+- `bus/dlt645-vendor-bench.md`：DL/T 645 厂商对标（三星 / 宁波水表 / 海兴 / 威胜）。
+- `bus/hj212-vendor-bench.md`：HJ 212 厂商对标（聚光 / 先河 / 雪迪龙）。
+- `bus/sl651-vendor-bench.md`：SL 651 厂商对标（四创 / 国睿）。
+- `bus/dnp3-vendor-bench.md`：DNP3 厂商对标（ABB / Siemens / SEL / GE）。
+- `bus/iec61850-vendor-bench.md`：IEC 61850 厂商对标。
+- `bus/szy206-vendor-bench.md`：SZY 206 厂商对标。
+- `bus/slt427-vendor-bench.md`：SL/T 427 厂商对标。
+- `bus/bacnet-vendor-bench.md`：BACnet 厂商对标（Honeywell / JCI / Siemens / Schneider）。
+- `bus/opcua-vendor-bench.md`：OPC UA 厂商对标（Siemens / Beckhoff / Rockwell）。
+- `bus/cjt188-vendor-bench.md`：CJ/T 188 厂商对标（宁波水表 / 新天科技）。
+- `bus/mqtt-vendor-bench.md`：MQTT 厂商对标（AWS IoT / Azure / 阿里云 / 华为云 / EMQX）。
 - `bus/can.md`
 - `bus/canopen.md`
 - `bus/can-canopen-practical.md`

@@ -70,6 +70,7 @@
 | BACnet | **5** | **bus/bacnet-* 5 篇 ~28 KB L4 完整闭环** | **维护** |
 | OPC UA | **5** | **bus/opcua-* 5 篇 ~28 KB L4 完整闭环** | **维护** |
 | RTU 网关设计 | 4 | bus/rtu-gateway-design.md + 7 篇网关设计文档 ~42 KB | 维护 |
+| RTU 厂商对标 | 4 | bus/*-vendor-bench.md 13 篇 ~50 KB | 维护 |
 
 ### bus/ 高速总线
 

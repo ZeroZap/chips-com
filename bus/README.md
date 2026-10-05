@@ -47,6 +47,22 @@
 - `bacnet-opcua-gateway.md`：BACnet ↔ OPC UA（楼宇 + 工业 4.0）。
 - `iec61850-iec104-gateway.md`：IEC 61850 ↔ IEC 104（变电站双栈）。
 
+#### RTU 协议厂商对标
+
+- `iec104-vendor-bench.md`：IEC 104 厂商对标（南瑞 / 四方 / ABB / Siemens / SEL）。
+- `iec101-vendor-bench.md`：IEC 101 厂商对标。
+- `dlt645-vendor-bench.md`：DL/T 645 厂商对标（三星 / 宁波水表 / 海兴 / 威胜）。
+- `hj212-vendor-bench.md`：HJ 212 厂商对标（聚光 / 先河 / 雪迪龙）。
+- `sl651-vendor-bench.md`：SL 651 厂商对标（四创 / 国睿）。
+- `dnp3-vendor-bench.md`：DNP3 厂商对标（ABB / Siemens / SEL / GE）。
+- `iec61850-vendor-bench.md`：IEC 61850 厂商对标。
+- `szy206-vendor-bench.md`：SZY 206 厂商对标。
+- `slt427-vendor-bench.md`：SL/T 427 厂商对标。
+- `bacnet-vendor-bench.md`：BACnet 厂商对标（Honeywell / JCI / Siemens / Schneider）。
+- `opcua-vendor-bench.md`：OPC UA 厂商对标（Siemens / Beckhoff / Rockwell）。
+- `cjt188-vendor-bench.md`：CJ/T 188 厂商对标（宁波水表 / 新天科技）。
+- `mqtt-vendor-bench.md`：MQTT 厂商对标（AWS IoT / Azure / 阿里云 / 华为云 / EMQX）。
+
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
 - `dmx512-practical.md`：DMX512 Break、Start Code、通道地址、灯具模式、刷新率和终端调试。
 - `dmx512-deep-dive.md`：DMX512 时序、通道模型、RDM、多 Universe、抗干扰和灯光系统排查。
