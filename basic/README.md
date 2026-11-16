@@ -40,7 +40,6 @@ tags:
 
 - [spi-practical.md](spi-practical.md)：SPI Mode、片选时序、dummy byte、多设备共享和故障定位。
 - [spi-deep-dive.md](spi-deep-dive.md)：SPI 采样模式、CS 边界、dummy cycle、Flash 命令、高速信号和 QSPI/OSPI。
-- [spi-practical.md](spi-practical.md)：SPI Mode、片选时序、dummy byte、多设备共享和故障定位（扩）。
 - [spi-failure-cases.md](spi-failure-cases.md)：21 个产线 SPI 死机案例（Mode 错、CS 时序、Flash 时序、DMA race、信号完整性等）。
 - [spi-multislave-and-dma.md](spi-multislave-and-dma.md)：多从设备共享、菊花链、DMA 模式、中断协作、4 类 race condition 解决方案。
 - [spi-rtos-integration.md](spi-rtos-integration.md)：RT-Thread / Zephyr / FreeRTOS 三平台集成模式、mutex 与 reconfig 优化、双缓冲、实战代码骨架。

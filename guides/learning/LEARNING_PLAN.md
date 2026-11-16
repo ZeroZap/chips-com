@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-**v3.x 沉淀期**（2026-07-29 起）。6 个主题已达 L4 闭环（I2C / SPI / UART / CAN / J1939 / USB），整体深度 70/100。
+**v3.x 沉淀期**（2026-07-29 起）。31 个 5 分主题（19 个核心 L4 + 12 个行业闭环），知识库文档 311 篇（含索引与模板）/ 约 3.1 MB，整体深度 90/100。核心 L4 包括 I2C / SPI / UART / CAN / CANopen / J1939 / OBD-II / WWH-OBD / UDS / USB / BLE / ZigBee / Matter / Thread / LoRa / LTE-IoT / Satellite-IoT / PLB / Rescue-Comms。
 
 暂停主动扩展主题，等实战触发。详见 `## 阶段 6：实战沉淀期`。
 
@@ -273,19 +273,19 @@ Add real-world failure cases and measurement examples
 
 **为什么封口**：
 
-- 6 个 L4 闭环主题 + 47 篇 607 KB 体量已经够扎实一段时间，再主动加容易"知识库胖但实战没跟上"。
+- 31 个 5 分主题 + 311 篇 / 约 3.1 MB 的体量已经够扎实一段时间，再主动加容易"知识库胖但实战没跟上"。
 - 之前 1 周连续做了 3 个主题（CAN / J1939 / USB）的高强度扩展，需要沉淀。
 - **经验法则**：知识库价值 = 闭环主题数 × 实战案例密度。3 个 L4 主题各配 5-10 个真实产线案例 > 10 个 L2 主题只有简介。
 
 **封口期间做什么**：
 
-| 触发 | 动作 |
-| --- | --- |
-| 项目中遇到 I2C / SPI / UART / CAN / J1939 / USB 真实故障 | 写 `xxx-failure-cases.md` 或在 `guides/troubleshooting/DEBUG_PLAYBOOK.md` 加案例段 |
-| 读到高质量实战文章 | 整理进对应主题的 deep-dive，附"实战补充"标记 |
-| 跨主题横向工作（PROTOCOL_SELECTION / DEBUG_PLAYBOOK 升级） | 持续 |
-| 0 空白协议（BLE / ZigBee / LoRa / CAN FD）| **挂起**，等真实项目需要再激活 |
-| L3 → L4 升级（UDS / EtherNet/IP / Profinet / FPD-Link）| **挂起**，等实战触发 |
+| 触发                                                       | 动作                                                                               |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 项目中遇到 I2C / SPI / UART / CAN / J1939 / USB 真实故障   | 写 `xxx-failure-cases.md` 或在 `guides/troubleshooting/DEBUG_PLAYBOOK.md` 加案例段 |
+| 读到高质量实战文章                                         | 整理进对应主题的 deep-dive，附"实战补充"标记                                       |
+| 跨主题横向工作（PROTOCOL_SELECTION / DEBUG_PLAYBOOK 升级） | 持续                                                                               |
+| 仍未覆盖的协议（FlexRay / SENT / USB 3.x / HDMI 2.1）      | **挂起**，等真实项目需要再激活                                                     |
+| L3 → L4 升级（ISO-TP / EtherNet/IP / Profinet / FPD-Link） | **挂起**，等实战触发                                                               |
 
 **封口期 KPI**：
 
@@ -296,11 +296,11 @@ Add real-world failure cases and measurement examples
 
 **封口期结束条件**（任一满足即重新评估）：
 
-- 实战案例积累到 50+ 条（建议分散在 6 个 L4 主题各 8-10 条）
+- 实战案例积累到 50+ 条（优先分散在 I2C / SPI / UART / CAN / J1939 / USB 等核心主题，各 8-10 条）
 - 工作室新项目需要某个当前 0 分或 L1 主题
-- 现有 6 个 L4 主题有 2+ 个用户主动要求升级
+- 现有核心 L4 主题有 2+ 个用户主动要求升级
 
 **关联文档**：
 
-- `TOPIC_MATRIX.md` 第 225 行的"待做主题执行计划"已改名为"候选主题（沉淀期挂起）"
+- `TOPIC_MATRIX.md` 的"候选主题执行计划"已改名为"候选主题（沉淀期挂起）"
 - `INDEX.md` 底部记录 v3.x 封口里程碑

@@ -8,150 +8,149 @@
 
 ## 评分标准
 
-| 分 | 等级 | 标准 | 典型形态 |
-| --- | --- | --- | --- |
-| 5 | L4 闭环 | 速查 + 原理 + 实战 + 案例 + 专题 + 导航, 6+ 篇 50+ KB | I2C / SPI / UART |
-| 4 | L3 实战 | deep-dive + failure-cases, 2-3 篇 15+ KB | UDS / J1939 |
-| 3 | L2 原理 | 单篇 deep-dive, 8-15 KB | I3C / FPD-Link / HDMI/eDP |
-| 2 | L1 速查 | 单篇 practical, 2-5 KB | One-Wire / SDIO |
-| 1 | L0 简介 | 1 KB 概念笔记 | GPIO / PWM / ADC |
-| 0 | 空白 | 完全没有 | LoRa / Thread / Matter |
+| 分  | 等级    | 标准                                                  | 典型形态                  |
+| --- | ------- | ----------------------------------------------------- | ------------------------- |
+| 5   | L4 闭环 | 速查 + 原理 + 实战 + 案例 + 专题 + 导航, 6+ 篇 50+ KB | I2C / SPI / UART          |
+| 4   | L3 实战 | deep-dive + failure-cases, 2-3 篇 15+ KB              | ISO-TP / EtherNet/IP      |
+| 3   | L2 原理 | 单篇 deep-dive, 8-15 KB                               | I3C / FPD-Link / HDMI/eDP |
+| 2   | L1 速查 | 单篇 practical, 2-5 KB                                | One-Wire / SDIO           |
+| 1   | L0 简介 | 1 KB 概念笔记                                         | GPIO / PWM / ADC          |
+| 0   | 空白    | 完全没有                                              | FlexRay / SENT / USB 3.x  |
 
-## 当前完成度矩阵 (2026-07-28)
+## 当前完成度矩阵 (2026-11-16)
 
 ### basic/ 物理层接口 (L0-L1)
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| GPIO | 1 | 1.6 KB 简介 | L2 (deep-dive + 故障树 + 案例) |
-| PWM | 1 | 1.4 KB 简介 | L2 |
-| ADC/DAC | 1 | 1.4 KB 简介 | L2 |
-| JTAG/SWD | 1 | 1.2 KB 简介 | L2 |
-| I2S | 1 | 1.2 KB 简介 | L2 |
-| LVDS | 1 | 1.2 KB 简介 | L2 |
-| CAN PHY | 1 | 1.1 KB 简介 | L2 |
-| Ethernet PHY | 1 | 1.1 KB 简介 | L2 |
-| RS232/RS485 | 1 | 1.4 KB 简介 | L2 |
-| QSPI/OSPI | 1 | 1.2 KB 简介 | L2 |
+| 主题         | 分  | 现状        | 升级目标                       |
+| ------------ | --- | ----------- | ------------------------------ |
+| GPIO         | 1   | 1.6 KB 简介 | L2 (deep-dive + 故障树 + 案例) |
+| PWM          | 1   | 1.4 KB 简介 | L2                             |
+| ADC/DAC      | 1   | 1.4 KB 简介 | L2                             |
+| JTAG/SWD     | 1   | 1.2 KB 简介 | L2                             |
+| I2S          | 1   | 1.2 KB 简介 | L2                             |
+| LVDS         | 1   | 1.2 KB 简介 | L2                             |
+| CAN PHY      | 1   | 1.1 KB 简介 | L2                             |
+| Ethernet PHY | 1   | 1.1 KB 简介 | L2                             |
+| RS232/RS485  | 1   | 1.4 KB 简介 | L2                             |
+| QSPI/OSPI    | 1   | 1.2 KB 简介 | L2                             |
 
 ### basic/ 协议层 ★ 完整闭环主题
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| **I2C** | **5** | **11 篇 151 KB 完整闭环** | 维护 |
-| **SPI** | **5** | **6 篇 75 KB 完整闭环** | 维护 |
-| **UART** | **5** | **6 篇 80 KB 完整闭环** | 维护 |
+| 主题     | 分    | 现状                      | 升级目标 |
+| -------- | ----- | ------------------------- | -------- |
+| **I2C**  | **5** | **11 篇 151 KB 完整闭环** | 维护     |
+| **SPI**  | **5** | **6 篇 75 KB 完整闭环**   | 维护     |
+| **UART** | **5** | **6 篇 80 KB 完整闭环**   | 维护     |
 
 ### bus/ 汽车与工业
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| **CAN** | **5** | **basic/can-* 8 篇 ~120 KB 完整闭环** | **维护** |
-| CANopen | 3 | bus/automotive/canopen.md 0.7 KB + bus/automotive/canopen-*.md 15 KB | 升级为 CAN 闭环一部分 |
-| J1939 | **5** | **bus/automotive/j1939-* 7 篇 ~88 KB L4 完整闭环** | **维护** |
-| UDS | 3 | 3 篇 25.6 KB | L4 闭环 |
-| ISO-TP | 2 | 3 篇 4.6 KB (简介级) | L3 |
-| LIN | 1 | 1 篇 2.9 KB practical | L2-L3 |
-| Profinet | 3 | 3 篇 18.6 KB | L4 |
-| Profibus | 3 | 3 篇 13.7 KB | L4 |
-| EtherCAT | 2 | 1 篇 4.4 KB deep-dive | L3 |
-| Modbus RTU | 3 | 2 篇 12.3 KB | L3 |
-| RTU 协议全集 | 3 | 1 篇 9.0 KB 总览 | L3 |
-| IEC 60870-5-104 | **5** | **bus/power-rtu/iec104-* 5 篇 ~36 KB L4 完整闭环**（+index +failure-cases） | **维护** |
-| IEC 60870-5-101 | **5** | **bus/power-rtu/iec101-* 5 篇 ~24 KB L4 完整闭环** | **维护** |
-| DNP3 | **5** | **bus/power-rtu/dnp3-* 5 篇 ~30 KB L4 完整闭环** | **维护** |
-| IEC 61850 | **5** | **bus/power-rtu/iec61850-* 5 篇 ~36 KB L4 完整闭环** | **维护** |
-| SL 651-2014 | **5** | **bus/power-rtu/sl651-* 5 篇 ~30 KB L4 完整闭环** | **维护** |
-| SZY 206-2016 | **5** | **bus/power-rtu/szy206-* 5 篇 ~22 KB L4 完整闭环** | **维护** |
-| SL/T 427 | **5** | **bus/power-rtu/slt427-* 5 篇 ~22 KB L4 完整闭环** | **维护** |
-| HJ 212-2017 | **5** | **bus/power-rtu/hj212-* 5 篇 ~30 KB L4 完整闭环** | **维护** |
-| DL/T 645 | **5** | **bus/power-rtu/dlt645-* 5 篇 ~28 KB L4 完整闭环** | **维护** |
-| CJ/T 188 | **5** | **bus/power-rtu/cjt188-* 5 篇 ~24 KB L4 完整闭环** | **维护** |
-| BACnet | **5** | **bus/power-rtu/bacnet-* 5 篇 ~28 KB L4 完整闭环** | **维护** |
-| OPC UA | **5** | **bus/industrial/opcua-* 5 篇 ~28 KB L4 完整闭环** | **维护** |
-| RTU 网关设计 | 4 | bus/power-rtu/rtu-gateway-design.md + 7 篇网关设计文档 ~42 KB | 维护 |
-| RTU 厂商对标 | 4 | bus/*/*-vendor-bench.md 13 篇 ~50 KB | 维护 |
+| 主题            | 分    | 现状                                                                      | 升级目标                 |
+| --------------- | ----- | ------------------------------------------------------------------------- | ------------------------ |
+| **CAN**         | **5** | `basic/can-*` 9 篇 ~113 KB 完整闭环（含索引）                             | **维护**                 |
+| **CANopen**     | **5** | `bus/automotive/canopen-*` 6 篇 ~67 KB L4 完整闭环                        | **维护**                 |
+| **J1939**       | **5** | `bus/automotive/j1939-*` 8 篇 ~96 KB L4 完整闭环                          | **维护**                 |
+| **OBD-II**      | **5** | `bus/automotive/obd2-*` 5 篇 ~76 KB L4 完整闭环                           | **维护**                 |
+| **WWH-OBD**     | **5** | `bus/automotive/wwh-obd-*` 5 篇 ~78 KB L4 完整闭环                        | **维护**                 |
+| **UDS**         | **5** | `bus/automotive/uds-*` 5 篇 ~55 KB L4 完整闭环                            | **维护**                 |
+| ISO-TP          | 4     | 5 篇 ~29 KB（含索引与案例）                                               | 补到 50 KB / L4          |
+| CAN FD / CAN XL | 4     | basic/can-fd-and-can-xl.md + bus/automotive/can-fd-* 3 篇 ~80 KB          | 补 practical / deep-dive |
+| LIN             | 2     | 2 篇 ~8 KB（lin + lin-practical）                                         | L2-L3                    |
+| Profinet        | 3     | 3 篇 18.6 KB                                                              | L4                       |
+| Profibus        | 3     | 3 篇 ~13 KB                                                               | L4                       |
+| EtherCAT        | 2     | 1 篇 4.4 KB deep-dive                                                     | L3                       |
+| Modbus RTU      | 3     | 2 篇 12.3 KB                                                              | L3                       |
+| RTU 协议全集    | 3     | 1 篇 9.0 KB 总览                                                          | L3                       |
+| IEC 60870-5-104 | **5** | `bus/power-rtu/iec104-*` 6 篇 ~41 KB L4 完整闭环（+index +failure-cases） | **维护**                 |
+| IEC 60870-5-101 | **5** | `bus/power-rtu/iec101-*` 6 篇 ~31 KB L4 完整闭环                          | **维护**                 |
+| DNP3            | **5** | `bus/power-rtu/dnp3-*` 7 篇 ~40 KB L4 完整闭环                            | **维护**                 |
+| IEC 61850       | **5** | `bus/power-rtu/iec61850-*` 7 篇 ~45 KB L4 完整闭环                        | **维护**                 |
+| SL 651-2014     | **5** | `bus/power-rtu/sl651-*` 6 篇 ~33 KB L4 完整闭环                           | **维护**                 |
+| SZY 206-2016    | **5** | `bus/power-rtu/szy206-*` 6 篇 ~23 KB L4 完整闭环                          | **维护**                 |
+| SL/T 427        | **5** | `bus/power-rtu/slt427-*` 6 篇 ~22 KB L4 完整闭环                          | **维护**                 |
+| HJ 212-2017     | **5** | `bus/power-rtu/hj212-*` 7 篇 ~39 KB L4 完整闭环                           | **维护**                 |
+| DL/T 645        | **5** | `bus/power-rtu/dlt645-*` 7 篇 ~39 KB L4 完整闭环                          | **维护**                 |
+| CJ/T 188        | **5** | `bus/power-rtu/cjt188-*` 6 篇 ~24 KB L4 完整闭环                          | **维护**                 |
+| BACnet          | **5** | `bus/power-rtu/bacnet-*` 7 篇 ~36 KB L4 完整闭环                          | **维护**                 |
+| OPC UA          | **5** | `bus/industrial/opcua-*` 6 篇 ~31 KB L4 完整闭环                          | **维护**                 |
+| RTU 网关设计    | 4     | bus/power-rtu/rtu-gateway-design.md + 7 篇网关设计文档 ~47 KB             | 维护                     |
+| RTU 厂商对标    | 4     | `bus/*/*-vendor-bench.md` 13 篇 ~47 KB                                    | 维护                     |
 
 ### bus/ 高速总线
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| **USB** | **5** | **bus/usb/usb-* 9 篇 ~118 KB 完整闭环（+DFU 子主题 3 篇）** | **维护** |
-| USB DFU | 2 | 3 篇 4.5 KB (浅) | L3 |
-| Ethernet | 3 | 2 篇 9.0 KB | L3 |
-| EtherNet/IP | 3 | 3 篇 24.6 KB | L4 |
-| TSN | 2 | 2 篇 11.2 KB | L3 |
-| PCIe | 2 | 1 篇 4.5 KB practical | L2 |
+| 主题        | 分    | 现状                                                         | 升级目标 |
+| ----------- | ----- | ------------------------------------------------------------ | -------- |
+| **USB**     | **5** | `bus/usb/usb-*` 12 篇 ~114 KB 完整闭环（含 DFU 子主题 3 篇） | **维护** |
+| USB DFU     | 2     | 3 篇 4.5 KB (浅)                                             | L3       |
+| Ethernet    | 3     | 2 篇 9.0 KB                                                  | L3       |
+| EtherNet/IP | 3     | 3 篇 24.6 KB                                                 | L4       |
+| TSN         | 2     | 2 篇 11.2 KB                                                 | L3       |
+| PCIe        | 2     | 1 篇 4.5 KB practical                                        | L2       |
 
 ### bus/ 显示 / 视频
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| HDMI/eDP | 3 | 3 篇 12.7 KB | L4 |
-| FPD-Link/GMSL | 3 | 3 篇 18.0 KB | L4 |
-| MIPI CSI/DSI | 2 | 2 篇 11.5 KB | L3 |
+| 主题          | 分  | 现状         | 升级目标 |
+| ------------- | --- | ------------ | -------- |
+| HDMI/eDP      | 3   | 3 篇 12.7 KB | L4       |
+| FPD-Link/GMSL | 3   | 3 篇 18.0 KB | L4       |
+| MIPI CSI/DSI  | 2   | 2 篇 11.5 KB | L3       |
 
 ### bus/ I2C 生态
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| I3C | 3 | 3 篇 16.8 KB | L4 |
-| SMBus/PMBus | 2 | 2 篇 10.6 KB (smbus + smbus-pmbus-practical) | L3 |
+| 主题        | 分  | 现状                                                 | 升级目标 |
+| ----------- | --- | ---------------------------------------------------- | -------- |
+| I3C         | 3   | 3 篇 ~16.5 KB                                        | L4       |
+| SMBus/PMBus | 2   | 3 篇 11.2 KB (smbus + pmbus + smbus-pmbus-practical) | L3       |
 
 ### bus/ 无线 / IoT / 简单总线
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| MQTT | 2 | 3 篇 5.0 KB (浅) | L3 |
-| DMX512 | 3 | 3 篇 12.4 KB | L3 |
-| One-Wire | 2 | 1 篇 2.8 KB practical | L2 |
-| SDIO | 2 | 1 篇 3.4 KB practical | L2 |
+| 主题     | 分  | 现状                       | 升级目标 |
+| -------- | --- | -------------------------- | -------- |
+| MQTT     | 2   | 4 篇 10.4 KB（含厂商对标） | L3       |
+| DMX512   | 3   | 3 篇 12.4 KB               | L3       |
+| One-Wire | 2   | 1 篇 2.8 KB practical      | L2       |
+| SDIO     | 2   | 1 篇 3.4 KB practical      | L2       |
 
 ### bus/wireless-iot/ 2.4 GHz 私有 / 轻量协议
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| nRF2401 (Nordic ShockBurst) | 2 | bus/wireless-iot/nrf2401.md ~18 KB 单篇完整 | L3 (补 deep-dive + failure-cases) |
+| 主题                        | 分  | 现状                                        | 升级目标                          |
+| --------------------------- | --- | ------------------------------------------- | --------------------------------- |
+| nRF2401 (Nordic ShockBurst) | 2   | bus/wireless-iot/nrf2401.md ~29 KB 单篇完整 | L3 (补 deep-dive + failure-cases) |
 
 ### bus/ 新建 L4 闭环 (5 分) (2026-08-01 新建)
 
-| 主题 | 分 | 现状 | 升级目标 |
-| --- | --- | --- | --- |
-| **BLE (Bluetooth LE)** | **5** | **bus/wireless-iot/ble-* 5 篇 ~50 KB 完整闭环** | **维护** |
-| **ZigBee** | **5** | **bus/wireless-iot/zigbee-* 5 篇 ~60 KB 完整闭环** | **维护** |
-| **Matter** | **5** | **bus/wireless-iot/matter-* 5 篇 ~60 KB 完整闭环** | **维护** |
-| **Thread** | **5** | **bus/wireless-iot/thread-* 5 篇 ~55 KB 完整闭环** | **维护** |
-| **LoRa / LoRaWAN** | **5** | **bus/wireless-iot/lora-* 5 篇 ~70 KB 完整闭环（sub-agent 写）** | **维护** |
-| **LTE-IoT (Cat 1 / Cat M1 / NB-IoT)** | **5** | **bus/wireless-iot/lte-iot-* 5 篇 ~63 KB 完整闭环（sub-agent 写）** | **维护** |
-| **Satellite-IoT (NB-IoT NTN / 北斗 / Iridium / Starlink / inReach)** | **5** | **bus/wireless-iot/satellite-iot-* 5 篇 ~78 KB 完整闭环（sub-agent 写）** | **维护** |
-| **PLB (Personal Locator Beacon)** | **5** | **bus/wireless-iot/plb-* 5 篇 ~82 KB 完整闭环（sub-agent 写）** | **维护** |
-| **Rescue-Communications (卫星 SOS / 短报文 / PLB / 应急)** | **5** | **bus/wireless-iot/rescue-comms-* 5 篇 ~68 KB 完整闭环（sub-agent 写）** | **维护** |
+| 主题                                                                 | 分    | 现状                                                                    | 升级目标 |
+| -------------------------------------------------------------------- | ----- | ----------------------------------------------------------------------- | -------- |
+| **BLE (Bluetooth LE)**                                               | **5** | `bus/wireless-iot/ble-*` 5 篇 ~244 KB 完整闭环                          | **维护** |
+| **ZigBee**                                                           | **5** | `bus/wireless-iot/zigbee-*` 5 篇 ~215 KB 完整闭环                       | **维护** |
+| **Matter**                                                           | **5** | `bus/wireless-iot/matter-*` 5 篇 ~50 KB 完整闭环                        | **维护** |
+| **Thread**                                                           | **5** | `bus/wireless-iot/thread-*` 5 篇 ~45 KB 完整闭环                        | **维护** |
+| **LoRa / LoRaWAN**                                                   | **5** | `bus/wireless-iot/lora-*` 5 篇 ~237 KB 完整闭环（sub-agent 写）         | **维护** |
+| **LTE-IoT (Cat 1 / Cat M1 / NB-IoT)**                                | **5** | `bus/wireless-iot/lte-iot-*` 5 篇 ~54 KB 完整闭环（sub-agent 写）       | **维护** |
+| **Satellite-IoT (NB-IoT NTN / 北斗 / Iridium / Starlink / inReach)** | **5** | `bus/wireless-iot/satellite-iot-*` 5 篇 ~63 KB 完整闭环（sub-agent 写） | **维护** |
+| **PLB (Personal Locator Beacon)**                                    | **5** | `bus/wireless-iot/plb-*` 5 篇 ~71 KB 完整闭环（sub-agent 写）           | **维护** |
+| **Rescue-Communications (卫星 SOS / 短报文 / PLB / 应急)**           | **5** | `bus/wireless-iot/rescue-comms-*` 5 篇 ~57 KB 完整闭环（sub-agent 写）  | **维护** |
 
 ### bus/ 完全空白 (0 分)
 
-| 主题 | 备注 |
-| --- | --- |
-| (无 - 已清空) | 待补：CAN FD / FlexRay / SENT / USB 3.x / HDMI 2.1（汽车 / 高速总线 / 视频） |
-| LoRa / LoRaWAN | 待新建 |
-| CAN FD / CAN XL | 待新建 |
-| FlexRay | 待新建 |
-| SENT / PSI5 | 待新建 |
-| SPDIF / PDM / TDM | 待新建 |
+| 主题                  | 备注   |
+| --------------------- | ------ |
+| FlexRay               | 待新建 |
+| SENT / PSI5           | 待新建 |
+| SPDIF / PDM / TDM     | 待新建 |
 | USB 3.x / Thunderbolt | 待新建 |
-| HDMI 2.1 / DP 2.0 | 待新建 |
+| HDMI 2.1 / DP 2.0     | 待新建 |
 
 ## 横向 / 纵向汇总
 
 ```
-横向覆盖: 50 协议, 87/100 分
+横向覆盖: 34 个索引主题 / 50+ 协议
 纵向深度:
-  L4 闭环: 15 个   (I2C / SPI / UART / CAN / J1939 / USB / BLE / ZigBee / Matter / Thread / LoRa / LTE-IoT / Satellite-IoT / PLB / Rescue-Comms)
-  L3 实战: 4 个    (UDS / EtherNet/IP / Profinet / FPD-Link)
-  L2 原理: 10+ 个
-  L2 原理（新主题）: 1 个 (nRF2401)
-  L1 速查: 大量
-  L0 简介: 大量
-  0 空白: 5 个    (CAN FD / FlexRay / SENT / USB 3.x / HDMI 2.1)
+  5 分主题: 31 个（19 个核心 L4 + 12 个行业闭环）
+  核心 L4: I2C / SPI / UART / CAN / CANopen / J1939 / OBD-II / WWH-OBD / UDS / USB / BLE / ZigBee / Matter / Thread / LoRa / LTE-IoT / Satellite-IoT / PLB / Rescue-Comms
+  行业闭环: IEC 104 / IEC 101 / IEC 61850 / DNP3 / SL 651 / SZY 206 / SL/T 427 / HJ 212 / DL/T 645 / CJ/T 188 / BACnet / OPC UA
+  L3 实战: ISO-TP / EtherNet/IP / Profinet / Profibus / FPD-Link / HDMI/eDP 等
+  L1-L2: 基础外设、LIN、Modbus、I3C、SMBus/PMBus、MQTT、DMX512、One-Wire、SDIO、nRF2401 等
+  0 空白: 5 组    (FlexRay / SENT-PSI5 / SPDIF-PDM-TDM / USB 3.x-Thunderbolt / HDMI 2.1-DP 2.0)
 
 整体深度: 90/100 分
 ```
@@ -164,7 +163,7 @@
 
 ```text
 - 找 1 篇高质公众号 / 技术博客作为"种子文章"
-- 建议来源: 
+- 建议来源:
   - wdfk-prog 公众号 (今日用过, 质量稳定)
   - 嵌入式与 Linux 那些事
   - 裸机思维
@@ -259,7 +258,7 @@ L4 闭环: 6-12 篇  /  60-150 KB
 ## 待做主题执行计划 (按优先级)
 
 > **v3.x 沉淀期封口声明（2026-07-29）**：
-> 6 个 L4 闭环主题 + 47 篇 607 KB 已达实战密度，暂停主动扩展。
+> 31 个 5 分主题 + 311 篇 / 约 3.1 MB 已达实战密度，暂停主动扩展。
 > 以下候选主题**挂起**，等真实项目需求或实战触发再激活。
 > 详见 `guides/learning/LEARNING_PLAN.md` 阶段 6。
 
@@ -270,6 +269,7 @@ L4 闭环: 6-12 篇  /  60-150 KB
 **目标**: L4 闭环 5 分, 8-10 篇 ~120 KB
 
 **路径**:
+
 ```text
 Step 1: 找 1 篇高质量 CAN 文章 (建议: wdfk-prog 的 CAN 系列 或 CiA 官方)
 Step 2: 6 角度拆解
@@ -285,6 +285,7 @@ Step 7: 更新元数据
 ```
 
 **预期产出**:
+
 ```text
 can-practical.md              扩   5 KB
 can-deep-dive.md              扩   20 KB
@@ -307,6 +308,7 @@ can-index.md                  新   7 KB
 **目标**: L4 闭环 5 分, 6-8 篇 ~80 KB
 
 **路径**:
+
 ```text
 Step 1: USB 协议文章 (推荐 USB in a NutShell / 嵌入式 USB 公众号)
 Step 2: 6 角度拆解 (枚举 / 端点 / 描述符 / 事务 / 错误 / 性能)
@@ -368,13 +370,13 @@ Step 6: usb-index.md
 
 ## 文档维护规则
 
-| 触发 | 更新 |
-| --- | --- |
-| 新增任何 .md | INDEX.md + LEARNING_PLAN.md + TOPIC_MATRIX.md |
-| 完成某主题闭环 | 该主题分 +1, 标记 ★ |
-| 升级某主题 | 该主题分 +1, 记录升级时间 |
-| 删除某笔记 | 该主题分 -1, 记录原因 |
-| 整体策略调整 | LEARNING_PLAN.md 改版 |
+| 触发           | 更新                                          |
+| -------------- | --------------------------------------------- |
+| 新增任何 .md   | INDEX.md + LEARNING_PLAN.md + TOPIC_MATRIX.md |
+| 完成某主题闭环 | 该主题分 +1, 标记 ★                           |
+| 升级某主题     | 该主题分 +1, 记录升级时间                     |
+| 删除某笔记     | 该主题分 -1, 记录原因                         |
+| 整体策略调整   | LEARNING_PLAN.md 改版                         |
 
 ## 关联文档
 
@@ -396,3 +398,4 @@ Step 6: usb-index.md
   - `chips-com-external-materials` (激进·每 5 天 9:00) - 轮询 12 个候选协议 + web 搜，写到 `_Inbox/`
   - 输出位置：`_System/cron-reports/scan-*.md` 和 `_Inbox/<协议>-<日期>-candidates.md`
 - 2026-07-30: A 盲区扫描首次跑通（`_System/cron-reports/scan-2026-07-30.md`）。关键发现：**实战案例 115 条已超额（2.3×）**，封口期结束条件之一已达成。10 倍频率生效（A 每天 12 次 / B 每天 2 次 + 24h 去重）。用户决定继续封口。
+- 2026-11-16: 统一计数口径：知识库文档 311 篇（含索引与模板）/ 约 3.1 MB，34 个索引主题，31 个 5 分主题（19 个核心 L4 + 12 个行业闭环）。修正 CAN / CANopen / J1939 / OBD-II / WWH-OBD / UDS / ISO-TP / CAN FD / USB / 无线等条目的篇数与体量；移除 LoRa、CAN FD 的空白误标。

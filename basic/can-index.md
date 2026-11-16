@@ -2,7 +2,7 @@
 
 ## 目标
 
-CAN 是 chips-com 的核心主题之一, 围绕"汽车/工规多 master 实时总线"已经形成 8 篇专题笔记。本文档是 **PHY / 控制器层索引**, 聚焦位时序、差分物理层、仲裁与 Bus Off；协议栈与诊断族请从 [bus/automotive/can-index.md](../bus/automotive/can-index.md) 进入。
+CAN 是 chips-com 的核心主题之一, 围绕"汽车/工规多 master 实时总线"已经形成 9 篇专题笔记（含索引）。本文档是 **PHY / 控制器层索引**, 聚焦位时序、差分物理层、仲裁与 Bus Off；协议栈与诊断族请从 [bus/automotive/can-index.md](../bus/automotive/can-index.md) 进入。
 
 ## 主题地图
 
@@ -13,6 +13,7 @@ chips-com/basic/can-*.md
 │   └── can-practical.md                 调试流程速查
 │
 ├── 原理层
+│   ├── can-phy.md                       物理层 / 收发器 / 终端电阻
 │   ├── can-deep-dive.md                 物理层 / 帧格式 / 仲裁 / 错误处理 / 故障树
 │   └── can-multimaster-and-bus-off.md   多 master 仲裁 + 错误状态机 + Bus Off
 │
@@ -186,8 +187,8 @@ can-index.md (本文件, 导航)
 
 | 主题    | 篇数  | 大小       | 重点                                        |
 | ------- | ----- | ---------- | ------------------------------------------- |
-| **CAN** | **8** | **120 KB** | **实时多 master + 错误处理 + 演进 (FD/XL)** |
-| I2C     | 12    | 151 KB     | 协议兼容性 + 总线恢复 (Recovery)            |
+| **CAN** | **9** | **113 KB** | **实时多 master + 错误处理 + 演进 (FD/XL)** |
+| I2C     | 11    | 151 KB     | 协议兼容性 + 总线恢复 (Recovery)            |
 | SPI     | 6     | 75 KB      | 多从 / 菊花链 / 高速                        |
 | UART    | 6     | 80 KB      | RS485 / 流控 / 异步日志                     |
 
@@ -263,9 +264,10 @@ CAN 涉及的标准横跨物理层到法规，完整总表见 **`bus/automotive/
 
 ## 一句话总结
 
-CAN 是"可靠的实时多 master 现场总线", 强在错误检测、仲裁和实时性。从原理到产线案例, 8 篇笔记覆盖完整。和 I2C / SPI / UART 的关系是"互补"而非"竞争"。
+CAN 是"可靠的实时多 master 现场总线", 强在错误检测、仲裁和实时性。从原理到产线案例, 9 篇笔记（含索引）覆盖完整。和 I2C / SPI / UART 的关系是"互补"而非"竞争"。
 
 ## 更新记录
 
 - 2026-07-26: 初版, 8 篇笔记全部完成 (L4 闭环)
 - 2026-10-31: 新增「相关标准规范」节; 修正 ISO-TP 实战文档坏链; 补充 CANopen / UDS / ISO-TP / OBD-II 的案例库链接。
+- 2026-11-16: 统一计数口径, 修正为 9 篇（含索引）/ 113 KB, 并在主题地图补入 can-phy.md。
