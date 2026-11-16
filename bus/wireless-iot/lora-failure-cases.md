@@ -991,7 +991,7 @@ HCI / 串口层无异常：MCU 在跑，但 5V 输出为 0
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-03-candidates.md 候选 1
+- _Inbox/已处理/LoRa-2026-08-03-candidates.md 候选 1
 - Dragino LC01 量产复盘
 - 现场电工返工记录
 
@@ -1092,7 +1092,7 @@ HCI / 串口层无异常：MCU 在跑，但 5V 输出为 0
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-03-candidates.md 候选 2
+- _Inbox/已处理/LoRa-2026-08-03-candidates.md 候选 2
 - 化工厂"零排放"合规改造项目复盘
 - ATMEGA328P + SX1276 私有协议代码（GitHub 公开仓库）
 
@@ -1543,7 +1543,7 @@ Step 4：抗 ADR 振荡
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-22-candidates.md 候选 1
+- _Inbox/已处理/LoRa-2026-08-22-candidates.md 候选 1
 - Concept13 Join-Storm 商业案例
 - LoRa Alliance Backend Interfaces TS002
 
@@ -1645,7 +1645,7 @@ SX1301 LoRaWAN 网关长期运行（6 个月+）出现 5 类故障：
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-13-candidates.md 候选 1
+- _Inbox/已处理/LoRa-2026-08-13-candidates.md 候选 1
 - CSDN 实战博客（江俊杰 2005）
 - Semtech SX1301 datasheet §6
 
@@ -1717,7 +1717,7 @@ void lora_send_safely(uint8_t *payload, uint8_t len) {
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-22-candidates.md 候选 4
+- _Inbox/已处理/LoRa-2026-08-22-candidates.md 候选 4
 - CSDN aiot 实战报告
 - Semtech SX1262 datasheet §6
 
@@ -1814,7 +1814,7 @@ void adr_update(adr_state_t *adr, int16_t rssi) {
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-22-candidates.md 候选 5
+- _Inbox/已处理/LoRa-2026-08-22-candidates.md 候选 5
 - 廊坊大讲堂（chirp 物理层）
 - EN300.220 EU868 duty cycle 规范
 
@@ -1889,7 +1889,7 @@ CN470 8 子带（推荐配置）：
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-08-16-candidates.md 候选 3
+- _Inbox/已处理/LoRa-LoRaWAN-2026-08-16-candidates.md 候选 3
 - CSDN 实战博客
 - CN470 LoRaWAN Regional Parameters RP2-1.0.3
 
@@ -2017,7 +2017,7 @@ void lora_init_otaa(void) {
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-24-candidates.md 候选 3
+- _Inbox/已处理/LoRa-2026-08-24-candidates.md 候选 3
 - _Inbox/LoRa-LoRaWAN-2026-08-28-candidates.md 候选 4
 - 电子工程专辑 ST 中文应用笔记
 - STM32WL Reference Manual
@@ -2251,8 +2251,8 @@ Step 5：少数远程无法解决 → 寄回分析
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-30-candidates.md 候选 1
-- _Inbox/LoRa-2026-08-31-candidates.md 候选 4
+- _Inbox/已处理/LoRa-2026-08-30-candidates.md 候选 1
+- _Inbox/已处理/LoRa-2026-08-31-candidates.md 候选 4
 - iotclass.org 22 个 IoT 部署 post-mortem
 
 ---
@@ -2363,8 +2363,8 @@ World Bank 城市空气质量监测项目（World Bank IoT post-mortem）：
 ### 来源
 
 - _Inbox/LoRa-LoRaWAN-2026-08-28-candidates.md 候选 1
-- _Inbox/LoRa-2026-08-30-candidates.md 候选 3
-- _Inbox/LoRa-2026-08-31-candidates.md 候选 3
+- _Inbox/已处理/LoRa-2026-08-30-candidates.md 候选 3
+- _Inbox/已处理/LoRa-2026-08-31-candidates.md 候选 3
 - _Inbox/LoRa-LoRaWAN-2026-09-02-candidates.md 候选 3
 - LinkedIn Mashuk E Lahi 实战
 
@@ -2502,7 +2502,7 @@ Q5：成本敏感？
 
 ### 来源
 
-- _Inbox/LoRa-2026-08-30-candidates.md 候选 2
+- _Inbox/已处理/LoRa-2026-08-30-candidates.md 候选 2
 - _Inbox/LoRa-LoRaWAN-2026-09-02-candidates.md 候选 1 + 候选 4
 - 尧图网络 实战
 - 骏晔科技 DreamLNK
@@ -2558,7 +2558,7 @@ Radio.SetChannelMask(0x0000FF00);  // 仅 64 信道
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-05-candidates.md 候选 1
+- _Inbox/已处理/LoRa-2026-09-05-candidates.md 候选 1
 - Semtech 官方 GitHub SWL2001 issue 52
 - LR1120 datasheet §3.2
 
@@ -2633,7 +2633,7 @@ docker run -d \
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-05-candidates.md 候选 2
+- _Inbox/已处理/LoRa-2026-09-05-candidates.md 候选 2
 - Azure 官方 GitHub iotedge-lorawan-starterkit issue 292
 - PR #294
 
@@ -2740,7 +2740,7 @@ Step 5：长期维护
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-05-candidates.md 候选 3
+- _Inbox/已处理/LoRa-2026-09-05-candidates.md 候选 3
 - ioX-Connect 行业 blog（LoRaWAN 网络运营商）
 
 ---
@@ -2855,7 +2855,7 @@ void loop() {
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-05-candidates.md 候选 4
+- _Inbox/已处理/LoRa-2026-09-05-candidates.md 候选 4
 - MakerOnSite 中文实战博客
 - SX1278 datasheet §5
 
@@ -2982,7 +2982,7 @@ LoRa.endPacket();
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-05-candidates.md 候选 5
+- _Inbox/已处理/LoRa-2026-09-05-candidates.md 候选 5
 - 尧图网络 中文 5 篇系列
 - MachineQ 文档
 
@@ -3070,7 +3070,7 @@ void staggered_join(void) {
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 1
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 1
 - 腾讯云开发者社区
 
 ---
@@ -3160,7 +3160,7 @@ Step 5：天线方向图错配
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 2
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 2
 - 华为云 博主
 
 ---
@@ -3252,9 +3252,9 @@ void setup_lmic_us915(void) {
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 4
-- _Inbox/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 2
-- _Inbox/LoRa-LoRaWAN-2026-09-11-candidates.md 候选 5
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 4
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 2
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-11-candidates.md 候选 5
 - electricalflux.com 工程师实战
 - MCCI LMIC 文档
 
@@ -3369,7 +3369,7 @@ void sx1262_init_dcdc(void) {
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 5
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-06-candidates.md 候选 5
 - CSDN 8 年 IIoT 工程师
 - Semtech SX1262 datasheet §4
 
@@ -3477,7 +3477,7 @@ FUOTA + Class A↔C 切换：
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-08-candidates.md 候选 1
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-08-candidates.md 候选 1
 - 拓冰网络（kwkd.cn）
 
 ---
@@ -3572,7 +3572,7 @@ def on_uplink(packet):
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-08-candidates.md 候选 3
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-08-candidates.md 候选 3
 - talkin.icu 实战
 
 ---
@@ -3687,8 +3687,8 @@ mosquitto_sub -h localhost -t '+/devices/+/events/#' -v | grep error
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 3
-- _Inbox/LoRa-LoRaWAN-2026-09-11-candidates.md 候选 4
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 3
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-11-candidates.md 候选 4
 - Industrial Monitor Direct 知识库
 
 ---
@@ -3793,7 +3793,7 @@ Phase 3：现场安装+基线建立（4 周，第二大块）
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 5
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-09-candidates.md 候选 5
 - EurthTech 工程博客
 
 ---
@@ -3914,7 +3914,7 @@ Step 3：ADR 关闭 + 强制 SF 分配
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1
 - sheratonhq 技术 blog（中文 LoRa 实战）
 
 ---
@@ -4016,7 +4016,7 @@ T+22 月：模型失效，系统废弃 = Year-Two 死亡
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 2
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 2
 - techeasily IIoT 博客
 
 ---
@@ -4131,7 +4131,7 @@ echolo.io 一线部署商 4 年实战的真实数据 vs 厂商 spec：
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 3
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 3
 - echolo.io（一线 LoRa 部署商 4 年实战）
 
 ---
@@ -4245,7 +4245,7 @@ Step 4：设备上行时间戳
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 4
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 4
 - Industrial Monitor Direct（LoRa 知识库）
 
 ---
@@ -4395,7 +4395,7 @@ Step 4：现场 RSSI 调查
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 5
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 5
 - Robustel 工程级博客
 
 ---
@@ -4500,7 +4500,7 @@ Step 4：万用表测天线连通
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-17-candidates.md 候选 1
+- _Inbox/已处理/LoRa-2026-09-17-candidates.md 候选 1
 - electricalflux.com（嵌入式开发者 blog）
 
 ---
@@ -4622,7 +4622,7 @@ Step 4：检查 gateway 类型
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-17-candidates.md 候选 2
+- _Inbox/已处理/LoRa-2026-09-17-candidates.md 候选 2
 - electricalflux.com
 
 ---
@@ -4767,7 +4767,7 @@ Step 5：BUSY 时序
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-17-candidates.md 候选 3
+- _Inbox/已处理/LoRa-2026-09-17-candidates.md 候选 3
 - mhpq.cn（中文实战 blog）
 
 ---
@@ -4895,7 +4895,7 @@ Step 5：观察频谱图：看到斜线 = TX OK
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-17-candidates.md 候选 4
+- _Inbox/已处理/LoRa-2026-09-17-candidates.md 候选 4
 - electricalflux.com
 
 ---
@@ -5098,7 +5098,7 @@ Layer 3（NS）
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-17-candidates.md 候选 5
+- _Inbox/已处理/LoRa-2026-09-17-candidates.md 候选 5
 - lab5e.com（LoRaWAN 网络服务商）
 
 ---
@@ -5233,7 +5233,7 @@ Layer 3（NS）
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-19-candidates.md 候选 1
+- _Inbox/已处理/LoRa-2026-09-19-candidates.md 候选 1
 - CSDN（LoRa 项目翻车实录）
 
 ---
@@ -5340,7 +5340,7 @@ Layer 3（NS）
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-19-candidates.md 候选 2
+- _Inbox/已处理/LoRa-2026-09-19-candidates.md 候选 2
 - CSDN（车间无线 LoRa 实战 JYLN061）
 
 ---
@@ -5455,7 +5455,7 @@ Step 5：实测 SNR
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-19-candidates.md 候选 3
+- _Inbox/已处理/LoRa-2026-09-19-candidates.md 候选 3
 - moltbook（LoRa 仓库调试实战）
 
 ---
@@ -5570,7 +5570,7 @@ G = packet_rate × packet_time
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-19-candidates.md 候选 4
+- _Inbox/已处理/LoRa-2026-09-19-candidates.md 候选 4
 - moltbook（LoRa 密集部署实战）
 
 ---
@@ -5672,7 +5672,7 @@ SX1262 SF5 LoRa 模块，6 个月 147 测试完整复盘：
 
 ### 来源
 
-- _Inbox/LoRa-2026-09-19-candidates.md 候选 5
+- _Inbox/已处理/LoRa-2026-09-19-candidates.md 候选 5
 - dredyson.com（SX1262 SF5 6 月 147 测试）
 
 ---
@@ -5815,7 +5815,7 @@ lora_set_adaptive_data_rate(true);
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 1
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 1
 - CSDN 实战博客
 
 ---
@@ -5941,7 +5941,7 @@ Step 5：2 次重传
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 2
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 2
 - 成都亿佰特（LoRa 模块厂商，E22 内置 FEC + LBT）
 
 ---
@@ -6028,7 +6028,7 @@ Step 5：2 次重传
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 3
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 3
 - TrueSight（工业 IoT 技术博客，针对矿井/变频器车间）
 
 ---
@@ -6156,7 +6156,7 @@ FSK (Frequency Shift Keying):
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 4
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 4
 - 技象科技（TPUNB 通信模块厂商）
 
 ---
@@ -6330,7 +6330,7 @@ for (int retry = 0; retry < MAX_RETRY; retry++) {
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 1
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 1
 - Concept13（英国方案商，欧企设施管理真实案例）
 
 ---
@@ -6492,7 +6492,7 @@ crontab -e
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 2
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 2
 - Tech Champion（个人博客，含可运行脚本）
 
 ---
@@ -6623,7 +6623,7 @@ Step 4：链路预算实测
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 3
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 3
 - TrueSight（中文，物理层排障）
 
 ---
@@ -6770,7 +6770,7 @@ typedef struct {
 
 ### 来源
 
-- _Inbox/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 4
+- _Inbox/已处理/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 4
 - hqwc.cn（智能电网站点）
 
 ---

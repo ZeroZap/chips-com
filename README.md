@@ -10,7 +10,9 @@
 - 文字仪表盘：[Home.md](Home.md)
 - 完整索引：[INDEX.md](INDEX.md)
 
-`.obsidian/` 已包含推荐配置：默认使用 Wikilink、启用 Canvas / 图谱 / 大纲等核心插件，并在搜索与图谱中排除 `_Inbox/`、`_System/` 两个自动化目录。
+`.obsidian/` 已包含推荐配置：默认使用 Wikilink、启用 Canvas / 图谱 / 大纲等核心插件，并在搜索与图谱中排除 `_Inbox/` 与 `_System/`。
+
+`_Inbox/` 是候选素材队列，处理流程见 `_Inbox/README.md`，可用 `python scripts/inbox_status.py` 查看积压。`_System/` 是本地自动化运行日志，已加入 `.gitignore`，不再入库。
 
 ## 分类原则
 

@@ -297,40 +297,40 @@ BLE 是"低功耗短距无线的事实标准"，强在功耗、GATT 属性模型
 - 2026-09-12: 新增 2 实战案例（50-51）
   - 案例 50：EBYTE 遥控器产线 90% 断连 4 大根因（brownout 50mV / 2.4GHz 拥堵 / VSWR>3.0 / 连接参数）
   - 案例 51：STM32 HCI 0x10 硬件错误 + ISR 延迟（SysTick 优先级倒置 / 关中断超字节 / NVIC 分组错 / 阻塞 printf）
-  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 2/4
+  - 来源：_Inbox/已处理/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 2/4
 - 2026-09-13: 新增 5 实战案例（52-56）
   - 案例 52：Nordic DevZone BLE+WiFi 共存 SAR 包乱序（800KB 三方日志时间戳对齐 + 滑动窗口 SAR）
   - 案例 53：华汉仪器产线测试三站闭环（误测/参数偏移/硬故障 3 类 + SN 全程追溯 + MES Fail）
   - 案例 54：Linux kernel conn_timeout 2s→20s patch（Volvo 工业压力传感器 + userspace/kernel 双 timeout）
   - 案例 55：信号完整性重构 BLE 连接（信道图谱跳频剔除 + T_IFS 时序 + ACK 优先级）
   - 案例 56：SweynTooth 12 CVE 影响 480+ 产品（SoC 选型必查 CVE 历史 + patch 节奏）
-  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 1-5
+  - 来源：_Inbox/已处理/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 1-5
 - 2026-09-16: 新增 2 实战案例（57-58）
   - 案例 57：MicroRidge IMTS 2024 现场 AFH clean channel 池压垮循环跳频（金属多径反直觉）
   - 案例 58：Gutab 工业平板 4 维排查（VSWR / IPEX / 电源去耦 + USB selective suspend 隐藏杀手）
-  - 来源：_Inbox/BLE-2026-09-16-candidates.md 候选 1/3
+  - 来源：_Inbox/已处理/BLE-2026-09-16-candidates.md 候选 1/3
 - 2026-09-18: 新增 5 实战案例（59-63）
   - 案例 59：nRF52 400ms 延迟 central 决定（iOS 30ms/Android 48ms + 协商不是 setter）
   - 案例 60：nRF52840 iPhone 30s 断连 reason 0x08 + housekeeping 阻塞 radio（iOS 硬规则 2 行 fix）
   - 案例 61：nRF52 OTA 8 KB/s → 80 KB/s 三旋钮（MTU=247 + DLE + interval=15ms）
   - 案例 62：Nordic DevZone Notify 间歇丢失（timer-driven vs event-driven 互锁 + 错误码 NRF_ERROR_NO_MEM）
   - 案例 63：Android 连上≠链路通——CCCD=0x0001 五状态机样板（Disconnected→Connected→ServicesReady→NotificationReady→ProtocolReady）
-  - 来源：_Inbox/BLE-2026-09-18-candidates.md 候选 1-5
+  - 来源：_Inbox/已处理/BLE-2026-09-18-candidates.md 候选 1-5
 - 2026-09-19: 新增 2 实战案例（64-65）
   - 案例 64：SKNP 树莓派3B + bleak + BlueZ 双扫码枪 8 踩坑（SIGKILL 假连接 + 双枪 InProgress + Notify 分包截断 + 3 档退避）
   - 案例 65：Frontline X240 BLE 5.x 2Mbps PHY 物理层时序（T_IFS 偏移 + Anchor Point 漂移 + L2CAP 静默丢包）
-  - 来源：_Inbox/BLE-2026-09-19-candidates.md 候选 3/5
+  - 来源：_Inbox/已处理/BLE-2026-09-19-candidates.md 候选 3/5
 - 2026-09-20: 新增 3 实战案例（66-68）
   - 案例 66：EBYTE Optimizing Bluetooth Receivers 4 维硬件 + 量化门限（VCC 纹波 < 50mVpp + RSSI > -85 dBm + 32 kHz ±20 ppm）
   - 案例 67：Nordic DevZone 多连接掉线（9 外设/3 iOS + HCI 0x08/0x3E/0x28 + 2 Mbps→1 Mbps PHY + LFXTAL C = 2·Cl − Cpin − Cpcb）
   - 案例 68：STM32WBA65 Matter BLE 配网失败（Service UUID 0xFFF6 + Android/iOS 权限差异）
-  - 来源：_Inbox/BLE-2026-09-20-candidates.md 候选 2/3/4（候选 1 重复已写）
+  - 来源：_Inbox/已处理/BLE-2026-09-20-candidates.md 候选 2/3/4（候选 1 重复已写）
 - 2026-09-22: 新增 3 实战案例（69-71）
   - 案例 69：Omi 可穿戴 ghost connection（Flutter 4 层状态混乱 + Native BLE Transporter 重构 + isConnected AND isAudioNotifyActive）
   - 案例 70：CSDN RFCEO 40ms 间隔时序错位（listen delay=1 + 配对 40ms / 成功 100ms + 主扫窗 ≥ 从广播间隔 × 2）
   - 案例 71：hubble 10 Most Common BLE Bugs 永久 checklist（MTU exchange + CCCD central 写 + supervision timeout ≥ 6× CI）
-  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 2/4/5（候选 1/3 重复已写）
+  - 来源：_Inbox/已处理/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 2/4/5（候选 1/3 重复已写）
 - 2026-09-23: 新增 2 实战案例（72-73）
   - 案例 72：27 量产项目 19 蓝牙卡点——JLINK 治具 8mm SPI 3.2ns + 车壳铜箔 1.2mm 谐振偏移 70MHz 辐射效率掉 63% + SPP 老化 18→127ms
   - 案例 73：nRF52840 + Wireshark 抓包——OTA Write Command 总长度比对 + SM Identity Address 字段 + 睡醒后广播间隔异常
-  - 来源：_Inbox/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 2/5（候选 1/3/4 重复已写）
+  - 来源：_Inbox/已处理/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 2/5（候选 1/3/4 重复已写）

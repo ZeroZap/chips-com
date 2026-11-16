@@ -124,7 +124,7 @@ Step 3：晶振精度
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 1
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 1
 - STM32H743 Reference Manual §56
 - TJA1145 datasheet
 
@@ -205,7 +205,7 @@ RXD 工业环境 20kΩ 上拉：
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 2
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 2
 - 英飞凌 TC275 Reference Manual
 - TSMaster 工具文档
 
@@ -311,7 +311,7 @@ Step 3：找配置来源
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 3
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 3
 - TSMaster 工具文档
 - CAN 2.0 / CAN FD ISO 11898-1:2015
 
@@ -407,7 +407,7 @@ Step 3：手算采样点
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 4
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 4
 - 世强（瑞萨代理）
 - RA6M5 User Manual §36
 
@@ -501,7 +501,7 @@ send(sock, &frame, sizeof(frame), 0);
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 5
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-13-candidates.md 候选 5
 - RK3576 Reference Manual §17
 - ISO 11898-1:2015
 
@@ -612,7 +612,7 @@ void calibrate_tdco_after_install(void) {
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 1
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 1
 - 电子工程专辑 窦明佳
 - 汽车电子 10+ 年工程师实战
 
@@ -733,7 +733,7 @@ void canfd_tdc_config(void) {
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 2
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 2
 - CSDN 汽车电子 10+ 年工程师
 - NXP S32K Reference Manual
 
@@ -845,7 +845,7 @@ Daimler 演示数据（2022 夏）：
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 4
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-08-26-candidates.md 候选 4
 - CiA + Daimler Truck 联合报道
 - Bosch 商用 ECU 文档
 
@@ -959,7 +959,7 @@ Daimler 演示数据（2022 夏）：
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 1
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 1
 - CSDN 重卡 BMS 实战
 
 ---
@@ -1115,7 +1115,7 @@ void CAN_Error_Process(void) {
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 2
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 2
 - 尧图网络 量产工程师
 - STM32F4 Reference Manual §43.7
 - Bosch CAN Specification 2.0
@@ -1256,7 +1256,7 @@ void vcc_brownout_handler(void) {
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 4
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-02-candidates.md 候选 4
 - CSDN 车载网关
 - SN65HVD230 datasheet §7.3
 
@@ -1339,7 +1339,7 @@ Step 4：温度漂移
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 1
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 1
 - obd-cable.com（OBD 线缆工厂）
 - ISO 11898-2:2024 §5.4
 
@@ -1429,7 +1429,7 @@ Step 4：屏蔽层检查
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 2
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 2
 - Eurth Tech（工业现场总线供应商）
 - ISO 11898-2:2016 §5.3 / §6.2
 
@@ -1509,7 +1509,7 @@ Step 4：fix 实施
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 3
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 3
 - NHTSA 26V104000（2026-02-20）
 - logcat.ai（Android Automotive 调试博客，2026-03）
 
@@ -1607,7 +1607,7 @@ Step 4：定位到 RS pin
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 4
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-11-candidates.md 候选 4
 - TI E2E 论坛（Mike Page 求助原帖）
 - SN65HVD234 datasheet（TI SLLS877E §7.3）
 
@@ -1704,7 +1704,7 @@ Step 4：物理层验证（排除）
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-15-candidates.md 候选 1
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-15-candidates.md 候选 1
 - CSDN 窦明佳
 
 ---
@@ -1792,7 +1792,7 @@ Step 4：决策
 
 ### 来源
 
-- _Inbox/CAN-FD-CAN-XL-2026-09-15-candidates.md 候选 4
+- _Inbox/已处理/CAN-FD-CAN-XL-2026-09-15-candidates.md 候选 4
 - LinkedIn（Kumar Swamy Naik 调试日记）
 
 ---
@@ -1910,7 +1910,7 @@ Step 4：抓 Bus-off 恢复时间
 
 ### 来源
 
-- _Inbox/CAN-FD-2026-09-17-candidates.md 候选 2
+- _Inbox/已处理/CAN-FD-2026-09-17-candidates.md 候选 2
 - Hoomanely Tech Blog（STM32H562 多传感器边缘平台）
 
 ---
@@ -2063,7 +2063,7 @@ TEC ≥ 256 OR REC ≥ 256
 
 ### 来源
 
-- _Inbox/CAN-FD-2026-09-17-candidates.md 候选 4
+- _Inbox/已处理/CAN-FD-2026-09-17-candidates.md 候选 4
 - CSDN（汽车电子项目）
 
 ---
@@ -2197,7 +2197,7 @@ HAL_FDCAN_ConfigTxQueueFifo(&hfdcan1, FDCAN_TX_PRIORITY_HIGH, 0);
 
 ### 来源
 
-- _Inbox/CAN-FD-2026-09-17-candidates.md 候选 5
+- _Inbox/已处理/CAN-FD-2026-09-17-candidates.md 候选 5
 - CSDN（STM32H7 车载网关量产经验）
 
 ---

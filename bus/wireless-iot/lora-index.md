@@ -306,30 +306,30 @@ LoRa / LoRaWAN 是"远距低功耗 IoT 的事实标准"，强在距离、电池�
   - 案例 40：LoRaWAN spec vs reality（农场 6-8mi / 林地 1-3mi / 工业 200-600m / 电池 2-3y）
   - 案例 41：Downlinks scheduled not sent（4 fault domain + ChirpStack device lock + 三平台对比）
   - 案例 42：Gateway RSSI/SNR/Packet loss（SNR 阈值按 SF + 3 丢包 pattern + 4 类隐性硬件故障）
-  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1-5
+  - 来源：_Inbox/已处理/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1-5
 - 2026-09-17: 新增 5 实战案例（43-47）
   - 案例 43：ESP32 SX1262 LoRaWAN TX brownout + US915 sub-band mask + 470µF bulk cap
   - 案例 44：Heltec V3 TTN -707/-706（V2/V3 板卡 SPI 映射混淆 + SX1278 vs SX1262）+ MSB/LSB 字节序
   - 案例 45：STM32WLE5 modem_supervisor_init 卡死（HSE32 + TCXO DIO3 + RCC-CR.HSE32RDY + BUSY 引脚 5 步排查法）
   - 案例 46：SPI Mode 0 + SX1262 max 16MHz + NSS pull-up + SDR 看 CSS chirp 验 TX + DevEUI 冲突 nonce mismatch
   - 案例 47：Firmware 三层调试法——RTL-SDR 看空口 + IC880A+Pi 自建 gateway + ChirpStack 栈诊断
-  - 来源：_Inbox/LoRa-2026-09-17-candidates.md 候选 1-5
+  - 来源：_Inbox/已处理/LoRa-2026-09-17-candidates.md 候选 1-5
 - 2026-09-19: 新增 5 实战案例（48-52）
   - 案例 48：LoRa SF/带宽/编码率配置不当电池续航雪崩（万亩农田 3y→4 月 + 6000 水表 9→48 月 + SF 速查表）
   - 案例 49：车间无线 3 大杀手——VFD 谐波 + 电焊机拉弧 + 多径驻波（JYLN061 SF10+BW125+CR4/5+27dBm 1h 0 丢包）
   - 案例 50：12km LOS ok / 400m 仓库失败——VFD 拉噪声底（RSSI+SNR 双轨 + cavity filter LNA 前 + SNR -3→+7 dB）
   - 案例 51：12km LOS ok / 400m 停车场失败——40 节点 RTC 同步唤醒 ALOHA 同频碰撞（chip unique ID 0-45s 偏移 + 丢包 95%→<3%）
   - 案例 52：SX1262 SF5 6 月 147 测试 4 隐形坑（RadioLib TX +11dBm bug + sync word 0x34 + boosted RX 未开 + 配置顺序错位）
-  - 来源：_Inbox/LoRa-2026-09-19-candidates.md 候选 1-5
+  - 来源：_Inbox/已处理/LoRa-2026-09-19-candidates.md 候选 1-5
 - 2026-09-21: 新增 4 实战案例（53-56）
   - 案例 53：Okumura-Hata 链路预算 ×1/10~1/30 农田 40+ 节点 / 最远 2.8 km + 6 条现场踩坑速查表
   - 案例 54：亿佰特 E22 FEC+LBT 丢包 15% → 0.5% 工厂案例 + 5 个 AT 指令 + 「天线>速率>LBT/FEC>功率>重传」排查优先级
   - 案例 55：TrueSight 80% 集成商金属厂房 500m 稳不住 + VNA+TDMA+Hopping+磁珠/LDO 4 件套
   - 案例 56：技象科技 CSS 抗噪 +20dB vs FSK -8dB + 硅谷 50km 城市穿透 + 变频器车间 LoRa 稳而 Wi-Fi 失效 + 4 大缓解策略
-  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 1-4
+  - 来源：_Inbox/已处理/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 1-4
 - 2026-09-24: 新增 4 实战案例（57-60）
   - 案例 57：Concept13 欧企设施管理几千节点 join-storm + DevEUI/AppKey 配置错级联 + 配置基线 + 流量画像
   - 案例 58：EU868 1% duty cycle 锁死——lgw_send Busy + tshark 定位 + Python 日志注入复现
   - 案例 59：TrueSight 工业三维度排障——多径 + 时间同步漂移 + 天线极化（冷库 EM300-TH 挂铁门 -110dBm → -120dBm）
   - 案例 60：LoRaWAN 智能电表 100 节点——300 节点散列 ID 随机化防碰撞 + LoRa 拉低 3.3V 干扰 ADC 钽电容 + 精简 MAC Payload 取代 DL/T 645
-  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 1-4
+  - 来源：_Inbox/已处理/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 1-4

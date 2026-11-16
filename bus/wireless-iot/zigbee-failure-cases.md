@@ -896,7 +896,7 @@ Wireshark 抓包对比 5 个协调器的 Association Response payload：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-02-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-02-candidates.md 候选 1
 - Silicon Labs EFR32MG21 量产复盘
 - 工程师答复（世强 Sekorm 平台）
 
@@ -990,7 +990,7 @@ Step 3：LDO 失效分析
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-04-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-04-candidates.md 候选 1
 - 广州致远电子产线故障复盘
 - AMS1117 / TPS7A4533 datasheet
 
@@ -1118,7 +1118,7 @@ Step 3：LDO 失效分析
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-04-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-08-04-candidates.md 候选 2
 - 才茂 CM210 工业 Zigbee 厂商 FAQ
 - 工业现场调试经验汇总
 
@@ -1262,7 +1262,7 @@ CC2530 / CC2652 + Z-Stack 量产烧录过程 17 类典型错误（XDATA 溢出 /
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-07-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-08-07-candidates.md 候选 2
 - CSDN CC2530/CC2652 量产 FAQ（17 类错误）
 - TI Z-Stack 量产规范
 
@@ -1378,7 +1378,7 @@ PCB 设计（参考）：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-07-candidates.md 候选 3、4
+- _Inbox/已处理/ZigBee-2026-08-07-candidates.md 候选 3、4
 - 江苏工厂能耗管理项目复盘
 - 成都亿佰特 E18/E180/Link72 实测数据
 
@@ -1466,7 +1466,7 @@ Step 3：找 EPID 反转原因
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-21-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-21-candidates.md 候选 1
 - Justin Ethier dev.to 实战博客
 - EmberZNet PAN ID Conflict Reference
 
@@ -1547,7 +1547,7 @@ Analyser 抓包：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-21-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-08-21-candidates.md 候选 2
 - 致远电子实战
 - ZigBee PRO 部署规范
 
@@ -1630,7 +1630,7 @@ Neighbor Table 容量（典型）：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-21-candidates.md 候选 3
+- _Inbox/已处理/ZigBee-2026-08-21-candidates.md 候选 3
 - tsight.io 工业部署实战
 - ZigBee PRO Mesh 部署规范
 
@@ -1715,7 +1715,7 @@ Step 5：入网后验证
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-21-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-08-21-candidates.md 候选 4
 - NSTL / 晓网科技工业项目复盘
 - ZigBee 3.0 Install Code 规范
 
@@ -1793,7 +1793,7 @@ Step 5：入网后验证
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-21-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-08-21-candidates.md 候选 5
 - CSDN aiot 实战
 - Thread vs ZigBee 选型对比
 
@@ -1871,7 +1871,7 @@ void zigbee_join_with_install_code(uint8_t install_code[18]) {
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-16-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-16-candidates.md 候选 1
 - CSDN 实战博客
 - ZigBee 3.0 Install Code 规范
 
@@ -1980,9 +1980,9 @@ void zigbee_join_with_install_code(uint8_t install_code[18]) {
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-27-candidates.md 候选 1
-- _Inbox/ZigBee-2026-08-29-candidates.md 候选 1
-- _Inbox/ZigBee-2026-08-31-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-27-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-29-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-31-candidates.md 候选 1
 - TrueSight 实战
 
 ---
@@ -2085,7 +2085,7 @@ Step 3：日志分析
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-23-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-08-23-candidates.md 候选 1
 - 晓网电子（ZigBee 厂商实战）
 - CSDN 实战
 
@@ -2221,7 +2221,7 @@ ZigBee 协议被多次证明有重大安全风险：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-08-25-candidates.md 候选 1 + 候选 2
+- _Inbox/已处理/ZigBee-2026-08-25-candidates.md 候选 1 + 候选 2
 - BlackHat 2015 / Cognosec
 - Aviatrix threat-research 2024
 - Silicon Labs Zigbee Security
@@ -2378,7 +2378,7 @@ GP 地址冲突：优先级高于 ZigBee
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-01-candidates.md 候选 2 + 候选 5
+- _Inbox/已处理/ZigBee-2026-09-01-candidates.md 候选 2 + 候选 5
 - CSDN NXP JN516x 实战
 - futurion 实战博客
 
@@ -2485,7 +2485,7 @@ Host 端常见：50ms 周期任务（如传感器读、状态查询）
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-01-candidates.md 候选 3
+- _Inbox/已处理/ZigBee-2026-09-01-candidates.md 候选 3
 - Silicon Labs 社区（工程师 Jesse）
 - EFR32 + SiSDK 2024.06 实战
 
@@ -2590,8 +2590,8 @@ Retrans 重传率告警：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-04-candidates.md 候选 2
-- _Inbox/ZigBee-2026-09-06-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-04-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-06-candidates.md 候选 2
 - Johal 工程博客 90 天实测
 
 ---
@@ -2686,8 +2686,8 @@ JN5169 模组选型：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-04-candidates.md 候选 3
-- _Inbox/ZigBee-2026-09-06-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-04-candidates.md 候选 3
+- _Inbox/已处理/ZigBee-2026-09-06-candidates.md 候选 4
 - wmrh.cn 嵌入式工程师博客
 - NXP JN5169 datasheet §2.3
 
@@ -2781,7 +2781,7 @@ JN5169 模组选型：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-04-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-04-candidates.md 候选 5
 - 泓格科技 案例库
 - asmag 全球安防科技网
 
@@ -2878,7 +2878,7 @@ R10-9 智能家居军规：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-06-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-06-candidates.md 候选 5
 - futurion.blog 智能家居 Mesh 实战
 - 与 R6-6 案例 20（TrueSight 化工厂自愈变自杀）对比
 
@@ -2951,7 +2951,7 @@ Kaspersky Securelist 团队 nRF52840 模拟协调器 + 真实 Z-Stack 设备：
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-07-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-09-07-candidates.md 候选 1
 - Kaspersky Securelist
 - Z-Stack 3.0 Profile 规范
 
@@ -3064,7 +3064,7 @@ zcl_configureReporting(&reportCfg);
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-07-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-07-candidates.md 候选 4
 - wmrh.cn BitCloud + EFR32MG24 实战
 
 ---
@@ -3156,7 +3156,7 @@ Step 4：多协调器
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-07-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-07-candidates.md 候选 5
 - Bituo-Technik 能源表厂商官方排障文档
 
 ---
@@ -3240,7 +3240,7 @@ Step 4：监控拓扑变化
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-09-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-09-09-candidates.md 候选 1
 - moltbook 仓库 mesh 实战
 
 ---
@@ -3334,7 +3334,7 @@ Step 3：去任一设备仍复现 = 系统性问题
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-09-candidates.md 候选 3
+- _Inbox/已处理/ZigBee-2026-09-09-candidates.md 候选 3
 - Hubitat 社区
 
 ---
@@ -3435,7 +3435,7 @@ systemctl restart zigbee2mqtt
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-09-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-09-candidates.md 候选 4
 - GitCode 博客 Z-Stack 实战
 
 ---
@@ -3523,7 +3523,7 @@ for rssi, count in top_5_rssi:
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-10-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-09-10-candidates.md 候选 1
 - Hackaday.io 项目日志
 
 ---
@@ -3613,7 +3613,7 @@ void nvs_init_check(void) {
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-10-candidates.md 候选 3
+- _Inbox/已处理/ZigBee-2026-09-10-candidates.md 候选 3
 - dredyson.com 工程复盘
 
 ---
@@ -3727,7 +3727,7 @@ void nvs_init_check(void) {
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-10-candidates.md 候选 4 + 候选 5
+- _Inbox/已处理/ZigBee-2026-09-10-candidates.md 候选 4 + 候选 5
 - SONOFF 官方博客
 - 电子工程网 晓网科技
 
@@ -3815,7 +3815,7 @@ Step 4：路由表监控
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-13-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-09-13-candidates.md 候选 1
 - tsight.io（工业 IoT 工程博客）
 
 ---
@@ -3909,7 +3909,7 @@ Step 4：ACK 时序实测
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-13-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-13-candidates.md 候选 2
 - Cubex Group（工业安全研究博客）
 - IEEE 802.15.4-2020 §7.5.6.2（MAC ack timing）
 - ZigBee 3.0 spec §5.4.3（stack profile）
@@ -3997,7 +3997,7 @@ Step 4：拓扑重画 + 减 router 验证
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-13-candidates.md 候选 3
+- _Inbox/已处理/ZigBee-2026-09-13-candidates.md 候选 3
 - moltbook 工程师实战帖
 - Z-Stack 3.0 developer's guide §8.4（route discovery）
 
@@ -4093,7 +4093,7 @@ Step 4：晶振验证
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-13-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-13-candidates.md 候选 4
 - SprintpcbGroup（PCB 厂博客）
 - IPC-TM-650 §2.3.25（离子污染度测试标准）
 
@@ -4195,7 +4195,7 @@ Step 4：同款 OEM 对比
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-13-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-13-candidates.md 候选 5
 - wmrh.cn（无线模组技术博客）
 - NXP JN5169 datasheet §13.1（reflow profile spec）
 - IPC-7530（钢网设计指南）
@@ -4306,7 +4306,7 @@ Step 4：拓扑改造
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-14-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-14-candidates.md 候选 2
 - sudonull.com（ZigBee 实战社区）
 
 ---
@@ -4410,7 +4410,7 @@ Step 4：跨代 OTA 路径检查
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-16-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-16-candidates.md 候选 4
 - Inovelli 官方社区
 
 ---
@@ -4506,7 +4506,7 @@ Step 4：跨代 OTA 路径检查
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-18-candidates.md 候选 1
+- _Inbox/已处理/ZigBee-2026-09-18-candidates.md 候选 1
 - CSDN 博主（项目实战）
 
 ---
@@ -4625,7 +4625,7 @@ bdb_attribute_set_defaults(zb_bdb_attr_scan_duration_t, 0x05);  // 5 (3 跳频? 
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-18-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-18-candidates.md 候选 2
 - CSDN 技术社区（ZigBee 3.0 集群实战）
 
 ---
@@ -4757,7 +4757,7 @@ Step 4：异常告警
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-18-candidates.md 候选 3
+- _Inbox/已处理/ZigBee-2026-09-18-candidates.md 候选 3
 - CSDN（NXP ZigBee 产品线实战）
 
 ---
@@ -4901,7 +4901,7 @@ advanced:
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-18-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-18-candidates.md 候选 4
 - johal.in（农业 + 制造业 zigbee2mqtt 实战）
 
 ---
@@ -4990,7 +4990,7 @@ advanced:
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-18-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-18-candidates.md 候选 5
 - MGI Computers（pentest / 安全评估）
 
 ---
@@ -5116,7 +5116,7 @@ services:
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-20-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-20-candidates.md 候选 2
 - GitCode 博客（zigbee2mqtt 容器化实战）
 
 ---
@@ -5224,7 +5224,7 @@ Step 4：统一 EPID
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-20-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-20-candidates.md 候选 4
 - dev.to（SiLabs EmberZNet 实战）
 
 ---
@@ -5381,7 +5381,7 @@ Step 4：恢复 backup + 锁定 Stable 通道
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-20-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-20-candidates.md 候选 5
 - Casey Berlin 工程师博客
 
 ---
@@ -5507,7 +5507,7 @@ LQI_hysteresis = 20;  // 切换必须 LQI 变化 ≥ 20
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-21-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-21-candidates.md 候选 2
 - TrueSight（链路状态表 + RREQ 风暴实战）
 
 ---
@@ -5637,7 +5637,7 @@ class ZigBeeMonitor:
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-21-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-21-candidates.md 候选 4
 - johal.in（SmartSpace 智能工厂 zigbee2mqtt 实战）
 
 ---
@@ -5768,7 +5768,7 @@ if (bonding_key_missing()) {
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-21-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-21-candidates.md 候选 5
 - 通信人家园（论坛实战帖）
 
 ---
@@ -5892,7 +5892,7 @@ advanced:
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-23-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-23-candidates.md 候选 4
 - GitCode 博客（SonoffLAN 用户 + 官方沟通）
 
 ---
@@ -6041,7 +6041,7 @@ zb_zcl_report_attr_cmd(
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-24-candidates.md 候选 2
+- _Inbox/已处理/ZigBee-2026-09-24-candidates.md 候选 2
 - 鲲鹏昇腾开发者社区（ESP32-C6 + esp-zboss 实测）
 
 ---
@@ -6208,7 +6208,7 @@ Step 4：协调器 timeout 设宽松
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-24-candidates.md 候选 4
+- _Inbox/已处理/ZigBee-2026-09-24-candidates.md 候选 4
 - CSDN 文库（STM32 心跳机制实战）
 
 ---
@@ -6336,7 +6336,7 @@ void coordinator_local_decision(zb_uint16_t sensor_endpoint, zb_uint16_t lux_val
 
 ### 来源
 
-- _Inbox/ZigBee-2026-09-24-candidates.md 候选 5
+- _Inbox/已处理/ZigBee-2026-09-24-candidates.md 候选 5
 - TrueSight（高密度 Zigbee 实战）
 
 ---

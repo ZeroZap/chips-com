@@ -165,3 +165,4 @@ aliases:
 2. 在对应目录 `README.md` 与 [[INDEX|索引]] 中登记入口。
 3. 在本页对应分区补充链接，必要时更新 [[TOPIC_MATRIX|主题矩阵]] 与 [[COVERAGE|覆盖范围]]。
 4. 需要图形化时，在 [[Navigation.canvas|Navigation 画布]] 增加卡片并连线。
+5. 每周运行 `python scripts/inbox_status.py`，按 [_Inbox/README.md](_Inbox/README.md) 消化候选，保持 `pending <= 10`。

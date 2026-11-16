@@ -177,7 +177,7 @@ Step 4: 用解出的 LTK 持续解密 GATT 流量
 
 ### 来源
 
-- _Inbox/BLE-2026-08-02-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-02-candidates.md 候选 3
 - BLE Core Spec 5.3 Vol 3 Part H Section 2.3（Just Works / Numeric Comparison）
 - CVE-2023-XXXX（多品牌 TWS 耳机）
 
@@ -752,7 +752,7 @@ Step 4: 锁定 3 个差异：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-07-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-07-candidates.md 候选 3
 - Nordic DevZone 论坛
 - Android Bluetooth CTS 测试报告
 
@@ -837,7 +837,7 @@ Zephyr 内部逻辑（issue #24086 复现）：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-07-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-08-07-candidates.md 候选 5
 - Zephyr issue #24086（已修复）
 - Bluetooth Core Spec 5.3 Vol 3 Part H Section 2.3.5
 
@@ -1018,7 +1018,7 @@ void assert_ram_size(void) {
 
 ### 来源
 
-- _Inbox/BLE-2026-08-15-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-15-candidates.md 候选 3
 - TI E2E Forum Case 200496
 - TI CC2340R5x datasheet
 
@@ -1111,7 +1111,7 @@ void assert_ram_size(void) {
 
 ### 来源
 
-- _Inbox/BLE-2026-08-20-candidates.md 候选 1
+- _Inbox/已处理/BLE-2026-08-20-candidates.md 候选 1
 - DEWINE Labs 工业 BLE blog
 - Nordic DevZone 工业 BLE 部署经验
 
@@ -1179,7 +1179,7 @@ Nordic DTM 工具链：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-20-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-08-20-candidates.md 候选 2
 - Nordic DevZone Blog "Fast Production Screening"
 - Bluetooth Core Spec Vol 6 Part F (DTM)
 
@@ -1269,7 +1269,7 @@ void schedule_llcp_after_enc(void) {
 
 ### 来源
 
-- _Inbox/BLE-2026-08-20-candidates.md 候选 4
+- _Inbox/已处理/BLE-2026-08-20-candidates.md 候选 4
 - Goodix 官方开发者社区
 - GR551x datasheet §15 Error Codes
 
@@ -1356,7 +1356,7 @@ Step 4：DMA 检查
 
 ### 来源
 
-- _Inbox/BLE-2026-08-14-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-08-14-candidates.md 候选 2
 - Nordic DevZone Case 200496
 - nRF5 SDK Power Management 文档
 
@@ -1483,7 +1483,7 @@ nrfjprog --program merged.hex --chiperase --verify
 
 ### 来源
 
-- _Inbox/BLE-2026-08-14-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-08-14-candidates.md 候选 5
 - Nordic 量产工具链实战（知乎）
 - nrfutil GitHub releases
 
@@ -1578,7 +1578,7 @@ Android BluetoothGatt 错误码：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-12-candidates.md 候选 1
+- _Inbox/已处理/BLE-2026-08-12-candidates.md 候选 1
 - _Inbox/BLE-2026-08-10-candidates.md 候选 1
 - Ellisys Bluetooth Tracker 官方文档
 - CSDN 实战博客
@@ -1669,7 +1669,7 @@ REPL 实时监控：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-12-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-12-candidates.md 候选 3
 - CircuitPython 官方文档
 - Adafruit SAMD21 BLE 实战
 
@@ -1777,8 +1777,8 @@ private final BluetoothGattCallback mCallback =
 
 ### 来源
 
-- _Inbox/BLE-2026-08-12-candidates.md 候选 5
-- _Inbox/BLE-2026-08-14-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-12-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-08-14-candidates.md 候选 3
 - 博客园 developer-wang 实战
 - Android BluetoothGatt 源码
 
@@ -1857,7 +1857,7 @@ private void connectSmart(BluetoothDevice device) {
 
 ### 来源
 
-- _Inbox/BLE-2026-08-15-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-08-15-candidates.md 候选 5
 - CSDN 国产手机 BLE 实战
 - Android 源码差异（华为 EMUI / 小米 MIUI）
 
@@ -1952,7 +1952,7 @@ void on_ble_evt(ble_evt_t *p_ble_evt) {
 
 ### 来源
 
-- _Inbox/BLE-2026-08-20-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-20-candidates.md 候选 3
 - dev.to BLE 实战博客
 - SEGGER RTT 文档
 
@@ -2024,9 +2024,9 @@ mdns_set_ttl(30);
 
 ### 来源
 
-- _Inbox/BLE-2026-08-24-candidates.md 候选 2
-- _Inbox/BLE-2026-08-25-candidates.md 候选 1
-- _Inbox/BLE-2026-08-29-candidates.md 候选 4
+- _Inbox/已处理/BLE-2026-08-24-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-08-25-candidates.md 候选 1
+- _Inbox/已处理/BLE-2026-08-29-candidates.md 候选 4
 - moltbook 工程师实战帖
 
 ---
@@ -2153,8 +2153,8 @@ void ble_set_mode(ble_mode_t mode) {
 
 ### 来源
 
-- _Inbox/BLE-2026-08-24-candidates.md 候选 5
-- _Inbox/BLE-2026-08-27-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-24-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-08-27-candidates.md 候选 3
 - 夸智网长文（STM32 + nRF52840 案例）
 - CSDN 实战
 
@@ -2287,7 +2287,7 @@ void ble_beacon_init_ship(void) {
 
 ### 来源
 
-- _Inbox/BLE-2026-08-27-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-08-27-candidates.md 候选 2
 - CSDN 沁恒 CH582 实战
 - 沁恒官方 SDK 文档
 
@@ -2355,7 +2355,7 @@ HCI 抓包：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-29-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-29-candidates.md 候选 3
 - ST Community 实战
 - STM32WB Release Notes
 
@@ -2440,7 +2440,7 @@ HCI 抓包：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-29-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-08-29-candidates.md 候选 5
 - Manufacturing Chemist 报道
 - FDA Warning Letter 公开数据
 - iCGM 21 CFR 862.1355 法规
@@ -2549,7 +2549,7 @@ sudo btmgmt bondable on
 
 ### 来源
 
-- _Inbox/BLE-2026-09-01-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-09-01-candidates.md 候选 5
 - NVIDIA 官方论坛（Jetson Xavier NX, L4T R35.6.0）
 - Bluetooth Core Spec Vol 3 Part H
 
@@ -2643,7 +2643,7 @@ BareOS 平台（N32L40X，128 KB RAM / 512 KB ROM）：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-30-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-08-30-candidates.md 候选 3
 - electricalflux.com 实战
 - nRF52840 datasheet §5.3.1
 - BareOS 板级设计规范
@@ -2770,7 +2770,7 @@ spörk 嵌入式无线工程师 LinkedIn 实战：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-30-candidates.md 候选 1 + 候选 2 + 候选 4
+- _Inbox/已处理/BLE-2026-08-30-candidates.md 候选 1 + 候选 2 + 候选 4
 - DEWINE Labs 工业 BLE blog
 - LinkedIn Michael Spörk
 - gutab.cn 工业平板厂商
@@ -2909,7 +2909,7 @@ CR2032（220 mAh）：
 
 ### 来源
 
-- _Inbox/BLE-2026-08-30-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-08-30-candidates.md 候选 5
 - wmrh.cn IoT 实战 blog
 - nRF52 / STM32WB / ESP32-C3 选型手册
 
@@ -3008,7 +3008,7 @@ CR2032（220 mAh）：
 
 ### 来源
 
-- _Inbox/BLE-2026-09-01-candidates.md 候选 1 + 候选 3
+- _Inbox/已处理/BLE-2026-09-01-candidates.md 候选 1 + 候选 3
 - tsight.io 实战
 - Nordic DevZone 实战
 - Silicon Labs 社区
@@ -3110,7 +3110,7 @@ CR2032（220 mAh）：
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-03-candidates.md 候选 4
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-03-candidates.md 候选 4
 - EurthTech 实战
 
 ---
@@ -3233,7 +3233,7 @@ CR2032（220 mAh）：
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-03-candidates.md 候选 5
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-03-candidates.md 候选 5
 - needCode（产线出货级实战）
 
 ---
@@ -3291,7 +3291,7 @@ CONFIG_CLOCK_CONTROL_NRF_K32SRC_ACCURACY=4  // 50 ppm
 
 ### 来源
 
-- _Inbox/BLE-2026-09-04-candidates.md 候选 1
+- _Inbox/已处理/BLE-2026-09-04-candidates.md 候选 1
 - MAB Labs 实战
 
 ---
@@ -3410,7 +3410,7 @@ void ble_host_task(void *param) {
 
 ### 来源
 
-- _Inbox/BLE-2026-09-04-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-09-04-candidates.md 候选 2
 - electricalflux.com 实战
 - ESP-IDF 文档 §9.3
 
@@ -3512,7 +3512,7 @@ HCI 比应用 log 准 10 倍。
 
 ### 来源
 
-- _Inbox/BLE-2026-09-04-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-09-04-candidates.md 候选 3
 - gutab.cn 工业平板厂商
 
 ---
@@ -3594,8 +3594,8 @@ DEWINE Labs 实测（30 ms 实时约束）：
 
 ### 来源
 
-- _Inbox/BLE-2026-09-04-candidates.md 候选 4
-- _Inbox/BLE-2026-09-05-candidates.md 候选 1
+- _Inbox/已处理/BLE-2026-09-04-candidates.md 候选 4
+- _Inbox/已处理/BLE-2026-09-05-candidates.md 候选 1
 - DEWINE Labs 行业 blog
 
 ---
@@ -3692,7 +3692,7 @@ void LL_ProcessEvent(void) {
 
 ### 来源
 
-- _Inbox/BLE-2026-09-05-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-09-05-candidates.md 候选 2
 - TrueSight 实战
 - TI OSAL Guide
 
@@ -3758,7 +3758,7 @@ T20i 产线新开 A2 线蓝牙不良率 19.2%（行业 < 1%）：
 
 ### 来源
 
-- _Inbox/BLE-2026-09-05-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-09-05-candidates.md 候选 3
 - 人人文库 专项攻关 PPT
 - KT6368A datasheet
 
@@ -3852,7 +3852,7 @@ sudo systemctl restart bluetooth
 
 ### 来源
 
-- _Inbox/BLE-2026-09-05-candidates.md 候选 4
+- _Inbox/已处理/BLE-2026-09-05-candidates.md 候选 4
 - Dre Dyson 物流技术 blog（12 年 IoT 顾问）
 
 ---
@@ -3946,7 +3946,7 @@ bluetoothctl scan on
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-07-candidates.md 候选 2
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-07-candidates.md 候选 2
 - Mind 嵌入式团队 bug hunt 复盘
 - syzbot 2023 report
 
@@ -4048,7 +4048,7 @@ bluetoothctl scan on
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-07-candidates.md 候选 5
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-07-candidates.md 候选 5
 - Promwad 硬件/固件外包团队
 
 ---
@@ -4171,7 +4171,7 @@ void flush_cache_on_connect(void) {
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-08-candidates.md 候选 1
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-08-candidates.md 候选 1
 - QA Platform 工程 blog
 
 ---
@@ -4289,7 +4289,7 @@ void on_ble_evt(ble_evt_t *p_ble_evt) {
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-08-candidates.md 候选 2
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-08-candidates.md 候选 2
 - moltbook 工程师复盘
 
 ---
@@ -4426,7 +4426,7 @@ void ble_set_public_mac(void) {
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-10-candidates.md 候选 4
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-10-candidates.md 候选 4
 - electricalflux.com 嵌入式 MCU 实战博客
 - ESP-IDF 文档 §9.3
 
@@ -4519,7 +4519,7 @@ Step 4：状态机显式
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-10-candidates.md 候选 5
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-10-candidates.md 候选 5
 - Aubergine Solutions（IoT 产品设计咨询）
 - Deloitte 数据
 
@@ -4607,7 +4607,7 @@ Step 4：连接参数定位
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 2
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 2
 - EBYTE 工业 BLE 模块厂商 blog
 
 ---
@@ -4715,7 +4715,7 @@ Step 4：代码审查
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 4
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-12-candidates.md 候选 4
 - sheratonhq 技术 blog（中文 HCI 实战）
 
 ---
@@ -4807,7 +4807,7 @@ Step 4：SAR 算法改造
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 1
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 1
 - Nordic Semiconductor 官方 DevZone
 
 ---
@@ -4905,7 +4905,7 @@ MES Fail 跟踪模块：
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 2
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 2
 - 华汉仪器（产线测试方案商）
 
 ---
@@ -5000,7 +5000,7 @@ Step 4：patch 测试
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 3
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 3
 - linux-bluetooth 邮件列表（Volvo Group Dajid Morel patch v3）
 - kernel `hci_conn.c`（linux-bluetooth master）
 
@@ -5112,7 +5112,7 @@ Step 4：信道扫描 + RSSI 图
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 4
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 4
 - tsight.io（工业 BLE 协议分析博客）
 
 ---
@@ -5223,7 +5223,7 @@ Step 4：patch 跟踪
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 5
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-13-candidates.md 候选 5
 - Breach Spot / 新加坡科技与设计大学（SUTD）披露
 - NIST NVD（National Vulnerability Database）
 - 各厂商 PSIRT（Product Security Incident Response Team）
@@ -5311,7 +5311,7 @@ Step 4：替代方案对比
 
 ### 来源
 
-- _Inbox/BLE-2026-09-16-candidates.md 候选 1
+- _Inbox/已处理/BLE-2026-09-16-candidates.md 候选 1
 - MicroRidge（工业 SPC 厂）blog
 
 ---
@@ -5429,7 +5429,7 @@ Step 5：全维度组合验证
 
 ### 来源
 
-- _Inbox/BLE-2026-09-16-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-09-16-candidates.md 候选 3
 - 合亿 Gutab（工业平板厂）news
 
 ---
@@ -5521,7 +5521,7 @@ Step 4：吞吐测试
 
 ### 来源
 
-- _Inbox/BLE-2026-09-18-candidates.md 候选 1
+- _Inbox/已处理/BLE-2026-09-18-candidates.md 候选 1
 - moltbook（工程师实战帖）
 
 ---
@@ -5641,7 +5641,7 @@ Step 4：双平台对比
 
 ### 来源
 
-- _Inbox/BLE-2026-09-18-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-09-18-candidates.md 候选 2
 - moltbook（工程师实战帖）
 
 ---
@@ -5753,7 +5753,7 @@ sd_ble_gap_conn_param_update(15, 15, 0, 6000, NULL);  // iOS 硬规则要 15 倍
 
 ### 来源
 
-- _Inbox/BLE-2026-09-18-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-09-18-candidates.md 候选 3
 - moltbook（工程师实战帖）
 
 ---
@@ -5878,7 +5878,7 @@ void ble_send_task(void *arg) {
 
 ### 来源
 
-- _Inbox/BLE-2026-09-18-candidates.md 候选 4
+- _Inbox/已处理/BLE-2026-09-18-candidates.md 候选 4
 - Nordic Semiconductor 官方 DevZone
 
 ---
@@ -6046,7 +6046,7 @@ Step 4：状态机检查
 
 ### 来源
 
-- _Inbox/BLE-2026-09-18-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-09-18-candidates.md 候选 5
 - 稀土掘金
 
 ---
@@ -6170,7 +6170,7 @@ Step 4：网络层 sniffing
 
 ### 来源
 
-- _Inbox/BLE-2026-09-19-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-09-19-candidates.md 候选 3
 - SKNP 个人博客（车间现场实测）
 
 ---
@@ -6270,7 +6270,7 @@ Step 4：credit 跟踪
 
 ### 来源
 
-- _Inbox/BLE-2026-09-19-candidates.md 候选 5
+- _Inbox/已处理/BLE-2026-09-19-candidates.md 候选 5
 - TrueSight 技术博客（Frontline X240 实测）
 
 ---
@@ -6384,7 +6384,7 @@ Step 4：天线 S11（阻抗域）
 
 ### 来源
 
-- _Inbox/BLE-2026-09-20-candidates.md 候选 2
+- _Inbox/已处理/BLE-2026-09-20-candidates.md 候选 2
 - EBYTE 工业 IoT
 
 ---
@@ -6515,7 +6515,7 @@ Step 4：多连接资源监控
 
 ### 来源
 
-- _Inbox/BLE-2026-09-20-candidates.md 候选 3
+- _Inbox/已处理/BLE-2026-09-20-candidates.md 候选 3
 - Nordic Semiconductor 官方 DevZone
 
 ---
@@ -6631,7 +6631,7 @@ async def scan_matter():
 
 ### 来源
 
-- _Inbox/BLE-2026-09-20-candidates.md 候选 4
+- _Inbox/已处理/BLE-2026-09-20-candidates.md 候选 4
 - CSDN（STM32WBA65 Matter 实战）
 - Matter Core Spec §5.4（commissioning）
 
@@ -6750,7 +6750,7 @@ class BLETransporter: NSObject {
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 2
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 2
 - mohsin.xyz（Omi 可穿戴实战）
 
 ---
@@ -6879,7 +6879,7 @@ sd_ble_gap_scan_start_extended(
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 4
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 4
 - CSDN RFCEO（nRF52 实测）
 
 ---
@@ -6992,7 +6992,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 5
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-22-candidates.md 候选 5
 - hubble（BLE 社区 bug 库）
 
 ---
@@ -7097,7 +7097,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 2
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 2
 - CSDN（27 量产项目实战）
 
 ---
@@ -7212,7 +7212,7 @@ sd_ble_gap_adv_set_configure(&adv_handle, &gap_adv_params,
 
 ### 来源
 
-- _Inbox/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 5
+- _Inbox/已处理/BLE-Bluetooth-LE-2026-09-23-candidates.md 候选 5
 - CSDN（nRF52840 + Wireshark 实战）
 
 ---
