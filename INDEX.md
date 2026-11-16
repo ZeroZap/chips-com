@@ -111,7 +111,7 @@ tags:
 - [bus/industrial/opcua-vendor-bench.md](bus/industrial/opcua-vendor-bench.md)：OPC UA 厂商对标（Siemens / Beckhoff / Rockwell）。
 - [bus/power-rtu/cjt188-vendor-bench.md](bus/power-rtu/cjt188-vendor-bench.md)：CJ/T 188 厂商对标（宁波水表 / 新天科技）。
 - [bus/industrial/mqtt-vendor-bench.md](bus/industrial/mqtt-vendor-bench.md)：MQTT 厂商对标（AWS IoT / Azure / 阿里云 / 华为云 / EMQX）。
-- [bus/automotive/can-protocol-family.md](bus/automotive/can-protocol-family.md)：CAN 家族全景汇总——CAN PHY / CAN FD / CAN XL / ISO-TP / CANopen / J1939 / UDS / OBD-II 分层、协议矩阵、覆盖缺口。
+- [bus/automotive/can-protocol-family.md](bus/automotive/can-protocol-family.md)：CAN 家族全景——分层结构、协议矩阵、选型决策、文档索引与覆盖缺口。
 - [bus/automotive/can-standards-map.md](bus/automotive/can-standards-map.md)：CAN 家族标准规范总表——按层与按协议汇总 ISO/SAE/CiA 标准号，含电器规范、环境/安全/法规层。
 - [bus/automotive/can-index.md](bus/automotive/can-index.md)：CAN 家族分层导航——物理层、传输层与应用层边界。
 - [bus/automotive/can-fd-index.md](bus/automotive/can-fd-index.md)：CAN FD / CAN XL 导航。

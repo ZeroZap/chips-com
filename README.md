@@ -190,7 +190,7 @@ chips-com/
 
 CAN 家族全景、四个协议的 failure-cases、OBD-II 车载诊断，以及功能安全 / 商用车诊断两个专篇：
 
-58. [bus/automotive/can-protocol-family.md](bus/automotive/can-protocol-family.md)：CAN 家族全景汇总——CAN PHY / CAN FD / CAN XL / ISO-TP / CANopen / J1939 / UDS / OBD-II 分层、协议矩阵、覆盖缺口。
+58. [bus/automotive/can-protocol-family.md](bus/automotive/can-protocol-family.md)：CAN 家族全景——分层结构、协议矩阵、选型决策、文档索引与覆盖缺口。
 59. [bus/automotive/can-standards-map.md](bus/automotive/can-standards-map.md)：CAN 家族标准规范总表——按层（连接器/物理/链路/传输/网络/应用/测试/环境/安全/法规）与按协议汇总标准号。
 60. [bus/automotive/iso-tp-failure-cases.md](bus/automotive/iso-tp-failure-cases.md)：ISO-TP 产线案例——SF 7 字节边界、TX/RX ID 方向、BS 语义、STmin 编码、SN 4bit 环绕。
 61. [bus/automotive/uds-failure-cases.md](bus/automotive/uds-failure-cases.md)：UDS 产线案例——会话服务表、DID 落盘、种子密钥、刷写变砖、BSC 循环、S3 会话保持。

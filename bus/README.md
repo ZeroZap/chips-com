@@ -98,7 +98,7 @@ tags:
 
 ### 工业与汽车现场总线
 
-- [automotive/can-protocol-family.md](automotive/can-protocol-family.md)：CAN 家族全景汇总——分层结构（PHY / FD / XL / ISO-TP / CANopen / J1939 / UDS / OBD-II）、协议矩阵、选型决策、覆盖缺口。
+- [automotive/can-protocol-family.md](automotive/can-protocol-family.md)：CAN 家族全景——分层结构、协议矩阵、选型决策、文档索引与覆盖缺口。
 - [automotive/can-standards-map.md](automotive/can-standards-map.md)：CAN 家族标准规范总表——按层（连接器/物理/链路/传输/网络/应用/测试/环境/安全/法规）与按协议两张维度汇总标准号，含 OBD-II vs WWH-OBD vs UDS 对比与物理层收发器选型。
 - [automotive/can.md](automotive/can.md)：CAN/CAN FD、仲裁、错误处理、车载和工业控制。
 - [automotive/canopen.md](automotive/canopen.md)：CANopen 对象字典、PDO/SDO、设备模型。

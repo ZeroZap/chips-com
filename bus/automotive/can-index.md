@@ -23,7 +23,7 @@ CAN 家族覆盖从物理层到应用层的完整链路：经典 CAN、CAN FD、
 
 ### 全景与标准
 
-- [can-protocol-family.md](can-protocol-family.md)：CAN 家族全景、协议矩阵、覆盖缺口。
+- [can-protocol-family.md](can-protocol-family.md)：CAN 家族全景、协议矩阵、选型决策与覆盖缺口。
 - [can-standards-map.md](can-standards-map.md)：按层与按协议汇总 ISO / SAE / CiA 标准号。
 - [../../basic/can-index.md](../../basic/can-index.md)：CAN PHY 与控制器层索引。
 
