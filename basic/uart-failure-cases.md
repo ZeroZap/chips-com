@@ -3,6 +3,7 @@
 ## 目标
 
 把产线常见的 UART 通信失败、丢包、RS485 冲突、协议错位等写成案例库。每个案例:
+
 - 现象 (现场)
 - 抓波形 (判断)
 - 定位 (根因)
@@ -299,6 +300,7 @@ HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buf, RX_BUF_SIZE);
 ### 定位
 
 UART 是字节流, **不天然保留消息边界**。应用层必须自己定义分帧规则:
+
 - 固定长度
 - 起始符 + 长度
 - 文本协议 (\r\n)
@@ -418,6 +420,7 @@ RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
 ### 定位
 
 长距离 RS485 信号完整性问题:
+
 1. 线缆电容大, 边沿慢
 2. 阻抗不匹配, 反射
 3. 终端电阻缺失或错位
@@ -488,7 +491,7 @@ void master_poll_slave(uint8_t slave_addr) {
 
 - RS485 物理层不能阻止冲突, 必须协议层防
 - Modbus RTU 的"沉默间隔 3.5 字符"就是防冲突机制
-- 详细见 `modbus-rs485-deep-dive.md`
+- 详细见 `bus/industrial/rs485-modbus-rtu-deep-dive.md`
 
 ---
 
@@ -904,5 +907,5 @@ EMC / ESD               5%
 - `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
 - `uart-index.md` 导航
 - `rs232-rs485.md` 物理层基础
-- `modbus-rs485-deep-dive.md` Modbus RTU
+- `bus/industrial/rs485-modbus-rtu-deep-dive.md` Modbus RTU
 - `i2c-failure-cases.md` 类似产线案例

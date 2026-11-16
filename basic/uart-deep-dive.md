@@ -654,5 +654,5 @@ typedef enum {
 - `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
 - `uart-index.md` 导航
 - `rs232-rs485.md` 物理层基础
-- `modbus.md` Modbus RTU
+- `bus/industrial/modbus.md` Modbus RTU
 - `i2c-deep-dive.md` I2C 原理 (对比)

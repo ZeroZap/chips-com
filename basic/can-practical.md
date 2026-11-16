@@ -221,6 +221,6 @@ Node A --- CAN_H ----- CAN_H --- ... --- CAN_H --- Node B
 - `can-rtos-integration.md` RTOS + SocketCAN
 - `can-vs-other-bus.md` 跨总线对比
 - `can-index.md` 导航
-- `bus/can-canopen-deep-dive.md` CANopen (CAN 之上的应用层协议)
-- `bus/can-canopen-practical.md` CANopen 实战
+- `bus/automotive/canopen-deep-dive.md` CANopen (CAN 之上的应用层协议)
+- `bus/automotive/canopen-practical.md` CANopen 实战
 - `basic/can-phy.md` CAN 物理层

@@ -764,6 +764,6 @@ ID 分配 / 过滤器           7%
 - `can-rtos-integration.md` RTOS + SocketCAN
 - `can-vs-other-bus.md` 跨总线对比
 - `can-index.md` 导航
-- `bus/can-canopen-deep-dive.md` CANopen
-- `bus/uds-*.md` UDS (诊断)
-- `bus/j1939-*.md` J1939 (商用车)
+- `bus/automotive/canopen-deep-dive.md` CANopen
+- `bus/automotive/uds-*.md` UDS (诊断)
+- `bus/automotive/j1939-*.md` J1939 (商用车)

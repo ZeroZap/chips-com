@@ -2,7 +2,7 @@
 
 ## 目标
 
-CAN 是 chips-com 的核心主题之一, 围绕"汽车/工规多 master 实时总线"已经形成 8 篇专题笔记。本文档是**总览导航**, 帮助不同读者快速找到自己需要的资料。
+CAN 是 chips-com 的核心主题之一, 围绕"汽车/工规多 master 实时总线"已经形成 8 篇专题笔记。本文档是 **PHY / 控制器层索引**, 聚焦位时序、差分物理层、仲裁与 Bus Off；协议栈与诊断族请从 [bus/automotive/can-index.md](../bus/automotive/can-index.md) 进入。
 
 ## 主题地图
 
@@ -70,27 +70,27 @@ chips-com/basic/can-*.md
 
 按问题找文档:
 
-| 我想知道 | 看哪里 |
-| --- | --- |
-| 终端电阻怎么接, 阻值多少 | can-practical.md "## 终端电阻详解" |
-| 波特率怎么算 | can-deep-dive.md "## 波特率计算" |
-| 仲裁机制 | can-deep-dive.md "## CAN 仲裁机制" |
+| 我想知道                  | 看哪里                                                        |
+| ------------------------- | ------------------------------------------------------------- |
+| 终端电阻怎么接, 阻值多少  | can-practical.md "## 终端电阻详解"                            |
+| 波特率怎么算              | can-deep-dive.md "## 波特率计算"                              |
+| 仲裁机制                  | can-deep-dive.md "## CAN 仲裁机制"                            |
 | 错误计数器 (TEC/REC) 规则 | can-multimaster-and-bus-off.md "## 错误计数器 (TEC/REC) 规则" |
-| Bus Off 怎么恢复 | can-multimaster-and-bus-off.md "## Bus Off 恢复机制" |
-| 节点状态机 | can-multimaster-and-bus-off.md "## 节点状态机" |
-| CAN FD 和经典 CAN 区别 | can-fd-and-can-xl.md "## CAN FD 关键改进" |
-| CAN FD 收发器选型 | can-fd-and-can-xl.md "## CAN FD 物理层" |
-| 过滤器怎么配 | can-deep-dive.md "## CAN 过滤器" |
-| ID 怎么分配 | can-multimaster-and-bus-off.md "## 应用层优先级分配" |
-| 多 master 调度 | can-multimaster-and-bus-off.md "## 多 Master 调度的工程问题" |
-| SocketCAN 编程 | can-rtos-integration.md "## Linux SocketCAN" |
-| RTOS 集成模式 | can-rtos-integration.md "## 三个 RTOS 的 CAN 抽象" |
-| 产线死机案例 | can-failure-cases.md |
-| 和 I2C 区别 | can-vs-other-bus.md "## CAN vs I2C" |
-| 和 SPI 区别 | can-vs-other-bus.md "## CAN vs SPI" |
-| 和 RS485 区别 | can-vs-other-bus.md "## CAN vs UART/RS485" |
-| 和 Ethernet 区别 | can-vs-other-bus.md "## CAN vs Ethernet" |
-| CAN FD vs CAN XL 选型 | can-fd-and-can-xl.md "## CAN FD 选型决策" |
+| Bus Off 怎么恢复          | can-multimaster-and-bus-off.md "## Bus Off 恢复机制"          |
+| 节点状态机                | can-multimaster-and-bus-off.md "## 节点状态机"                |
+| CAN FD 和经典 CAN 区别    | can-fd-and-can-xl.md "## CAN FD 关键改进"                     |
+| CAN FD 收发器选型         | can-fd-and-can-xl.md "## CAN FD 物理层"                       |
+| 过滤器怎么配              | can-deep-dive.md "## CAN 过滤器"                              |
+| ID 怎么分配               | can-multimaster-and-bus-off.md "## 应用层优先级分配"          |
+| 多 master 调度            | can-multimaster-and-bus-off.md "## 多 Master 调度的工程问题"  |
+| SocketCAN 编程            | can-rtos-integration.md "## Linux SocketCAN"                  |
+| RTOS 集成模式             | can-rtos-integration.md "## 三个 RTOS 的 CAN 抽象"            |
+| 产线死机案例              | can-failure-cases.md                                          |
+| 和 I2C 区别               | can-vs-other-bus.md "## CAN vs I2C"                           |
+| 和 SPI 区别               | can-vs-other-bus.md "## CAN vs SPI"                           |
+| 和 RS485 区别             | can-vs-other-bus.md "## CAN vs UART/RS485"                    |
+| 和 Ethernet 区别          | can-vs-other-bus.md "## CAN vs Ethernet"                      |
+| CAN FD vs CAN XL 选型     | can-fd-and-can-xl.md "## CAN FD 选型决策"                     |
 
 ## 关键概念地图
 
@@ -148,30 +148,35 @@ can-index.md (本文件, 导航)
 ## 学习路径推荐 (按角色)
 
 ### 嵌入式软件工程师
+
 ```text
 速查 → 原理 → 多 master / 错误处理 → RTOS / Linux
   0.5d   1d      1d                  1d
 ```
 
 ### 汽车 ECU 工程师
+
 ```text
 速查 → 原理 → 多 master → CAN FD → UDS / 诊断
   0.5d   1d      1d         0.5d      1d
 ```
 
 ### 工业 / 自动化工程师
+
 ```text
 速查 → 原理 → CANopen / Modbus → 跨总线对比
   0.5d   1d       1d              0.5d
 ```
 
 ### 嵌入式硬件工程师
+
 ```text
 速查 → 物理层 (deep-dive) → 收发器选型 → 信号完整性
   0.5d   1d                    0.5d          1d
 ```
 
 ### 产品架构师
+
 ```text
 跨总线对比 → 选型决策树 → CANopen / J1939 / UDS 应用
   0.5d          0.5d                1d
@@ -179,20 +184,22 @@ can-index.md (本文件, 导航)
 
 ## CAN 主题 vs I2C/SPI/UART 主题对比
 
-| 主题 | 篇数 | 大小 | 重点 |
-| --- | --- | --- | --- |
+| 主题    | 篇数  | 大小       | 重点                                        |
+| ------- | ----- | ---------- | ------------------------------------------- |
 | **CAN** | **8** | **120 KB** | **实时多 master + 错误处理 + 演进 (FD/XL)** |
-| I2C | 12 | 151 KB | 协议兼容性 + 总线恢复 (Recovery) |
-| SPI | 6 | 75 KB | 多从 / 菊花链 / 高速 |
-| UART | 6 | 80 KB | RS485 / 流控 / 异步日志 |
+| I2C     | 12    | 151 KB     | 协议兼容性 + 总线恢复 (Recovery)            |
+| SPI     | 6     | 75 KB      | 多从 / 菊花链 / 高速                        |
+| UART    | 6     | 80 KB      | RS485 / 流控 / 异步日志                     |
 
 **共同点**:
+
 - 都有速查 + 原理 + 实战 + 专题 + 导航 5 层结构
 - 都有 failure-cases (产线死机案例)
 - 都有 RTOS 集成
 - 都有跨总线对比
 
 **差异**:
+
 - CAN 重点: 多 master 仲裁 + 错误处理 (CAN 特色)
 - I2C 重点: 总线恢复 (I2C 特色, 因为有 8 步 SOP)
 - SPI 重点: 多从 / 菊花链 (SPI 特色)
@@ -200,55 +207,55 @@ can-index.md (本文件, 导航)
 
 ## 文档维护
 
-| 文档 | 更新频率 | 维护者 |
-| --- | --- | --- |
-| can-practical.md | 改版才更新 | 速查 / 调试流程 |
-| can-deep-dive.md | 改版才更新 | 原理体系 |
-| can-failure-cases.md | **持续更新** | 产线案例 |
-| can-multimaster-and-bus-off.md | 改版才更新 | 仲裁 / 错误 |
-| can-fd-and-can-xl.md | CAN XL 量产时 | 演进 |
-| can-rtos-integration.md | RTOS 改版时 | RTOS 集成 |
-| can-vs-other-bus.md | 新总线出现时 | 跨总线对比 |
-| can-index.md | 新增 / 删除文档时 | 导航 |
+| 文档                           | 更新频率          | 维护者          |
+| ------------------------------ | ----------------- | --------------- |
+| can-practical.md               | 改版才更新        | 速查 / 调试流程 |
+| can-deep-dive.md               | 改版才更新        | 原理体系        |
+| can-failure-cases.md           | **持续更新**      | 产线案例        |
+| can-multimaster-and-bus-off.md | 改版才更新        | 仲裁 / 错误     |
+| can-fd-and-can-xl.md           | CAN XL 量产时     | 演进            |
+| can-rtos-integration.md        | RTOS 改版时       | RTOS 集成       |
+| can-vs-other-bus.md            | 新总线出现时      | 跨总线对比      |
+| can-index.md                   | 新增 / 删除文档时 | 导航            |
 
 ## 相关标准规范
 
-CAN 涉及的标准横跨物理层到法规，完整总表见 **`bus/can-standards-map.md`**。核心几项：
+CAN 涉及的标准横跨物理层到法规，完整总表见 **`bus/automotive/can-standards-map.md`**。核心几项：
 
-| 层 | 标准 | 作用 |
-| --- | --- | --- |
-| 数据链路 | **ISO 11898-1** | 核心标准，经典 CAN / CAN FD / CAN XL 三代帧格式 |
-| 物理 | **ISO 11898-2** | 高速差分物理层、终端电阻、位时序电气特性 |
-| 物理 | ISO 11898-6 / ISO 11898-3 / ISO 14950-2 | 低功耗 / 低速容错 / 单线变体 |
-| 一致性 | ISO 16845-1 / -2 | 一致性测试方法学与测试计划 |
-| 传输 | ISO 15765-2 | ISO-TP（UDS 与 OBD 的公共底座） |
-| 应用 | ISO 14229-1 ~ -7 | UDS 总纲与各承载变体 |
-| 应用 | SAE J1979 / ISO 15031-5 | OBD-II 排放诊断（乘用车） |
-| 应用 | ISO 27145-1 ~ -4, -6 | WWH-OBD（商用车全球统一诊断） |
-| 应用 | CiA 301 / CiA 402 / CiA 1301 | CANopen / 驱动 Profile / CANopen FD |
-| 应用 | SAE J1939-21 / -71 / -73 / -81 | J1939 数据链路 / 应用层 / 诊断 / 网络管理 |
-| 环境 | ISO 16750-1 ~ -5 | 环境条件与试验（电气/机械/气候/化学） |
-| EMC | ISO 7637-2 / ISO 10605 / CISPR 25 / ISO 11452 | 瞬态 / ESD / 发射 / 辐射抗扰度 |
-| 安全 | ISO 26262 / ISO 21434 / UNECE R155-R156 | 功能安全 / 网络安全 / 软件更新合规 |
+| 层       | 标准                                          | 作用                                            |
+| -------- | --------------------------------------------- | ----------------------------------------------- |
+| 数据链路 | **ISO 11898-1**                               | 核心标准，经典 CAN / CAN FD / CAN XL 三代帧格式 |
+| 物理     | **ISO 11898-2**                               | 高速差分物理层、终端电阻、位时序电气特性        |
+| 物理     | ISO 11898-6 / ISO 11898-3 / ISO 14950-2       | 低功耗 / 低速容错 / 单线变体                    |
+| 一致性   | ISO 16845-1 / -2                              | 一致性测试方法学与测试计划                      |
+| 传输     | ISO 15765-2                                   | ISO-TP（UDS 与 OBD 的公共底座）                 |
+| 应用     | ISO 14229-1 ~ -7                              | UDS 总纲与各承载变体                            |
+| 应用     | SAE J1979 / ISO 15031-5                       | OBD-II 排放诊断（乘用车）                       |
+| 应用     | ISO 27145-1 ~ -4, -6                          | WWH-OBD（商用车全球统一诊断）                   |
+| 应用     | CiA 301 / CiA 402 / CiA 1301                  | CANopen / 驱动 Profile / CANopen FD             |
+| 应用     | SAE J1939-21 / -71 / -73 / -81                | J1939 数据链路 / 应用层 / 诊断 / 网络管理       |
+| 环境     | ISO 16750-1 ~ -5                              | 环境条件与试验（电气/机械/气候/化学）           |
+| EMC      | ISO 7637-2 / ISO 10605 / CISPR 25 / ISO 11452 | 瞬态 / ESD / 发射 / 辐射抗扰度                  |
+| 安全     | ISO 26262 / ISO 21434 / UNECE R155-R156       | 功能安全 / 网络安全 / 软件更新合规              |
 
 ## 关联主题 (chips-com 其他目录)
 
-- **`bus/can-protocol-family.md`** — CAN 家族协议全景（CAN/FD/XL/ISO-TP/CANopen/J1939/UDS/OBD-II）
-- **`bus/can-standards-map.md`** — CAN 家族标准规范总表（按层 + 按协议）
-- **`bus/can-canopen-deep-dive.md`** — CANopen (CAN 之上的应用层协议)
-- **`bus/can-canopen-practical.md`** — CANopen 实战
-- **`bus/canopen-failure-cases.md`** — CANopen 产线案例
-- **`bus/j1939-deep-dive.md`** — J1939 (商用车, 基于 CAN)
-- **`bus/j1939-practical.md`** — J1939 实战
-- **`bus/uds-deep-dive.md`** — UDS (诊断, 基于 CAN)
-- **`bus/uds-practical.md`** — UDS 实战
-- **`bus/uds-failure-cases.md`** — UDS 产线案例
-- **`bus/iso-tp-practical.md`** — ISO-TP (CAN 之上多帧传输)
-- **`bus/iso-tp-failure-cases.md`** — ISO-TP 产线案例
-- **`bus/obd2.md`** — OBD-II 排放诊断概览
-- **`bus/obd2-failure-cases.md`** — OBD-II 案例
-- **`bus/rs485-modbus-rtu-deep-dive.md`** — Modbus RTU (RS485)
-- **`bus/ethernet-ip-deep-dive.md`** — EtherNet/IP (工业 Ethernet)
+- **`bus/automotive/can-protocol-family.md`** — CAN 家族协议全景（CAN/FD/XL/ISO-TP/CANopen/J1939/UDS/OBD-II）
+- **`bus/automotive/can-standards-map.md`** — CAN 家族标准规范总表（按层 + 按协议）
+- **`bus/automotive/canopen-deep-dive.md`** — CANopen (CAN 之上的应用层协议)
+- **`bus/automotive/canopen-practical.md`** — CANopen 实战
+- **`bus/automotive/canopen-failure-cases.md`** — CANopen 产线案例
+- **`bus/automotive/j1939-deep-dive.md`** — J1939 (商用车, 基于 CAN)
+- **`bus/automotive/j1939-practical.md`** — J1939 实战
+- **`bus/automotive/uds-deep-dive.md`** — UDS (诊断, 基于 CAN)
+- **`bus/automotive/uds-practical.md`** — UDS 实战
+- **`bus/automotive/uds-failure-cases.md`** — UDS 产线案例
+- **`bus/automotive/iso-tp-practical.md`** — ISO-TP (CAN 之上多帧传输)
+- **`bus/automotive/iso-tp-failure-cases.md`** — ISO-TP 产线案例
+- **`bus/automotive/obd2.md`** — OBD-II 排放诊断概览
+- **`bus/automotive/obd2-failure-cases.md`** — OBD-II 案例
+- **`bus/industrial/rs485-modbus-rtu-deep-dive.md`** — Modbus RTU (RS485)
+- **`bus/industrial/ethernet-ip-deep-dive.md`** — EtherNet/IP (工业 Ethernet)
 - **`basic/can-phy.md`** — CAN 物理层基础
 - **`i2c-vs-smbus-recovery.md`** — 跨协议对比参考
 - **`i2c-bus-recovery-playbook.md`** — 总线恢复对比
@@ -261,4 +268,4 @@ CAN 是"可靠的实时多 master 现场总线", 强在错误检测、仲裁和�
 ## 更新记录
 
 - 2026-07-26: 初版, 8 篇笔记全部完成 (L4 闭环)
-- 2026-10-31: 新增「相关标准规范」节; 修正坏链 `iso-tcp-practical.md` → `iso-tp-practical.md`; 补充 CANopen / UDS / ISO-TP / OBD-II 的案例库链接。
+- 2026-10-31: 新增「相关标准规范」节; 修正 ISO-TP 实战文档坏链; 补充 CANopen / UDS / ISO-TP / OBD-II 的案例库链接。

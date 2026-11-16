@@ -482,10 +482,10 @@ dmesg | grep -i i2c
 
 - `i2c-deep-dive.md` 原理和体系
 - `i2c-practical.md` 速查
-- `smbus-pmbus-practical.md` SMBus timeout 差异
-- `i3c-deep-dive.md` I3C 演进和兼容性
-- `mipi-csi-dsi-debug.md` 传感器侧 I2C 初始化
-- `fpd-link-gmsl-practical.md` 远端 I2C / 反向通道
+- `bus/onboard/smbus-pmbus-practical.md` SMBus timeout 差异
+- `bus/onboard/i3c-deep-dive.md` I3C 演进和兼容性
+- `bus/display/mipi-csi-dsi-debug.md` 传感器侧 I2C 初始化
+- `bus/display/fpd-link-gmsl-practical.md` 远端 I2C / 反向通道
 
 ## 来源
 

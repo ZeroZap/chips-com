@@ -1,0 +1,306 @@
+# Communication Learning Plan
+
+## 当前阶段
+
+**v3.x 沉淀期**（2026-07-29 起）。6 个主题已达 L4 闭环（I2C / SPI / UART / CAN / J1939 / USB），整体深度 70/100。
+
+暂停主动扩展主题，等实战触发。详见 `## 阶段 6：实战沉淀期`。
+
+## 目标
+
+本计划用于有序深入芯片间通信知识库。学习路径从基础外设接口开始，逐步进入工业总线、网络通信、高速接口和专题调试。
+
+配套工程方法文档：
+
+- `guides/troubleshooting/DEBUG_PLAYBOOK.md`：跨协议分层排障方法。
+- `guides/learning/PROTOCOL_SELECTION.md`：通信协议选型矩阵。
+
+## 阶段 1：基础接口打牢
+
+目标：掌握板内常见低速/中速通信接口，能够独立完成接线、初始化、抓波形和基础故障定位。
+
+1. `UART`
+
+   已完成文档：
+
+   - `basic/uart-practical.md`
+   - `basic/uart-deep-dive.md`
+
+   重点能力：
+
+   - TX/RX/GND 接线。
+   - 波特率和 8N1。
+   - 字节流分帧。
+   - DMA + IDLE 接收。
+   - 波特率误差和现场排障。
+
+2. `I2C`
+
+   已完成文档：
+
+   - `basic/i2c-practical.md`
+   - `basic/i2c-deep-dive.md`
+
+   重点能力：
+
+   - 上拉电阻和总线电容。
+   - 7-bit/8-bit 地址。
+   - Repeated START。
+   - Clock Stretching。
+   - 总线恢复和 MUX。
+
+3. `SPI`
+
+   已完成文档：
+
+   - `basic/spi-practical.md`
+   - `basic/spi-deep-dive.md`
+
+   重点能力：
+
+   - CPOL/CPHA。
+   - CS 事务边界。
+   - dummy cycle。
+   - SPI Flash 命令。
+   - QSPI/OSPI 基础。
+
+## 阶段 2：工业串行与现场总线
+
+目标：理解长距离、抗干扰、多设备总线设计，能够调试工业仪表、采集模块、电机驱动和现场设备。
+
+1. `RS485 + Modbus RTU`
+
+   已完成文档：
+
+   - `bus/industrial/rs485-modbus-rtu-practical.md`
+   - `bus/industrial/rs485-modbus-rtu-deep-dive.md`
+
+   重点能力：
+
+   - DE/RE 方向控制。
+   - 终端电阻和偏置。
+   - 隔离与浪涌防护。
+   - Modbus RTU 帧间隔和 CRC。
+   - 寄存器地址偏移和主站轮询。
+
+2. `CAN + CANopen`
+
+   已完成文档：
+
+   - `bus/automotive/canopen-practical.md`
+   - `bus/automotive/canopen-deep-dive.md`
+
+   重点能力：
+
+   - CANH/CANL 和终端。
+   - 仲裁和错误状态。
+   - 标准帧/扩展帧/CAN FD。
+   - CANopen 对象字典。
+   - SDO/PDO/NMT/Heartbeat。
+   - CiA 402 电机状态机。
+
+3. `LIN`
+
+   已完成文档：
+
+   - `bus/automotive/lin-practical.md`
+
+   重点能力：
+
+   - 单线车身总线。
+   - 主从调度。
+   - Break/Sync/Identifier/Data/Checksum。
+
+## 阶段 3：I2C 生态扩展与电源管理
+
+目标：理解系统管理、电源管理和下一代双线总线。
+
+1. `I3C`
+
+   已完成文档：
+
+   - `bus/onboard/i3c.md`
+   - `bus/onboard/i3c-topic.md`
+   - `bus/onboard/i3c-deep-dive.md`
+
+   重点能力：
+
+   - 动态地址分配。
+   - CCC。
+   - IBI。
+   - Hot-Join。
+   - I2C 混挂限制。
+
+2. `SMBus / PMBus`
+
+   已完成文档：
+
+   - `bus/onboard/smbus-pmbus-practical.md`
+
+   重点能力：
+
+   - SMBus 事务。
+   - PEC。
+   - SMBALERT。
+   - PMBus 命令。
+   - Linear 数据格式。
+   - PAGE 和电源故障状态。
+
+## 阶段 4：通用主机外设与网络
+
+目标：理解主机枚举、协议栈、网络分层和嵌入式联网。
+
+1. `USB`
+
+   已完成文档：
+
+   - `bus/usb/usb-practical.md`
+   - `bus/usb/usb-deep-dive.md`
+
+   重点能力：
+
+   - Host/Device/OTG。
+   - 枚举和描述符。
+   - Endpoint。
+   - Control/Bulk/Interrupt/Isochronous。
+   - CDC/HID/MSC。
+
+2. `Ethernet + Modbus TCP`
+
+   已完成文档：
+
+   - `bus/industrial/ethernet-deep-dive.md`
+   - `bus/industrial/ethernet-modbus-tcp-practical.md`
+
+   重点能力：
+
+   - MAC/PHY。
+   - RMII/MII/RGMII。
+   - ARP/IP/TCP/UDP。
+   - TCP 字节流。
+   - Modbus TCP MBAP。
+   - Wireshark 排障。
+
+## 阶段 5：高速接口与图像显示
+
+目标：理解高速差分链路、显示和摄像头调试、高性能系统互联。
+
+1. `MIPI CSI/DSI`
+
+   已完成文档：
+
+   - `bus/display/mipi-csi-dsi-debug.md`
+   - `bus/display/mipi-csi-dsi-deep-dive.md`
+
+   重点能力：
+
+   - D-PHY Lane。
+   - 摄像头 I2C 初始化。
+   - MCLK/RESET/电源时序。
+   - RAW/YUV 像素格式。
+   - DSI command/video mode。
+   - 黑屏、花屏、无图排查。
+
+2. `PCIe`
+
+   已完成文档：
+
+   - `bus/onboard/pcie-practical.md`
+
+   重点能力：
+
+   - Root Complex 和 Endpoint。
+   - Lane 和 Gen。
+   - 配置空间。
+   - BAR。
+   - DMA。
+   - 链路训练和信号完整性。
+
+3. `SDIO`
+
+   已完成文档：
+
+   - `bus/onboard/sdio-practical.md`
+
+   重点能力：
+
+   - CLK/CMD/DAT0~3。
+   - 1-bit/4-bit 模式。
+   - Wi-Fi 模块驱动。
+   - 固件、设备树和中断。
+
+## 推荐下一步
+
+优先继续：
+
+```text
+Add Real-World Failure Cases And Measurement Examples
+```
+
+原因：
+
+- 主要协议族和跨协议方法已经建立。
+- 基础外设、主要总线和高风险显示/车载链路已经补齐 practical / deep-dive 文档。
+- 下一步应把知识库从“可调试的方法论”推进到“有真实现象、测量证据和根因闭环的案例库”。
+
+当前基础主题已补齐为：
+
+- `basic/gpio.md`
+- `basic/pwm.md`
+- `basic/adc-dac.md`
+- `basic/i2s.md`
+- `basic/qspi-ospi.md`
+- `basic/jtag-swd.md`
+- `basic/lvds.md`
+
+建议下一批优先文档：
+
+```text
+Add real-world failure cases and measurement examples
+```
+
+`bus/industrial/profinet-practical.md`、`bus/industrial/ethernet-ip-practical.md`、`bus/automotive/j1939-practical.md`、`bus/automotive/uds-practical.md`、`bus/industrial/profinet-deep-dive.md`、`bus/industrial/ethernet-ip-deep-dive.md`、`bus/automotive/j1939-deep-dive.md`、`bus/automotive/uds-deep-dive.md`、`bus/industrial/ethernet-tsn-practical.md`、`bus/industrial/profibus-deep-dive.md`、`bus/industrial/dmx512-deep-dive.md`、`bus/display/hdmi-edp-deep-dive.md` 和 `bus/display/fpd-link-gmsl-deep-dive.md` 已完成。下一步建议从“补齐协议文档”转向“补真实案例和测量样例”。
+
+建议覆盖：
+
+- 真实故障现象、复现条件和影响范围。
+- 示波器、逻辑分析仪、Wireshark 或寄存器 dump 的观测点。
+- 正常样机与故障样机的对比数据。
+- 分层排查路径和最终根因。
+- 可沉淀到 `guides/troubleshooting/FAILURE_CASES.md`、`guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md` 和各协议 deep-dive 的案例索引。
+
+## 阶段 6：实战沉淀期（2026-07-29 起）
+
+**为什么封口**：
+
+- 6 个 L4 闭环主题 + 47 篇 607 KB 体量已经够扎实一段时间，再主动加容易"知识库胖但实战没跟上"。
+- 之前 1 周连续做了 3 个主题（CAN / J1939 / USB）的高强度扩展，需要沉淀。
+- **经验法则**：知识库价值 = 闭环主题数 × 实战案例密度。3 个 L4 主题各配 5-10 个真实产线案例 > 10 个 L2 主题只有简介。
+
+**封口期间做什么**：
+
+| 触发 | 动作 |
+| --- | --- |
+| 项目中遇到 I2C / SPI / UART / CAN / J1939 / USB 真实故障 | 写 `xxx-failure-cases.md` 或在 `guides/troubleshooting/DEBUG_PLAYBOOK.md` 加案例段 |
+| 读到高质量实战文章 | 整理进对应主题的 deep-dive，附"实战补充"标记 |
+| 跨主题横向工作（PROTOCOL_SELECTION / DEBUG_PLAYBOOK 升级） | 持续 |
+| 0 空白协议（BLE / ZigBee / LoRa / CAN FD）| **挂起**，等真实项目需要再激活 |
+| L3 → L4 升级（UDS / EtherNet/IP / Profinet / FPD-Link）| **挂起**，等实战触发 |
+
+**封口期 KPI**：
+
+- 不主动开新主题
+- 不主动扩 deep-dive
+- 实战案例优先：`guides/troubleshooting/FAILURE_CASES.md` / `guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md` / `guides/troubleshooting/MEASUREMENT_EXAMPLES.md` 三件套持续更新
+- 每遇到一次真实调试，做"现象 → 抓包 → 定位 → 修复 → 复盘"5 段式记录
+
+**封口期结束条件**（任一满足即重新评估）：
+
+- 实战案例积累到 50+ 条（建议分散在 6 个 L4 主题各 8-10 条）
+- 工作室新项目需要某个当前 0 分或 L1 主题
+- 现有 6 个 L4 主题有 2+ 个用户主动要求升级
+
+**关联文档**：
+
+- `TOPIC_MATRIX.md` 第 225 行的"待做主题执行计划"已改名为"候选主题（沉淀期挂起）"
+- `INDEX.md` 底部记录 v3.x 封口里程碑

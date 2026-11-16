@@ -512,5 +512,5 @@ void can_fd_send(uint32_t can_id, uint8_t *data, uint8_t len) {
 - `can-rtos-integration.md` RTOS + SocketCAN
 - `can-vs-other-bus.md` 跨总线对比
 - `can-index.md` 导航
-- `bus/can-canopen-deep-dive.md` CANopen
+- `bus/automotive/canopen-deep-dive.md` CANopen
 - `i2c-vs-smbus-recovery.md` 跨协议对比参考

@@ -22,7 +22,7 @@
       }
     },
     {
-      "query": "path:wireless-2g4",
+      "query": "path:bus/wireless-iot",
       "color": {
         "a": 1,
         "rgb": 16750592

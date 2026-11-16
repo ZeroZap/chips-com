@@ -1,0 +1,335 @@
+# LoRa / LoRaWAN 主题总览
+
+## 目标
+
+LoRa / LoRaWAN 是 chips-com 的核心无线协议主题之一，围绕"远距低功耗 IoT（10 km+ 视距、电池寿命 5~10 年）"已经形成 5 篇专题笔记。本文档是**总览导航**，帮助不同读者快速找到自己需要的资料。
+
+## 主题地图
+
+```text
+chips-com/bus/lora-*.md
+│
+├── 速查层
+│   └── lora-practical.md                调试流程速查 / 5 秒定位 / 错误码表
+│
+├── 原理层
+│   └── lora-deep-dive.md                调制 / MAC / Class A/B/C / 配网 / ADR / NS
+│
+├── 实战层
+│   └── lora-failure-cases.md            9 个产线实战案例
+│
+└── 导航
+    └── lora-index.md (本文件)
+```
+
+## 读者路径
+
+### 路径 A: "我刚接触 LoRa, 想入门" (新人)
+
+按顺序读, 1-2 天能上手:
+
+1. **`bus/wireless-iot/lora.md`** — 主题入口, 5 分钟
+2. **`bus/wireless-iot/lora-practical.md`** — 频段 / SF/BW / 5 秒定位
+3. **`bus/wireless-iot/lora-deep-dive.md`** — 物理层调制 + Class 状态机
+
+### 路径 B: "我在做 LoRa 设备产线失败" (现场救火)
+
+1. **`bus/wireless-iot/lora-practical.md`** "## 5 秒钟定位"
+2. **`bus/wireless-iot/lora-failure-cases.md`** — 找类似案例（9 个）
+3. **`bus/wireless-iot/lora-deep-dive.md`** "## 错误码速查"
+
+### 路径 C: "我在做 LoRa 协议栈移植" (工程师)
+
+1. **`bus/wireless-iot/lora-deep-dive.md`** "## 物理层（PHY）" + "## MAC 帧"
+2. **`bus/wireless-iot/lora-practical.md`** "## 抓包工具"
+3. **`bus/wireless-iot/lora-deep-dive.md`** "## SX1262 关键 API"
+
+### 路径 D: "我在做 LoRaWAN 安全 / 配网" (安全工程师)
+
+1. **`bus/wireless-iot/lora-deep-dive.md`** "## OTAA 配网流程" + "## 安全"
+2. **`bus/wireless-iot/lora-failure-cases.md`** 案例 1（DevNonce）+ 案例 2（MIC Failure）+ 案例 8（Frame Counter 溢出）
+3. **`bus/wireless-iot/lora-practical.md`** "## 错误码速查" 的安全相关条目
+
+### 路径 E: "我在做 LoRaWAN 大规模部署" (架构师)
+
+1. **`bus/wireless-iot/lora.md`** "## Network Server" + "## 典型芯片"
+2. **`bus/wireless-iot/lora-deep-dive.md`** "## Network Server 架构" + "## SX1302 关键特性"
+3. **`bus/wireless-iot/lora-practical.md`** "## 性能数据参考" + `bus/wireless-iot/lora-failure-cases.md` 案例 4（GW 容量打满）
+
+### 路径 F: "我在做 LoRa 选型" (架构师 / PM)
+
+1. **`bus/wireless-iot/lora.md`** "## 跟其它无线协议的关系" + "## 频段"
+2. **`bus/wireless-iot/lora-deep-dive.md`** "## 性能数据参考"
+3. **`bus/wireless-iot/lora-failure-cases.md`** 案例 6（频段错配）
+
+## 主题速查矩阵
+
+按问题找文档:
+
+| 我想知道 | 看哪里 |
+| --- | --- |
+| 频段怎么选 | lora.md "## 频段" |
+| 频段错配怎么办 | lora-failure-cases.md 案例 6 / 9 |
+| 距离近 | lora-failure-cases.md 案例 7 |
+| 怎么选 SF / BW | lora-practical.md "## SF / BW / 速率关系" |
+| ADR 怎么开 | lora-deep-dive.md "## ADR" |
+| ADR 不收敛 | lora-failure-cases.md 案例 4 |
+| OTAA vs ABP | lora.md "## 配网：OTAA vs ABP" |
+| AppKey 怎么配 | lora-deep-dive.md "## OTAA 配网流程" |
+| Join Fail | lora-failure-cases.md 案例 1 |
+| MIC Failure | lora-failure-cases.md 案例 2 |
+| Duty Cycle 1% | lora-practical.md "## EU868" + lora-failure-cases.md 案例 3 |
+| Class A/B/C 区别 | lora-deep-dive.md "## Class A / B / C 状态机" |
+| Class C 资源占用 | lora-failure-cases.md 案例 4 |
+| Class B 漂移 | lora-failure-cases.md 案例 5 |
+| Frame Counter 溢出 | lora-failure-cases.md 案例 8 |
+| NS 怎么选 | lora.md "## Network Server" |
+| ChirpStack 部署 | lora-deep-dive.md "## ChirpStack 组件" |
+| 抓包工具 | lora-practical.md "## 抓包工具" |
+| 错误码 | lora-practical.md "## 错误码速查" |
+| SX1262 怎么用 | lora-deep-dive.md "## SX1262 关键 API" |
+| LoRaMac-node 移植实战 | lora-deep-dive.md "## LoRaMac-node 协议栈移植实战" |
+| SX1302 GW 设计 | lora-deep-dive.md "## SX1302 关键特性" |
+| 私有频段 | lora-failure-cases.md 案例 9 |
+| LoRa vs NB-IoT | lora.md "## 跟其它无线协议的关系" |
+| LoRa CSS 工业抗干扰 | lora-deep-dive.md "### LoRa CSS 工业抗干扰" |
+| LoRa 天线设计实战 | lora-deep-dive.md "### LoRa 天线设计实战" |
+| Frame Counter MAX_FCNT_GAP | lora-deep-dive.md "### Frame Counter（FCnt）实战" |
+| 移动场景 ADR 失效 | lora-failure-cases.md 案例 4 → 移动场景子段 |
+| 气体探测器部署 | lora-failure-cases.md 案例 12 |
+| 智慧农业部署 | lora-failure-cases.md 案例 13 |
+| 智能水表 7 大掉线 | lora-failure-cases.md 案例 14 |
+| Join-Storm 5000 节点 | lora-failure-cases.md 案例 15 |
+| 14 步 LoRa 调试方法论 | lora-practical.md "## 14 步 LoRa 调试方法论" |
+| Dragino 14 步产线 checklist | lora-practical.md "### Dragino Wiki 14 步 checklist" |
+| SX1301 网关 5 个长期故障 | lora-failure-cases.md 案例 16 |
+| LoRa 低功耗 3 陷阱 + TCXO | lora-failure-cases.md 案例 17 |
+| chirp 物理层 + 3 翻车坑 | lora-failure-cases.md 案例 18 |
+| CN470 同异频 + 8 子带映射 | lora-failure-cases.md 案例 19 |
+| STM32WL LDRO + 32MHz 温漂 | lora-failure-cases.md 案例 20 |
+| Daviteq 16 项 LED 状态机 | lora-failure-cases.md 案例 21 |
+| 农业 SF7 硬编码 6 周放弃 | lora-failure-cases.md 案例 22 |
+| World Bank 城市空气 4 多故障 | lora-failure-cases.md 案例 23 |
+| 私网 LoRa 300 节点 99.8% | lora-failure-cases.md 案例 24 |
+| LR1120+STM32L433 1/10 join 间歇失败 | lora-failure-cases.md 案例 25 |
+| Azure IoT Edge LNS 24h 静默卡死 | lora-failure-cases.md 案例 26 |
+| 商业部署 5 坑（ADR + 移动节点） | lora-failure-cases.md 案例 27 |
+| SX1278 果园 500 亩 120 节点 1 年稳 | lora-failure-cases.md 案例 28 |
+| LoRaWAN 到云端 + DevEUI 大小端 + FCnt | lora-failure-cases.md 案例 29 |
+| 腾讯云空中资源挤兑 GW 8 上/1 下 | lora-failure-cases.md 案例 30 |
+| SX1278 距离不足 5 步排查 | lora-failure-cases.md 案例 31 |
+| ESP32 LMIC MSB/LSB 字节序 + US915 subband | lora-failure-cases.md 案例 32 |
+| SX1262 vs SX1278 决策树 + 47nH 电感 | lora-failure-cases.md 案例 33 |
+| 拓冰 420 节点 P0 三联 + 470 MHz 扫频 | lora-failure-cases.md 案例 34 |
+| pyMC_Repeater SF11+ airtime.py 死区 | lora-failure-cases.md 案例 35 |
+| LoRaWAN 下行 4 fault domain + MQTT | lora-failure-cases.md 案例 36 |
+| 工业 crane edge FFT LoRaWAN 10 周 | lora-failure-cases.md 案例 37 |
+
+## 关键概念地图
+
+```text
+LoRa / LoRaWAN
+├── 物理层 (PHY)
+│   ├── Chirp Spread Spectrum (啁啾扩频)
+│   ├── SF (Spreading Factor) 7~12
+│   ├── BW (Bandwidth) 125/250/500 kHz
+│   ├── CR (Coding Rate) 4/5~4/8
+│   ├── Preamble + Sync + SFD
+│   └── Sensitivity -123 ~ -137 dBm
+│
+├── MAC 层 (LoRaWAN)
+│   ├── MHDR (MType / Major)
+│   ├── FHDR (DevAddr / FCtrl / FCnt / FOpts)
+│   ├── FPort (0=MAC, 1~223=App, 224~255=Reserved)
+│   ├── FRMPayload (用户数据 / MAC 命令)
+│   └── MIC (4 字节 CMAC/AES-128)
+│
+├── 设备类型 (Class)
+│   ├── Class A (上行后两个短下行窗口, 最低功耗)
+│   ├── Class B (同步下行, beacon + ping slot)
+│   └── Class C (持续下行接收, 功耗最高)
+│
+├── 配网
+│   ├── OTAA (动态 Join, 每次换 NwkSKey/AppSKey)
+│   ├── ABP (烧录固定, 免 Join 但重放风险)
+│   ├── DevEUI / AppEUI / DevNonce
+│   └── AppKey / NwkSKey / AppSKey
+│
+├── 安全
+│   ├── AppKey (128-bit 根密钥)
+│   ├── MIC 校验 (CMAC/AES-128)
+│   ├── Frame Counter (16-bit, 防重放)
+│   └── AES-128 CTR 加密 payload
+│
+├── ADR (Adaptive Data Rate)
+│   ├── NS 端评估 (20 帧窗口)
+│   ├── LinkADRReq 命令
+│   └── 收敛到最优 SF/BW
+│
+├── 频段 (Regional Parameters)
+│   ├── CN470 (96 上行 + 48 下行, 国内)
+│   ├── EU868 (8 信道, 1% Duty Cycle)
+│   ├── US915 (64 上行 + 8 下行, 子带)
+│   ├── AS923 (东南亚)
+│   ├── AU915 (澳大利亚)
+│   └── IN865 (印度)
+│
+├── 芯片
+│   ├── 端点: SX1276/SX1278/SX1262/SX1268/LLCC68/ASR6601
+│   ├── 网关: SX1302/SX1303 (8 信道)
+│   └── 2.4 GHz: LoRa1280
+│
+└── Network Server
+    ├── TTN (公有云, 免费层 200 节点)
+    ├── ChirpStack (开源自建, PG + Redis + MQTT)
+    ├── Helium (区块链激励, 衰落)
+    ├── AWS IoT Core for LoRaWAN
+    └── 自建 (私有部署)
+```
+
+## 文档关系图
+
+```text
+lora.md (主题入口, 概览)
+   ↓ 引用
+lora-practical.md (速查, 调试流程)
+   ↓ 引用
+lora-deep-dive.md (原理, 体系)
+   ↓ 引用
+lora-failure-cases.md (案例, 实战)
+   ↓ 全部引用
+lora-index.md (本文件, 导航)
+```
+
+## 学习路径推荐（按角色）
+
+### 嵌入式软件工程师（LoRa 协议栈开发）
+
+```text
+入口 → 速查 → 原理 → 实战案例
+0.5d   0.5d   2d     1d
+```
+
+### 物联网 / 可穿戴硬件工程师
+
+```text
+入口 → 速查 → 实战案例（天线篇） → 物理层深入
+0.5d   0.5d   1d                 1d
+```
+
+### Network Server 运维 / 部署
+
+```text
+入口（NS 选型） → 原理（GW 协议） → 实战案例（GW 容量 / Class B）
+0.5d            1d                 0.5d
+```
+
+### 移动 / Web 端开发者（应用层）
+
+```text
+速查（应用层 payload） → 实战案例 1（DevNonce） + 案例 8（Frame Counter）
+0.5d                0.5d
+```
+
+### 安全工程师
+
+```text
+原理 (OTAA + 密钥) → 实战案例 1/2/8
+1d     1d
+```
+
+### 产品架构师（选型 / 商务）
+
+```text
+入口（跟其它协议对比 + NS 选型） → 原理（性能数据） → 实战案例 6（频段错配）
+0.5d              0.5d                       0.5d
+```
+
+## LoRa 主题 vs 其它主题对比
+
+| 主题 | 篇数 | 大小 | 重点 |
+| --- | --- | --- | --- |
+| **LoRa** | **5** | **~62 KB** | **远距 + 低功耗 + Class + 配网 + NS** |
+| BLE | 5 | ~49 KB | 短距 + GATT + 配对 + 安全 |
+| CAN | 8 | 120 KB | 实时多 master + 错误处理 + 演进 (FD/XL) |
+| USB | 9 | ~130 KB | 描述符 + 类驱动 + DMA |
+| I2C | 12 | 151 KB | 协议兼容性 + 总线恢复 |
+| SPI | 6 | 75 KB | 多从 / 菊花链 / 高速 |
+| UART | 6 | 80 KB | RS485 / 流控 / 异步日志 |
+| J1939 | 7 | ~95 KB | 商用车协议栈 + 地址声明 |
+
+**共同点**:
+
+- 都有速查 + 原理 + 实战 + 导航 4 层结构
+- 都有 failure-cases (产线死机案例)
+- 都有 practical 中的"5 秒定位" / 速查表
+
+**差异**:
+
+- LoRa 重点: 远距 + 频段 + Class + OTAA + NS（LoRa 特色）
+- BLE 重点: 协议栈分层 + GATT 模型 + 配对安全 (BLE 特色)
+- CAN 重点: 多 master 仲裁 + 错误处理 (CAN 特色)
+- USB 重点: 描述符体系 + 类驱动 (USB 特色)
+- I2C 重点: 总线恢复 (I2C 特色, 因为有 8 步 SOP)
+
+## 文档维护
+
+| 文档 | 更新频率 | 维护者 |
+| --- | --- | --- |
+| lora.md | 改版才更新 | 主题入口 |
+| lora-practical.md | 改版才更新 | 速查 / 调试流程 |
+| lora-deep-dive.md | 协议改版 / LoRaWAN 1.1 出 | 原理体系 |
+| lora-failure-cases.md | **持续更新** | 产线案例 |
+| lora-index.md | 新增 / 删除文档时 | 导航 |
+
+## 关联主题（chips-com 其他目录）
+
+- **`bus/wireless-iot/ble.md`** — BLE（短距高吞吐，互补关系）
+- **`bus/wireless-iot/zigbee.md`** — ZigBee（Mesh 短距，互补关系）
+- **`bus/wireless-iot/thread.md`** — Thread（IPv6 Mesh，互补关系）
+- **`bus/wireless-iot/matter.md`** — Matter（智能家居统一层）
+- **`basic/ethernet-phy.md`** — 物理层对比参考（Sub-GHz vs 2.4 GHz）
+- **`bus/industrial/modbus.md`** — Modbus（远程低速，竞品）
+
+## 一句话总结
+
+LoRa / LoRaWAN 是"远距低功耗 IoT 的事实标准"，强在距离、电池寿命、星型网络、和免许可频段。从原理到产线案例，5 篇笔记覆盖完整。和 BLE / ZigBee / Thread / Wi-Fi 是**互补**关系（远距低速 vs 短距高速），和 NB-IoT 是**直接竞争**（免许可自建 vs 蜂窝流量费）。
+
+## 更新记录
+
+- 2026-08-01: 初版, 5 篇笔记全部完成 (L4 闭环)
+  - 来源：_Inbox/LoRa-2026-07-31-candidates.md 9 条候选 + 实战补充
+  - 覆盖：物理层调制 / Class A/B/C / OTAA / ADR / 频段 / NS / 9 案例
+- 2026-09-14: 新增 5 实战案例（38-42）
+  - 案例 38：350→420 智能能源 P0 三因素叠加（半信道 + ChirpStack 连接池 + ADR SF7 扎堆 + FUOTA Class A/C 切换）
+  - 案例 39：Industrial Predictive Maintenance Year-Two 失败（断链→baseline 漂移→信任崩溃）
+  - 案例 40：LoRaWAN spec vs reality（农场 6-8mi / 林地 1-3mi / 工业 200-600m / 电池 2-3y）
+  - 案例 41：Downlinks scheduled not sent（4 fault domain + ChirpStack device lock + 三平台对比）
+  - 案例 42：Gateway RSSI/SNR/Packet loss（SNR 阈值按 SF + 3 丢包 pattern + 4 类隐性硬件故障）
+  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-14-candidates.md 候选 1-5
+- 2026-09-17: 新增 5 实战案例（43-47）
+  - 案例 43：ESP32 SX1262 LoRaWAN TX brownout + US915 sub-band mask + 470µF bulk cap
+  - 案例 44：Heltec V3 TTN -707/-706（V2/V3 板卡 SPI 映射混淆 + SX1278 vs SX1262）+ MSB/LSB 字节序
+  - 案例 45：STM32WLE5 modem_supervisor_init 卡死（HSE32 + TCXO DIO3 + RCC-CR.HSE32RDY + BUSY 引脚 5 步排查法）
+  - 案例 46：SPI Mode 0 + SX1262 max 16MHz + NSS pull-up + SDR 看 CSS chirp 验 TX + DevEUI 冲突 nonce mismatch
+  - 案例 47：Firmware 三层调试法——RTL-SDR 看空口 + IC880A+Pi 自建 gateway + ChirpStack 栈诊断
+  - 来源：_Inbox/LoRa-2026-09-17-candidates.md 候选 1-5
+- 2026-09-19: 新增 5 实战案例（48-52）
+  - 案例 48：LoRa SF/带宽/编码率配置不当电池续航雪崩（万亩农田 3y→4 月 + 6000 水表 9→48 月 + SF 速查表）
+  - 案例 49：车间无线 3 大杀手——VFD 谐波 + 电焊机拉弧 + 多径驻波（JYLN061 SF10+BW125+CR4/5+27dBm 1h 0 丢包）
+  - 案例 50：12km LOS ok / 400m 仓库失败——VFD 拉噪声底（RSSI+SNR 双轨 + cavity filter LNA 前 + SNR -3→+7 dB）
+  - 案例 51：12km LOS ok / 400m 停车场失败——40 节点 RTC 同步唤醒 ALOHA 同频碰撞（chip unique ID 0-45s 偏移 + 丢包 95%→<3%）
+  - 案例 52：SX1262 SF5 6 月 147 测试 4 隐形坑（RadioLib TX +11dBm bug + sync word 0x34 + boosted RX 未开 + 配置顺序错位）
+  - 来源：_Inbox/LoRa-2026-09-19-candidates.md 候选 1-5
+- 2026-09-21: 新增 4 实战案例（53-56）
+  - 案例 53：Okumura-Hata 链路预算 ×1/10~1/30 农田 40+ 节点 / 最远 2.8 km + 6 条现场踩坑速查表
+  - 案例 54：亿佰特 E22 FEC+LBT 丢包 15% → 0.5% 工厂案例 + 5 个 AT 指令 + 「天线>速率>LBT/FEC>功率>重传」排查优先级
+  - 案例 55：TrueSight 80% 集成商金属厂房 500m 稳不住 + VNA+TDMA+Hopping+磁珠/LDO 4 件套
+  - 案例 56：技象科技 CSS 抗噪 +20dB vs FSK -8dB + 硅谷 50km 城市穿透 + 变频器车间 LoRa 稳而 Wi-Fi 失效 + 4 大缓解策略
+  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-21-candidates.md 候选 1-4
+- 2026-09-24: 新增 4 实战案例（57-60）
+  - 案例 57：Concept13 欧企设施管理几千节点 join-storm + DevEUI/AppKey 配置错级联 + 配置基线 + 流量画像
+  - 案例 58：EU868 1% duty cycle 锁死——lgw_send Busy + tshark 定位 + Python 日志注入复现
+  - 案例 59：TrueSight 工业三维度排障——多径 + 时间同步漂移 + 天线极化（冷库 EM300-TH 挂铁门 -110dBm → -120dBm）
+  - 案例 60：LoRaWAN 智能电表 100 节点——300 节点散列 ID 随机化防碰撞 + LoRa 拉低 3.3V 干扰 ADC 钽电容 + 精简 MAC Payload 取代 DL/T 645
+  - 来源：_Inbox/LoRa-LoRaWAN-2026-09-24-candidates.md 候选 1-4

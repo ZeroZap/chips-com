@@ -17,15 +17,15 @@ aliases:
 
 ## 快速入口
 
-| 区域     | 入口                                                                    |
-| -------- | ----------------------------------------------------------------------- |
-| 基础接口 | [[basic/README\|基础接口总览]]                                          |
-| 总线协议 | [[bus/README\|总线协议总览]]                                            |
-| 完整索引 | [[INDEX\|知识库索引]]                                                   |
-| 分层图谱 | [[LAYERED_MAP\|分层图谱]]                                               |
-| 学习路径 | [[LEARNING_PLAN\|阶段化学习计划]] · [[READING_PATHS\|按目标阅读]]       |
-| 排障     | [[DEBUG_PLAYBOOK\|跨协议排障]] · [[TROUBLESHOOTING_QUICKREF\|故障速查]] |
-| 选型     | [[PROTOCOL_SELECTION\|选型矩阵]] · [[PROTOCOL_COMPARISON\|协议对照]]    |
+| 区域     | 入口                                                                                                                  |
+| -------- | --------------------------------------------------------------------------------------------------------------------- |
+| 基础接口 | [[basic/README\|基础接口总览]]                                                                                        |
+| 总线协议 | [[bus/README\|总线协议总览]]                                                                                          |
+| 完整索引 | [[INDEX\|知识库索引]]                                                                                                 |
+| 分层图谱 | [[LAYERED_MAP\|分层图谱]]                                                                                             |
+| 学习路径 | [[guides/learning/LEARNING_PLAN\|阶段化学习计划]] · [[guides/learning/READING_PATHS\|按目标阅读]]                     |
+| 排障     | [[guides/troubleshooting/DEBUG_PLAYBOOK\|跨协议排障]] · [[guides/troubleshooting/TROUBLESHOOTING_QUICKREF\|故障速查]] |
+| 选型     | [[guides/learning/PROTOCOL_SELECTION\|选型矩阵]] · [[guides/learning/PROTOCOL_COMPARISON\|协议对照]]                  |
 
 ## ① 基础接口 `basic/`
 
@@ -47,103 +47,103 @@ aliases:
 
 ### 工业与以太网
 
-| 主题                | 入口笔记                                                                                                                           |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Modbus              | [[bus/modbus\|Modbus]] · [[bus/rs485-modbus-rtu-practical\|RS485/RTU 实战]] · [[bus/modbus-tcp-deep-dive\|Modbus TCP 深入]]        |
-| PROFIBUS / PROFINET | [[bus/profibus\|PROFIBUS]] · [[bus/profinet\|PROFINET]]                                                                            |
-| EtherCAT            | [[bus/ethercat-deep-dive\|EtherCAT 深入]]                                                                                          |
-| EtherNet/IP         | [[bus/ethernet-ip-practical\|EtherNet/IP 实战]] · [[bus/ethernet-ip-deep-dive\|深入]]                                              |
-| TSN                 | [[bus/ethernet-tsn\|TSN]] · [[bus/ethernet-tsn-practical\|TSN 实战]]                                                               |
-| 工业以太网对比      | [[bus/industrial-ethernet-comparison\|对比矩阵]]                                                                                   |
-| OPC UA / MQTT       | [[bus/opcua\|OPC UA]] · [[bus/mqtt\|MQTT]]                                                                                         |
-| 板内与管理总线      | [[bus/i3c\|I3C]] · [[bus/smbus\|SMBus]] · [[bus/pmbus\|PMBus]] · [[bus/sdio-practical\|SDIO]] · [[bus/one-wire-practical\|1-Wire]] |
-| 其他                | [[bus/dmx512\|DMX512]] · [[bus/pcie-practical\|PCIe]]                                                                              |
+| 主题                | 入口笔记                                                                                                                                                                   |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Modbus              | [[bus/industrial/modbus\|Modbus]] · [[bus/industrial/rs485-modbus-rtu-practical\|RS485/RTU 实战]] · [[bus/industrial/modbus-tcp-deep-dive\|Modbus TCP 深入]]               |
+| PROFIBUS / PROFINET | [[bus/industrial/profibus\|PROFIBUS]] · [[bus/industrial/profinet\|PROFINET]]                                                                                              |
+| EtherCAT            | [[bus/industrial/ethercat-deep-dive\|EtherCAT 深入]]                                                                                                                       |
+| EtherNet/IP         | [[bus/industrial/ethernet-ip-practical\|EtherNet/IP 实战]] · [[bus/industrial/ethernet-ip-deep-dive\|深入]]                                                                |
+| TSN                 | [[bus/industrial/ethernet-tsn\|TSN]] · [[bus/industrial/ethernet-tsn-practical\|TSN 实战]]                                                                                 |
+| 工业以太网对比      | [[bus/industrial/industrial-ethernet-comparison\|对比矩阵]]                                                                                                                |
+| OPC UA / MQTT       | [[bus/industrial/opcua\|OPC UA]] · [[bus/industrial/mqtt\|MQTT]]                                                                                                           |
+| 板内与管理总线      | [[bus/onboard/i3c\|I3C]] · [[bus/onboard/smbus\|SMBus]] · [[bus/onboard/pmbus\|PMBus]] · [[bus/onboard/sdio-practical\|SDIO]] · [[bus/onboard/one-wire-practical\|1-Wire]] |
+| 其他                | [[bus/industrial/dmx512\|DMX512]] · [[bus/onboard/pcie-practical\|PCIe]]                                                                                                   |
 
 ### 电力 / 水利 / 表计 / 楼宇
 
-| 主题         | 入口笔记                                                                                           |
-| ------------ | -------------------------------------------------------------------------------------------------- |
-| RTU 协议总览 | [[bus/rtu-protocols\|RTU 协议全集]] · [[bus/rtu-gateway-design\|RTU 网关设计]]                     |
-| IEC 60870    | [[bus/iec104\|IEC 104]] · [[bus/iec101\|IEC 101]]                                                  |
-| DNP3         | [[bus/dnp3\|DNP3]]                                                                                 |
-| IEC 61850    | [[bus/iec61850\|IEC 61850]]                                                                        |
-| 水利 / 环保  | [[bus/sl651\|SL 651]] · [[bus/szy206\|SZY 206]] · [[bus/slt427\|SL/T 427]] · [[bus/hj212\|HJ 212]] |
-| 表计 / 楼宇  | [[bus/dlt645\|DL/T 645]] · [[bus/cjt188\|CJ/T 188]] · [[bus/bacnet\|BACnet]]                       |
+| 主题         | 入口笔记                                                                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| RTU 协议总览 | [[bus/power-rtu/rtu-protocols\|RTU 协议全集]] · [[bus/power-rtu/rtu-gateway-design\|RTU 网关设计]]                                         |
+| IEC 60870    | [[bus/power-rtu/iec104\|IEC 104]] · [[bus/power-rtu/iec101\|IEC 101]]                                                                      |
+| DNP3         | [[bus/power-rtu/dnp3\|DNP3]]                                                                                                               |
+| IEC 61850    | [[bus/power-rtu/iec61850\|IEC 61850]]                                                                                                      |
+| 水利 / 环保  | [[bus/power-rtu/sl651\|SL 651]] · [[bus/power-rtu/szy206\|SZY 206]] · [[bus/power-rtu/slt427\|SL/T 427]] · [[bus/power-rtu/hj212\|HJ 212]] |
+| 表计 / 楼宇  | [[bus/power-rtu/dlt645\|DL/T 645]] · [[bus/power-rtu/cjt188\|CJ/T 188]] · [[bus/power-rtu/bacnet\|BACnet]]                                 |
 
 ### 车载与诊断
 
-| 主题           | 入口笔记                                                                                                                                            |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CAN 家族       | [[bus/can-protocol-family\|CAN 家族全景]] · [[bus/can-standards-map\|CAN 标准总表]]                                                                 |
-| CAN / CANopen  | [[bus/can\|CAN]] · [[bus/canopen\|CANopen]] · [[bus/canopen-safety\|CANopen Safety]]                                                                |
-| J1939          | [[bus/j1939-index\|J1939 导航]] · [[bus/j1939-protocol-spec\|J1939 规范]]                                                                           |
-| ISO-TP         | [[bus/iso-tp\|ISO-TP]] · [[bus/iso-tp-practical\|实战]] · [[bus/iso-tp-failure-cases\|故障案例]]                                                    |
-| UDS            | [[bus/uds\|UDS]] · [[bus/uds-practical\|实战]] · [[bus/uds-deep-dive\|深入]] · [[bus/uds-failure-cases\|故障案例]]                                  |
-| OBD            | [[bus/obd2\|OBD-II]] · [[bus/wwh-obd\|WWH-OBD]]                                                                                                     |
-| LIN            | [[bus/lin\|LIN]]                                                                                                                                    |
-| 车载视频与显示 | [[bus/fpd-link-gmsl\|FPD-Link/GMSL]] · [[bus/hdmi-edp\|HDMI/eDP]] · [[bus/display-interfaces\|显示接口]] · [[bus/mipi-csi-dsi-debug\|MIPI CSI/DSI]] |
+| 主题           | 入口笔记                                                                                                                                                                            |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CAN 家族       | [[bus/automotive/can-protocol-family\|CAN 家族全景]] · [[bus/automotive/can-standards-map\|CAN 标准总表]]                                                                           |
+| CAN / CANopen  | [[bus/automotive/can\|CAN]] · [[bus/automotive/canopen\|CANopen]] · [[bus/automotive/canopen-safety\|CANopen Safety]]                                                               |
+| J1939          | [[bus/automotive/j1939-index\|J1939 导航]] · [[bus/automotive/j1939-protocol-spec\|J1939 规范]]                                                                                     |
+| ISO-TP         | [[bus/automotive/iso-tp\|ISO-TP]] · [[bus/automotive/iso-tp-practical\|实战]] · [[bus/automotive/iso-tp-failure-cases\|故障案例]]                                                   |
+| UDS            | [[bus/automotive/uds\|UDS]] · [[bus/automotive/uds-practical\|实战]] · [[bus/automotive/uds-deep-dive\|深入]] · [[bus/automotive/uds-failure-cases\|故障案例]]                      |
+| OBD            | [[bus/automotive/obd2\|OBD-II]] · [[bus/automotive/wwh-obd\|WWH-OBD]]                                                                                                               |
+| LIN            | [[bus/automotive/lin\|LIN]]                                                                                                                                                         |
+| 车载视频与显示 | [[bus/display/fpd-link-gmsl\|FPD-Link/GMSL]] · [[bus/display/hdmi-edp\|HDMI/eDP]] · [[bus/display/display-interfaces\|显示接口]] · [[bus/display/mipi-csi-dsi-debug\|MIPI CSI/DSI]] |
 
 ### USB
 
-| 主题       | 入口笔记                                                                                  |
-| ---------- | ----------------------------------------------------------------------------------------- |
-| USB 总览   | [[bus/usb-index\|USB 导航]] · [[bus/usb-vs-other-bus\|USB 对比]]                          |
-| 协议层     | [[bus/usb-enumeration-and-descriptors\|枚举与描述符]] · [[bus/usb-class-drivers\|类驱动]] |
-| 集成与升级 | [[bus/usb-dma-and-rtos\|DMA 与 RTOS]] · [[bus/usb-dfu\|USB DFU]]                          |
+| 主题       | 入口笔记                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------------------- |
+| USB 总览   | [[bus/usb/usb-index\|USB 导航]] · [[bus/usb/usb-vs-other-bus\|USB 对比]]                          |
+| 协议层     | [[bus/usb/usb-enumeration-and-descriptors\|枚举与描述符]] · [[bus/usb/usb-class-drivers\|类驱动]] |
+| 集成与升级 | [[bus/usb/usb-dma-and-rtos\|DMA 与 RTOS]] · [[bus/usb/usb-dfu\|USB DFU]]                          |
 
 ## ③ 无线与 IoT
 
-| 主题             | 入口笔记                                                                                                                                     |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| BLE              | [[bus/ble-index\|BLE 导航]] · [[bus/ble-practical\|实战]] · [[bus/ble-deep-dive\|深入]] · [[bus/ble-failure-cases\|故障案例]]                |
-| ZigBee           | [[bus/zigbee-index\|ZigBee 导航]] · [[bus/zigbee-practical\|实战]] · [[bus/zigbee-deep-dive\|深入]] · [[bus/zigbee-failure-cases\|故障案例]] |
-| LoRa             | [[bus/lora-index\|LoRa 导航]] · [[bus/lora-practical\|实战]] · [[bus/lora-deep-dive\|深入]] · [[bus/lora-failure-cases\|故障案例]]           |
-| Matter           | [[bus/matter-index\|Matter 导航]] · [[bus/matter-practical\|实战]] · [[bus/matter-deep-dive\|深入]]                                          |
-| Thread           | [[bus/thread-index\|Thread 导航]] · [[bus/thread-practical\|实战]] · [[bus/thread-deep-dive\|深入]]                                          |
-| 蜂窝 IoT         | [[bus/lte-iot-index\|LTE IoT 导航]] · [[bus/lte-iot-practical\|实战]] · [[bus/lte-iot-deep-dive\|深入]]                                      |
-| 卫星 IoT         | [[bus/satellite-iot-index\|卫星 IoT 导航]] · [[bus/satellite-iot-practical\|实战]]                                                           |
-| 电力线 / 应急    | [[bus/plb-index\|PLB 导航]] · [[bus/rescue-comms-index\|应急通信导航]]                                                                       |
-| 2.4 GHz 私有协议 | [[wireless-2g4/nrf2401\|nRF2401 / nRF24L01+]]                                                                                                |
+| 主题             | 入口笔记                                                                                                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BLE              | [[bus/wireless-iot/ble-index\|BLE 导航]] · [[bus/wireless-iot/ble-practical\|实战]] · [[bus/wireless-iot/ble-deep-dive\|深入]] · [[bus/wireless-iot/ble-failure-cases\|故障案例]]                |
+| ZigBee           | [[bus/wireless-iot/zigbee-index\|ZigBee 导航]] · [[bus/wireless-iot/zigbee-practical\|实战]] · [[bus/wireless-iot/zigbee-deep-dive\|深入]] · [[bus/wireless-iot/zigbee-failure-cases\|故障案例]] |
+| LoRa             | [[bus/wireless-iot/lora-index\|LoRa 导航]] · [[bus/wireless-iot/lora-practical\|实战]] · [[bus/wireless-iot/lora-deep-dive\|深入]] · [[bus/wireless-iot/lora-failure-cases\|故障案例]]           |
+| Matter           | [[bus/wireless-iot/matter-index\|Matter 导航]] · [[bus/wireless-iot/matter-practical\|实战]] · [[bus/wireless-iot/matter-deep-dive\|深入]]                                                       |
+| Thread           | [[bus/wireless-iot/thread-index\|Thread 导航]] · [[bus/wireless-iot/thread-practical\|实战]] · [[bus/wireless-iot/thread-deep-dive\|深入]]                                                       |
+| 蜂窝 IoT         | [[bus/wireless-iot/lte-iot-index\|LTE IoT 导航]] · [[bus/wireless-iot/lte-iot-practical\|实战]] · [[bus/wireless-iot/lte-iot-deep-dive\|深入]]                                                   |
+| 卫星 IoT         | [[bus/wireless-iot/satellite-iot-index\|卫星 IoT 导航]] · [[bus/wireless-iot/satellite-iot-practical\|实战]]                                                                                     |
+| 电力线 / 应急    | [[bus/wireless-iot/plb-index\|PLB 导航]] · [[bus/wireless-iot/rescue-comms-index\|应急通信导航]]                                                                                                 |
+| 2.4 GHz 私有协议 | [[bus/wireless-iot/nrf2401\|nRF2401 / nRF24L01+]]                                                                                                                                                |
 
 ## ④ 学习与选型
 
-| 目标       | 入口笔记                                                                          |
-| ---------- | --------------------------------------------------------------------------------- |
-| 阶段化学习 | [[LEARNING_PLAN\|学习计划]] · [[READING_PATHS\|按目标阅读]]                       |
-| 动手实验   | [[LABS\|实验路线]] · [[EXPERIMENT_TEMPLATE\|实验记录模板]]                        |
-| 协议选型   | [[PROTOCOL_SELECTION\|选型矩阵]] · [[PROTOCOL_COMPARISON\|协议对照]]              |
-| 场景与器件 | [[APPLICATION_SCENARIOS\|应用场景]] · [[DEVICE_EXAMPLES\|典型设备接口]]           |
-| 分层与覆盖 | [[LAYERED_MAP\|分层图谱]] · [[TOPIC_MATRIX\|主题完成度]] · [[COVERAGE\|覆盖范围]] |
-| 参数速查   | [[PARAMETER_CHEATSHEET\|接口参数速查]]                                            |
+| 目标       | 入口笔记                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------- |
+| 阶段化学习 | [[guides/learning/LEARNING_PLAN\|学习计划]] · [[guides/learning/READING_PATHS\|按目标阅读]]             |
+| 动手实验   | [[guides/learning/LABS\|实验路线]] · [[guides/learning/EXPERIMENT_TEMPLATE\|实验记录模板]]              |
+| 协议选型   | [[guides/learning/PROTOCOL_SELECTION\|选型矩阵]] · [[guides/learning/PROTOCOL_COMPARISON\|协议对照]]    |
+| 场景与器件 | [[guides/learning/APPLICATION_SCENARIOS\|应用场景]] · [[guides/learning/DEVICE_EXAMPLES\|典型设备接口]] |
+| 分层与覆盖 | [[LAYERED_MAP\|分层图谱]] · [[TOPIC_MATRIX\|主题完成度]] · [[COVERAGE\|覆盖范围]]                       |
+| 参数速查   | [[guides/learning/PARAMETER_CHEATSHEET\|接口参数速查]]                                                  |
 
 ## ⑤ 排障与实战
 
-| 场景       | 入口笔记                                                                            |
-| ---------- | ----------------------------------------------------------------------------------- |
-| 系统化排障 | [[DEBUG_PLAYBOOK\|跨协议排障方法]] · [[FIELD_DIAGNOSTIC_RUNBOOK\|现场诊断运行手册]] |
-| 故障速查   | [[TROUBLESHOOTING_QUICKREF\|故障速查表]] · [[FAILURE_CASES\|故障案例库]]            |
-| 波形与测量 | [[WAVEFORM_GUIDE\|波形观察指南]] · [[MEASUREMENT_EXAMPLES\|测量样例]]               |
-| 硬件检查   | [[SCHEMATIC_CHECKLISTS\|原理图检查清单]]                                            |
-| 驱动实现   | [[DRIVER_PATTERNS\|驱动状态机模式]]                                                 |
+| 场景       | 入口笔记                                                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 系统化排障 | [[guides/troubleshooting/DEBUG_PLAYBOOK\|跨协议排障方法]] · [[guides/troubleshooting/FIELD_DIAGNOSTIC_RUNBOOK\|现场诊断运行手册]] |
+| 故障速查   | [[guides/troubleshooting/TROUBLESHOOTING_QUICKREF\|故障速查表]] · [[guides/troubleshooting/FAILURE_CASES\|故障案例库]]            |
+| 波形与测量 | [[guides/troubleshooting/WAVEFORM_GUIDE\|波形观察指南]] · [[guides/troubleshooting/MEASUREMENT_EXAMPLES\|测量样例]]               |
+| 硬件检查   | [[guides/troubleshooting/SCHEMATIC_CHECKLISTS\|原理图检查清单]]                                                                   |
+| 驱动实现   | [[guides/troubleshooting/DRIVER_PATTERNS\|驱动状态机模式]]                                                                        |
 
 ## ⑥ 工程与质量
 
-| 主题           | 入口笔记                                                                                          |
-| -------------- | ------------------------------------------------------------------------------------------------- |
-| 量产测试       | [[PRODUCTION_TEST\|量产测试策略]] · [[AUTOMATED_TEST_HARNESS\|自动化测试治具]]                    |
-| 回归与可靠性   | [[REGRESSION_TEST_MATRIX\|回归测试矩阵]] · [[RELIABILITY_GUIDE\|可靠性设计]]                      |
-| 质量与追踪     | [[COMMUNICATION_QUALITY_GATE\|发布质量门禁]] · [[COMMUNICATION_TRACEABILITY\|通信追踪矩阵]]       |
-| 安全与可观测性 | [[COMMUNICATION_SECURITY_SAFETY\|安全与失效安全]] · [[COMMUNICATION_OBSERVABILITY\|通信可观测性]] |
+| 主题           | 入口笔记                                                                                                                                |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 量产测试       | [[guides/engineering/PRODUCTION_TEST\|量产测试策略]] · [[guides/engineering/AUTOMATED_TEST_HARNESS\|自动化测试治具]]                    |
+| 回归与可靠性   | [[guides/engineering/REGRESSION_TEST_MATRIX\|回归测试矩阵]] · [[guides/engineering/RELIABILITY_GUIDE\|可靠性设计]]                      |
+| 质量与追踪     | [[guides/engineering/COMMUNICATION_QUALITY_GATE\|发布质量门禁]] · [[guides/engineering/COMMUNICATION_TRACEABILITY\|通信追踪矩阵]]       |
+| 安全与可观测性 | [[guides/engineering/COMMUNICATION_SECURITY_SAFETY\|安全与失效安全]] · [[guides/engineering/COMMUNICATION_OBSERVABILITY\|通信可观测性]] |
 
 ## ⑦ 索引与参考
 
-| 主题       | 入口笔记                                                                               |
-| ---------- | -------------------------------------------------------------------------------------- |
-| 总索引     | [[INDEX\|知识库索引]] · [[COVERAGE\|覆盖范围]] · [[TOPIC_MATRIX\|主题矩阵]]            |
-| 术语       | [[GLOSSARY\|术语表]] · [[ACRONYMS\|缩写表]]                                            |
-| 工具与模板 | [[TOOLS\|调试工具]] · [[DOC_TEMPLATES\|文档模板]] · [[PARAMETER_CHEATSHEET\|参数速查]] |
-| 协作       | [[CONTRIBUTING\|贡献规范]] · [[REVIEW_CHECKLIST\|评审清单]]                            |
-| 图形导航   | [[Navigation.canvas\|Navigation 画布]]                                                 |
+| 主题       | 入口笔记                                                                                                                   |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 总索引     | [[INDEX\|知识库索引]] · [[COVERAGE\|覆盖范围]] · [[TOPIC_MATRIX\|主题矩阵]]                                                |
+| 术语       | [[reference/GLOSSARY\|术语表]] · [[reference/ACRONYMS\|缩写表]]                                                            |
+| 工具与模板 | [[reference/TOOLS\|调试工具]] · [[reference/DOC_TEMPLATES\|文档模板]] · [[guides/learning/PARAMETER_CHEATSHEET\|参数速查]] |
+| 协作       | [[CONTRIBUTING\|贡献规范]] · [[REVIEW_CHECKLIST\|评审清单]]                                                                |
+| 图形导航   | [[Navigation.canvas\|Navigation 画布]]                                                                                     |
 
 ## Obsidian 使用说明
 
@@ -152,15 +152,16 @@ aliases:
 - **图形入口**：根目录 `Navigation.canvas` 是分区导航；`Home.md` 是本页。
 - **目录约定**：
   - `basic/`：单点通信、时序与物理层接口。
-  - `bus/`：多设备协议、网络与系统级总线。
-  - `wireless-2g4/`：2.4 GHz 私有无线协议。
+  - `bus/`：按领域分为 `automotive/`、`industrial/`、`power-rtu/`、`wireless-iot/`、`usb/`、`display/`、`onboard/`。
+  - `guides/`：`learning/`、`troubleshooting/`、`engineering/`。
+  - `reference/`：术语、缩写、工具与模板。
   - `_Inbox/`：待处理候选，`_System/cron-reports/`：自动扫描报告。两者已在 `.obsidian/app.json` 的排除列表中，不进入搜索、图谱和链接建议。
-- **标签约定**：入口笔记使用 `#moc`、`#navigation`、`#type/index`；层级标签为 `#layer/basic`、`#layer/bus`、`#layer/wireless`。
-- **图谱配色**：`basic` 绿色、`bus` 蓝色、`wireless-2g4` 橙色，其余根文档保持默认。
+- **标签约定**：入口笔记使用 `#moc`、`#navigation`、`#type/index`；层级标签为 `#layer/basic`、`#layer/bus`。
+- **图谱配色**：`basic` 绿色、`bus` 蓝色、`bus/wireless-iot` 橙色，其余根文档保持默认。
 
 ### 维护流程
 
-1. 新协议先写入 `basic/` 或 `bus/`，遵循 [[DOC_TEMPLATES|文档模板]]。
+1. 新协议先写入 `basic/` 或 `bus/`，遵循 [[reference/DOC_TEMPLATES|文档模板]]。
 2. 在对应目录 `README.md` 与 [[INDEX|索引]] 中登记入口。
 3. 在本页对应分区补充链接，必要时更新 [[TOPIC_MATRIX|主题矩阵]] 与 [[COVERAGE|覆盖范围]]。
 4. 需要图形化时，在 [[Navigation.canvas|Navigation 画布]] 增加卡片并连线。

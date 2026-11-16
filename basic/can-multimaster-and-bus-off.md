@@ -667,6 +667,6 @@ write(s, &frame, sizeof(frame));
 - `can-rtos-integration.md` RTOS + SocketCAN
 - `can-vs-other-bus.md` 跨总线对比
 - `can-index.md` 导航
-- `bus/uds-*.md` UDS (诊断优先级)
-- `bus/j1939-*.md` J1939 (商用车主从)
+- `bus/automotive/uds-*.md` UDS (诊断优先级)
+- `bus/automotive/j1939-*.md` J1939 (商用车主从)
 - `i2c-bus-recovery-playbook.md` I2C recovery (对比)

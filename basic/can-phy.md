@@ -63,5 +63,5 @@ recessive = 1
 
 ## 延伸阅读
 
-- `bus/can-canopen-practical.md`
-- `bus/can-canopen-deep-dive.md`
+- `bus/automotive/canopen-practical.md`
+- `bus/automotive/canopen-deep-dive.md`

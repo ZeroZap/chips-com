@@ -364,9 +364,9 @@ LIN 是 CAN 的简化版, 用于对实时性要求不高的低成本场景。
 - `can-fd-and-can-xl.md` 演进
 - `can-rtos-integration.md` RTOS + Linux
 - `can-index.md` 导航
-- `bus/can-canopen-deep-dive.md` CANopen (CAN 之上的应用层)
-- `bus/j1939-*.md` J1939 (商用车主从)
-- `bus/uds-*.md` UDS (诊断)
-- `bus/modbus-rs485-*.md` Modbus RS485
-- `bus/ethernet-*.md` Ethernet
+- `bus/automotive/canopen-deep-dive.md` CANopen (CAN 之上的应用层)
+- `bus/automotive/j1939-*.md` J1939 (商用车主从)
+- `bus/automotive/uds-*.md` UDS (诊断)
+- `bus/industrial/rs485-modbus-*.md` Modbus RS485
+- `bus/industrial/ethernet-*.md` Ethernet
 - `i2c-vs-smbus-recovery.md` 跨协议对比参考

@@ -217,11 +217,11 @@ i2c-index.md (本文件, 导航)
 
 ## 关联主题 (chips-com 其他目录)
 
-- **`bus/smbus.md` / `smbus-pmbus-practical.md`** — SMBus / PMBus, I2C 的严格化扩展
-- **`bus/i3c.md` / `i3c-deep-dive.md`** — I3C, I2C 的演进
-- **`bus/mipi-csi-dsi-debug.md`** — 摄像头 I2C 初始化和调试
-- **`bus/fpd-link-gmsl-practical.md`** — 远端 I2C, SerDes 反向通道
-- **`bus/hdmi-edp-practical.md`** — DDC I2C, EDID 读取
+- **`bus/onboard/smbus.md` / `bus/onboard/smbus-pmbus-practical.md`** — SMBus / PMBus, I2C 的严格化扩展
+- **`bus/onboard/i3c.md` / `bus/onboard/i3c-deep-dive.md`** — I3C, I2C 的演进
+- **`bus/display/mipi-csi-dsi-debug.md`** — 摄像头 I2C 初始化和调试
+- **`bus/display/fpd-link-gmsl-practical.md`** — 远端 I2C, SerDes 反向通道
+- **`bus/display/hdmi-edp-practical.md`** — DDC I2C, EDID 读取
 
 ## 一句话总结
 

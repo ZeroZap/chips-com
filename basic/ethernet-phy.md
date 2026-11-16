@@ -62,5 +62,5 @@ MagJack 也不是 PHY
 
 ## 延伸阅读
 
-- `bus/ethernet-deep-dive.md`
-- `bus/ethernet-modbus-tcp-practical.md`
+- `bus/industrial/ethernet-deep-dive.md`
+- `bus/industrial/ethernet-modbus-tcp-practical.md`

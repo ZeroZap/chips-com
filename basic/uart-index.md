@@ -48,7 +48,7 @@ chips-com/basic/uart-*.md
 1. **`uart-rs485-and-flow-control.md`** — RS485 完整专题
 2. **`uart-dma-circular-and-rtos.md`** — DMA + 环形缓冲
 3. **`uart-failure-cases.md`** 案例 4 / 9 / 10 — RS485 方向 + 距离 + 冲突
-4. **`rs485-modbus-rtu-deep-dive.md`** — Modbus RTU 协议
+4. **`bus/industrial/rs485-modbus-rtu-deep-dive.md`** — Modbus RTU 协议
 
 ### 路径 D: "我在写 UART 驱动, 要落地代码" (工程实现)
 
@@ -203,9 +203,9 @@ uart-index.md (本文件, 导航)
 - **`i2c-*.md`** — I2C 主题 (12 篇, 145 KB, 对比)
 - **`spi-*.md`** — SPI 主题 (6 篇, 75 KB, 对比)
 - **`rs232-rs485.md`** — 物理层基础
-- **`modbus.md`** / **`rs485-modbus-rtu-deep-dive.md`** — Modbus RTU
-- **`can.md`** — CAN 总线 (用户后续单独做)
-- **`mipi-csi-dsi-debug.md`** — 串口调试 sensor
+- **`bus/industrial/modbus.md`** / **`bus/industrial/rs485-modbus-rtu-deep-dive.md`** — Modbus RTU
+- **`bus/automotive/can.md`** — CAN 总线 (用户后续单独做)
+- **`bus/display/mipi-csi-dsi-debug.md`** — 串口调试 sensor
 
 ## 一句话总结
 

@@ -3,10 +3,12 @@
 ## 目标
 
 UART 在工业 / 长距离 / 多设备场景下, 关键的两个技术:
+
 - **RS485**: 长距离 (1km+), 差分, 多设备
 - **流控**: 高速场景下防止接收方溢出
 
 本文讲清楚:
+
 - RS485 物理层和收发器
 - RS485 方向控制的关键时序
 - 硬件流控 (RTS/CTS) 和软件流控 (XON/XOFF)
@@ -34,6 +36,7 @@ Master  +-------+         +-------+ Slave 2
 ```
 
 **关键**:
+
 - 差分 A/B 两根线 (A+, B-)
 - 总线两端各加 120 ohm 终端电阻
 - 总线最长 1200m @ 9600 baud
@@ -51,15 +54,15 @@ Master  +-------+         +-------+ Slave 2
 
 ### 典型收发器
 
-| 型号 | 速率 | 节点数 | 隔离 | 备注 |
-| --- | --- | --- | --- | --- |
-| MAX485 | 2.5M | 32 | 无 | 经典 |
-| MAX3485 | 12M | 32 | 无 | 高速 |
-| MAX13487E | 500K | 32 | 无 | 自动方向控制 |
-| ADM2483 | 500K | 32 | 有 (数字隔离) | 工业 |
-| ADM2587E | 500K | 32 | 有 (磁隔离) | 工业级 |
-| ISL3179E | 32M | 32 | 无 | 高速 |
-| THVD1450 | 50M | 256 | 无 | TI 工业级 |
+| 型号      | 速率 | 节点数 | 隔离          | 备注         |
+| --------- | ---- | ------ | ------------- | ------------ |
+| MAX485    | 2.5M | 32     | 无            | 经典         |
+| MAX3485   | 12M  | 32     | 无            | 高速         |
+| MAX13487E | 500K | 32     | 无            | 自动方向控制 |
+| ADM2483   | 500K | 32     | 有 (数字隔离) | 工业         |
+| ADM2587E  | 500K | 32     | 有 (磁隔离)   | 工业级       |
+| ISL3179E  | 32M  | 32     | 无            | 高速         |
+| THVD1450  | 50M  | 256    | 无            | TI 工业级    |
 
 ### 接线
 
@@ -75,6 +78,7 @@ B 差分线        +--- B 总线
 ```
 
 **关键**:
+
 - DE (Driver Enable) 高 = 发送模式
 - RE (Receiver Enable) 低 = 接收模式 (注意是低有效)
 - 多数应用把 DE + RE 接一起, 软件控制
@@ -91,7 +95,7 @@ B 差分线        +--- B 总线
 #define RS485_DIR_RX  0
 
 void rs485_set_dir(uint8_t dir) {
-    HAL_GPIO_WritePin(RS485_DIR_PORT, RS485_DIR_PIN, 
+    HAL_GPIO_WritePin(RS485_DIR_PORT, RS485_DIR_PIN,
                       dir ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
@@ -180,6 +184,7 @@ DIR:    _____|             |________
 ```
 
 **关键时序参数**:
+
 - tR (DE 拉到输出有效): < 100ns
 - tD (数据稳定时间): 1-2 bit
 - tPLH (传播延迟): < 100ns
@@ -195,29 +200,29 @@ DIR:    _____|             |________
 #define RS485_GUARD_BITS  2  /* 等待 2 bit 时间 */
 
 static inline void rs485_dir(uint8_t dir) {
-    HAL_GPIO_WritePin(RS485_DIR_PORT, RS485_DIR_PIN, 
+    HAL_GPIO_WritePin(RS485_DIR_PORT, RS485_DIR_PIN,
                       dir ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
 int rs485_send_strict(uint8_t *data, int len) {
     /* 1. 切到发送模式 */
     rs485_dir(RS485_DIR_TX);
-    
+
     /* 2. 等待收发器稳定 (1-2 bit 时间) */
     delay_us(20);  /* 115200 baud: 1 bit = 8.68us, 2 bit = 17.4us */
-    
+
     /* 3. 发送 */
     HAL_UART_Transmit(&huart1, data, len, 1000);
-    
+
     /* 4. 等 TC 标志 (最后一字节真正从移位寄存器发出) */
     while (!__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TC));
-    
+
     /* 5. Guard time (1-3 bit) */
     delay_us(20);
-    
+
     /* 6. 切回接收 */
     rs485_dir(RS485_DIR_RX);
-    
+
     return 0;
 }
 ```
@@ -237,7 +242,7 @@ volatile rs485_state_t g_rs485_state = RS485_STATE_IDLE;
 int rs485_send_dma(uint8_t *data, int len) {
     if (g_rs485_state != RS485_STATE_IDLE) return -EBUSY;
     g_rs485_state = RS485_STATE_TX;
-    
+
     rs485_dir(RS485_DIR_TX);
     delay_us(20);
     HAL_UART_Transmit_DMA(&huart1, data, len);
@@ -356,6 +361,7 @@ CTS (Clear To Send): 发送方告诉接收方"我可以发送了"
 ```
 
 **注意**: RTS/CTS 是**交叉连**:
+
 - A.RTS → B.CTS
 - A.CTS ← B.RTS
 
@@ -462,24 +468,25 @@ void uart_tx_check_xoff(uint8_t byte) {
 
 ### 软件流控 vs 硬件流控
 
-| 维度 | 硬件 RTS/CTS | 软件 XON/XOFF |
-| --- | --- | --- |
-| 额外线 | 2 根 | 0 根 |
-| 速度 | 实时 | 有延迟 |
-| 字节开销 | 0 | 2 字节转义 |
+| 维度       | 硬件 RTS/CTS  | 软件 XON/XOFF |
+| ---------- | ------------- | ------------- |
+| 额外线     | 2 根          | 0 根          |
+| 速度       | 实时          | 有延迟        |
+| 字节开销   | 0             | 2 字节转义    |
 | 实现复杂度 | 低 (硬件自动) | 中 (软件处理) |
-| 适用场景 | 高速, 工业 | 简单, 调试 |
+| 适用场景   | 高速, 工业    | 简单, 调试    |
 
 **推荐**: 优先用硬件流控, 除非硬件限制。
 
 ## RS485 + 流控的组合
 
 工业场景常组合:
+
 - RS485 物理层 (长距离, 差分)
 - RTS/CTS 流控 (高速)
 - Modbus RTU 协议 (主从)
 
-详细见 `modbus-rs485-deep-dive.md`。
+详细见 `bus/industrial/rs485-modbus-rtu-deep-dive.md`。
 
 ## RS485 实战代码骨架
 
@@ -505,12 +512,12 @@ int rs485_init(rs485_ctx_t *ctx, UART_HandleTypeDef *huart,
     ctx->baud = baud;
     ctx->tx_done_sem = xSemaphoreCreateBinary();
     ctx->rx_done_sem = xSemaphoreCreateBinary();
-    
+
     /* UART 配置 */
     huart->Init.BaudRate = baud;
     huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;  /* 不需要, RS485 用 DIR */
     HAL_UART_Init(huart);
-    
+
     /* DIR GPIO */
     GPIO_InitTypeDef gpio = {0};
     gpio.Pin = dir_pin;
@@ -519,28 +526,28 @@ int rs485_init(rs485_ctx_t *ctx, UART_HandleTypeDef *huart,
     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(dir_port, &gpio);
     HAL_GPIO_WritePin(dir_port, dir_pin, GPIO_PIN_RESET);  /* 默认接收 */
-    
+
     /* 启动接收 */
     HAL_UARTEx_ReceiveToIdle_DMA(huart, ctx->rx_buf, sizeof(ctx->rx_buf));
-    
+
     return 0;
 }
 
 int rs485_send(rs485_ctx_t *ctx, uint8_t *data, int len) {
     if (ctx->tx_busy) return -EBUSY;
     ctx->tx_busy = true;
-    
+
     /* 1. 切发送 */
     HAL_GPIO_WritePin(ctx->dir_port, ctx->dir_pin, GPIO_PIN_SET);
     delay_us(20);  /* guard time */
-    
+
     /* 2. DMA 发送 */
     if (HAL_UART_Transmit_DMA(ctx->huart, data, len) != HAL_OK) {
         ctx->tx_busy = false;
         HAL_GPIO_WritePin(ctx->dir_port, ctx->dir_pin, GPIO_PIN_RESET);
         return -EIO;
     }
-    
+
     /* 3. 等完成 */
     if (xSemaphoreTake(ctx->tx_done_sem, pdMS_TO_TICKS(1000)) != pdTRUE) {
         HAL_UART_Abort(ctx->huart);
@@ -548,15 +555,15 @@ int rs485_send(rs485_ctx_t *ctx, uint8_t *data, int len) {
         HAL_GPIO_WritePin(ctx->dir_port, ctx->dir_pin, GPIO_PIN_RESET);
         return -ETIMEDOUT;
     }
-    
+
     /* 4. 严格等 TC */
     while (!__HAL_UART_GET_FLAG(ctx->huart, UART_FLAG_TC));
     delay_us(20);  /* guard time */
-    
+
     /* 5. 切回接收 */
     HAL_GPIO_WritePin(ctx->dir_port, ctx->dir_pin, GPIO_PIN_RESET);
     ctx->tx_busy = false;
-    
+
     return 0;
 }
 
@@ -645,5 +652,5 @@ A - B 差分电压:
 - `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
 - `uart-index.md` 导航
 - `rs232-rs485.md` 物理层基础
-- `rs485-modbus-rtu-deep-dive.md` Modbus RTU 详细
-- `modbus.md` Modbus 概览
+- `bus/industrial/rs485-modbus-rtu-deep-dive.md` Modbus RTU 详细
+- `bus/industrial/modbus.md` Modbus 概览

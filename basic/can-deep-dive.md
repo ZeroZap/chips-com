@@ -499,8 +499,8 @@ RECEIVE
 - `can-rtos-integration.md` RTOS + SocketCAN
 - `can-vs-other-bus.md` 跨总线对比
 - `can-index.md` 导航
-- `bus/can-canopen-deep-dive.md` CANopen
-- `bus/can-canopen-practical.md` CANopen 实战
+- `bus/automotive/canopen-deep-dive.md` CANopen
+- `bus/automotive/canopen-practical.md` CANopen 实战
 - `basic/can-phy.md` CAN 物理层
 - `i2c-bus-recovery-playbook.md` I2C recovery (I2C 也有错误恢复)
 - `i2c-state-machine.md` I2C 状态机 (对比)

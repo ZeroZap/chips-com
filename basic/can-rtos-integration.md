@@ -684,7 +684,7 @@ int can_node_send(can_node_t *node, const struct can_frame *frame) {
 - `can-fd-and-can-xl.md` 演进
 - `can-vs-other-bus.md` 跨总线对比
 - `can-index.md` 导航
-- `bus/can-canopen-deep-dive.md` CANopen (RT-Thread 集成)
+- `bus/automotive/canopen-deep-dive.md` CANopen (RT-Thread 集成)
 - `i2c-rtos-integration.md` I2C RTOS 集成 (对比)
 - `spi-rtos-integration.md` SPI RTOS 集成 (对比)
 - `uart-dma-circular-and-rtos.md` UART RTOS 集成 (对比)

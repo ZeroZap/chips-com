@@ -18,7 +18,6 @@ tags:
 
 ### 串行通信接口
 
-- `uart.md`：异步串口、波特率、起始位/停止位、校验位。
 - [uart-practical.md](uart-practical.md)：UART 接线、参数、乱码、分帧和 TTL/RS232/RS485 区分（扩）。
 - [uart-deep-dive.md](uart-deep-dive.md)：UART 波特率误差、过采样、DMA、流控、分帧和量产排障（扩）。
 - [uart-failure-cases.md](uart-failure-cases.md)：21 个产线 UART 死机案例（baud 错、RS485 方向、协议分帧、DMA 丢包、ESD 等）。
@@ -26,7 +25,7 @@ tags:
 - [uart-dma-circular-and-rtos.md](uart-dma-circular-and-rtos.md)：DMA 接收 + 环形缓冲 + idle 不定长接收 + FreeRTOS/Zephyr/RT-Thread 三平台集成 + 完整代码骨架。
 - [uart-index.md](uart-index.md)：UART 主题总览导航——5 种读者路径、主题速查矩阵、UART vs SPI vs I2C 选型速查。
 - [stream-protocol-parser-psm.md](stream-protocol-parser-psm.md)：流式协议解析器 PSM 模式库——L1 UART 5 状态机 / L2 TCP MBAP 状态机 / L3 J1939 TP 二级 PSM 的统一参考。
-- `i2c.md`：双线同步总线、地址、ACK/NACK、上拉电阻。
+
 - [i2c-practical.md](i2c-practical.md)：I2C 上拉、地址扫描、寄存器读写、Repeated START 和总线恢复。
 - [i2c-deep-dive.md](i2c-deep-dive.md)：I2C 上拉/电容、地址、Clock Stretching、总线恢复、MUX 和器件特性。
 - [i2c-bus-recovery-playbook.md](i2c-bus-recovery-playbook.md)：I2C 总线被拉低死锁的实战手册——8 步恢复 SOP、STM32 HAL 平台适配、可移植 C 代码骨架、产线故障注入测试方案、面试回答模板。
@@ -38,7 +37,7 @@ tags:
 - [i2c-failure-cases.md](i2c-failure-cases.md)：21 个产线死机案例，案例驱动的实战参考。
 - [i2c-vs-smbus-recovery.md](i2c-vs-smbus-recovery.md)：I2C vs SMBus bus recovery 行为对比——一句话核心差异、完整对比表、4 种场景行为差异、timeout 数值精确对比、混用策略、选型决策树。
 - [i2c-index.md](i2c-index.md)：I2C 主题总览导航——四种读者路径、主题速查矩阵、学习路径推荐。
-- `spi.md`：四线同步总线、片选、CPOL/CPHA、全双工通信。
+
 - [spi-practical.md](spi-practical.md)：SPI Mode、片选时序、dummy byte、多设备共享和故障定位。
 - [spi-deep-dive.md](spi-deep-dive.md)：SPI 采样模式、CS 边界、dummy cycle、Flash 命令、高速信号和 QSPI/OSPI。
 - [spi-practical.md](spi-practical.md)：SPI Mode、片选时序、dummy byte、多设备共享和故障定位（扩）。
@@ -52,7 +51,7 @@ tags:
 ### 模拟与混合信号接口
 
 - [adc-dac.md](adc-dac.md)：模数/数模转换、采样率、分辨率、参考电压。
-- `comparator.md`：比较器、阈值、电平检测。
+- 比较器（暂无独立笔记）：比较器、阈值、电平检测。
 
 ### 物理层相关
 

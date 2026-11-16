@@ -195,5 +195,5 @@ noise error:      噪声干扰
 - `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
 - `uart-index.md` 导航
 - `rs232-rs485.md` 物理层基础
-- `modbus.md` Modbus RTU (UART 上层协议)
+- `bus/industrial/modbus.md` Modbus RTU (UART 上层协议)
 - `i2c-practical.md` I2C 速查 (对比)

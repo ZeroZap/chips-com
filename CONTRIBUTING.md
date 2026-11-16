@@ -30,7 +30,7 @@ bus/<name>-deep-dive.md
 
 ```text
 rs485-modbus-rtu-practical.md
-can-canopen-deep-dive.md
+canopen-deep-dive.md
 mipi-csi-dsi-debug.md
 ```
 
