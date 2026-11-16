@@ -1,104 +1,15 @@
 {
-  "nodes": [
-    {
-      "id": "title",
-      "type": "text",
-      "text": "# Chips Communication · 知识库导航\n\n从基础接口到总线、无线、车载诊断与工程质量。点击卡片中的链接进入笔记。",
-      "x": 0,
-      "y": 0,
-      "width": 2200,
-      "height": 110,
-      "color": "3"
-    },
-    {
-      "id": "quick",
-      "type": "text",
-      "text": "## 快速入口\n\n- [Home 仪表盘](Home.md)\n- [知识库索引](INDEX.md)\n- [分层图谱](LAYERED_MAP.md) · [主题矩阵](TOPIC_MATRIX.md) · [覆盖范围](COVERAGE.md)\n- [跨协议指南](guides/README.md)\n- [候选队列流程](_Inbox/README.md) · [积压检查脚本](scripts/inbox_status.py)\n\n> 搜索与图谱已排除 `_Inbox/` 与 `_System/`。\n>\n> 画布只放导航，不再堆叠文件预览卡。",
-      "x": 0,
-      "y": 150,
-      "width": 700,
-      "height": 520,
-      "color": "3"
-    },
-    {
-      "id": "basic",
-      "type": "text",
-      "text": "## ① 基础接口 · `basic/`\n\n[总览](basic/README.md) · [UART](basic/uart-index.md) · [I2C](basic/i2c-index.md) · [SPI](basic/spi-index.md) · [CAN PHY](basic/can-index.md)\n\n- **UART**：[实战](basic/uart-practical.md) · [深入](basic/uart-deep-dive.md) · [故障](basic/uart-failure-cases.md)\n- **I2C**：[实战](basic/i2c-practical.md) · [深入](basic/i2c-deep-dive.md) · [总线恢复](basic/i2c-bus-recovery-playbook.md)\n- **SPI**：[实战](basic/spi-practical.md) · [深入](basic/spi-deep-dive.md) · [多从机/DMA](basic/spi-multislave-and-dma.md)\n- **CAN**：[实战](basic/can-practical.md) · [深入](basic/can-deep-dive.md) · [CAN FD/XL](basic/can-fd-and-can-xl.md)\n- **物理层**：[RS232/RS485](basic/rs232-rs485.md) · [Ethernet PHY](basic/ethernet-phy.md) · [LVDS](basic/lvds.md)\n- **其他**：[GPIO](basic/gpio.md) · [PWM](basic/pwm.md) · [QSPI/OSPI](basic/qspi-ospi.md) · [I2S](basic/i2s.md) · [JTAG/SWD](basic/jtag-swd.md)\n- **分帧**：[流式协议解析 PSM](basic/stream-protocol-parser-psm.md)",
-      "x": 740,
-      "y": 150,
-      "width": 680,
-      "height": 520,
-      "color": "4"
-    },
-    {
-      "id": "bus",
-      "type": "text",
-      "text": "## ② 总线协议 · `bus/`\n\n按领域进入，每个目录都有汇总 README：\n\n- **Automotive** · [目录](bus/automotive/README.md)\n  [CAN 家族](bus/automotive/can-index.md) · [J1939](bus/automotive/j1939-index.md) · [ISO-TP](bus/automotive/iso-tp-index.md) · [UDS](bus/automotive/uds-index.md) · [OBD-II](bus/automotive/obd2-index.md) · [WWH-OBD](bus/automotive/wwh-obd-index.md) · [LIN](bus/automotive/lin.md)\n- **Industrial** · [目录](bus/industrial/README.md)\n  [Modbus](bus/industrial/modbus.md) · [PROFINET](bus/industrial/profinet.md) · [EtherCAT](bus/industrial/ethercat-deep-dive.md) · [EtherNet/IP](bus/industrial/ethernet-ip.md) · [TSN](bus/industrial/ethernet-tsn.md) · [OPC UA](bus/industrial/opcua.md) · [MQTT](bus/industrial/mqtt.md)\n- **Power & RTU** · [目录](bus/power-rtu/README.md)\n  [IEC 104](bus/power-rtu/iec104.md) · [IEC 101](bus/power-rtu/iec101.md) · [DNP3](bus/power-rtu/dnp3.md) · [IEC 61850](bus/power-rtu/iec61850.md) · [RTU 全集](bus/power-rtu/rtu-protocols.md)\n- **其他领域**：[USB](bus/usb/README.md) · [显示](bus/display/README.md) · [板内](bus/onboard/README.md) · 无线见下方卡片",
-      "x": 1460,
-      "y": 150,
-      "width": 740,
-      "height": 520,
-      "color": "5"
-    },
-    {
-      "id": "wireless",
-      "type": "text",
-      "text": "## ③ 无线与 IoT · `bus/wireless-iot/`\n\n- **BLE**：[导航](bus/wireless-iot/ble-index.md) · [实战](bus/wireless-iot/ble-practical.md) · [深入](bus/wireless-iot/ble-deep-dive.md) · [故障](bus/wireless-iot/ble-failure-cases.md)\n- **ZigBee**：[导航](bus/wireless-iot/zigbee-index.md) · [实战](bus/wireless-iot/zigbee-practical.md) · [深入](bus/wireless-iot/zigbee-deep-dive.md) · [故障](bus/wireless-iot/zigbee-failure-cases.md)\n- **LoRa**：[导航](bus/wireless-iot/lora-index.md) · [实战](bus/wireless-iot/lora-practical.md) · [深入](bus/wireless-iot/lora-deep-dive.md) · [故障](bus/wireless-iot/lora-failure-cases.md)\n- **Matter / Thread**：[Matter](bus/wireless-iot/matter-index.md) · [Thread](bus/wireless-iot/thread-index.md)\n- **蜂窝 / 卫星**：[LTE IoT](bus/wireless-iot/lte-iot-index.md) · [Satellite IoT](bus/wireless-iot/satellite-iot-index.md)\n- **其他**：[PLB](bus/wireless-iot/plb-index.md) · [应急通信](bus/wireless-iot/rescue-comms-index.md) · [nRF2401](bus/wireless-iot/nrf2401.md)",
-      "x": 0,
-      "y": 710,
-      "width": 700,
-      "height": 460,
-      "color": "6"
-    },
-    {
-      "id": "learning",
-      "type": "text",
-      "text": "## ④ 学习与选型\n\n- [阶段化学习计划](guides/learning/LEARNING_PLAN.md) · [按目标阅读](guides/learning/READING_PATHS.md)\n- [协议选型矩阵](guides/learning/PROTOCOL_SELECTION.md) · [协议对照](guides/learning/PROTOCOL_COMPARISON.md)\n- [应用场景](guides/learning/APPLICATION_SCENARIOS.md) · [典型设备接口](guides/learning/DEVICE_EXAMPLES.md)\n- [实验路线](guides/learning/LABS.md) · [实验记录模板](guides/learning/EXPERIMENT_TEMPLATE.md)\n- [接口参数速查](guides/learning/PARAMETER_CHEATSHEET.md)\n\n> 新手建议：基础接口 → 选型矩阵 → 对应协议总览。",
-      "x": 740,
-      "y": 710,
-      "width": 680,
-      "height": 460,
-      "color": "3"
-    },
-    {
-      "id": "troubleshooting",
-      "type": "text",
-      "text": "## ⑤ 排障与实战\n\n- [跨协议排障方法](guides/troubleshooting/DEBUG_PLAYBOOK.md)\n- [故障速查表](guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md) · [故障案例库](guides/troubleshooting/FAILURE_CASES.md)\n- [现场诊断运行手册](guides/troubleshooting/FIELD_DIAGNOSTIC_RUNBOOK.md)\n- [波形观察指南](guides/troubleshooting/WAVEFORM_GUIDE.md) · [测量样例](guides/troubleshooting/MEASUREMENT_EXAMPLES.md)\n- [原理图检查清单](guides/troubleshooting/SCHEMATIC_CHECKLISTS.md) · [驱动状态机模式](guides/troubleshooting/DRIVER_PATTERNS.md)\n\n> 现场问题先跑“排障方法 → 故障速查 → 对应协议 failure-cases”。",
-      "x": 1460,
-      "y": 710,
-      "width": 740,
-      "height": 460,
-      "color": "1"
-    },
-    {
-      "id": "engineering",
-      "type": "text",
-      "text": "## ⑥ 工程与质量\n\n- [量产测试策略](guides/engineering/PRODUCTION_TEST.md) · [自动化测试治具](guides/engineering/AUTOMATED_TEST_HARNESS.md)\n- [回归测试矩阵](guides/engineering/REGRESSION_TEST_MATRIX.md) · [可靠性设计](guides/engineering/RELIABILITY_GUIDE.md)\n- [发布质量门禁](guides/engineering/COMMUNICATION_QUALITY_GATE.md) · [通信追踪矩阵](guides/engineering/COMMUNICATION_TRACEABILITY.md)\n- [安全与失效安全](guides/engineering/COMMUNICATION_SECURITY_SAFETY.md) · [通信可观测性](guides/engineering/COMMUNICATION_OBSERVABILITY.md)",
-      "x": 0,
-      "y": 1210,
-      "width": 700,
-      "height": 380,
-      "color": "2"
-    },
-    {
-      "id": "reference",
-      "type": "text",
-      "text": "## ⑦ 索引与参考\n\n- [知识库索引](INDEX.md) · [主题矩阵](TOPIC_MATRIX.md) · [覆盖范围](COVERAGE.md) · [分层图谱](LAYERED_MAP.md)\n- [术语表](reference/GLOSSARY.md) · [缩写表](reference/ACRONYMS.md) · [调试工具](reference/TOOLS.md) · [文档模板](reference/DOC_TEMPLATES.md)\n- [贡献规范](CONTRIBUTING.md) · [评审清单](REVIEW_CHECKLIST.md)",
-      "x": 740,
-      "y": 1210,
-      "width": 680,
-      "height": 380,
-      "color": "5"
-    },
-    {
-      "id": "maintenance",
-      "type": "text",
-      "text": "## 维护与自动化\n\n- [候选队列流程](_Inbox/README.md) · [积压检查脚本](scripts/inbox_status.py)\n- `_System/` 是本地运行日志，已加入 `.gitignore`，不入库\n- 每周运行 `python scripts/inbox_status.py`，保持 `pending <= 10`\n- 新增文档后同步：目录 README → [INDEX](INDEX.md) → [Home](Home.md) → 本画布",
-      "x": 1460,
-      "y": 1210,
-      "width": 740,
-      "height": 380
-    }
-  ],
-  "edges": []
+	"nodes":[
+		{"id":"title","type":"text","text":"# Chips Communication · 知识库导航\n\n从基础接口到总线、无线、车载诊断与工程质量。点击卡片中的链接进入笔记。","x":0,"y":0,"width":2200,"height":110,"color":"3"},
+		{"id":"quick","type":"text","text":"## 快速入口\n\n- [Home 仪表盘](Home.md)\n- [知识库索引](INDEX.md)\n- [分层图谱](LAYERED_MAP.md) · [主题矩阵](TOPIC_MATRIX.md) · [覆盖范围](COVERAGE.md)\n- [跨协议指南](guides/README.md)\n- [候选队列流程](_Inbox/README.md) · [积压检查脚本](scripts/inbox_status.py)\n\n> 搜索与图谱已排除 `_Inbox/` 与 `_System/`。\n>\n> 画布只放导航，不再堆叠文件预览卡。","x":0,"y":150,"width":700,"height":520,"color":"3"},
+		{"id":"basic","type":"text","text":"## ① 基础接口 · `basic/`\n\n[总览](basic/README.md) · [UART](basic/uart-index.md) · [I2C](basic/i2c-index.md) · [SPI](basic/spi-index.md) · [CAN PHY](basic/can-index.md)\n\n- **UART**：[实战](basic/uart-practical.md) · [深入](basic/uart-deep-dive.md) · [故障](basic/uart-failure-cases.md)\n- **I2C**：[实战](basic/i2c-practical.md) · [深入](basic/i2c-deep-dive.md) · [总线恢复](basic/i2c-bus-recovery-playbook.md)\n- **SPI**：[实战](basic/spi-practical.md) · [深入](basic/spi-deep-dive.md) · [多从机/DMA](basic/spi-multislave-and-dma.md)\n- **CAN**：[实战](basic/can-practical.md) · [深入](basic/can-deep-dive.md) · [CAN FD/XL](basic/can-fd-and-can-xl.md)\n- **物理层**：[RS232/RS485](basic/rs232-rs485.md) · [Ethernet PHY](basic/ethernet-phy.md) · [LVDS](basic/lvds.md)\n- **其他**：[GPIO](basic/gpio.md) · [PWM](basic/pwm.md) · [QSPI/OSPI](basic/qspi-ospi.md) · [I2S](basic/i2s.md) · [JTAG/SWD](basic/jtag-swd.md)\n- **分帧**：[流式协议解析 PSM](basic/stream-protocol-parser-psm.md)","x":740,"y":150,"width":680,"height":520,"color":"4"},
+		{"id":"bus","type":"text","text":"## ② 总线协议 · `bus/`\n\n按领域进入，每个目录都有汇总 README：\n\n- **Automotive** · [目录](bus/automotive/README.md)\n  [CAN 家族](bus/automotive/can-index.md) · [J1939](bus/automotive/j1939-index.md) · [ISO-TP](bus/automotive/iso-tp-index.md) · [UDS](bus/automotive/uds-index.md) · [OBD-II](bus/automotive/obd2-index.md) · [WWH-OBD](bus/automotive/wwh-obd-index.md) · [LIN](bus/automotive/lin.md)\n- **Industrial** · [目录](bus/industrial/README.md)\n  [Modbus](bus/industrial/modbus.md) · [PROFINET](bus/industrial/profinet.md) · [EtherCAT](bus/industrial/ethercat-deep-dive.md) · [EtherNet/IP](bus/industrial/ethernet-ip.md) · [TSN](bus/industrial/ethernet-tsn.md) · [OPC UA](bus/industrial/opcua.md) · [MQTT](bus/industrial/mqtt.md)\n- **Power & RTU** · [目录](bus/power-rtu/README.md)\n  [IEC 104](bus/power-rtu/iec104.md) · [IEC 101](bus/power-rtu/iec101.md) · [DNP3](bus/power-rtu/dnp3.md) · [IEC 61850](bus/power-rtu/iec61850.md) · [RTU 全集](bus/power-rtu/rtu-protocols.md)\n- **其他领域**：[USB](bus/usb/README.md) · [显示](bus/display/README.md) · [板内](bus/onboard/README.md) · 无线见下方卡片","x":1460,"y":150,"width":740,"height":520,"color":"5"},
+		{"id":"wireless","type":"text","text":"## ③ 无线与 IoT · `bus/wireless-iot/`\n\n- **BLE**：[导航](bus/wireless-iot/ble-index.md) · [实战](bus/wireless-iot/ble-practical.md) · [深入](bus/wireless-iot/ble-deep-dive.md) · [故障](bus/wireless-iot/ble-failure-cases.md)\n- **ZigBee**：[导航](bus/wireless-iot/zigbee-index.md) · [实战](bus/wireless-iot/zigbee-practical.md) · [深入](bus/wireless-iot/zigbee-deep-dive.md) · [故障](bus/wireless-iot/zigbee-failure-cases.md)\n- **LoRa**：[导航](bus/wireless-iot/lora-index.md) · [实战](bus/wireless-iot/lora-practical.md) · [深入](bus/wireless-iot/lora-deep-dive.md) · [故障](bus/wireless-iot/lora-failure-cases.md)\n- **Matter / Thread**：[Matter](bus/wireless-iot/matter-index.md) · [Thread](bus/wireless-iot/thread-index.md)\n- **蜂窝 / 卫星**：[LTE IoT](bus/wireless-iot/lte-iot-index.md) · [Satellite IoT](bus/wireless-iot/satellite-iot-index.md)\n- **其他**：[PLB](bus/wireless-iot/plb-index.md) · [应急通信](bus/wireless-iot/rescue-comms-index.md) · [nRF2401](bus/wireless-iot/nrf2401.md)","x":0,"y":710,"width":700,"height":460,"color":"6"},
+		{"id":"learning","type":"text","text":"## ④ 学习与选型\n\n- [阶段化学习计划](guides/learning/LEARNING_PLAN.md) · [按目标阅读](guides/learning/READING_PATHS.md)\n- [协议选型矩阵](guides/learning/PROTOCOL_SELECTION.md) · [协议对照](guides/learning/PROTOCOL_COMPARISON.md)\n- [应用场景](guides/learning/APPLICATION_SCENARIOS.md) · [典型设备接口](guides/learning/DEVICE_EXAMPLES.md)\n- [实验路线](guides/learning/LABS.md) · [实验记录模板](guides/learning/EXPERIMENT_TEMPLATE.md)\n- [接口参数速查](guides/learning/PARAMETER_CHEATSHEET.md)\n\n> 新手建议：基础接口 → 选型矩阵 → 对应协议总览。","x":740,"y":710,"width":680,"height":460,"color":"3"},
+		{"id":"troubleshooting","type":"text","text":"## ⑤ 排障与实战\n\n- [跨协议排障方法](guides/troubleshooting/DEBUG_PLAYBOOK.md)\n- [故障速查表](guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md) · [故障案例库](guides/troubleshooting/FAILURE_CASES.md)\n- [现场诊断运行手册](guides/troubleshooting/FIELD_DIAGNOSTIC_RUNBOOK.md)\n- [波形观察指南](guides/troubleshooting/WAVEFORM_GUIDE.md) · [测量样例](guides/troubleshooting/MEASUREMENT_EXAMPLES.md)\n- [原理图检查清单](guides/troubleshooting/SCHEMATIC_CHECKLISTS.md) · [驱动状态机模式](guides/troubleshooting/DRIVER_PATTERNS.md)\n\n> 现场问题先跑“排障方法 → 故障速查 → 对应协议 failure-cases”。","x":1460,"y":710,"width":740,"height":460,"color":"1"},
+		{"id":"engineering","type":"text","text":"## ⑥ 工程与质量\n\n- [量产测试策略](guides/engineering/PRODUCTION_TEST.md) · [自动化测试治具](guides/engineering/AUTOMATED_TEST_HARNESS.md)\n- [回归测试矩阵](guides/engineering/REGRESSION_TEST_MATRIX.md) · [可靠性设计](guides/engineering/RELIABILITY_GUIDE.md)\n- [发布质量门禁](guides/engineering/COMMUNICATION_QUALITY_GATE.md) · [通信追踪矩阵](guides/engineering/COMMUNICATION_TRACEABILITY.md)\n- [安全与失效安全](guides/engineering/COMMUNICATION_SECURITY_SAFETY.md) · [通信可观测性](guides/engineering/COMMUNICATION_OBSERVABILITY.md)","x":0,"y":1210,"width":700,"height":380,"color":"2"},
+		{"id":"reference","type":"text","text":"## ⑦ 索引与参考\n\n- [知识库索引](INDEX.md) · [主题矩阵](TOPIC_MATRIX.md) · [覆盖范围](COVERAGE.md) · [分层图谱](LAYERED_MAP.md)\n- [术语表](reference/GLOSSARY.md) · [缩写表](reference/ACRONYMS.md) · [调试工具](reference/TOOLS.md) · [文档模板](reference/DOC_TEMPLATES.md)\n- [贡献规范](CONTRIBUTING.md) · [评审清单](REVIEW_CHECKLIST.md)","x":740,"y":1210,"width":680,"height":380,"color":"5"},
+		{"id":"maintenance","type":"text","text":"## 维护与自动化\n\n- [候选队列流程](_Inbox/README.md) · [积压检查脚本](scripts/inbox_status.py)\n- `_System/` 是本地运行日志，已加入 `.gitignore`，不入库\n- 每周运行 `python scripts/inbox_status.py`，保持 `pending <= 10`\n- 新增文档后同步：目录 README → [INDEX](INDEX.md) → [Home](Home.md) → 本画布","x":1460,"y":1210,"width":740,"height":380}
+	],
+	"edges":[]
 }
