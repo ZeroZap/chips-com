@@ -18,7 +18,7 @@ chips-com/bus/usb-*.md
 │   └── usb-enumeration-and-descriptors.md  枚举 / 描述符 / IAD / VID
 │
 ├── 实战层
-│   ├── usb-failure-cases.md            20 个产线死机案例
+│   ├── usb-failure-cases.md            21 个产线死机案例
 │   ├── usb-class-drivers.md            CDC / HID / MSC / DFU
 │   ├── usb-dma-and-rtos.md             DMA + FreeRTOS / Zephyr / RT-Thread
 │   └── usb-vs-other-bus.md             vs CAN / I2C / SPI / UART / Ethernet
@@ -49,7 +49,7 @@ chips-com/bus/usb-*.md
 
 1. **`usb-practical.md`** "## 5 秒钟定位"
 2. **`usb-deep-dive.md`** "## USB 故障树"
-3. **`usb-failure-cases.md`** — 找类似案例 (20 个)
+3. **`usb-failure-cases.md`** — 找类似案例 (21 个)
 4. **`usb-enumeration-and-descriptors.md`** — 描述符检查
 
 ### 路径 C: "我在做 CDC 串口 (USB 转 UART)" (工程实现)

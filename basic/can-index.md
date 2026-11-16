@@ -17,7 +17,7 @@ chips-com/basic/can-*.md
 │   └── can-multimaster-and-bus-off.md   多 master 仲裁 + 错误状态机 + Bus Off
 │
 ├── 实战层
-│   ├── can-failure-cases.md             20 个产线死机案例
+│   ├── can-failure-cases.md             21 个产线死机案例
 │   ├── can-fd-and-can-xl.md             演进: CAN FD 数据段加速 + CAN XL
 │   ├── can-rtos-integration.md          RTOS 集成 + Linux SocketCAN
 │   └── can-vs-other-bus.md              与 I2C/SPI/UART/RS485/Ethernet 对比
@@ -44,7 +44,7 @@ chips-com/basic/can-*.md
 
 1. **`can-practical.md`** "## 5 秒钟定位"
 2. **`can-deep-dive.md`** "## CAN 故障树"
-3. **`can-failure-cases.md`** — 找类似案例 (20 个)
+3. **`can-failure-cases.md`** — 找类似案例 (21 个)
 4. **`can-multimaster-and-bus-off.md`** — 节点状态机
 
 ### 路径 C: "我在做 CAN FD 升级" (工程实现)
@@ -211,15 +211,42 @@ can-index.md (本文件, 导航)
 | can-vs-other-bus.md | 新总线出现时 | 跨总线对比 |
 | can-index.md | 新增 / 删除文档时 | 导航 |
 
+## 相关标准规范
+
+CAN 涉及的标准横跨物理层到法规，完整总表见 **`bus/can-standards-map.md`**。核心几项：
+
+| 层 | 标准 | 作用 |
+| --- | --- | --- |
+| 数据链路 | **ISO 11898-1** | 核心标准，经典 CAN / CAN FD / CAN XL 三代帧格式 |
+| 物理 | **ISO 11898-2** | 高速差分物理层、终端电阻、位时序电气特性 |
+| 物理 | ISO 11898-6 / ISO 11898-3 / ISO 14950-2 | 低功耗 / 低速容错 / 单线变体 |
+| 一致性 | ISO 16845-1 / -2 | 一致性测试方法学与测试计划 |
+| 传输 | ISO 15765-2 | ISO-TP（UDS 与 OBD 的公共底座） |
+| 应用 | ISO 14229-1 ~ -7 | UDS 总纲与各承载变体 |
+| 应用 | SAE J1979 / ISO 15031-5 | OBD-II 排放诊断（乘用车） |
+| 应用 | ISO 27145-1 ~ -4, -6 | WWH-OBD（商用车全球统一诊断） |
+| 应用 | CiA 301 / CiA 402 / CiA 1301 | CANopen / 驱动 Profile / CANopen FD |
+| 应用 | SAE J1939-21 / -71 / -73 / -81 | J1939 数据链路 / 应用层 / 诊断 / 网络管理 |
+| 环境 | ISO 16750-1 ~ -5 | 环境条件与试验（电气/机械/气候/化学） |
+| EMC | ISO 7637-2 / ISO 10605 / CISPR 25 / ISO 11452 | 瞬态 / ESD / 发射 / 辐射抗扰度 |
+| 安全 | ISO 26262 / ISO 21434 / UNECE R155-R156 | 功能安全 / 网络安全 / 软件更新合规 |
+
 ## 关联主题 (chips-com 其他目录)
 
+- **`bus/can-protocol-family.md`** — CAN 家族协议全景（CAN/FD/XL/ISO-TP/CANopen/J1939/UDS/OBD-II）
+- **`bus/can-standards-map.md`** — CAN 家族标准规范总表（按层 + 按协议）
 - **`bus/can-canopen-deep-dive.md`** — CANopen (CAN 之上的应用层协议)
 - **`bus/can-canopen-practical.md`** — CANopen 实战
+- **`bus/canopen-failure-cases.md`** — CANopen 产线案例
 - **`bus/j1939-deep-dive.md`** — J1939 (商用车, 基于 CAN)
 - **`bus/j1939-practical.md`** — J1939 实战
 - **`bus/uds-deep-dive.md`** — UDS (诊断, 基于 CAN)
 - **`bus/uds-practical.md`** — UDS 实战
-- **`bus/iso-tcp-practical.md`** — ISO-TP (CAN 之上多帧传输)
+- **`bus/uds-failure-cases.md`** — UDS 产线案例
+- **`bus/iso-tp-practical.md`** — ISO-TP (CAN 之上多帧传输)
+- **`bus/iso-tp-failure-cases.md`** — ISO-TP 产线案例
+- **`bus/obd2.md`** — OBD-II 排放诊断概览
+- **`bus/obd2-failure-cases.md`** — OBD-II 案例
 - **`bus/rs485-modbus-rtu-deep-dive.md`** — Modbus RTU (RS485)
 - **`bus/ethernet-ip-deep-dive.md`** — EtherNet/IP (工业 Ethernet)
 - **`basic/can-phy.md`** — CAN 物理层基础
@@ -234,3 +261,4 @@ CAN 是"可靠的实时多 master 现场总线", 强在错误检测、仲裁和�
 ## 更新记录
 
 - 2026-07-26: 初版, 8 篇笔记全部完成 (L4 闭环)
+- 2026-10-31: 新增「相关标准规范」节; 修正坏链 `iso-tcp-practical.md` → `iso-tp-practical.md`; 补充 CANopen / UDS / ISO-TP / OBD-II 的案例库链接。

@@ -261,9 +261,8 @@ rescue-comms-index.md (本文件, 导航)
 - **`bus/lorawan-*.md`** — LoRaWAN（户外自建中继）
 - **`bus/wifi-*.md`** — Wi-Fi（营地高吞吐）
 - **`bus/nb-iot-*.md`** — NB-IoT（蜂窝 IoT 备份）
-- **`basic/satellite-comms.md`** — 卫星通讯基础
-- **`basic/gnss-positioning.md`** — GPS / 北斗定位原理
-- **`basic/emergency-protocols.md`** — 应急协议（行业标准）
+- **`bus/satellite-iot-deep-dive.md`** — 卫星通信基础
+- **`bus/plb-deep-dive.md`** — GPS / 北斗定位与 PLB 定位实践
 
 ## 一句话总结
 

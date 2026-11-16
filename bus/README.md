@@ -66,7 +66,7 @@
 - `dmx512.md`：灯光控制总线、帧结构、单向广播。
 - `dmx512-practical.md`：DMX512 Break、Start Code、通道地址、灯具模式、刷新率和终端调试。
 - `dmx512-deep-dive.md`：DMX512 时序、通道模型、RDM、多 Universe、抗干扰和灯光系统排查。
-- `lin.md`：车身低速网络、主从调度、低成本单线通信。
+- `lin.md`：LIN 车载低速总线概念、与 CAN 的核心差异、帧结构、调度机制、LDF 和睡眠唤醒。
 - `lin-practical.md`：LIN 主从调度、Break/Sync/Identifier、Checksum、LDF 和车身节点调试。
 
 ### 基于 I2C 生态的总线
@@ -80,12 +80,27 @@
 
 ### 工业与汽车现场总线
 
+- `can-protocol-family.md`：CAN 家族全景汇总——分层结构（PHY / FD / XL / ISO-TP / CANopen / J1939 / UDS / OBD-II）、协议矩阵、选型决策、覆盖缺口。
+- `can-standards-map.md`：CAN 家族标准规范总表——按层（连接器/物理/链路/传输/网络/应用/测试/环境/安全/法规）与按协议两张维度汇总标准号，含 OBD-II vs WWH-OBD vs UDS 对比与物理层收发器选型。
 - `can.md`：CAN/CAN FD、仲裁、错误处理、车载和工业控制。
 - `canopen.md`：CANopen 对象字典、PDO/SDO、设备模型。
 - `can-canopen-practical.md`：CAN 物理层、CANopen COB-ID、SDO/PDO/NMT 和电机调试流程。
 - `can-canopen-deep-dive.md`：CAN 位时序、仲裁、错误状态、CANopen PDO/SDO/NMT 和 CiA 402。
+- `canopen-failure-cases.md`：CANopen 产线案例（Node ID 冲突 / SDO 字节序 / PDO 映射 / NMT 状态机 / Heartbeat 过滤 / EMCY 编码 / 总线负载饿死）。
+- `canopen-safety.md`：CANopen Safety（CiA 304 / EN 50325-5）——SRDO 1-out-of-2 取反冗余、SCT/SRVT 双超时、CRC-16-CCITT 配置签名、GFC 全局失效安全命令。
 - `iso-tp.md`：CAN 多帧传输、Single/First/Consecutive/Flow Control 帧和 UDS 承载。
 - `iso-tp-practical.md`：ISO-TP 多帧调试、Flow Control、Block Size、STmin 和 UDS 验证。
+- `iso-tp-deep-dive.md`：ISO-TP 寻址方式、PCI 编码、流控参数、超时和缓冲区。
+- `iso-tp-failure-cases.md`：ISO-TP 产线案例（SF 7 字节边界 / TX-RX ID 方向 / 寻址方式 / BS 语义 / STmin 编码 / SN 4bit 环绕 / 缓冲区越界 / CAN FD DLC 编码）。
+- `uds.md`：车载统一诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
+- `uds-practical.md`：UDS 会话、DID、DTC、安全访问、NRC、刷写流程和诊断日志调试。
+- `uds-deep-dive.md`：UDS 诊断状态机、NRC、会话、安全访问、刷写事务、DoIP/网关和实现边界。
+- `uds-failure-cases.md`：UDS 产线案例（会话服务表 / DID 落盘 / 种子密钥 / 安全延时 / 刷写变砖 / BSC 4bit 循环 / Response Pending 死锁 / S3 会话保持 / 功能寻址冲突）。
+- `obd2.md`：OBD-II 车载排放诊断概览、九个 Mode、PID 速查和 DTC 格式。
+- `obd2-deep-dive.md`：OBD-II PID 支持协商、I/M 就绪与监测模型、Mode 详解、OBD-II 与 UDS 的边界。
+- `obd2-practical.md`：ELM327 / SocketCAN 工具链、抓包分析、调试流程和检查清单。
+- `obd2-failure-cases.md`：OBD-II 案例（适配器能力 / PID 解码 / 多 ECU 响应源 / 清码复现 / readiness 诊断 / VIN 多帧 / 数据一致性 / 自回显）。
+- `wwh-obd.md`：WWH-OBD（ISO 27145）——商用车全球统一车载诊断；27145-1/2/3/4/6 分工、DoCAN + DoIP 双链路、PID/MID/ITID 到 DID/RID/DTC 映射、GTR No. 5 法规定位。
 - `profibus.md`：工业现场总线、主从控制、过程自动化。
 - `profibus-practical.md`：PROFIBUS DP/PA 区分、地址、终端、GSD、主站组态和从站诊断。
 - `profibus-deep-dive.md`：PROFIBUS DP/PA、主从周期通信、GSD、诊断、总线段和存量系统排查。
@@ -96,18 +111,15 @@
 - `j1939-deep-dive.md`：J1939 29-bit ID、NAME、地址声明、PGN/SPN、多包、DM 诊断和网关治理。
 - `j1939-network-management.md`：NAME 64 bit 字段详细编码、Address Claimed 协议、Commanded Address、心跳监控、多 ECU 协同、Linux 内核 J1939 支持。
 - `j1939-transport-protocol.md`：J1939-21 传输协议——BAM 广播协议 + RTS/CTS 点对点协议完整流程 + 超时/重传 + 实战代码。
-- `j1939-failure-cases.md`：20 个产线 J1939 死机案例（地址声明冲突 / DM 格式错 / TP 丢包 / NAME 配置错 / 一致性测试等）。
+- `j1939-failure-cases.md`：21 个产线 J1939 死机案例（地址声明冲突 / DM 格式错 / TP 丢包 / NAME 配置错 / 一致性测试等）。
 - `j1939-index.md`：J1939 主题总览导航——5 种读者路径、主题速查矩阵、J1939 vs CAN FD 决策。
-- `uds.md`：车载统一诊断服务、DID、安全访问、刷写和 ISO-TP 概览。
-- `uds-practical.md`：UDS 会话、DID、DTC、安全访问、NRC、刷写流程和诊断日志调试。
-- `uds-deep-dive.md`：UDS 诊断状态机、NRC、会话、安全访问、刷写事务、DoIP/网关和实现边界。
 
 ### 通用高速总线与网络
 
 - `usb.md`：USB 设备枚举、端点、传输类型、主机控制。
 - `usb-practical.md`：USB Host/Device、枚举、描述符、Endpoint、CDC/HID/MSC 和 Type-C 基础（扩）。
 - `usb-deep-dive.md`：USB 标准请求、描述符层级、复合设备、CDC/HID/MSC 和枚举排障（扩）。
-- `usb-failure-cases.md`：20 个产线 USB 死机案例（描述符 / VBUS / 类驱动 / 高速 / 信号完整性 / VID 等）。
+- `usb-failure-cases.md`：21 个产线 USB 死机案例（描述符 / VBUS / 类驱动 / 高速 / 信号完整性 / VID 等）。
 - `usb-enumeration-and-descriptors.md`：枚举 8 步流程、Device/Configuration/Interface/Endpoint 描述符、字符串描述符、IAD 复合设备、VID/PID 申请。
 - `usb-class-drivers.md`：CDC (串口) / HID (键鼠) / MSC (U 盘) / DFU (升级) 4 大类驱动完整协议栈和实战代码。
 - `usb-dma-and-rtos.md`：USB DMA 模式 (单次 / 双缓冲 / 循环)、FreeRTOS / Zephyr / RT-Thread 三平台集成、缓存一致性 (Cortex-M7)。

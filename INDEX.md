@@ -94,13 +94,27 @@
 - `bus/opcua-vendor-bench.md`：OPC UA 厂商对标（Siemens / Beckhoff / Rockwell）。
 - `bus/cjt188-vendor-bench.md`：CJ/T 188 厂商对标（宁波水表 / 新天科技）。
 - `bus/mqtt-vendor-bench.md`：MQTT 厂商对标（AWS IoT / Azure / 阿里云 / 华为云 / EMQX）。
+- `bus/can-protocol-family.md`：CAN 家族全景汇总——CAN PHY / CAN FD / CAN XL / ISO-TP / CANopen / J1939 / UDS / OBD-II 分层、协议矩阵、覆盖缺口。
+- `bus/can-standards-map.md`：CAN 家族标准规范总表——按层与按协议汇总 ISO/SAE/CiA 标准号，含电器规范、环境/安全/法规层。
 - `bus/can.md`
 - `bus/canopen.md`
 - `bus/can-canopen-practical.md`
 - `bus/can-canopen-deep-dive.md`
+- `bus/canopen-failure-cases.md`
+- `bus/canopen-safety.md`
 - `bus/iso-tp.md`
 - `bus/iso-tp-practical.md`
 - `bus/iso-tp-deep-dive.md`
+- `bus/iso-tp-failure-cases.md`
+- `bus/obd2.md`
+- `bus/obd2-deep-dive.md`
+- `bus/obd2-practical.md`
+- `bus/obd2-failure-cases.md`
+- `bus/wwh-obd.md`
+- `bus/wwh-obd-deep-dive.md`
+- `bus/wwh-obd-practical.md`
+- `bus/wwh-obd-failure-cases.md`
+- `bus/lin.md`
 - `bus/lin-practical.md`
 - `bus/ethercat-deep-dive.md`
 - `bus/industrial-ethernet-comparison.md`
@@ -116,6 +130,7 @@
 - `bus/uds.md`
 - `bus/uds-practical.md`
 - `bus/uds-deep-dive.md`
+- `bus/uds-failure-cases.md`
 - `bus/profibus.md`
 - `bus/profibus-practical.md`
 - `bus/profibus-deep-dive.md`

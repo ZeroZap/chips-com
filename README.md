@@ -168,6 +168,26 @@ chips-com/
 56. `bus/fpd-link-gmsl-practical.md`：车载 SerDes 链路锁定、远端 I2C、MIPI 桥接和多摄像头调试。
 57. `bus/fpd-link-gmsl-deep-dive.md`：车载 SerDes 分层模型、反向通道、链路预算、PoC、多摄同步和现场排查。
 
+### CAN 家族专题（2026-10-31 补齐，2026-11-02 续）
+
+CAN 家族全景、四个协议的 failure-cases、OBD-II 车载诊断，以及功能安全 / 商用车诊断两个专篇：
+
+58. `bus/can-protocol-family.md`：CAN 家族全景汇总——CAN PHY / CAN FD / CAN XL / ISO-TP / CANopen / J1939 / UDS / OBD-II 分层、协议矩阵、覆盖缺口。
+59. `bus/can-standards-map.md`：CAN 家族标准规范总表——按层（连接器/物理/链路/传输/网络/应用/测试/环境/安全/法规）与按协议汇总标准号。
+60. `bus/iso-tp-failure-cases.md`：ISO-TP 产线案例——SF 7 字节边界、TX/RX ID 方向、BS 语义、STmin 编码、SN 4bit 环绕。
+61. `bus/uds-failure-cases.md`：UDS 产线案例——会话服务表、DID 落盘、种子密钥、刷写变砖、BSC 循环、S3 会话保持。
+62. `bus/canopen-failure-cases.md`：CANopen 产线案例——Node ID 冲突、SDO 字节序、PDO 映射、NMT 状态机、Heartbeat 过滤。
+63. `bus/obd2.md`：OBD-II 车载排放诊断概览、九个 Mode、PID 速查和 DTC 格式。
+64. `bus/obd2-deep-dive.md`：OBD-II PID 支持协商、I/M 就绪与监测模型、Mode 详解、OBD-II 与 UDS 的边界。
+65. `bus/obd2-practical.md`：ELM327 / SocketCAN 工具链、抓包分析、调试流程和检查清单。
+66. `bus/obd2-failure-cases.md`：OBD-II 案例——适配器能力、PID 解码、多 ECU 响应源、readiness 诊断、VIN 多帧。
+67. `bus/lin.md`：LIN 车载低速总线概念、与 CAN 的核心差异、帧结构、调度机制和 LDF。
+68. `bus/canopen-safety.md`：CANopen Safety（CiA 304 / EN 50325-5）——SRDO 取反冗余、SCT/SRVT 双超时、CRC 配置签名、GFC 全局失效安全命令。
+69. `bus/wwh-obd.md`：WWH-OBD（ISO 27145）——商用车全球统一车载诊断，分部分工、DoCAN + DoIP 双链路、PID/MID/ITID 映射。
+70. `bus/wwh-obd-deep-dive.md`：WWH-OBD 深度——各部分确切边界、PID/MID/ITID→DID/RID 映射、24 位 DTC 格式与 SPN/FMI 对齐、ISO 27145-4 初始化与 11/29 位寻址验证、DoCAN/DoIP 双链路。
+71. `bus/wwh-obd-practical.md`：WWH-OBD 实战——双链路选型、初始化序列、11/29 位验证脚本、DoIP 路由激活与抓包、24 位 DTC 解析、商用车产线与检测站场景。
+72. `bus/wwh-obd-failure-cases.md`：WWH-OBD 案例——DoIP 链路识别、长寻址车型、DTC 格式错乱、路由激活 0x03、网关路由、P2\* 超时、产线检测时机。
+
 ## 基础外设补充
 
 基础外设文档用于补齐通信前置能力：

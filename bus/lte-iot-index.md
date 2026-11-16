@@ -265,7 +265,7 @@ lte-iot-index.md (本文件，导航)
 - **`bus/thread.md`** — Thread（IPv6 局域网）
 - **`bus/matter.md`** — Matter（应用层跨协议）
 - **`bus/mqtt-deep-dive.md`** — MQTT（常用于 LTE-IoT 业务层）
-- **`bus/can-canopen.md`** — 车载 CAN（车机 / TBOX 与 Cat 1 集成）
+- **`bus/can-protocol-family.md`** — 车载 CAN（车机 / TBOX 与 Cat 1 集成）
 - **`basic/can-phy.md`** — 物理层对比参考
 
 ## 一句话总结

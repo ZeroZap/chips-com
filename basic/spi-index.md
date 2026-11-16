@@ -16,7 +16,7 @@ chips-com/basic/spi-*.md
 │   └── spi-deep-dive.md             完整原理 + 故障树 + 速度档 + 信号完整性
 │
 ├── 实战层
-│   ├── spi-failure-cases.md         20 个产线死机案例
+│   ├── spi-failure-cases.md         21 个产线死机案例
 │   ├── spi-multislave-and-dma.md    多从 / 菊花链 / DMA / 中断
 │   └── spi-rtos-integration.md      RT-Thread / Zephyr / FreeRTOS 集成
 │
@@ -42,7 +42,7 @@ chips-com/basic/spi-*.md
 
 1. **`spi-practical.md`** "## 5 秒钟定位"
 2. **`spi-deep-dive.md`** "## SPI 故障树"
-3. **`spi-failure-cases.md`** — 找类似案例 (20 个)
+3. **`spi-failure-cases.md`** — 找类似案例 (21 个)
 4. **`spi-multislave-and-dma.md`** 第 4 节 — race condition
 
 ### 路径 C: "我在写 SPI 驱动, 要落地代码" (工程实现)

@@ -19,7 +19,7 @@ chips-com/basic/i2c-*.md
 │
 ├── 实战层
 │   ├── i2c-bus-recovery-playbook.md    8 步恢复 SOP + 可拷代码 + 验收清单
-│   └── i2c-failure-cases.md            20 个产线死机案例
+│   └── i2c-failure-cases.md            21 个产线死机案例
 │
 └── 专题层
     ├── i2c-rtos-integration.md         RT-Thread / Zephyr / FreeRTOS 集成
@@ -51,7 +51,7 @@ chips-com/basic/i2c-*.md
 
 1. **`i2c-bus-recovery-playbook.md`** 第 1-3 节 — 30 分钟排障流程
 2. **`i2c-deep-dive.md`** "## 总线被拉死" 章节 — 故障树
-3. **`i2c-failure-cases.md`** — 找类似案例 (20 个, 大概率命中)
+3. **`i2c-failure-cases.md`** — 找类似案例 (21 个, 大概率命中)
 4. **`i2c-state-machine.md`** 第 4 节 — 常见死锁和竞态
 
 ### 路径 C: "我在做面试题, 准备嵌入式面试" (求职)

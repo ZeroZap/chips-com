@@ -288,8 +288,8 @@ lora-index.md (本文件, 导航)
 - **`bus/zigbee.md`** — ZigBee（Mesh 短距，互补关系）
 - **`bus/thread.md`** — Thread（IPv6 Mesh，互补关系）
 - **`bus/matter.md`** — Matter（智能家居统一层）
-- **`basic/wireless-phy.md`** — 物理层对比参考（Sub-GHz vs 2.4 GHz）
-- **`bus/modbus-practical.md`** — Modbus（远程低速，竞品）
+- **`basic/ethernet-phy.md`** — 物理层对比参考（Sub-GHz vs 2.4 GHz）
+- **`bus/modbus.md`** — Modbus（远程低速，竞品）
 
 ## 一句话总结
 

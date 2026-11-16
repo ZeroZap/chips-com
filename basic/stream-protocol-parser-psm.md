@@ -316,7 +316,7 @@ void tp_rx_dt_handler(uint8_t src_addr, uint8_t *dt_data) {
 - **UART Ring Buffer + DMA + Idle**：`basic/uart-dma-circular-and-rtos.md` §1-3
 - **Modbus TCP 状态机**：`bus/modbus-tcp-deep-dive.md` §MBAP + `bus/ethernet-modbus-tcp-practical.md` §解析
 - **J1939 TP 完整代码**：`bus/j1939-transport-protocol.md` §完整 RTS/CTS 示例 + §超时和重传
-- **DRIVER_PATTERNS TCP 解析器 6 必修**：`bus/DRIVER_PATTERNS.md` §Ethernet TCP Server（行 132-154）
+- **DRIVER_PATTERNS TCP 解析器 6 必修**：`DRIVER_PATTERNS.md` §Ethernet TCP Server（行 132-154）
 
 ## 一句话总结
 

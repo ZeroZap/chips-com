@@ -16,7 +16,7 @@ chips-com/basic/uart-*.md
 │   └── uart-deep-dive.md             完整原理 + 故障树 + 波特率 + 错误码
 │
 ├── 实战层
-│   ├── uart-failure-cases.md         20 个产线死机案例
+│   ├── uart-failure-cases.md         21 个产线死机案例
 │   ├── uart-rs485-and-flow-control.md  RS485 / 流控专题
 │   └── uart-dma-circular-and-rtos.md   DMA + 环形缓冲 + RTOS
 │
@@ -40,7 +40,7 @@ chips-com/basic/uart-*.md
 
 1. **`uart-practical.md`** "## 5 秒钟定位"
 2. **`uart-deep-dive.md`** "## UART 故障树"
-3. **`uart-failure-cases.md`** — 找类似案例 (20 个)
+3. **`uart-failure-cases.md`** — 找类似案例 (21 个)
 4. **`uart-rs485-and-flow-control.md`** 第 4 节 — RS485 方向控制
 
 ### 路径 C: "我在做 RS485 / Modbus / 工业通信" (工程实现)

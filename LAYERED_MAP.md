@@ -57,7 +57,12 @@ PCIe PHY
 ```text
 Modbus RTU
 CAN
+CAN FD
+CAN XL
+ISO-TP
 CANopen
+J1939
+UDS
 LIN
 EtherCAT
 PROFINET
@@ -136,6 +141,32 @@ CANopen：
 CANopen
 CAN 帧和仲裁
 CAN PHY
+```
+
+UDS over CAN（分层 + 承载关系）：
+
+```text
+UDS
+ISO-TP (多帧分包 + 流控)
+CAN / CAN FD 帧
+CAN PHY
+```
+
+J1939（自带传输机制，不依赖 ISO-TP）：
+
+```text
+J1939 (PGN/SPN + NAME 地址声明)
+BAM / RTS-CTS 传输协议
+CAN 帧和仲裁
+CAN PHY
+```
+
+车载诊断的两套体系（常被混为一谈）：
+
+```text
+OBD-II (SAE J1979)  ── 乘用车，法规强制，只读为主
+WWH-OBD (ISO 27145-1~-4, -6) ── 商用车，法规强制，UDS 服务子集，3 字节 DTC
+UDS (ISO 14229)     ── OEM 诊断，全车系，有会话和权限
 ```
 
 Modbus TCP：

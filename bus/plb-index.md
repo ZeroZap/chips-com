@@ -286,13 +286,11 @@ plb-index.md (本文件, 导航)
 
 PLB 是户外 / 应急救援主题，跟以下主题有交集：
 
-- **`basic/gnss.md`**（如果有）— GNSS 协议族（GPS / GLONASS / 北斗）
-- **`basic/lora-deep-dive.md`** — LoRa 长距（户外场景有部分替代关系）
+- **`bus/lora-deep-dive.md`** — LoRa 长距（户外场景有部分替代关系）
 - **`bus/matter-deep-dive.md`** — Matter 智能家居（户外场景少）
 - **`bus/thread-deep-dive.md`** — Thread 802.15.4（Mesh 户外传感）
 - **`bus/ble-deep-dive.md`** — BLE 近场（户外穿戴）
 - **`bus/can-canopen-deep-dive.md`** — 工业控制（户外基站）
-- **`basic/embedded-power.md`**（如果有）— 嵌入式低功耗（PLB 5 年电池设计）
 
 ## 一句话总结
 

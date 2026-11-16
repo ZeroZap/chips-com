@@ -294,6 +294,24 @@ CAN FD 错误计数器和经典 CAN 一样 (TEC/REC)
 | 时间同步 | 无 | 部分支持 |
 | 标准化 | ISO 11898-1:2015 | ISO 11898-1:2024 |
 
+### CAN FD / CAN XL 相关规范
+
+| 标准 | 作用 |
+| --- | --- |
+| **ISO 11898-1:2015** | 数据链路层，**含经典 CAN 与 CAN FD** 的帧格式、位时序、采样点计算依据 |
+| **ISO 11898-1:2024** | 第 3 版，**整合 CAN XL 规范**（原 CiA 610-1），并在附录整合 CAN FD Light（原 CiA 604-1）、CAN SIC（原 CiA 601-4）、CAN SIC XL（原 CiA 610-3） |
+| **ISO 11898-2:2024** | 第 4 版，物理层，含高速、唤醒、信号增强能力 |
+| CiA 601-4 | CAN SIC 收发器规范（抑制振铃，让 CAN FD/XL 能在非优化拓扑运行） |
+| CiA 604-x | CAN FD Light（commander/responder 模式，面向成本敏感的传感器/执行器；CiA 604-4 增加高速模式至 8 Mbit/s） |
+| CiA 610-1 / -3 | CAN XL 数据链路层 / 物理层（已并入 ISO 11898-1 / -2） |
+| ISO 16845-2 | 一致性测试计划（涵盖 CAN FD） |
+| SAE J1939-17 / -22 | J1939 的 CAN FD 物理层 / 数据链路层 |
+| CiA 1301 / 1302 | CANopen FD 应用层 |
+
+**CAN FD 兼容性**：CAN FD 节点可以完全作为经典 CAN 节点工作；**反向不成立** —— 经典 CAN 节点收到 CAN FD 帧会发错误帧把它破坏掉。混合网络必须用网关隔离。
+
+**CAN FD Light** 是另一条成本路线：不需要完整 CAN FD 控制器，responder 节点可做得很便宜，适合智能 LED 大灯这类场景，可替代 LIN。
+
 ### CAN XL 帧格式
 
 ```text
