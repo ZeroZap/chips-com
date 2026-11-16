@@ -1,0 +1,1 @@
+search failed: web_search 3 次连续 MATRIX_TOOL_REQUEST_FAILED（查询 LoRaWAN production deployment failure case study / LoRa collision SF spreading factor debugging / LoRa IoT 都未返回），跳过本次，下一个协议。

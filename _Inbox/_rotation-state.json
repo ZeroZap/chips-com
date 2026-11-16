@@ -1,0 +1,21 @@
+{
+  "rotation": [
+    "BLE",
+    "ZigBee",
+    "LoRa",
+    "CAN FD",
+    "FlexRay",
+    "SENT",
+    "USB",
+    "Thread",
+    "HDMI",
+    "CANopen",
+    "EtherCAT",
+    "LIN"
+  ],
+  "cursorIndex": 10,
+  "lastProtocol": "EtherCAT",
+  "lastRunAt": "2026-11-16T12:00:00+08:00",
+  "rule": "next = first protocol AFTER cursor whose 24h window is free; advance cursor. Never restart from index 0, or BLE/ZigBee ping-pong starves protocols 4-12.",
+  "lastRunNote": "Ran EtherCAT (index 10) on 2026-11-16 12:00. Cursor rule: next = first protocol AFTER cursor whose 24h window is free. Prior run was CANopen at 2026-11-16 00:06 (index 9), which was only ~11.9h old, so EtherCAT was the next protocol after it in the rotation. All 12 protocols verified 24h-free independently (newest prior artifact HDMI-DP 2026-11-12 00:09, 107.9h old; CANopen 2026-11-16 00:06 is the only file inside the window and it is the immediately-preceding protocol in the table). No reviewed- markers anywhere under chips-com (searched recursively). Library gap analysis by content grep (not filename): bus/ethercat-deep-dive.md is the ONLY EtherCAT file, 4403 B, pure concept level - no ESC PDI/SPI layer, no cable redundancy, no Hot Connect, no FSoE, no conformance/certification, no practical.md, no failure-cases.md, no ethercat.md index. This round targets exactly those blanks and deliberately does not repeat the 2026-11-03 round (IgH cycle jitter, NI PXIe -66460, InoProShop SV660F, automationhub24 architecture overview). Five candidates: (a) LAN9252+STM32 SPI/PDI hardware layer - Mode 3 mandatory, CS# low 100ns before clock, <=12MHz ceiling, 1MHz floor, 0xFF/0x0000 readback symptom; (b) ETG.1020 Hot Connect slave-dropout topology recovery - one slave removed kills the segment, scan-based recovery 200-800ms, TwinCAT 3 build 4020 first support, NI not supported, no managed switches in segment; (c) ETG.7010 Conformance Guide v1.2.0 PDF - Vendor ID + CTT subscription mandatory, Plug Fest issues no certificate, only ETC official test does, certificate does not expire, China ETC at Beihang LNC; (d) CODESYS master redundancy over EtherCAT ring - two masters simultaneously ACTIVE ~30ms causing 0xEA04 EC_E_RING_DUPLICATE and SAFE-OP drop, asymmetric heartbeat/hold-down timers (preferred 6x period + 50ms hold-down, standby 10x period + 100ms confirm-active); (e) FSoE black-channel production-line case on RK3568 + Linux 6.6.119 - CRC-0x1021 triple check, IGC driver replacing SOEM, FSoE.xml timeout tuning, 30-minute root cause. Link check (HEAD/GET): csdn 166354502 200, IMD hot-connect 200, IMD codesys-redundancy 200, ETG.7010 PDF 200, csdn 165287544 200. Excluded: tsight.io, hqwc.cn, rorosafe.in (self-flagged [VERIFY] bench numbers), fixfaults.com (AI-generated with ClickMechanic lead-gen). Alternate held: domestic ESC LY-E252 pin-compatible drop-in for LAN9252 (csdn 165564344) - direct GET returns 521 anti-bot challenge, content only via search-engine extract, flagged to-verify. Also verified but unused (duplicate/overlap): KUKA KR C4 Hot Connect FSoE 50-150ms re-init, csdn IgH arm64 x86-64 cross-platform, csdn LY-E252 ESC swap. Output: EtherCAT-2026-11-16-candidates.md, 5 candidates, 3068 B, limit 3072."
+}

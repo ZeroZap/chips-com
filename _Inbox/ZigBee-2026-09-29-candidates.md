@@ -1,0 +1,3 @@
+# ZigBee 候选素材 @ 2026-09-29 22:38
+
+search failed: web_search returned MATRIX_TOOL_REQUEST_FAILED on 5 consecutive attempts (queries: "ZigBee mesh network production line failure case study debugging", "ZigBee 实战 产线 故障 真实案例 部署", "ZigBee industrial deployment failure root cause Z-Stack EmberZNet", "ZigBee mesh troubleshooting case", "ZigBee 案例 故障", "ZigBee case study") — external search backend unavailable this turn, skipping ZigBee this cycle. Next protocol slot will pick up at LoRa on next cron tick (within 24h dedup).
