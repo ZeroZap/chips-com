@@ -60,14 +60,14 @@ MCU I2C Master -> Sensor / EEPROM / MUX
 
 记录字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| Bus speed | 100 kHz / 400 kHz / 1 MHz |
-| Pull-up | 上拉阻值和电压 |
-| Devices | 挂载设备数量和线长 |
-| Rise time | 30% 到 70% 上升时间 |
-| Low level | 低电平是否足够低 |
-| NACK address | 出现 NACK 的地址和寄存器 |
+| 字段         | 说明                      |
+| ------------ | ------------------------- |
+| Bus speed    | 100 kHz / 400 kHz / 1 MHz |
+| Pull-up      | 上拉阻值和电压            |
+| Devices      | 挂载设备数量和线长        |
+| Rise time    | 30% 到 70% 上升时间       |
+| Low level    | 低电平是否足够低          |
+| NACK address | 出现 NACK 的地址和寄存器  |
 
 判定：
 
@@ -95,14 +95,14 @@ CS falling edge
 
 记录字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| Command | 0x03 / 0x0B / Quad Read 等 |
-| Address | 读取地址 |
-| Dummy clocks | 实际 dummy clock 数 |
-| SPI mode | CPOL/CPHA |
-| SCK frequency | 实际时钟频率 |
-| First bytes | 返回前 16 字节 |
+| 字段          | 说明                       |
+| ------------- | -------------------------- |
+| Command       | 0x03 / 0x0B / Quad Read 等 |
+| Address       | 读取地址                   |
+| Dummy clocks  | 实际 dummy clock 数        |
+| SPI mode      | CPOL/CPHA                  |
+| SCK frequency | 实际时钟频率               |
+| First bytes   | 返回前 16 字节             |
 
 判定：
 
@@ -133,14 +133,14 @@ CS falling edge
 
 记录字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| Request ID | Tester 到 ECU CAN ID |
-| Response ID | ECU 到 Tester CAN ID |
-| Addressing | Normal / Extended / Mixed |
-| BS/STmin | ECU 返回的流控参数 |
-| Block size | UDS 0x36 每块数据长度 |
-| Flash time | ECU 写 Flash 最大耗时 |
+| 字段        | 说明                       |
+| ----------- | -------------------------- |
+| Request ID  | Tester 到 ECU CAN ID       |
+| Response ID | ECU 到 Tester CAN ID       |
+| Addressing  | Normal / Extended / Mixed  |
+| BS/STmin    | ECU 返回的流控参数         |
+| Block size  | UDS 0x36 每块数据长度      |
+| Flash time  | ECU 写 Flash 最大耗时      |
 | Error layer | CAN / ISO-TP / UDS / Flash |
 
 判定：
@@ -174,15 +174,15 @@ CS falling edge
 
 记录字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| Command | PMBus 命令码 |
-| Raw word | SMBus word 原始值 |
-| Format | Linear11 / Linear16 / Direct |
-| PAGE | 当前 rail |
-| PEC | 启用或关闭 |
-| Status bits | 故障状态位 |
-| External meter | 外部仪表读数 |
+| 字段           | 说明                         |
+| -------------- | ---------------------------- |
+| Command        | PMBus 命令码                 |
+| Raw word       | SMBus word 原始值            |
+| Format         | Linear11 / Linear16 / Direct |
+| PAGE           | 当前 rail                    |
+| PEC            | 启用或关闭                   |
+| Status bits    | 故障状态位                   |
+| External meter | 外部仪表读数                 |
 
 判定：
 
@@ -254,15 +254,15 @@ eth.addr == <talker-mac>
 
 记录字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| Image version | 固件版本 |
-| Load address | 镜像目标地址 |
-| Image size | 镜像长度 |
-| CRC/hash | 完整性校验 |
-| Flash range | 实际写入范围 |
-| Boot flag | metadata 启动标志 |
-| Confirm flag | 应用启动确认标志 |
+| 字段          | 说明              |
+| ------------- | ----------------- |
+| Image version | 固件版本          |
+| Load address  | 镜像目标地址      |
+| Image size    | 镜像长度          |
+| CRC/hash      | 完整性校验        |
+| Flash range   | 实际写入范围      |
+| Boot flag     | metadata 启动标志 |
+| Confirm flag  | 应用启动确认标志  |
 
 判定：
 
@@ -297,15 +297,15 @@ eth.addr == <talker-mac>
 
 记录字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| Cable | 线束型号、长度、供应商 |
-| Port | Deserializer 端口 |
-| Link status | lock 和 drop counter |
-| PoC voltage | 启动和满载瞬态 |
+| 字段        | 说明                    |
+| ----------- | ----------------------- |
+| Cable       | 线束型号、长度、供应商  |
+| Port        | Deserializer 端口       |
+| Link status | lock 和 drop counter    |
+| PoC voltage | 启动和满载瞬态          |
 | Sensor mode | 分辨率、帧率、bit depth |
-| CSI errors | SoC 接收错误 |
-| Temperature | 环境和芯片温度 |
+| CSI errors  | SoC 接收错误            |
+| Temperature | 环境和芯片温度          |
 
 判定：
 
@@ -344,6 +344,177 @@ eth.addr == <talker-mac>
 - EDID 能读到不代表高分辨率模式稳定。
 - eDP AUX 不通时不要先调 Main Link。
 - 低分辨率正常、高分辨率闪屏通常是链路裕量或 PHY 参数问题。
+
+## BLE 连接与吞吐测量
+
+目标：区分连接参数、射频干扰、协议栈阻塞和主机行为导致的断连/低吞吐。
+
+工具：
+
+- BLE Sniffer（nRF Sniffer / Ellisys / Ubertooth）。
+- nRF Connect。
+- 频谱仪/近场探头，视需要。
+- 设备日志和连接事件计数。
+
+抓取内容：
+
+- Advertising interval、TX power。
+- Connection interval、slave latency、supervision timeout。
+- MTU、GATT 读写/通知长度。
+- 连接事件丢失、RSSI、重连次数。
+- Wi-Fi/2.4 GHz 共存条件。
+
+判定：
+
+- Sniffer 能看到空包但设备没响应，优先查协议栈/中断阻塞。
+- 主机主动断开还是 supervision timeout，处理方向不同。
+- 吞吐随 connection interval/MTU 变化，说明参数或调度是瓶颈。
+
+## LoRaWAN 入网与链路测量
+
+目标：定位 Join 失败、上行丢失、ADR 不收敛和占空比问题。
+
+工具：
+
+- LoRa 网关日志。
+- Network Server 日志。
+- 终端串口日志。
+- 频谱仪/天线分析仪。
+
+抓取内容：
+
+- region/sub-band、频点和占空比。
+- Join Request/Join Accept 时间。
+- SF、BW、TX power、ADR。
+- RSSI、SNR、CRC 状态。
+- 网关/NS/终端三侧 DevEUI/JoinEUI。
+
+判定：
+
+- 网关有上行但 NS 无记录，优先查网关转发和频点配置。
+- Join Accept 错过接收窗口，查晶振频偏和收发切换。
+- SNR 正常但丢包，查占空比、重试和 NS 策略。
+
+## CAN FD 眼图与错误测量
+
+目标：评估 CAN FD 数据段速率、收发器、终端和拓扑余量。
+
+工具：
+
+- 差分探头/示波器。
+- CAN FD 分析仪。
+- 眼图/模板分析（如支持）。
+
+抓取内容：
+
+- 仲裁段/数据段波特率、采样点、SJW。
+- CANH/CANL 差分摆幅、共模电压。
+- 数据段边沿、过冲、振铃和眼图。
+- TEC/REC、错误帧、Bus Off。
+- 终端电阻和总线长度。
+
+判定：
+
+- 仲裁段正常、数据段误码，优先查收发器环路延迟、采样点和线长。
+- 眼图闭合但低速正常，说明高速余量不足。
+- 终端/共模异常会同时影响经典 CAN 和 CAN FD。
+
+## Modbus TCP 抓包测量
+
+目标：定位寄存器错位、异常码、粘包/拆包和超时。
+
+工具：
+
+- Wireshark/tshark。
+- Modbus Poll/QModMaster。
+- 设备应用日志。
+
+抓取内容：
+
+- MBAP transaction ID、length、unit ID。
+- Function code、起始地址、数量。
+- 异常码和响应时间。
+- TCP 重传、断连、并发连接。
+- 点表地址基数和字序。
+
+判定：
+
+- 请求/响应长度与 MBAP 不一致，查 PDU 解析。
+- 地址整体偏移，查 0/1-based 和网关映射。
+- 32 位值异常，查寄存器字序/字节序。
+
+## IEC 60870-5-104 抓包测量
+
+目标：定位链路建立、总召、遥控和超时问题。
+
+工具：
+
+- Wireshark（104 解码）。
+- 104 客户端/模拟器。
+- 主站/从站日志。
+
+抓取内容：
+
+- TCP 连接、STARTDT/STOPDT/TESTFR。
+- I/S/U 帧和发送/接收序号。
+- ASDU 类型、COT、公共地址、信息对象地址。
+- K/W 窗口、t1/t2/t3。
+- 总召/遥控的 ACT/CON/TERM。
+
+判定：
+
+- 连接建立但无数据，先看 STARTDT 和公共地址。
+- 总召超时，查点表规模、ASDU 长度和 I 帧确认。
+- 遥控失败，查选择/执行、COT 和权限。
+
+## DNP3 事件与时间同步测量
+
+目标：定位事件丢失、确认丢失和时间戳异常。
+
+工具：
+
+- Wireshark（DNP3 解码）。
+- DNP3 主站/outstation 日志。
+- 点表和事件缓冲统计。
+
+抓取内容：
+
+- Integrity Poll、Class 1/2/3 Poll。
+- Unsolicited Response、confirm。
+- 对象 group/variation、点号、事件时间。
+- 事件缓冲溢出/丢弃计数。
+- 链路层重传和时间同步。
+
+判定：
+
+- 只轮询 Class 0 会漏事件。
+- confirm 不及时会导致重传/重复事件。
+- 时间戳跳变，查对时和时区/闰秒处理。
+
+## EtherCAT WKC 与 DC 测量
+
+目标：定位从站掉线、WKC 异常和 DC 同步问题。
+
+工具：
+
+- TwinCAT/SOEM/IgH Master 日志。
+- Wireshark（EtherCAT 解码）。
+- 从站 AL Status/EEPROM/ESI。
+- 示波器/网线测试仪。
+
+抓取内容：
+
+- 拓扑和端口顺序。
+- WKC、AL Status、AL Status Code。
+- DC offset、同步周期、主站周期。
+- PDO 映射和从站处理时间。
+- 网线/连接器/电源/地。
+
+判定：
+
+- WKC 下降但链路在，查从站处理、PDO 和 DC。
+- 偶发掉线优先查拓扑、网线、连接器和电机干扰。
+- DC offset 收敛差，查主站周期、从站处理和参考时钟。
 
 ## 测量报告最小结构
 

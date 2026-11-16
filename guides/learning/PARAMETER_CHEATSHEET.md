@@ -161,3 +161,168 @@ MCLK
 reset timing
 power sequence
 ```
+
+## CAN FD / CAN XL
+
+```text
+nominal bitrate
+data bitrate
+sample point (arbitration/data)
+SJW
+termination
+transceiver loop delay
+BRS / ESI
+DLC / payload
+```
+
+## J1939
+
+```text
+bitrate (250k/500k)
+PGN
+SPN
+source address
+NAME
+address claim
+TP.CM / TP.DT
+```
+
+## UDS / ISO-TP
+
+```text
+CAN ID (request/response)
+ISO-TP BS / STmin
+P2 / P2* timeout
+session type
+security level / Seed-Key
+DID / DTC
+NRC handling
+```
+
+## Modbus TCP
+
+```text
+IP / port 502
+unit ID
+MBAP length
+function code
+register address / quantity
+byte order
+poll interval / timeout
+```
+
+## IEC 60870-5-104 / 101
+
+```text
+IP / port 2404 (104)
+link address / common address
+ASDU type
+cause of transmission
+information object address
+K / W window (104)
+t1/t2/t3 timeout
+```
+
+## DNP3
+
+```text
+transport / link address
+outstation address
+object group / variation
+class 0/1/2/3
+unsolicited response
+event buffer
+time sync
+```
+
+## BACnet
+
+```text
+network number
+device instance
+object type / instance
+property
+service (ReadProperty/WriteProperty)
+BBMD / foreign device
+APDU timeout / retries
+```
+
+## OPC UA
+
+```text
+endpoint URL
+security policy
+security mode
+certificate
+session timeout
+subscription interval
+node ID
+```
+
+## BLE
+
+```text
+advertising interval
+connection interval
+slave latency
+supervision timeout
+MTU
+GATT service / characteristic
+TX power
+```
+
+## ZigBee / Thread / Matter
+
+```text
+PAN ID / channel
+network key / security
+coordinator / border router
+router / end device
+ZCL cluster / endpoint
+Matter fabric / discriminator
+```
+
+## LoRaWAN
+
+```text
+region / frequency
+SF / bandwidth
+TX power
+ADR
+OTAA / ABP
+duty cycle
+join timeout / retries
+```
+
+## LTE / NB-IoT
+
+```text
+band / APN
+SIM / IMSI
+PSM / eDRX
+RSRP / SINR
+attach / PDN
+retry / backoff
+```
+
+## TSN
+
+```text
+gPTP domain / sync interval
+VLAN ID / PCP
+Qbv gate control list
+cycle time / guard band
+Qav idle slope
+frame preemption
+```
+
+## 卫星 / 应急
+
+```text
+satellite system / band
+SBD / short message length
+GNSS fix / TTFF
+beacon registration
+activation method
+retry / acknowledgment
+```

@@ -12,9 +12,9 @@ tags:
 
 ### 通用数字接口
 
-- [gpio.md](gpio.md)：通用输入输出、上下拉、中断、开漏/推挽。
-- [pwm.md](pwm.md)：占空比、频率、定时器、调光和电机控制。
-- [jtag-swd.md](jtag-swd.md)：芯片下载调试接口、JTAG、SWD、VTref 和量产烧录注意事项。
+- [gpio.md](gpio.md)：电气边界、输入/输出模式、中断、去抖状态机、寄存器流程、故障树、测量与最小实验。
+- [pwm.md](pwm.md)：定时器频率/分辨率计算、占空比边界、互补死区、舵机/LED/滤波 DAC、故障树与测量。
+- [jtag-swd.md](jtag-swd.md)：JTAG/SWD 信号与协议、VTref、复位、低功耗/安全锁定、量产烧录与夹具设计。
 
 ### 串行通信接口
 
@@ -44,18 +44,18 @@ tags:
 - [spi-multislave-and-dma.md](spi-multislave-and-dma.md)：多从设备共享、菊花链、DMA 模式、中断协作、4 类 race condition 解决方案。
 - [spi-rtos-integration.md](spi-rtos-integration.md)：RT-Thread / Zephyr / FreeRTOS 三平台集成模式、mutex 与 reconfig 优化、双缓冲、实战代码骨架。
 - [spi-index.md](spi-index.md)：SPI 主题总览导航——5 种读者路径、主题速查矩阵、SPI vs I2C 选型速查。
-- [qspi-ospi.md](qspi-ospi.md)：SPI Flash 高速扩展、Quad/Octal 数据线、dummy cycle、XIP。
-- [i2s.md](i2s.md)：音频串行接口、采样率、左右声道时钟、位时钟。
+- [qspi-ospi.md](qspi-ospi.md)：Flash 命令、QE、dummy、24/32-bit 地址、XIP/cache、DDR/DQS、信号完整性与故障树。
+- [i2s.md](i2s.md)：BCLK/LRCLK/MCLK 时钟比、I2S/LJ/RJ/TDM 格式、主从、Codec 初始化、DMA underflow 与测量。
 
 ### 模拟与混合信号接口
 
-- [adc-dac.md](adc-dac.md)：模数/数模转换、采样率、分辨率、参考电压。
-- 比较器（暂无独立笔记）：比较器、阈值、电平检测。
+- [adc-dac.md](adc-dac.md)：误差预算、采样时间/源阻抗、Vref、校准、过采样、DAC 建立时间与负载。
+- [comparator.md](comparator.md)：模拟比较器、迟滞、窗口比较、零交叉、开漏/推挽、传播延迟与阈值精度。
 
 ### 物理层相关
 
-- [rs232-rs485.md](rs232-rs485.md)：串口电平转换、差分传输、半双工通信。
-- [can-phy.md](can-phy.md)：CAN 物理层、差分信号、终端电阻。
+- [rs232-rs485.md](rs232-rs485.md)：RS232/RS485 电平、DE/RE 时序、终端/偏置、隔离防护、拓扑与现场故障树。
+- [can-phy.md](can-phy.md)：CAN 收发器、显性/隐性、终端/分裂终端、共模/隔离、环路延迟与 CAN FD 边界。
 - [can-practical.md](can-practical.md)：CAN 调试流程速查、终端电阻详解、收发器选型、Linux SocketCAN 工具。
 - [can-deep-dive.md](can-deep-dive.md)：CAN 物理层 / 帧格式 / 仲裁 / 错误处理 / 故障树（完整原理体系）。
 - [can-multimaster-and-bus-off.md](can-multimaster-and-bus-off.md)：多 master 仲裁、节点状态机（Active / Passive / Bus Off）、错误计数器规则、Bus Off 恢复。
@@ -64,8 +64,8 @@ tags:
 - [can-rtos-integration.md](can-rtos-integration.md)：RT-Thread / Zephyr / FreeRTOS 三平台集成 + Linux SocketCAN 完整实战。
 - [can-vs-other-bus.md](can-vs-other-bus.md)：CAN vs I2C / SPI / UART / RS485 / Ethernet / LIN / FlexRay 12 维度对比。
 - [can-index.md](can-index.md)：CAN 主题总览导航——5 种读者路径、主题速查矩阵、CAN vs I2C/SPI/UART 主题对比。
-- [ethernet-phy.md](ethernet-phy.md)：以太网 PHY、MII/RMII/RGMII、磁性器件。
-- [lvds.md](lvds.md)：低压差分信号、显示 LVDS、差分阻抗和屏线调试。
+- [ethernet-phy.md](ethernet-phy.md)：MAC-PHY 接口、MDIO、自协商、复位/时钟、磁性/Bob Smith、RGMII delay、PoE 与 EMC。
+- [lvds.md](lvds.md)：LVDS 电气、显示 Lane/VESA/JEIDA、Pixel Clock、扩频、PCB 与屏线调试。
 
 ## 收录边界
 

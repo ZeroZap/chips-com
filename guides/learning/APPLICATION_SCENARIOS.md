@@ -202,6 +202,146 @@ EtherNet/IP
 EtherCAT
 ```
 
+## 电力 / 水务 / 表计 / 楼宇
+
+电网远动和调度：
+
+```text
+IEC 60870-5-104 / IEC 60870-5-101
+DNP3
+```
+
+变电站自动化：
+
+```text
+IEC 61850（MMS / GOOSE / SV）
+```
+
+电表集抄：
+
+```text
+DL/T 645 + RS485/红外
+```
+
+水表/热表/燃气表：
+
+```text
+CJ/T 188 + RS485/M-Bus
+```
+
+水文/水资源监测：
+
+```text
+SL 651 / SZY 206 / SL/T 427 + 4G/北斗
+```
+
+环保在线监控：
+
+```text
+HJ 212 + TCP/4G
+```
+
+楼宇自控和工业信息：
+
+```text
+BACnet / OPC UA / Modbus TCP
+```
+
+## 车载诊断与刷写
+
+法规排放诊断：
+
+```text
+OBD-II（乘用车）
+WWH-OBD（商用车）
+```
+
+OEM 诊断/刷写：
+
+```text
+UDS over ISO-TP / DoIP
+```
+
+商用车网络：
+
+```text
+SAE J1939
+```
+
+刷写链路：
+
+```text
+UDS + ISO-TP + CAN/CAN FD
+UDS + DoIP + Ethernet
+USB DFU / UART Bootloader / OTA
+```
+
+## 无线 IoT / 可穿戴
+
+手机周边和可穿戴：
+
+```text
+BLE
+```
+
+智能家居 Mesh：
+
+```text
+ZigBee / Thread
+```
+
+跨生态智能家居：
+
+```text
+Matter over Thread / Wi-Fi
+```
+
+远距离低功耗传感：
+
+```text
+LoRaWAN
+```
+
+蜂窝 IoT：
+
+```text
+LTE Cat-1 / Cat-M1 / NB-IoT
+```
+
+## 卫星 / 应急
+
+海洋/边远地区数据回传：
+
+```text
+Satellite-IoT（北斗短报文 / Iridium SBD / NTN）
+```
+
+人员/资产应急定位：
+
+```text
+PLB / Rescue-Comms / 406 MHz 信标
+```
+
+## 工业以太网与运动控制
+
+工厂自动化：
+
+```text
+PROFINET / EtherNet/IP / Modbus TCP
+```
+
+多轴运动控制：
+
+```text
+EtherCAT
+```
+
+确定性网络：
+
+```text
+TSN（gPTP / Qbv / Qav）
+```
+
 ## 调试和维护
 
 开发日志：

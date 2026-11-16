@@ -11,6 +11,7 @@
 - GPIO
 - PWM
 - ADC/DAC
+- Comparator
 - UART
 - I2C
 - SPI
@@ -188,8 +189,8 @@
 当前知识库规模：
 
 ```text
-知识库文档：312 篇（basic 43 + bus 234 + guides 29 + reference 6）
-总体量：约 3.2 MB
+知识库文档：313 篇（basic 44 + bus 234 + guides 29 + reference 6）
+总体量：约 3.3 MB
 索引主题：34 个
 5 分主题：31 个（19 个核心 L4 + 12 个行业闭环）
 ```
@@ -205,10 +206,10 @@
 
 ## 当前主要缺口
 
-- `basic/` 仍有 10 个 L1 词条级主题：GPIO、PWM、ADC/DAC、JTAG/SWD、I2S、LVDS、CAN PHY、Ethernet PHY、RS232/RS485、QSPI/OSPI。
-- 比较器尚无独立文档。
-- `guides/learning/` 的选型、场景、参数和实验文档需要持续跟进新协议。
-- `guides/troubleshooting/` 的跨协议案例仍集中在早期协议集。
+- `basic/` 的 10 个基础主题已升级到 L2，仍需补真实案例、波形和量产数据。
+- 比较器已补独立文档，后续补阈值精度与响应案例。
+- `guides/learning/` 已补汽车诊断、电力 RTU、无线 IoT、工业以太网与 TSN 的对比/选型/场景/设备/参数表；实验卡仍需细化。
+- `guides/troubleshooting/` 已补 BLE、LoRaWAN、IEC 104、DNP3、CANopen、J1939、Modbus TCP、EtherCAT 案例；仍需更多现场证据。
 - 图片和真实测量截图仍偏少；新增文档时需要同步维护 frontmatter / tags。
 
 后续重点应从“覆盖更多协议”转为：

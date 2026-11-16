@@ -23,14 +23,14 @@ tags:
 
 每个协议族尽量覆盖以下层级：
 
-| 层级 | 目的 | 证据 |
-| --- | --- | --- |
-| Bring-up | 验证硬件和最小通信 | ID、枚举、固定帧、Link 状态 |
-| Parameter | 验证关键参数边界 | 速率、地址、模式、payload、超时 |
-| Negative | 验证错误路径 | NACK、CRC、NRC、Bus Off、枚举失败 |
-| Recovery | 验证恢复能力 | 重新初始化、重连、总线恢复、回滚 |
-| Stress | 验证长稳和负载 | p99/p999、错误计数、温度、满载 |
-| Production | 验证量产可测 | 自动化结果、序列号、治具日志 |
+| 层级       | 目的               | 证据                              |
+| ---------- | ------------------ | --------------------------------- |
+| Bring-up   | 验证硬件和最小通信 | ID、枚举、固定帧、Link 状态       |
+| Parameter  | 验证关键参数边界   | 速率、地址、模式、payload、超时   |
+| Negative   | 验证错误路径       | NACK、CRC、NRC、Bus Off、枚举失败 |
+| Recovery   | 验证恢复能力       | 重新初始化、重连、总线恢复、回滚  |
+| Stress     | 验证长稳和负载     | p99/p999、错误计数、温度、满载    |
+| Production | 验证量产可测       | 自动化结果、序列号、治具日志      |
 
 ## 测试记录字段
 
@@ -57,77 +57,92 @@ Regression trigger
 
 ## 基础外设矩阵
 
-| 协议 | Bring-up | Parameter | Negative | Recovery | Stress | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| GPIO | 输入输出翻转 | 上拉/下拉/中断边沿 | 悬空输入、抖动 | 去抖和中断清除 | 长时间边沿计数 | 逻辑波形、计数器 |
-| UART | 固定字符串收发 | 波特率、8N1、DMA buffer | 错波特率、断线、溢出 | 重新打开串口 | 长时间日志流 | 逻辑分析仪、错误计数 |
-| I2C | 扫描地址、读 ID | 100 kHz/400 kHz、Repeated START | NACK、总线被拉低、Clock Stretching | 9 clock 恢复、MUX reset | 多设备轮询 | 示波器上升沿、I2C trace |
-| SPI | 读 JEDEC ID | Mode、SCK、dummy cycle | CS 抖动、MISO 延迟 | 重新初始化 Flash | 连续读写擦除 | 逻辑分析仪、示波器 |
-| QSPI/OSPI | 读 ID、切换线宽 | dummy、XIP、DTR | 校验失败、模式回退 | 退出 XIP、重新训练 | 大块读写校验 | trace、CRC、性能数据 |
+| 协议      | Bring-up        | Parameter                       | Negative                           | Recovery                | Stress         | Evidence                |
+| --------- | --------------- | ------------------------------- | ---------------------------------- | ----------------------- | -------------- | ----------------------- |
+| GPIO      | 输入输出翻转    | 上拉/下拉/中断边沿              | 悬空输入、抖动                     | 去抖和中断清除          | 长时间边沿计数 | 逻辑波形、计数器        |
+| UART      | 固定字符串收发  | 波特率、8N1、DMA buffer         | 错波特率、断线、溢出               | 重新打开串口            | 长时间日志流   | 逻辑分析仪、错误计数    |
+| I2C       | 扫描地址、读 ID | 100 kHz/400 kHz、Repeated START | NACK、总线被拉低、Clock Stretching | 9 clock 恢复、MUX reset | 多设备轮询     | 示波器上升沿、I2C trace |
+| SPI       | 读 JEDEC ID     | Mode、SCK、dummy cycle          | CS 抖动、MISO 延迟                 | 重新初始化 Flash        | 连续读写擦除   | 逻辑分析仪、示波器      |
+| QSPI/OSPI | 读 ID、切换线宽 | dummy、XIP、DTR                 | 校验失败、模式回退                 | 退出 XIP、重新训练      | 大块读写校验   | trace、CRC、性能数据    |
 
 ## 工业和车载矩阵
 
-| 协议 | Bring-up | Parameter | Negative | Recovery | Stress | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| RS485/Modbus RTU | 读单寄存器 | 波特率、地址、功能码 | CRC 错、帧间隔错、地址错 | DE/RE 恢复、重试 | 多从站轮询 | UART/DE 波形、Modbus trace |
-| CAN | 两节点固定 ID | 波特率、采样点、标准/扩展帧 | ACK Error、Bus Off、错误帧 | 自动恢复或手动恢复 | 高总线负载 | CAN trace、错误计数 |
-| CANopen | 读 1000h/1018h | SDO/PDO、Heartbeat、NMT | PDO 映射错、Heartbeat 超时 | NMT reset、重连 | 电机状态机循环 | CANopen trace、对象字典 dump |
-| J1939 | 地址声明、PGN 读取 | PGN/SPN、TP、多包 | 地址冲突、TP 超时 | 重新地址声明 | 高负载广播 | CAN trace、DBC 解码 |
-| ISO-TP/UDS | 读 DID、安全访问 | BS/STmin、P2/P2*、block size | CF 序号错、NRC、超时 | 会话恢复、刷写回退 | 大镜像刷写 | CAN trace、UDS 日志、Flash 日志 |
-| LIN | Break/Sync/ID | 调度表、checksum | 从节点不响应、checksum 错 | 主站重调度 | 长时间车身帧 | LIN trace、时序截图 |
+| 协议             | Bring-up           | Parameter                    | Negative                   | Recovery           | Stress         | Evidence                        |
+| ---------------- | ------------------ | ---------------------------- | -------------------------- | ------------------ | -------------- | ------------------------------- |
+| RS485/Modbus RTU | 读单寄存器         | 波特率、地址、功能码         | CRC 错、帧间隔错、地址错   | DE/RE 恢复、重试   | 多从站轮询     | UART/DE 波形、Modbus trace      |
+| CAN              | 两节点固定 ID      | 波特率、采样点、标准/扩展帧  | ACK Error、Bus Off、错误帧 | 自动恢复或手动恢复 | 高总线负载     | CAN trace、错误计数             |
+| CANopen          | 读 1000h/1018h     | SDO/PDO、Heartbeat、NMT      | PDO 映射错、Heartbeat 超时 | NMT reset、重连    | 电机状态机循环 | CANopen trace、对象字典 dump    |
+| J1939            | 地址声明、PGN 读取 | PGN/SPN、TP、多包            | 地址冲突、TP 超时          | 重新地址声明       | 高负载广播     | CAN trace、DBC 解码             |
+| ISO-TP/UDS       | 读 DID、安全访问   | BS/STmin、P2/P2*、block size | CF 序号错、NRC、超时       | 会话恢复、刷写回退 | 大镜像刷写     | CAN trace、UDS 日志、Flash 日志 |
+| LIN              | Break/Sync/ID      | 调度表、checksum             | 从节点不响应、checksum 错  | 主站重调度         | 长时间车身帧   | LIN trace、时序截图             |
 
 ## 工业以太网和网络矩阵
 
-| 协议 | Bring-up | Parameter | Negative | Recovery | Stress | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| Ethernet | Link、ARP、ping | MTU、双工、IP、MAC | IP 冲突、丢 ARP、PHY error | 断线重连、DHCP renew | TCP/UDP 长稳 | Wireshark、PHY 统计 |
-| Modbus TCP | 读 Holding Register | Unit ID、事务 ID、并发连接 | 长度错、异常码、断连 | TCP 重连 | 多客户端轮询 | pcap、应用日志 |
-| PROFINET | DCP 命名、周期 IO | GSDML、模块、诊断 | 名称错、AR/CR 失败 | PLC 重连、设备重启 | 周期 IO 长稳 | Wireshark、PLC 诊断 |
-| EtherNet/IP | List Identity、Forward Open | EDS、Assembly、RPI | Assembly 错、连接超时 | 连接重建 | 隐式 IO 长稳 | pcap、PLC/Scanner 日志 |
-| EtherCAT | 从站扫描、OP 状态 | PDO、DC、周期 | WKC 错、状态机失败 | 重新扫描、状态切换 | 多轴同步 | Master log、WKC、DC offset |
-| TSN | gPTP 同步、单流 | VLAN PCP、Qbv、Qav、Qbu | 队列映射错、GM 切换 | 链路恢复、调度重载 | 背景满载 p99/p999 | pcap、PTP offset、队列统计 |
-| MQTT | 连接 broker、发布订阅 | QoS、Keepalive、TLS | 断网、证书错、重复消息 | 自动重连、离线缓存 | 长连接和弱网 | broker log、客户端状态 |
+| 协议        | Bring-up                    | Parameter                  | Negative                   | Recovery             | Stress            | Evidence                   |
+| ----------- | --------------------------- | -------------------------- | -------------------------- | -------------------- | ----------------- | -------------------------- |
+| Ethernet    | Link、ARP、ping             | MTU、双工、IP、MAC         | IP 冲突、丢 ARP、PHY error | 断线重连、DHCP renew | TCP/UDP 长稳      | Wireshark、PHY 统计        |
+| Modbus TCP  | 读 Holding Register         | Unit ID、事务 ID、并发连接 | 长度错、异常码、断连       | TCP 重连             | 多客户端轮询      | pcap、应用日志             |
+| PROFINET    | DCP 命名、周期 IO           | GSDML、模块、诊断          | 名称错、AR/CR 失败         | PLC 重连、设备重启   | 周期 IO 长稳      | Wireshark、PLC 诊断        |
+| EtherNet/IP | List Identity、Forward Open | EDS、Assembly、RPI         | Assembly 错、连接超时      | 连接重建             | 隐式 IO 长稳      | pcap、PLC/Scanner 日志     |
+| EtherCAT    | 从站扫描、OP 状态           | PDO、DC、周期              | WKC 错、状态机失败         | 重新扫描、状态切换   | 多轴同步          | Master log、WKC、DC offset |
+| TSN         | gPTP 同步、单流             | VLAN PCP、Qbv、Qav、Qbu    | 队列映射错、GM 切换        | 链路恢复、调度重载   | 背景满载 p99/p999 | pcap、PTP offset、队列统计 |
+| MQTT        | 连接 broker、发布订阅       | QoS、Keepalive、TLS        | 断网、证书错、重复消息     | 自动重连、离线缓存   | 长连接和弱网      | broker log、客户端状态     |
+
+## 电力 / 无线 / 卫星矩阵
+
+| 协议                | Bring-up                    | Parameter                        | Negative                      | Recovery       | Stress         | Evidence                 |
+| ------------------- | --------------------------- | -------------------------------- | ----------------------------- | -------------- | -------------- | ------------------------ |
+| IEC 60870-5-104     | STARTDT、总召、遥控         | K/W、t1/t2/t3、公共地址          | 序号错、ASDU 越界、未确认     | 重连、重新总召 | 大点表长稳     | pcap、ASDU 日志          |
+| IEC 60870-5-101     | 链路建立、总召              | 链路地址、平衡/非平衡、FCB/FCV   | CRC 错、链路超时              | 重新建链       | 长轮询         | 串口 trace、ASDU 日志    |
+| DNP3                | Integrity Poll、Class 1/2/3 | 对象/变体、事件缓冲、确认        | 事件溢出、确认丢失、时间错    | 重连、补传     | 高频事件       | pcap、outstation 日志    |
+| BACnet              | Who-Is/I-Am、ReadProperty   | Device Instance、BBMD、服务      | 超时、对象不存在              | 重新发现       | 多设备轮询     | pcap、BACnet 工具日志    |
+| OPC UA              | Endpoint、Session、Browse   | Security Policy、Subscription    | 证书错、会话超时              | 重连、重建订阅 | 长订阅         | UaExpert、服务端日志     |
+| CAN FD              | 两节点 FD 帧                | 仲裁/数据段速率、BRS、采样点     | 错误帧、Bus Off、收发器不匹配 | 恢复、降速     | 高负载         | CAN FD trace、眼图       |
+| BLE                 | 广播、连接、GATT 读写       | Interval、Latency、MTU、TX power | 断连、配对失败、超时          | 重连、重新配对 | 长连接、弱信号 | Sniffer、GATT 日志       |
+| LoRaWAN             | Join、上下行                | SF、ADR、占空比、重试            | Join 失败、占空比违规         | 退避重入网     | 长稳、弱信号   | 网关日志、帧计数         |
+| LTE / NB-IoT        | Attach、PDN、数据           | APN、PSM、eDRX、RSRP             | 无 SIM、附着失败、断网        | 自动重连       | 弱网长稳       | 模块 AT 日志、网络侧记录 |
+| Satellite-IoT / PLB | 入网、短报文、定位          | 卫星系统、SBD、GNSS              | 无可见星、发送失败            | 重试、重新定位 | 长时间待机     | 终端日志、网关记录       |
 
 ## 主机外设和升级矩阵
 
-| 协议 | Bring-up | Parameter | Negative | Recovery | Stress | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| USB | 枚举、读描述符 | VID/PID、Endpoint、配置 | 描述符错、STALL、断连 | 热插拔重枚举 | 长时间传输 | USB trace、dmesg |
-| USB CDC/HID/MSC | 类功能验证 | packet size、polling interval | Host 不拉 DTR、短包 | 重新打开设备 | 大量收发 | USB trace、应用日志 |
-| USB DFU | 进入 DFU、分块下载 | block size、manifest、CRC | 错镜像、断电、地址错 | 回退 DFU、A/B rollback | 多次升级 | DFU log、Flash dump、metadata |
-| SDIO | 设备枚举、固件加载 | bus-width、clock、IRQ | DAT 线错、固件缺失 | 重新加载固件 | Wi-Fi 吞吐长稳 | dmesg、驱动统计 |
-| PCIe | lspci、Link L0 | Gen、Width、BAR、MSI | PERST# 错、LTSSM 卡住 | 重新枚举、热复位 | DMA 长稳 | lspci、AER、DMA CRC |
+| 协议            | Bring-up           | Parameter                     | Negative              | Recovery               | Stress         | Evidence                      |
+| --------------- | ------------------ | ----------------------------- | --------------------- | ---------------------- | -------------- | ----------------------------- |
+| USB             | 枚举、读描述符     | VID/PID、Endpoint、配置       | 描述符错、STALL、断连 | 热插拔重枚举           | 长时间传输     | USB trace、dmesg              |
+| USB CDC/HID/MSC | 类功能验证         | packet size、polling interval | Host 不拉 DTR、短包   | 重新打开设备           | 大量收发       | USB trace、应用日志           |
+| USB DFU         | 进入 DFU、分块下载 | block size、manifest、CRC     | 错镜像、断电、地址错  | 回退 DFU、A/B rollback | 多次升级       | DFU log、Flash dump、metadata |
+| SDIO            | 设备枚举、固件加载 | bus-width、clock、IRQ         | DAT 线错、固件缺失    | 重新加载固件           | Wi-Fi 吞吐长稳 | dmesg、驱动统计               |
+| PCIe            | lspci、Link L0     | Gen、Width、BAR、MSI          | PERST# 错、LTSSM 卡住 | 重新枚举、热复位       | DMA 长稳       | lspci、AER、DMA CRC           |
 
 ## 图像和显示矩阵
 
-| 协议 | Bring-up | Parameter | Negative | Recovery | Stress | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| MIPI CSI | 读 Sensor ID、streaming | Lane、VC、DT、RAW/YUV | MCLK 错、format 错、Lane 错 | Sensor reset、pipeline restart | 长时间采集 | CSI error、帧计数、图像 |
-| MIPI DSI | 初始化屏、纯色图 | Timing、pixel format、command/video | Sleep Out 缺失、背光误判 | Panel reset、重新初始化 | 高低温闪屏 | DRM log、测试图、波形 |
-| FPD-Link/GMSL | Deserializer ID、Link Lock | I2C alias、VC、PoC、线束 | lock drop、远端 I2C 不通 | 端口重连、降速 | 多摄满带宽、高温振动 | SerDes dump、PoC 波形、CSI error |
-| HDMI | 5V、HPD、EDID | 分辨率、色深、TMDS/FRL | EDID 读不到、高分闪屏 | 热插拔、fallback mode | 多显示器兼容 | EDID、drm log、示波器 |
-| eDP | AUX、DPCD、Link Training | Lane、link rate、panel timing | AUX 不通、training fail | 降速、panel reset | 长稳闪屏 | DPCD、training log、背光波形 |
+| 协议          | Bring-up                   | Parameter                           | Negative                    | Recovery                       | Stress               | Evidence                         |
+| ------------- | -------------------------- | ----------------------------------- | --------------------------- | ------------------------------ | -------------------- | -------------------------------- |
+| MIPI CSI      | 读 Sensor ID、streaming    | Lane、VC、DT、RAW/YUV               | MCLK 错、format 错、Lane 错 | Sensor reset、pipeline restart | 长时间采集           | CSI error、帧计数、图像          |
+| MIPI DSI      | 初始化屏、纯色图           | Timing、pixel format、command/video | Sleep Out 缺失、背光误判    | Panel reset、重新初始化        | 高低温闪屏           | DRM log、测试图、波形            |
+| FPD-Link/GMSL | Deserializer ID、Link Lock | I2C alias、VC、PoC、线束            | lock drop、远端 I2C 不通    | 端口重连、降速                 | 多摄满带宽、高温振动 | SerDes dump、PoC 波形、CSI error |
+| HDMI          | 5V、HPD、EDID              | 分辨率、色深、TMDS/FRL              | EDID 读不到、高分闪屏       | 热插拔、fallback mode          | 多显示器兼容         | EDID、drm log、示波器            |
+| eDP           | AUX、DPCD、Link Training   | Lane、link rate、panel timing       | AUX 不通、training fail     | 降速、panel reset              | 长稳闪屏             | DPCD、training log、背光波形     |
 
 ## 电源管理矩阵
 
-| 协议 | Bring-up | Parameter | Negative | Recovery | Stress | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| SMBus | 地址和标准事务 | Read Word、Block Read、PEC | PEC 错、超时、Alert 未清 | 总线恢复、Alert 处理 | 多设备轮询 | SMBus trace、PEC 计算 |
-| PMBus | STATUS_WORD、READ_VOUT/IOUT | PAGE、Linear11/16、Direct | PAGE 错、写保护、状态锁存 | CLEAR_FAULTS、重新读状态 | 多 rail 遥测长稳 | raw word、换算值、外部仪表 |
+| 协议  | Bring-up                    | Parameter                  | Negative                  | Recovery                 | Stress           | Evidence                   |
+| ----- | --------------------------- | -------------------------- | ------------------------- | ------------------------ | ---------------- | -------------------------- |
+| SMBus | 地址和标准事务              | Read Word、Block Read、PEC | PEC 错、超时、Alert 未清  | 总线恢复、Alert 处理     | 多设备轮询       | SMBus trace、PEC 计算      |
+| PMBus | STATUS_WORD、READ_VOUT/IOUT | PAGE、Linear11/16、Direct  | PAGE 错、写保护、状态锁存 | CLEAR_FAULTS、重新读状态 | 多 rail 遥测长稳 | raw word、换算值、外部仪表 |
 
 ## 异常注入建议
 
 异常注入要可控、可复现、可恢复。
 
-| 注入类型 | 方法 | 目标 |
-| --- | --- | --- |
-| 断线 | 拔线、继电器、交换机端口 down | 验证断线检测和恢复 |
-| 降压 | 可编程电源降低输入 | 验证电源边界和故障记录 |
-| 错帧 | 工具发送 CRC/长度/序号错误 | 验证协议错误路径 |
-| 高负载 | 背景流、总线负载、满帧发送 | 验证尾延迟和缓冲区 |
-| 温度 | 高低温箱或热风枪 | 验证边界和漂移 |
-| 重启 | MCU/SoC/交换机/PLC 重启 | 验证重连和状态恢复 |
-| 断电 | 下载或写 Flash 中断电 | 验证回滚和防变砖 |
+| 注入类型 | 方法                          | 目标                   |
+| -------- | ----------------------------- | ---------------------- |
+| 断线     | 拔线、继电器、交换机端口 down | 验证断线检测和恢复     |
+| 降压     | 可编程电源降低输入            | 验证电源边界和故障记录 |
+| 错帧     | 工具发送 CRC/长度/序号错误    | 验证协议错误路径       |
+| 高负载   | 背景流、总线负载、满帧发送    | 验证尾延迟和缓冲区     |
+| 温度     | 高低温箱或热风枪              | 验证边界和漂移         |
+| 重启     | MCU/SoC/交换机/PLC 重启       | 验证重连和状态恢复     |
+| 断电     | 下载或写 Flash 中断电         | 验证回滚和防变砖       |
 
 ## 发布前最小门禁
 

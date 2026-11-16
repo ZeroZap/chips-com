@@ -65,6 +65,7 @@ verify_data()
 ```
 
 注意：
+
 ```text
 DMA 完成不代表 Flash 内部写完成
 必须轮询 WIP
@@ -159,6 +160,102 @@ TCP 解析器必须处理：
 超时
 断线重连
 ```
+
+## UART 字节流驱动
+
+状态：
+
+```text
+UNINIT -> READY -> RX/TX -> ERROR -> RECOVER
+```
+
+关键点：
+
+- RX 用环形缓冲 + IDLE/DMA。
+- TX 用队列，避免阻塞。
+- 错误统计：溢出、帧错、校验错、断线。
+- 重开串口前先停止 DMA/中断。
+- 协议分帧与字节流驱动分层。
+
+## BLE GATT 驱动
+
+状态：
+
+```text
+IDLE -> ADVERTISING -> CONNECTED -> DISCOVERING -> READY -> DISCONNECTED
+```
+
+关键点：
+
+- 连接参数与业务周期匹配。
+- GATT 读写/通知使用异步回调。
+- MTU 协商后再发长包。
+- 断连原因和 supervision timeout 计数。
+- 重连退避，避免频繁广播。
+
+## LoRaWAN 终端驱动
+
+状态：
+
+```text
+JOIN -> JOINED -> TX -> RX1/RX2 -> IDLE
+```
+
+关键点：
+
+- Join/上行重试有退避和占空比约束。
+- 保存 DevEUI/JoinEUI/会话密钥。
+- ADR/DR/SF 随链路质量调整。
+- 下行窗口和收发切换时序。
+- 统计 Join 失败、TX 失败、ACK 丢失。
+
+## UDS 诊断驱动
+
+状态：
+
+```text
+DEFAULT -> EXTENDED -> PROGRAMMING -> READY
+```
+
+关键点：
+
+- 会话、安全访问、P2/P2* 超时。
+- 请求/响应 ID 和 ISO-TP 流控。
+- NRC 分类处理，不要一律重试。
+- 刷写流程有进度、校验和回退。
+- 记录 DID、DTC 和失败阶段。
+
+## IEC 60870-5-104 驱动
+
+状态：
+
+```text
+TCP_CONNECT -> STARTDT -> READY -> TRANSFER -> STOP/CLOSED
+```
+
+关键点：
+
+- K/W 窗口和 t1/t2/t3。
+- 发送/接收序号和未确认队列。
+- 总召、遥控、对时的 ASDU/COT 处理。
+- 断链重连和总召恢复。
+- 点表规模和数据质量位。
+
+## EtherCAT 主站驱动
+
+状态：
+
+```text
+INIT -> PREOP -> SAFEOP -> OP
+```
+
+关键点：
+
+- 从站扫描、ESI/EEPROM 和 PDO 映射。
+- AL Status/AL Status Code 监控。
+- WKC 和 DC 同步。
+- 周期帧和主站任务优先级。
+- 从站掉线、热插拔和状态恢复。
 
 ## 通用错误统计
 

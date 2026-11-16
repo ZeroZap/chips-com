@@ -32,6 +32,7 @@ tags:
 - [basic/gpio.md](basic/gpio.md)
 - [basic/pwm.md](basic/pwm.md)
 - [basic/adc-dac.md](basic/adc-dac.md)
+- [basic/comparator.md](basic/comparator.md)
 - [basic/uart-practical.md](basic/uart-practical.md)
 - [basic/uart-deep-dive.md](basic/uart-deep-dive.md)
 - [basic/i2c-practical.md](basic/i2c-practical.md)
@@ -225,4 +226,4 @@ tags:
 
 ## 知识库里程碑
 
-- **v3.x 沉淀期**（2026-07-29 起）：31 个 5 分主题（19 个核心 L4 + 12 个行业闭环）+ 312 篇知识库文档（含索引与模板）/ 约 3.2 MB。暂停主动扩主题，专注实战案例和横向工作。详见 [guides/learning/LEARNING_PLAN.md](guides/learning/LEARNING_PLAN.md) 阶段 6。
+- **v3.x 沉淀期**（2026-07-29 起）：31 个 5 分主题（19 个核心 L4 + 12 个行业闭环）+ 313 篇知识库文档（含索引与模板）/ 约 3.3 MB。暂停主动扩主题，专注实战案例和横向工作。详见 [guides/learning/LEARNING_PLAN.md](guides/learning/LEARNING_PLAN.md) 阶段 6。

@@ -32,7 +32,7 @@ aliases:
 | 主题                 | 入口笔记                                                                                                                                                                               |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 总览                 | [[basic/README\|基础接口总览]]                                                                                                                                                         |
-| GPIO / PWM / ADC-DAC | [[basic/gpio\|GPIO]] · [[basic/pwm\|PWM]] · [[basic/adc-dac\|ADC/DAC]]                                                                                                                 |
+| GPIO / PWM / ADC-DAC | [[basic/gpio\|GPIO]] · [[basic/pwm\|PWM]] · [[basic/adc-dac\|ADC/DAC]] · [[basic/comparator\|Comparator]]                                                                              |
 | UART                 | [[basic/uart-index\|UART 导航]] · [[basic/uart-practical\|实战]] · [[basic/uart-deep-dive\|深入]] · [[basic/uart-failure-cases\|故障案例]]                                             |
 | UART 进阶            | [[basic/uart-rs485-and-flow-control\|RS485 与流控]] · [[basic/uart-dma-circular-and-rtos\|DMA 环形缓冲]]                                                                               |
 | I2C                  | [[basic/i2c-index\|I2C 导航]] · [[basic/i2c-practical\|实战]] · [[basic/i2c-deep-dive\|深入]] · [[basic/i2c-failure-cases\|故障案例]]                                                  |

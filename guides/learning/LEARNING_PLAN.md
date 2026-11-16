@@ -9,9 +9,11 @@ tags:
 
 ## 当前阶段
 
-**v3.x 沉淀期**（2026-07-29 起）。31 个 5 分主题（19 个核心 L4 + 12 个行业闭环），知识库文档 312 篇（含索引与模板）/ 约 3.2 MB，整体深度 90/100。核心 L4 包括 I2C / SPI / UART / CAN / CANopen / J1939 / OBD-II / WWH-OBD / UDS / USB / BLE / ZigBee / Matter / Thread / LoRa / LTE-IoT / Satellite-IoT / PLB / Rescue-Comms。
+**v3.x 沉淀期**（2026-07-29 起）。31 个 5 分主题（19 个核心 L4 + 12 个行业闭环），知识库文档 313 篇（含索引与模板）/ 约 3.3 MB，整体深度 90/100。核心 L4 包括 I2C / SPI / UART / CAN / CANopen / J1939 / OBD-II / WWH-OBD / UDS / USB / BLE / ZigBee / Matter / Thread / LoRa / LTE-IoT / Satellite-IoT / PLB / Rescue-Comms。
 
 暂停主动扩展主题，等实战触发。详见 `## 阶段 6：实战沉淀期`。
+
+P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`guides/learning` 已补汽车诊断、电力 RTU、无线 IoT、工业以太网与 TSN 的对比、选型、场景、设备和参数表。
 
 ## 目标
 
@@ -280,7 +282,7 @@ Add real-world failure cases and measurement examples
 
 **为什么封口**：
 
-- 31 个 5 分主题 + 312 篇 / 约 3.2 MB 的体量已经够扎实一段时间，再主动加容易"知识库胖但实战没跟上"。
+- 31 个 5 分主题 + 313 篇 / 约 3.3 MB 的体量已经够扎实一段时间，再主动加容易"知识库胖但实战没跟上"。
 - 之前 1 周连续做了 3 个主题（CAN / J1939 / USB）的高强度扩展，需要沉淀。
 - **经验法则**：知识库价值 = 闭环主题数 × 实战案例密度。3 个 L4 主题各配 5-10 个真实产线案例 > 10 个 L2 主题只有简介。
 

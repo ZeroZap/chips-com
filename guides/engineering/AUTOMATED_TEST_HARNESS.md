@@ -38,13 +38,13 @@ Device Under Test
 
 职责：
 
-| 层级 | 职责 |
-| --- | --- |
-| Test Runner | 调度用例、超时、重试、结果汇总 |
-| Test Case Model | 描述前置条件、步骤、期望、证据 |
-| Protocol Adapter | 封装 UART/I2C/CAN/USB/Ethernet 等操作 |
+| 层级               | 职责                                           |
+| ------------------ | ---------------------------------------------- |
+| Test Runner        | 调度用例、超时、重试、结果汇总                 |
+| Test Case Model    | 描述前置条件、步骤、期望、证据                 |
+| Protocol Adapter   | 封装 UART/I2C/CAN/USB/Ethernet 等操作          |
 | Instrument Adapter | 控制示波器、逻辑分析仪、电源、继电器、抓包工具 |
-| DUT | 被测板卡、模块、传感器、PLC、ECU 或网关 |
+| DUT                | 被测板卡、模块、传感器、PLC、ECU 或网关        |
 
 测试脚本不应直接散写底层命令。协议和仪器都应通过 adapter 暴露稳定接口。
 
@@ -77,19 +77,19 @@ retry: 2
 
 关键字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| id | 稳定唯一编号 |
-| title | 简短可读标题 |
-| protocol | 协议或接口 |
-| level | bringup / parameter / negative / recovery / stress / production |
-| topology | 被测连接关系 |
-| precondition | 电源、复位、固件、线缆和工具状态 |
-| steps | 可执行动作 |
-| expect | 可机器判定的期望 |
-| evidence | 必须采集的证据 |
-| timeout_ms | 超时边界 |
-| retry | 允许重试次数 |
+| 字段         | 说明                                                            |
+| ------------ | --------------------------------------------------------------- |
+| id           | 稳定唯一编号                                                    |
+| title        | 简短可读标题                                                    |
+| protocol     | 协议或接口                                                      |
+| level        | bringup / parameter / negative / recovery / stress / production |
+| topology     | 被测连接关系                                                    |
+| precondition | 电源、复位、固件、线缆和工具状态                                |
+| steps        | 可执行动作                                                      |
+| expect       | 可机器判定的期望                                                |
+| evidence     | 必须采集的证据                                                  |
+| timeout_ms   | 超时边界                                                        |
+| retry        | 允许重试次数                                                    |
 
 ## 结果日志 Schema
 
@@ -98,25 +98,36 @@ retry: 2
 示例：
 
 ```json
-{"time":"2026-06-21T10:15:30Z","test_id":"can_busoff_003","result":"fail","layer":"physical","error":"bus_off","dut":"board-a-001","hw":"revB","fw":"1.2.3","tool":"can-analyzer-2.1","evidence":["trace/can_busoff_003.asc","logs/board-a-001.txt"]}
+{
+  "time": "2026-06-21T10:15:30Z",
+  "test_id": "can_busoff_003",
+  "result": "fail",
+  "layer": "physical",
+  "error": "bus_off",
+  "dut": "board-a-001",
+  "hw": "revB",
+  "fw": "1.2.3",
+  "tool": "can-analyzer-2.1",
+  "evidence": ["trace/can_busoff_003.asc", "logs/board-a-001.txt"]
+}
 ```
 
 推荐字段：
 
-| 字段 | 说明 |
-| --- | --- |
-| time | UTC 时间 |
-| test_id | 用例编号 |
-| result | pass / fail / skip / blocked |
-| layer | physical / link / transport / protocol / application / tool |
-| error | 归一化错误码 |
-| dut | 被测设备序列号 |
-| hw | 硬件版本 |
-| fw | 固件版本 |
-| tool | 工具和治具版本 |
-| duration_ms | 用例耗时 |
-| evidence | 原始证据路径 |
-| metrics | 关键数值，如延迟、错误计数、电压 |
+| 字段        | 说明                                                        |
+| ----------- | ----------------------------------------------------------- |
+| time        | UTC 时间                                                    |
+| test_id     | 用例编号                                                    |
+| result      | pass / fail / skip / blocked                                |
+| layer       | physical / link / transport / protocol / application / tool |
+| error       | 归一化错误码                                                |
+| dut         | 被测设备序列号                                              |
+| hw          | 硬件版本                                                    |
+| fw          | 固件版本                                                    |
+| tool        | 工具和治具版本                                              |
+| duration_ms | 用例耗时                                                    |
+| evidence    | 原始证据路径                                                |
+| metrics     | 关键数值，如延迟、错误计数、电压                            |
 
 ## 错误分层
 
@@ -124,14 +135,14 @@ retry: 2
 
 推荐层级：
 
-| 层级 | 示例 |
-| --- | --- |
-| physical | 电源低、线缆断、终端错误、信号幅度异常 |
-| link | ACK Error、USB 枚举失败、PHY Link down |
-| transport | ISO-TP CF 超时、TCP 断连、USB transfer STALL |
-| protocol | UDS NRC、Modbus exception、PMBus CML fault |
+| 层级        | 示例                                         |
+| ----------- | -------------------------------------------- |
+| physical    | 电源低、线缆断、终端错误、信号幅度异常       |
+| link        | ACK Error、USB 枚举失败、PHY Link down       |
+| transport   | ISO-TP CF 超时、TCP 断连、USB transfer STALL |
+| protocol    | UDS NRC、Modbus exception、PMBus CML fault   |
 | application | DID 不存在、Flash 校验失败、Sensor ID 不匹配 |
-| tool | 抓包工具未启动、串口被占用、治具继电器失败 |
+| tool        | 抓包工具未启动、串口被占用、治具继电器失败   |
 
 分层失败的价值：
 
@@ -307,14 +318,14 @@ capture.stats()
 
 常见注入：
 
-| 注入 | 治具方法 | 验证目标 |
-| --- | --- | --- |
-| 断电 | 可编程电源输出关闭 | 回滚、防变砖、状态恢复 |
-| 掉线 | 继电器断开线缆 | 断线检测和重连 |
-| 降压 | 电源阶跃降低 | 低电压保护和日志 |
-| 高负载 | 背景流或满帧发送 | 缓冲区和尾延迟 |
-| 错帧 | 协议工具发送非法帧 | 错误路径和 NRC/异常码 |
-| 设备忙 | 插入延迟或阻塞响应 | 超时、重试、pending |
+| 注入   | 治具方法           | 验证目标               |
+| ------ | ------------------ | ---------------------- |
+| 断电   | 可编程电源输出关闭 | 回滚、防变砖、状态恢复 |
+| 掉线   | 继电器断开线缆     | 断线检测和重连         |
+| 降压   | 电源阶跃降低       | 低电压保护和日志       |
+| 高负载 | 背景流或满帧发送   | 缓冲区和尾延迟         |
+| 错帧   | 协议工具发送非法帧 | 错误路径和 NRC/异常码  |
+| 设备忙 | 插入延迟或阻塞响应 | 超时、重试、pending    |
 
 异常注入后必须验证恢复，而不是只验证能检测错误。
 
@@ -350,15 +361,99 @@ last_error
 
 CI 中适合分层执行：
 
-| 阶段 | 内容 | 触发 |
-| --- | --- | --- |
-| Static | 配置、脚本、协议表、镜像 header 检查 | 每次提交 |
-| Simulator | 协议状态机和解析器单元测试 | 每次提交 |
-| HIL smoke | 最小通信和枚举 | 每日或关键提交 |
-| HIL regression | 回归矩阵核心用例 | 夜间 |
-| HIL stress | 长稳、异常注入、高低温 | 发布前 |
+| 阶段           | 内容                                 | 触发           |
+| -------------- | ------------------------------------ | -------------- |
+| Static         | 配置、脚本、协议表、镜像 header 检查 | 每次提交       |
+| Simulator      | 协议状态机和解析器单元测试           | 每次提交       |
+| HIL smoke      | 最小通信和枚举                       | 每日或关键提交 |
+| HIL regression | 回归矩阵核心用例                     | 夜间           |
+| HIL stress     | 长稳、异常注入、高低温               | 发布前         |
 
 CI 失败输出必须包含 artifact 链接，不能只显示红绿状态。
+
+### CI 配置示例
+
+以下为示例，按实际仓库和 HIL 环境调整：
+
+```yaml
+name: comm-regression
+
+on:
+  pull_request:
+  schedule:
+    - cron: "0 2 * * *"
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check protocol tables
+        run: python scripts/check_tables.py
+      - name: Check frontmatter
+        run: python scripts/check_frontmatter.py
+
+  simulator:
+    runs-on: ubuntu-latest
+    needs: static
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run parser tests
+        run: pytest -q tests/sim
+
+  hil-smoke:
+    runs-on: [self-hosted, hil]
+    needs: static
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run smoke
+        run: pytest -q tests/hil/smoke --junitxml=reports/smoke.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hil-smoke-artifacts
+          path: reports/artifacts/
+
+  hil-regression:
+    runs-on: [self-hosted, hil]
+    needs: hil-smoke
+    if: github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run regression
+        run: pytest -q tests/hil/regression --junitxml=reports/regression.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hil-regression-artifacts
+          path: reports/artifacts/
+```
+
+### 结果归档结构
+
+```text
+reports/
+├── junit/
+│   ├── smoke.xml
+│   └── regression.xml
+├── artifacts/
+│   ├── <case-id>/
+│   │   ├── waveform.png
+│   │   ├── capture.pcap
+│   │   ├── uart.log
+│   │   └── register_dump.txt
+│   └── ...
+└── summary.json
+```
+
+`summary.json` 至少包含：
+
+```text
+build_id / commit / device_sn / firmware / fixture
+case_id / layer / result / duration
+first_failure / error_code / artifact_path
+retry_count / owner
+```
 
 ## 量产集成
 
