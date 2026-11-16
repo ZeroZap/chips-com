@@ -1,0 +1,760 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# Chips Communication · 知识库导航\n\n从基础接口到总线、无线、车载诊断与工程质量。点击卡片打开笔记；绿 / 蓝 / 紫三色对应三层知识域。",
+      "x": -1000,
+      "y": -720,
+      "width": 1400,
+      "height": 110,
+      "color": "3"
+    },
+    {
+      "id": "home",
+      "type": "file",
+      "file": "Home.md",
+      "x": -40,
+      "y": -560,
+      "width": 460,
+      "height": 300,
+      "color": "2"
+    },
+    {
+      "id": "g-basic",
+      "type": "group",
+      "label": "① 基础接口 · basic/",
+      "x": -1000,
+      "y": -220,
+      "width": 620,
+      "height": 820,
+      "color": "4"
+    },
+    {
+      "id": "basic-readme",
+      "type": "file",
+      "file": "basic/README.md",
+      "x": -970,
+      "y": -160,
+      "width": 560,
+      "height": 120,
+      "color": "4"
+    },
+    {
+      "id": "basic-uart",
+      "type": "file",
+      "file": "basic/uart-index.md",
+      "x": -970,
+      "y": -10,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "basic-i2c",
+      "type": "file",
+      "file": "basic/i2c-index.md",
+      "x": -680,
+      "y": -10,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "basic-spi",
+      "type": "file",
+      "file": "basic/spi-index.md",
+      "x": -970,
+      "y": 140,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "basic-can",
+      "type": "file",
+      "file": "basic/can-index.md",
+      "x": -680,
+      "y": 140,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "basic-phy",
+      "type": "file",
+      "file": "basic/rs232-rs485.md",
+      "x": -970,
+      "y": 290,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "basic-psm",
+      "type": "file",
+      "file": "basic/stream-protocol-parser-psm.md",
+      "x": -680,
+      "y": 290,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "basic-gpio",
+      "type": "file",
+      "file": "basic/gpio.md",
+      "x": -970,
+      "y": 440,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "basic-qspi",
+      "type": "file",
+      "file": "basic/qspi-ospi.md",
+      "x": -680,
+      "y": 440,
+      "width": 260,
+      "height": 130,
+      "color": "4"
+    },
+    {
+      "id": "g-bus",
+      "type": "group",
+      "label": "② 总线协议 · bus/",
+      "x": -340,
+      "y": -220,
+      "width": 620,
+      "height": 820,
+      "color": "5"
+    },
+    {
+      "id": "bus-readme",
+      "type": "file",
+      "file": "bus/README.md",
+      "x": -310,
+      "y": -160,
+      "width": 560,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "bus-can-family",
+      "type": "file",
+      "file": "bus/can-protocol-family.md",
+      "x": -310,
+      "y": -10,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "bus-rtu",
+      "type": "file",
+      "file": "bus/rtu-protocols.md",
+      "x": -20,
+      "y": -10,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "bus-industrial-eth",
+      "type": "file",
+      "file": "bus/industrial-ethernet-comparison.md",
+      "x": -310,
+      "y": 140,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "bus-display",
+      "type": "file",
+      "file": "bus/display-interfaces.md",
+      "x": -20,
+      "y": 140,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "bus-usb",
+      "type": "file",
+      "file": "bus/usb-index.md",
+      "x": -310,
+      "y": 290,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "bus-opcua",
+      "type": "file",
+      "file": "bus/opcua.md",
+      "x": -20,
+      "y": 290,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "bus-mqtt",
+      "type": "file",
+      "file": "bus/mqtt.md",
+      "x": -310,
+      "y": 440,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "bus-uds",
+      "type": "file",
+      "file": "bus/uds.md",
+      "x": -20,
+      "y": 440,
+      "width": 260,
+      "height": 130,
+      "color": "5"
+    },
+    {
+      "id": "g-wireless",
+      "type": "group",
+      "label": "③ 无线与 IoT",
+      "x": 320,
+      "y": -220,
+      "width": 620,
+      "height": 820,
+      "color": "6"
+    },
+    {
+      "id": "w-nrf2401",
+      "type": "file",
+      "file": "wireless-2g4/nrf2401.md",
+      "x": 350,
+      "y": -160,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-ble",
+      "type": "file",
+      "file": "bus/ble-index.md",
+      "x": 640,
+      "y": -160,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-zigbee",
+      "type": "file",
+      "file": "bus/zigbee-index.md",
+      "x": 350,
+      "y": -10,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-lora",
+      "type": "file",
+      "file": "bus/lora-index.md",
+      "x": 640,
+      "y": -10,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-matter",
+      "type": "file",
+      "file": "bus/matter-index.md",
+      "x": 350,
+      "y": 140,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-thread",
+      "type": "file",
+      "file": "bus/thread-index.md",
+      "x": 640,
+      "y": 140,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-lte",
+      "type": "file",
+      "file": "bus/lte-iot-index.md",
+      "x": 350,
+      "y": 290,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-satellite",
+      "type": "file",
+      "file": "bus/satellite-iot-index.md",
+      "x": 640,
+      "y": 290,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-plb",
+      "type": "file",
+      "file": "bus/plb-index.md",
+      "x": 350,
+      "y": 440,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "w-rescue",
+      "type": "file",
+      "file": "bus/rescue-comms-index.md",
+      "x": 640,
+      "y": 440,
+      "width": 260,
+      "height": 130,
+      "color": "6"
+    },
+    {
+      "id": "g-learn",
+      "type": "group",
+      "label": "④ 学习与选型",
+      "x": -1000,
+      "y": 780,
+      "width": 620,
+      "height": 560,
+      "color": "3"
+    },
+    {
+      "id": "learn-plan",
+      "type": "file",
+      "file": "LEARNING_PLAN.md",
+      "x": -970,
+      "y": 840,
+      "width": 260,
+      "height": 130,
+      "color": "3"
+    },
+    {
+      "id": "learn-paths",
+      "type": "file",
+      "file": "READING_PATHS.md",
+      "x": -680,
+      "y": 840,
+      "width": 260,
+      "height": 130,
+      "color": "3"
+    },
+    {
+      "id": "learn-selection",
+      "type": "file",
+      "file": "PROTOCOL_SELECTION.md",
+      "x": -970,
+      "y": 990,
+      "width": 260,
+      "height": 130,
+      "color": "3"
+    },
+    {
+      "id": "learn-comparison",
+      "type": "file",
+      "file": "PROTOCOL_COMPARISON.md",
+      "x": -680,
+      "y": 990,
+      "width": 260,
+      "height": 130,
+      "color": "3"
+    },
+    {
+      "id": "learn-scenarios",
+      "type": "file",
+      "file": "APPLICATION_SCENARIOS.md",
+      "x": -970,
+      "y": 1140,
+      "width": 260,
+      "height": 130,
+      "color": "3"
+    },
+    {
+      "id": "learn-devices",
+      "type": "file",
+      "file": "DEVICE_EXAMPLES.md",
+      "x": -680,
+      "y": 1140,
+      "width": 260,
+      "height": 130,
+      "color": "3"
+    },
+    {
+      "id": "g-debug",
+      "type": "group",
+      "label": "⑤ 排障与实战",
+      "x": -340,
+      "y": 780,
+      "width": 620,
+      "height": 560,
+      "color": "1"
+    },
+    {
+      "id": "debug-playbook",
+      "type": "file",
+      "file": "DEBUG_PLAYBOOK.md",
+      "x": -310,
+      "y": 840,
+      "width": 260,
+      "height": 130,
+      "color": "1"
+    },
+    {
+      "id": "debug-quickref",
+      "type": "file",
+      "file": "TROUBLESHOOTING_QUICKREF.md",
+      "x": -20,
+      "y": 840,
+      "width": 260,
+      "height": 130,
+      "color": "1"
+    },
+    {
+      "id": "debug-failure",
+      "type": "file",
+      "file": "FAILURE_CASES.md",
+      "x": -310,
+      "y": 990,
+      "width": 260,
+      "height": 130,
+      "color": "1"
+    },
+    {
+      "id": "debug-waveform",
+      "type": "file",
+      "file": "WAVEFORM_GUIDE.md",
+      "x": -20,
+      "y": 990,
+      "width": 260,
+      "height": 130,
+      "color": "1"
+    },
+    {
+      "id": "debug-measure",
+      "type": "file",
+      "file": "MEASUREMENT_EXAMPLES.md",
+      "x": -310,
+      "y": 1140,
+      "width": 260,
+      "height": 130,
+      "color": "1"
+    },
+    {
+      "id": "debug-field",
+      "type": "file",
+      "file": "FIELD_DIAGNOSTIC_RUNBOOK.md",
+      "x": -20,
+      "y": 1140,
+      "width": 260,
+      "height": 130,
+      "color": "1"
+    },
+    {
+      "id": "g-eng",
+      "type": "group",
+      "label": "⑥ 工程与质量",
+      "x": 320,
+      "y": 780,
+      "width": 620,
+      "height": 560,
+      "color": "2"
+    },
+    {
+      "id": "eng-driver",
+      "type": "file",
+      "file": "DRIVER_PATTERNS.md",
+      "x": 350,
+      "y": 840,
+      "width": 260,
+      "height": 130,
+      "color": "2"
+    },
+    {
+      "id": "eng-production",
+      "type": "file",
+      "file": "PRODUCTION_TEST.md",
+      "x": 640,
+      "y": 840,
+      "width": 260,
+      "height": 130,
+      "color": "2"
+    },
+    {
+      "id": "eng-regression",
+      "type": "file",
+      "file": "REGRESSION_TEST_MATRIX.md",
+      "x": 350,
+      "y": 990,
+      "width": 260,
+      "height": 130,
+      "color": "2"
+    },
+    {
+      "id": "eng-harness",
+      "type": "file",
+      "file": "AUTOMATED_TEST_HARNESS.md",
+      "x": 640,
+      "y": 990,
+      "width": 260,
+      "height": 130,
+      "color": "2"
+    },
+    {
+      "id": "eng-reliability",
+      "type": "file",
+      "file": "RELIABILITY_GUIDE.md",
+      "x": 350,
+      "y": 1140,
+      "width": 260,
+      "height": 130,
+      "color": "2"
+    },
+    {
+      "id": "eng-quality",
+      "type": "file",
+      "file": "COMMUNICATION_QUALITY_GATE.md",
+      "x": 640,
+      "y": 1140,
+      "width": 260,
+      "height": 130,
+      "color": "2"
+    },
+    {
+      "id": "g-ref",
+      "type": "group",
+      "label": "⑦ 索引与参考",
+      "x": -1000,
+      "y": 1420,
+      "width": 1880,
+      "height": 540,
+      "color": "5"
+    },
+    {
+      "id": "ref-index",
+      "type": "file",
+      "file": "INDEX.md",
+      "x": -970,
+      "y": 1480,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-coverage",
+      "type": "file",
+      "file": "COVERAGE.md",
+      "x": -680,
+      "y": 1480,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-topic",
+      "type": "file",
+      "file": "TOPIC_MATRIX.md",
+      "x": -390,
+      "y": 1480,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-layered",
+      "type": "file",
+      "file": "LAYERED_MAP.md",
+      "x": -100,
+      "y": 1480,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-glossary",
+      "type": "file",
+      "file": "GLOSSARY.md",
+      "x": 190,
+      "y": 1480,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-acronyms",
+      "type": "file",
+      "file": "ACRONYMS.md",
+      "x": 480,
+      "y": 1480,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-tools",
+      "type": "file",
+      "file": "TOOLS.md",
+      "x": -970,
+      "y": 1630,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-templates",
+      "type": "file",
+      "file": "DOC_TEMPLATES.md",
+      "x": -680,
+      "y": 1630,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-contributing",
+      "type": "file",
+      "file": "CONTRIBUTING.md",
+      "x": -390,
+      "y": 1630,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-review",
+      "type": "file",
+      "file": "REVIEW_CHECKLIST.md",
+      "x": -100,
+      "y": 1630,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-labs",
+      "type": "file",
+      "file": "LABS.md",
+      "x": 190,
+      "y": 1630,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-experiment",
+      "type": "file",
+      "file": "EXPERIMENT_TEMPLATE.md",
+      "x": 480,
+      "y": 1630,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-params",
+      "type": "file",
+      "file": "PARAMETER_CHEATSHEET.md",
+      "x": -970,
+      "y": 1780,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-schematic",
+      "type": "file",
+      "file": "SCHEMATIC_CHECKLISTS.md",
+      "x": -680,
+      "y": 1780,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-observability",
+      "type": "file",
+      "file": "COMMUNICATION_OBSERVABILITY.md",
+      "x": -390,
+      "y": 1780,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-traceability",
+      "type": "file",
+      "file": "COMMUNICATION_TRACEABILITY.md",
+      "x": -100,
+      "y": 1780,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-security",
+      "type": "file",
+      "file": "COMMUNICATION_SECURITY_SAFETY.md",
+      "x": 190,
+      "y": 1780,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "ref-readme",
+      "type": "file",
+      "file": "README.md",
+      "x": 480,
+      "y": 1780,
+      "width": 260,
+      "height": 120,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-home-basic",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "basic-readme",
+      "toSide": "top",
+      "color": "4"
+    },
+    {
+      "id": "e-home-bus",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "bus-readme",
+      "toSide": "top",
+      "color": "5"
+    },
+    {
+      "id": "e-home-wireless",
+      "fromNode": "home",
+      "fromSide": "bottom",
+      "toNode": "w-nrf2401",
+      "toSide": "top",
+      "color": "6"
+    }
+  ]
+}
