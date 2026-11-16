@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/dnp3
+  - topic/power-rtu
+---
+
 # DNP3 主流厂商 / 产品对标
 
 ## 定位

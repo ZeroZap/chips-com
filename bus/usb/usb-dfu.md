@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/usb-dfu
+  - topic/usb
+---
+
 # USB DFU
 
 ## 定位

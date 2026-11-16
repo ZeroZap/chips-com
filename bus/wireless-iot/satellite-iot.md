@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/satellite-iot
+  - topic/wireless-iot
+---
+
 # Satellite-IoT（卫星物联网）
 
 ## 定位

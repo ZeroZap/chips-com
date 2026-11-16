@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/smbus-pmbus
+  - topic/onboard
+---
+
 # SMBus / PMBus Practical Guide
 
 ## 目标

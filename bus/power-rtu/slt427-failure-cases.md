@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/slt427
+  - topic/power-rtu
+---
+
 # SL/T 427 产线死机案例库
 
 ## 目标

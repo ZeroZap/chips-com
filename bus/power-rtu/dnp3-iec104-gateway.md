@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/gateway-design
+  - protocol/dnp3
+  - topic/power-rtu
+---
+
 # DNP3 ↔ IEC 104 网关
 
 ## 定位

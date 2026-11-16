@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/usb
+  - topic/usb
+---
+
 # USB
 
 ## 定位

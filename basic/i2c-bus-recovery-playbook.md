@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/playbook
+  - protocol/i2c
+---
+
 # I2C Bus Recovery Playbook
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/slt427
+  - topic/power-rtu
+---
+
 # SL/T 427 Deep Dive
 
 ## 目标

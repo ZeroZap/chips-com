@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/observability
+  - topic/engineering
+---
+
 # Communication Observability
 
 ## 目标

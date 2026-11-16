@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/i3c
+  - topic/onboard
+---
+
 # I3C
 
 ## 定位

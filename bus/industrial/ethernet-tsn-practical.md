@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/ethernet-tsn
+  - topic/industrial
+---
+
 # Ethernet TSN Practical Guide
 
 ## 目标

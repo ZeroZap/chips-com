@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/obd2
+  - topic/automotive
+---
+
 # OBD-II 产线与售后故障案例库
 
 ## 目标

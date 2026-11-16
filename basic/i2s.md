@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/i2s
+---
+
 # I2S
 
 ## 定位

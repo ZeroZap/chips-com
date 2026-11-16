@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/deep-dive
+  - protocol/i2c
+---
+
 # I2C Deep Dive
 
 ## 目标

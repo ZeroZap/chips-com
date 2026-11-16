@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/obd2
+  - topic/automotive
+---
+
 # OBD-II Deep Dive
 
 ## 目标

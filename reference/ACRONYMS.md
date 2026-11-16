@@ -1,3 +1,9 @@
+---
+tags:
+  - layer/reference
+  - type/reference
+---
+
 # Acronyms
 
 > 按领域分组整理。含有多种含义的缩写会在“含义”列标注上下文。
@@ -335,3 +341,11 @@
 | IEEE 802.1Q     | Bridges and Bridged Networks                                    | VLAN、QoS、TSN         |
 | IEEE 802.3      | Ethernet                                                        | 以太网                 |
 | IEEE 802.15.4   | Low-Rate Wireless Networks                                      | ZigBee、Thread 等底层  |
+
+## 关联文档
+
+- [GLOSSARY](GLOSSARY.md)：协议机制与工程术语。
+- [STANDARDS](STANDARDS.md)：标准编号、范围与对应文档。
+- [TOOLS](TOOLS.md)：测量、抓包和自动化工具。
+- [DOC_TEMPLATES](DOC_TEMPLATES.md)：文档结构模板。
+- [知识库索引](../INDEX.md)：按协议查找正文。

@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/i2c
+---
+
 # I2C Linux fault injection 与 i2c-stub 实操
 
 ## 目标

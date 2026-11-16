@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/slt427
+  - topic/power-rtu
+---
+
 # SL/T 427 主流厂商 / 产品对标
 
 ## 定位

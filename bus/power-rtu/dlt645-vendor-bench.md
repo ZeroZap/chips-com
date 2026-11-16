@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/dlt645
+  - topic/power-rtu
+---
+
 # DL/T 645 主流厂商 / 产品对标
 
 ## 定位

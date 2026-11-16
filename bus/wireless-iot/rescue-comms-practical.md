@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/rescue-comms
+  - topic/wireless-iot
+---
+
 # Rescue Communications 调试速查
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/plb
+  - topic/wireless-iot
+---
+
 # PLB Deep Dive
 
 ## 目标

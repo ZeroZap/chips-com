@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/szy206
+  - topic/power-rtu
+---
+
 # SZY 206 产线死机案例库
 
 ## 目标

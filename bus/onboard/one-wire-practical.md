@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/one-wire
+  - topic/onboard
+---
+
 # 1-Wire Practical Guide
 
 ## 目标

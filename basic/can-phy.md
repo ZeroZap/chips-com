@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/can
+---
+
 # CAN PHY
 
 ## 定位

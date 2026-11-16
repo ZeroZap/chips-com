@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/obd2
+  - topic/automotive
+---
+
 # OBD-II Practical Guide
 
 ## 目标

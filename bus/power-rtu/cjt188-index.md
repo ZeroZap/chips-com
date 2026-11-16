@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/cjt188
+  - topic/power-rtu
+---
+
 # CJ/T 188 主题总览
 
 ## 目标

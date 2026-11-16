@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/mipi-csi-dsi
+  - topic/display
+---
+
 # MIPI CSI/DSI Deep Dive
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/rtu
+  - topic/power-rtu
+---
+
 # RTU 协议全集
 
 ## 定位

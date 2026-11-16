@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/slt427
+  - topic/power-rtu
+---
+
 # SL/T 427 主题总览
 
 ## 目标

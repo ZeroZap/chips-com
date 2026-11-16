@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/modbus
+  - topic/industrial
+---
+
 # Modbus
 
 ## 定位

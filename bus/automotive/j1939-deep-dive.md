@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/j1939
+  - topic/automotive
+---
+
 # J1939 Deep Dive
 
 ## 目标

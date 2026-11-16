@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/i3c
+  - topic/onboard
+---
+
 # I3C Deep Dive
 
 ## 目标

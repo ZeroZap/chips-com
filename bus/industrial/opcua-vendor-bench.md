@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/opcua
+  - topic/industrial
+---
+
 # OPC UA 主流厂商 / 产品对标
 
 ## 定位

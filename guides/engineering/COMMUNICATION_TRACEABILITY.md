@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/traceability
+  - topic/engineering
+---
+
 # Communication Traceability
 
 ## 目标

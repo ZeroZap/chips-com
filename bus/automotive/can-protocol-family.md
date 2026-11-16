@@ -1,7 +1,9 @@
 ---
 tags:
   - layer/bus
+  - type/reference
   - protocol/can
+  - topic/automotive
 aliases:
   - CAN 家族全景
   - CAN 协议家族

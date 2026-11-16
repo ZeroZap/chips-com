@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/mqtt
+  - topic/industrial
+---
+
 # MQTT Deep Dive
 
 ## 目标

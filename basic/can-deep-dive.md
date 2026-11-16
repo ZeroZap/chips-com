@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/deep-dive
+  - protocol/can
+---
+
 # CAN Deep Dive
 
 ## 目标

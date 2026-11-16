@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/dlt645
+  - topic/power-rtu
+---
+
 # DL/T 645 Practical Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/satellite-iot
+  - topic/wireless-iot
+---
+
 # Satellite-IoT Practical Guide
 
 ## 目标

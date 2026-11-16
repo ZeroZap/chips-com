@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/guide
+  - topic/troubleshooting
+---
+
 # Waveform Observation Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/gateway-design
+  - protocol/rtu-gateway
+  - topic/power-rtu
+---
+
 # RTU 网关总体设计
 
 ## 定位

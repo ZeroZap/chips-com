@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/failure-cases
+  - protocol/spi
+---
+
 # SPI 产线死机案例库
 
 ## 目标

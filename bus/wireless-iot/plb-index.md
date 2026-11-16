@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/plb
+  - topic/wireless-iot
+---
+
 # PLB 主题总览
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/sl651
+  - topic/power-rtu
+---
+
 # SL 651-2014 Deep Dive
 
 ## 目标

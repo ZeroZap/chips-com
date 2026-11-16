@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/lora
+  - topic/wireless-iot
+---
+
 # LoRa / LoRaWAN 产线实战案例库
 
 ## 目标

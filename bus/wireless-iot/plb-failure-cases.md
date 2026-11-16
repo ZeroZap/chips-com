@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/plb
+  - topic/wireless-iot
+---
+
 # PLB 产线实战案例库
 
 ## 目标

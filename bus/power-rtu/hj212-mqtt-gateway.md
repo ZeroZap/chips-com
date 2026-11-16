@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/gateway-design
+  - protocol/hj212
+  - topic/power-rtu
+---
+
 # HJ 212 ↔ MQTT 网关
 
 ## 定位

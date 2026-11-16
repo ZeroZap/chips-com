@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/satellite-iot
+  - topic/wireless-iot
+---
+
 # Satellite-IoT 深度技术解析
 
 ## 目标

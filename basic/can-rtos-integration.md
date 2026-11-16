@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/integration
+  - protocol/can
+---
+
 # CAN RTOS 集成与 Linux SocketCAN
 
 ## 目标

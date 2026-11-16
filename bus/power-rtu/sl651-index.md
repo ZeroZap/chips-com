@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/sl651
+  - topic/power-rtu
+---
+
 # SL 651 主题总览
 
 ## 目标

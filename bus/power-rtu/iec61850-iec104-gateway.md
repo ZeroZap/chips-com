@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/gateway-design
+  - protocol/iec61850
+  - topic/power-rtu
+---
+
 # IEC 61850 ↔ IEC 104 网关
 
 ## 定位

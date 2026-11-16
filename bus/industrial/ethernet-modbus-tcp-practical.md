@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/ethernet-modbus-tcp
+  - topic/industrial
+---
+
 # Ethernet + Modbus TCP Practical Guide
 
 ## 目标

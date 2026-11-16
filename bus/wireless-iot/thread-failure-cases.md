@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/thread
+  - topic/wireless-iot
+---
+
 # Thread 产线实战案例库
 
 ## 目标

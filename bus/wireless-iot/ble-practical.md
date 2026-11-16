@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/ble
+  - topic/wireless-iot
+---
+
 # BLE Practical Guide
 
 ## 目标

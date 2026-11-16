@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/j1939
+  - topic/automotive
+---
+
 # SAE J1939 协议规范说明（协议层分解）
 
 ## 目标

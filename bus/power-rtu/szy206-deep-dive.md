@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/szy206
+  - topic/power-rtu
+---
+
 # SZY 206-2016 Deep Dive
 
 ## 目标

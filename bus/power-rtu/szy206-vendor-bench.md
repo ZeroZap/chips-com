@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/szy206
+  - topic/power-rtu
+---
+
 # SZY 206 主流厂商 / 产品对标
 
 ## 定位

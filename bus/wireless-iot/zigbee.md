@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/zigbee
+  - topic/wireless-iot
+---
+
 # ZigBee
 
 ## 定位

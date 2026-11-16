@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/jtag-swd
+---
+
 # JTAG / SWD
 
 ## 定位

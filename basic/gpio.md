@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/gpio
+---
+
 # GPIO
 
 ## 定位

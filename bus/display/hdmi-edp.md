@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/hdmi-edp
+  - topic/display
+---
+
 # HDMI / eDP
 
 ## 定位

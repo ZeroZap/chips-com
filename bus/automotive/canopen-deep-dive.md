@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/canopen
+  - topic/automotive
+---
+
 # CAN + CANopen Deep Dive
 
 ## 目标

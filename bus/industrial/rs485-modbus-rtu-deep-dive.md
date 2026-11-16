@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/rs485-modbus-rtu
+  - topic/industrial
+---
+
 # RS485 + Modbus RTU Deep Dive
 
 ## 目标

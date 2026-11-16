@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/dnp3
+  - topic/power-rtu
+---
+
 # DNP3 Practical Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/zigbee
+  - topic/wireless-iot
+---
+
 # ZigBee Practical Guide
 
 ## 目标

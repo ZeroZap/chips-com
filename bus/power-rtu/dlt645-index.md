@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/dlt645
+  - topic/power-rtu
+---
+
 # DL/T 645 主题总览
 
 ## 目标

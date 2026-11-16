@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/security
+  - topic/engineering
+---
+
 # Communication Security And Safety
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/ble
+  - topic/wireless-iot
+---
+
 # BLE Deep Dive
 
 ## 目标

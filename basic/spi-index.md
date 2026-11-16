@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/index
+  - protocol/spi
+---
+
 # SPI 主题总览
 
 ## 目标

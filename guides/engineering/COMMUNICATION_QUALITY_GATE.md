@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/quality-gate
+  - topic/engineering
+---
+
 # Communication Quality Gate
 
 ## 目标
@@ -16,15 +23,15 @@
 
 建议分为七个阶段：
 
-| 阶段 | 目标 | 输出 |
-| --- | --- | --- |
-| G0 Requirement | 明确需求和风险 | 协议选型、需求表、风险分级 |
-| G1 Design Review | 设计可评审 | 原理图、接口参数、状态机、测试点 |
-| G2 Bring-up | 最小通信可用 | ID、枚举、Link、基础事务 |
-| G3 Integration | 协议事务完整 | 正常流程、错误路径、日志 |
-| G4 Regression | 版本回归通过 | 自动化结果、抓包、计数器 |
-| G5 Production Ready | 可量产测试 | 工位测试、序列号、追溯日志 |
-| G6 Release | 可发布和维护 | 发布报告、已知问题、回滚方案 |
+| 阶段                | 目标           | 输出                             |
+| ------------------- | -------------- | -------------------------------- |
+| G0 Requirement      | 明确需求和风险 | 协议选型、需求表、风险分级       |
+| G1 Design Review    | 设计可评审     | 原理图、接口参数、状态机、测试点 |
+| G2 Bring-up         | 最小通信可用   | ID、枚举、Link、基础事务         |
+| G3 Integration      | 协议事务完整   | 正常流程、错误路径、日志         |
+| G4 Regression       | 版本回归通过   | 自动化结果、抓包、计数器         |
+| G5 Production Ready | 可量产测试     | 工位测试、序列号、追溯日志       |
+| G6 Release          | 可发布和维护   | 发布报告、已知问题、回滚方案     |
 
 任何阶段失败都应记录 blocker、owner 和关闭条件。
 
@@ -32,11 +39,11 @@
 
 按影响和复杂度分级：
 
-| 等级 | 典型协议 | 门禁强度 |
-| --- | --- | --- |
-| R1 低风险 | GPIO、UART 日志、简单 I2C 传感器 | 最小通信和基本错误处理 |
-| R2 中风险 | SPI Flash、PMBus、Modbus、USB CDC | 参数边界、恢复和量产测试 |
-| R3 高风险 | CANopen、UDS、Ethernet、USB DFU、MIPI | 错误注入、长稳、可观测性和回归矩阵 |
+| 等级        | 典型协议                                         | 门禁强度                                 |
+| ----------- | ------------------------------------------------ | ---------------------------------------- |
+| R1 低风险   | GPIO、UART 日志、简单 I2C 传感器                 | 最小通信和基本错误处理                   |
+| R2 中风险   | SPI Flash、PMBus、Modbus、USB CDC                | 参数边界、恢复和量产测试                 |
+| R3 高风险   | CANopen、UDS、Ethernet、USB DFU、MIPI            | 错误注入、长稳、可观测性和回归矩阵       |
 | R4 关键风险 | 固件升级、制动/运动控制、车载视频、TSN、PCIe DMA | 断电恢复、失效安全、自动化回归、发布评审 |
 
 风险等级不是固定协议属性，要结合产品场景判断。USB CDC 调试口可能是 R1，USB DFU 量产升级可能是 R4。
@@ -101,16 +108,16 @@
 
 不同协议最小证据：
 
-| 协议族 | 最小证据 |
-| --- | --- |
-| I2C/SMBus/PMBus | 地址应答、ID 或 STATUS_WORD、波形边沿 |
-| SPI/QSPI | JEDEC ID、读写校验、CS/SCK/MISO/MOSI trace |
-| UART/RS485 | 固定帧收发、方向控制、CRC |
-| CAN | 两节点收发、ACK、错误计数为 0 |
-| USB | 枚举、描述符、Endpoint 可用 |
-| Ethernet | PHY Link、ARP、ping、MAC 唯一 |
-| MIPI/SerDes | Sensor ID、Link Lock、CSI/DSI 基础状态 |
-| PCIe/SDIO | 枚举、ID、Link Width/Speed 或 bus-width |
+| 协议族          | 最小证据                                   |
+| --------------- | ------------------------------------------ |
+| I2C/SMBus/PMBus | 地址应答、ID 或 STATUS_WORD、波形边沿      |
+| SPI/QSPI        | JEDEC ID、读写校验、CS/SCK/MISO/MOSI trace |
+| UART/RS485      | 固定帧收发、方向控制、CRC                  |
+| CAN             | 两节点收发、ACK、错误计数为 0              |
+| USB             | 枚举、描述符、Endpoint 可用                |
+| Ethernet        | PHY Link、ARP、ping、MAC 唯一              |
+| MIPI/SerDes     | Sensor ID、Link Lock、CSI/DSI 基础状态     |
+| PCIe/SDIO       | 枚举、ID、Link Width/Speed 或 bus-width    |
 
 通过条件：
 
@@ -231,12 +238,12 @@
 
 ## 门禁决策表
 
-| 结果 | 含义 | 动作 |
-| --- | --- | --- |
-| Pass | 满足门禁 | 进入下一阶段 |
+| 结果             | 含义           | 动作             |
+| ---------------- | -------------- | ---------------- |
+| Pass             | 满足门禁       | 进入下一阶段     |
 | Conditional Pass | 存在低风险问题 | 记录风险和 owner |
-| Blocked | 缺少证据或环境 | 补测试或补工具 |
-| Fail | 核心用例失败 | 修复后重新门禁 |
+| Blocked          | 缺少证据或环境 | 补测试或补工具   |
+| Fail             | 核心用例失败   | 修复后重新门禁   |
 
 `Conditional Pass` 不能用于 R4 关键风险的安全、升级和失效恢复用例。
 

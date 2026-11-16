@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/runbook
+  - topic/troubleshooting
+---
+
 # Field Diagnostic Runbook
 
 ## 目标

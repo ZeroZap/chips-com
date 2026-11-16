@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/i2c
+---
+
 # I2C / SMBus Timeout 专题
 
 ## 目标

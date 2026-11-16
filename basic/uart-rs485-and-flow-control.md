@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/uart
+---
+
 # UART RS485 和流控专题
 
 ## 目标

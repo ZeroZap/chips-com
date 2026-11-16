@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/hj212
+  - topic/power-rtu
+---
+
 # HJ 212 主流厂商 / 产品对标
 
 ## 定位

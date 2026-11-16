@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/usb
+  - topic/usb
+---
+
 # USB 主题总览
 
 ## 目标

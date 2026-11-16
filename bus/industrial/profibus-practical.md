@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/profibus
+  - topic/industrial
+---
+
 # PROFIBUS Practical Guide
 
 ## 目标

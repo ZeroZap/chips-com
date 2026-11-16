@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/examples
+  - topic/learning
+---
+
 # Device Examples
 
 ## 目标

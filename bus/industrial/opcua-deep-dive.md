@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/opcua
+  - topic/industrial
+---
+
 # OPC UA Deep Dive
 
 ## 目标

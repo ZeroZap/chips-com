@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/dnp3
+  - topic/power-rtu
+---
+
 # DNP3 Deep Dive
 
 ## 目标

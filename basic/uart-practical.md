@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/practical
+  - protocol/uart
+---
+
 # UART Practical Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/sl651
+  - topic/power-rtu
+---
+
 # SL 651 主流厂商 / 产品对标
 
 ## 定位

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/ethercat
+  - topic/industrial
+---
+
 # EtherCAT Deep Dive
 
 ## 目标

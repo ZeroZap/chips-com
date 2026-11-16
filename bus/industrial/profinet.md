@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/profinet
+  - topic/industrial
+---
+
 # PROFINET
 
 ## 定位

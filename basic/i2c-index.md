@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/index
+  - protocol/i2c
+---
+
 # I2C 主题总览
 
 ## 目标

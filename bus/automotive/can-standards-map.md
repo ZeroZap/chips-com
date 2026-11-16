@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/can
+  - topic/automotive
+---
+
 # CAN 家族标准规范总表
 
 ## 目标

@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/failure-cases
+  - protocol/can
+---
+
 # CAN 产线死机案例库
 
 ## 目标

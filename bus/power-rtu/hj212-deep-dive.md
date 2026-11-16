@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/hj212
+  - topic/power-rtu
+---
+
 # HJ 212-2017 Deep Dive
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/fpd-link-gmsl
+  - topic/display
+---
+
 # FPD-Link / GMSL
 
 ## 定位

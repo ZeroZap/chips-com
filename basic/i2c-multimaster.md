@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/i2c
+---
+
 # I2C 多主机仲裁
 
 ## 目标

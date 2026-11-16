@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/usb-dfu
+  - topic/usb
+---
+
 # USB DFU Deep Dive
 
 ## 目标

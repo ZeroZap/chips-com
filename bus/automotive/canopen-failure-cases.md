@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/canopen
+  - topic/automotive
+---
+
 # CANopen 产线死机案例库
 
 ## 目标

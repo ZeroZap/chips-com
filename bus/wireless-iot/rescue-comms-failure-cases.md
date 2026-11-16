@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/rescue-comms
+  - topic/wireless-iot
+---
+
 # 救援通讯产线 + 户外实战案例库
 
 ## 目标

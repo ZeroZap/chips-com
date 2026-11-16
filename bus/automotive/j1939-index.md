@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/j1939
+  - topic/automotive
+---
+
 # J1939 主题总览
 
 ## 目标

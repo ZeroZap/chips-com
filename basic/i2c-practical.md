@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/practical
+  - protocol/i2c
+---
+
 # I2C Practical Guide
 
 ## 目标

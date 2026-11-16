@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/spi
+---
+
 # SPI 多从 / 菊花链 / DMA 专题
 
 ## 目标

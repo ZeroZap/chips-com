@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/dlt645
+  - topic/power-rtu
+---
+
 # DL/T 645 Deep Dive
 
 ## 目标

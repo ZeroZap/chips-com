@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/sl651
+  - topic/power-rtu
+---
+
 # SL 651 产线死机案例库
 
 ## 目标

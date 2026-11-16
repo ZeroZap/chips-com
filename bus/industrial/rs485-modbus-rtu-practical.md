@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/rs485-modbus-rtu
+  - topic/industrial
+---
+
 # RS485 + Modbus RTU Practical Guide
 
 ## 目标

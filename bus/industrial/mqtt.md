@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/mqtt
+  - topic/industrial
+---
+
 # MQTT
 
 ## 定位

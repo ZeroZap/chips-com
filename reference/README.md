@@ -1,5 +1,6 @@
 ---
 tags:
+  - layer/reference
   - type/index
 ---
 
@@ -14,4 +15,5 @@ tags:
 - [ACRONYMS](ACRONYMS.md)：按领域分组的缩写表，附常见标准编号
 - [DOC_TEMPLATES](DOC_TEMPLATES.md)
 - [GLOSSARY](GLOSSARY.md)
+- [STANDARDS](STANDARDS.md)：汽车、工业、电力、网络、无线与安全标准索引
 - [TOOLS](TOOLS.md)

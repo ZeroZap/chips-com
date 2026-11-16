@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/thread
+  - topic/wireless-iot
+---
+
 # Thread
 
 ## 定位

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/profinet
+  - topic/industrial
+---
+
 # PROFINET Deep Dive
 
 ## 目标

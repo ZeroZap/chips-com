@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/opcua
+  - topic/industrial
+---
+
 # OPC UA Practical Guide
 
 ## 目标

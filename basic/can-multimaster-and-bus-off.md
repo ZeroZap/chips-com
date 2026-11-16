@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/can
+---
+
 # CAN 多 Master 仲裁与 Bus Off 专题
 
 ## 目标

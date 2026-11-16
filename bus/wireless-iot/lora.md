@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/lora
+  - topic/wireless-iot
+---
+
 # LoRa / LoRaWAN
 
 ## 定位

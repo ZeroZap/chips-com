@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/comparison
+  - protocol/industrial-ethernet
+  - topic/industrial
+---
+
 # Industrial Ethernet Comparison
 
 ## 目标

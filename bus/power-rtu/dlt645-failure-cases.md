@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/dlt645
+  - topic/power-rtu
+---
+
 # DL/T 645 产线死机案例库
 
 ## 目标

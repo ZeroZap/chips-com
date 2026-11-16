@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/deep-dive
+  - protocol/spi
+---
+
 # SPI Deep Dive
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/wwh-obd
+  - topic/automotive
+---
+
 # WWH-OBD 商用车诊断故障案例库
 
 ## 目标

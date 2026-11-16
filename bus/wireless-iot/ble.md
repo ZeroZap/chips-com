@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/ble
+  - topic/wireless-iot
+---
+
 # BLE（Bluetooth Low Energy）
 
 ## 定位

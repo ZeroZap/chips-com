@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/usb-dfu
+  - topic/usb
+---
+
 # USB DFU Practical Guide
 
 ## 目标

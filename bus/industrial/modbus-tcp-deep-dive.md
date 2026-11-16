@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/modbus
+  - topic/industrial
+---
+
 # Modbus TCP Deep Dive
 
 ## 目标

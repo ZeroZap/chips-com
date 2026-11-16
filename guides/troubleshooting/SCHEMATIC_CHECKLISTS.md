@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/checklist
+  - topic/troubleshooting
+---
+
 # Schematic Checklists
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/lora
+  - topic/wireless-iot
+---
+
 # LoRa Practical Guide
 
 ## 目标

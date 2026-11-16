@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/usb
+  - topic/usb
+---
+
 # USB 枚举与描述符详解
 
 ## 目标

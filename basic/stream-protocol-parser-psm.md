@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/protocol-parser
+---
+
 # 流式协议解析器 PSM（Protocol State Machine）
 
 ## 目标

@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/comparison
+  - protocol/can
+---
+
 # CAN vs 其他总线对比
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/lora
+  - topic/wireless-iot
+---
+
 # LoRa Deep Dive
 
 ## 目标

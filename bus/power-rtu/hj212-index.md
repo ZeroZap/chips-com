@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/hj212
+  - topic/power-rtu
+---
+
 # HJ 212 主题总览
 
 ## 目标

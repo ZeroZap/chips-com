@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/measurement
+  - topic/troubleshooting
+---
+
 # Measurement Examples
 
 ## 目标

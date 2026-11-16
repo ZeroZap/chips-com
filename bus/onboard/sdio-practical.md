@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/sdio
+  - topic/onboard
+---
+
 # SDIO Practical Guide
 
 ## 目标

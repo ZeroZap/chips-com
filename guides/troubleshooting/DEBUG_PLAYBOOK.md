@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/playbook
+  - topic/troubleshooting
+---
+
 # Communication Debug Playbook
 
 ## 目标

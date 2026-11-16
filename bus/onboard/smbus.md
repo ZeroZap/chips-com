@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/smbus
+  - topic/onboard
+---
+
 # SMBus
 
 ## 定位

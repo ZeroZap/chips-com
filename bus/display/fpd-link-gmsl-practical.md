@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/fpd-link-gmsl
+  - topic/display
+---
+
 # FPD-Link / GMSL Practical Guide
 
 ## 目标

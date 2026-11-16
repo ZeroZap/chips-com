@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/usb
+  - topic/usb
+---
+
 # USB 类驱动专题 (CDC / HID / MSC / DFU)
 
 ## 目标

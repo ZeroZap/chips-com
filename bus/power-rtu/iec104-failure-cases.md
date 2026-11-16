@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/iec104
+  - topic/power-rtu
+---
+
 # IEC 104 产线死机案例库
 
 ## 目标

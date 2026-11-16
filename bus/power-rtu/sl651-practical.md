@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/sl651
+  - topic/power-rtu
+---
+
 # SL 651-2014 Practical Guide
 
 ## 目标

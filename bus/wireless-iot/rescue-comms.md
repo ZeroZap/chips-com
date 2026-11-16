@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/rescue-comms
+  - topic/wireless-iot
+---
+
 # 救援通讯（Rescue Communications）
 
 ## 定位

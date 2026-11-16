@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/slt427
+  - topic/power-rtu
+---
+
 # SL/T 427 Practical Guide
 
 ## 目标

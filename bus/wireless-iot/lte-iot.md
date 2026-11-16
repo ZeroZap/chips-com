@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/lte-iot
+  - topic/wireless-iot
+---
+
 # LTE-IoT（蜂窝物联网）
 
 ## 定位

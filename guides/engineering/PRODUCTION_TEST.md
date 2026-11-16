@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/test
+  - topic/engineering
+---
+
 # Production Test Strategy
 
 ## 目标

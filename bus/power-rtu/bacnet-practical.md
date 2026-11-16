@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/bacnet
+  - topic/power-rtu
+---
+
 # BACnet Practical Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/iso-tp
+  - topic/automotive
+---
+
 # ISO-TP 产线死机案例库
 
 ## 目标

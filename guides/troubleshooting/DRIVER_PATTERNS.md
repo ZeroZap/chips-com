@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/patterns
+  - topic/troubleshooting
+---
+
 # Driver State Machine Patterns
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/dnp3
+  - topic/power-rtu
+---
+
 # DNP3 产线死机案例库
 
 ## 目标

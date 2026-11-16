@@ -207,6 +207,7 @@ tags:
 
 - [reference/GLOSSARY.md](reference/GLOSSARY.md)
 - [reference/ACRONYMS.md](reference/ACRONYMS.md)
+- [reference/STANDARDS.md](reference/STANDARDS.md)
 - [reference/TOOLS.md](reference/TOOLS.md)
 - [guides/troubleshooting/MEASUREMENT_EXAMPLES.md](guides/troubleshooting/MEASUREMENT_EXAMPLES.md)
 - [LAYERED_MAP.md](LAYERED_MAP.md)
@@ -224,4 +225,4 @@ tags:
 
 ## 知识库里程碑
 
-- **v3.x 沉淀期**（2026-07-29 起）：31 个 5 分主题（19 个核心 L4 + 12 个行业闭环）+ 311 篇知识库文档（含索引与模板）/ 约 3.1 MB。暂停主动扩主题，专注实战案例和横向工作。详见 [guides/learning/LEARNING_PLAN.md](guides/learning/LEARNING_PLAN.md) 阶段 6。
+- **v3.x 沉淀期**（2026-07-29 起）：31 个 5 分主题（19 个核心 L4 + 12 个行业闭环）+ 312 篇知识库文档（含索引与模板）/ 约 3.2 MB。暂停主动扩主题，专注实战案例和横向工作。详见 [guides/learning/LEARNING_PLAN.md](guides/learning/LEARNING_PLAN.md) 阶段 6。

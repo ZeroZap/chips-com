@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/hdmi-edp
+  - topic/display
+---
+
 # HDMI / eDP Deep Dive
 
 ## 目标

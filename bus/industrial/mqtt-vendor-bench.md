@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/mqtt
+  - topic/industrial
+---
+
 # MQTT 主流云厂商 / Broker 对标
 
 ## 定位

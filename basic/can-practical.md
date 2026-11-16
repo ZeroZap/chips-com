@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/practical
+  - protocol/can
+---
+
 # CAN Practical Guide
 
 ## 目标

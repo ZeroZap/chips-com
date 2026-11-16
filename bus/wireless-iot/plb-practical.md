@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/plb
+  - topic/wireless-iot
+---
+
 # PLB Practical Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/mqtt
+  - topic/industrial
+---
+
 # MQTT Practical Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/hdmi-edp
+  - topic/display
+---
+
 # HDMI / eDP Practical Guide
 
 ## 目标

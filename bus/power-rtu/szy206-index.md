@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/szy206
+  - topic/power-rtu
+---
+
 # SZY 206 主题总览
 
 ## 目标

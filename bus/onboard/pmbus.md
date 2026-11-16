@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/pmbus
+  - topic/onboard
+---
+
 # PMBus
 
 ## 定位

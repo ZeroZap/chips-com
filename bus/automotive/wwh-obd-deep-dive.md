@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/wwh-obd
+  - topic/automotive
+---
+
 # WWH-OBD Deep Dive
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/pcie
+  - topic/onboard
+---
+
 # PCIe Practical Guide
 
 ## 目标

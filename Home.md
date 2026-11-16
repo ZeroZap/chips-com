@@ -140,7 +140,7 @@ aliases:
 | 主题       | 入口笔记                                                                                                                   |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------- |
 | 总索引     | [[INDEX\|知识库索引]] · [[COVERAGE\|覆盖范围]] · [[TOPIC_MATRIX\|主题矩阵]]                                                |
-| 术语       | [[reference/GLOSSARY\|术语表]] · [[reference/ACRONYMS\|缩写表]]                                                            |
+| 术语与标准 | [[reference/GLOSSARY\|术语表]] · [[reference/ACRONYMS\|缩写表]] · [[reference/STANDARDS\|标准索引]]                        |
 | 工具与模板 | [[reference/TOOLS\|调试工具]] · [[reference/DOC_TEMPLATES\|文档模板]] · [[guides/learning/PARAMETER_CHEATSHEET\|参数速查]] |
 | 协作       | [[CONTRIBUTING\|贡献规范]] · [[REVIEW_CHECKLIST\|评审清单]]                                                                |
 | 图形导航   | [[Navigation.canvas\|Navigation 画布]]                                                                                     |

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/cjt188
+  - topic/power-rtu
+---
+
 # CJ/T 188 Deep Dive
 
 ## 目标

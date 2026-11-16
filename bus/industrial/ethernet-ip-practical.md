@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/ethernet-ip
+  - topic/industrial
+---
+
 # EtherNet/IP Practical Guide
 
 ## 目标

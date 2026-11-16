@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/quickref
+  - topic/troubleshooting
+---
+
 # Troubleshooting Quick Reference
 
 ## 目标

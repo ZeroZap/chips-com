@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/wwh-obd
+  - topic/automotive
+---
+
 # WWH-OBD（ISO 27145 商用车全球统一车载诊断）
 
 > **W**orld-**W**ide **H**armonized **O**n-**B**oard Diagnostics —— 商用车（重型车 / 中重型车）的全球统一车载诊断体系，由 **GTR No. 5**（全球技术法规第 5 号）驱动，通信规范落在 **ISO 27145** 系列。

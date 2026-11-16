@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/integration
+  - protocol/uart
+---
+
 # UART DMA + 环形缓冲 + RTOS 集成
 
 ## 目标

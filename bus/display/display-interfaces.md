@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/display-interfaces
+  - topic/display
+---
+
 # Display Interfaces Overview
 
 ## 目标

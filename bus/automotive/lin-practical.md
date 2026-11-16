@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/lin
+  - topic/automotive
+---
+
 # LIN Practical Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/dmx512
+  - topic/industrial
+---
+
 # DMX512 Deep Dive
 
 ## 目标

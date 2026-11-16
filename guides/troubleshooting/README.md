@@ -1,6 +1,8 @@
 ---
 tags:
+  - layer/guides
   - type/index
+  - topic/troubleshooting
 ---
 
 # Troubleshooting · 排障与实战

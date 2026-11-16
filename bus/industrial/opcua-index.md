@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/opcua
+  - topic/industrial
+---
+
 # OPC UA 主题总览
 
 ## 目标

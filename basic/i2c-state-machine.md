@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/i2c
+---
+
 # I2C 状态机与 DMA / 中断并发模型
 
 ## 目标

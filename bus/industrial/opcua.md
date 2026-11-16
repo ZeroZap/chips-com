@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/opcua
+  - topic/industrial
+---
+
 # OPC UA
 
 ## 定位

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/bacnet
+  - topic/power-rtu
+---
+
 # BACnet Deep Dive
 
 ## 目标

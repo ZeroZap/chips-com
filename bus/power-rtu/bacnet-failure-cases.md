@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/bacnet
+  - topic/power-rtu
+---
+
 # BACnet 产线死机案例库
 
 ## 目标

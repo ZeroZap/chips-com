@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/cjt188
+  - topic/power-rtu
+---
+
 # CJ/T 188 主流厂商 / 产品对标
 
 ## 定位

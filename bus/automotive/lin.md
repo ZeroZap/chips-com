@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/lin
+  - topic/automotive
+---
+
 # LIN
 
 ## 定位

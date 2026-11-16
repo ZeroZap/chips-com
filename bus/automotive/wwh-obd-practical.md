@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/wwh-obd
+  - topic/automotive
+---
+
 # WWH-OBD Practical Guide
 
 ## 目标

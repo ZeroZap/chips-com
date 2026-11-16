@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/mipi-csi-dsi
+  - topic/display
+---
+
 # MIPI CSI/DSI Debug Guide
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/satellite-iot
+  - topic/wireless-iot
+---
+
 # Satellite-IoT 产线实战案例库
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/security
+  - protocol/canopen
+  - topic/automotive
+---
+
 # CANopen Safety（CiA 304 / EN 50325-5）
 
 > CANopen 的功能安全扩展：在同一条 CAN 总线上，用 **SRDO（Safety Related Data Object）** 传输安全相关数据，达到 SIL-3 级别的通信可靠性。

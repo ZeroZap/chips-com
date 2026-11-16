@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/comparison
+  - protocol/usb
+  - topic/usb
+---
+
 # USB vs 其他总线对比
 
 ## 目标

@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/can
+---
+
 # CAN FD 与 CAN XL 演进
 
 ## 目标

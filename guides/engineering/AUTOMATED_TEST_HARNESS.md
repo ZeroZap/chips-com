@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/test
+  - topic/engineering
+---
+
 # Automated Test Harness
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/j1939
+  - topic/automotive
+---
+
 # J1939 网络管理 (NM) 详解
 
 ## 目标

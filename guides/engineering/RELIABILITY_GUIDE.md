@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/guide
+  - topic/engineering
+---
+
 # Communication Reliability Guide
 
 ## 目标

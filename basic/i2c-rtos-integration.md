@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/integration
+  - protocol/i2c
+---
+
 # I2C RTOS 集成
 
 ## 目标

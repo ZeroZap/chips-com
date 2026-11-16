@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/ethernet-ip
+  - topic/industrial
+---
+
 # EtherNet/IP
 
 ## 定位

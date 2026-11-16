@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/profinet
+  - topic/industrial
+---
+
 # PROFINET Practical Guide
 
 ## 目标

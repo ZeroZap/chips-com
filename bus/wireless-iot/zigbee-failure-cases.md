@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/zigbee
+  - topic/wireless-iot
+---
+
 # ZigBee 产线实战案例库
 
 ## 目标

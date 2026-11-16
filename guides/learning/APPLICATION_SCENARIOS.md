@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/scenarios
+  - topic/learning
+---
+
 # Application Scenarios
 
 ## 目标

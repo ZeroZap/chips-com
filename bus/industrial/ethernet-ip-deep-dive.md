@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/ethernet-ip
+  - topic/industrial
+---
+
 # EtherNet/IP Deep Dive
 
 ## 目标

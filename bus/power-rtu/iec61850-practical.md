@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/iec61850
+  - topic/power-rtu
+---
+
 # IEC 61850 Practical Guide
 
 ## 目标

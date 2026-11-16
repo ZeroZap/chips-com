@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/reading-path
+  - topic/learning
+---
+
 # Reading Paths
 
 ## 目标

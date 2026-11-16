@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/thread
+  - topic/wireless-iot
+---
+
 # Thread Practical Guide
 
 ## 目标

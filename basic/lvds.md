@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/lvds
+---
+
 # LVDS
 
 ## 定位

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/j1939
+  - topic/automotive
+---
+
 # J1939 Practical Guide
 
 ## 目标

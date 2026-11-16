@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/gateway-design
+  - protocol/dlt645
+  - topic/power-rtu
+---
+
 # DL/T 645 ↔ IEC 104 网关
 
 ## 定位

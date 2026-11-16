@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/usb
+  - topic/usb
+---
+
 # USB Practical Guide
 
 ## 目标

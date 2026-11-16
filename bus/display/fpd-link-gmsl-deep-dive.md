@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/fpd-link-gmsl
+  - topic/display
+---
+
 # FPD-Link / GMSL Deep Dive
 
 ## 目标

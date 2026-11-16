@@ -258,7 +258,7 @@ L4 闭环: 6-12 篇  /  60-150 KB
 ## 待做主题执行计划 (按优先级)
 
 > **v3.x 沉淀期封口声明（2026-07-29）**：
-> 31 个 5 分主题 + 311 篇 / 约 3.1 MB 已达实战密度，暂停主动扩展。
+> 31 个 5 分主题 + 312 篇 / 约 3.2 MB 已达实战密度，暂停主动扩展。
 > 以下候选主题**挂起**，等真实项目需求或实战触发再激活。
 > 详见 `guides/learning/LEARNING_PLAN.md` 阶段 6。
 
@@ -398,4 +398,5 @@ Step 6: usb-index.md
   - `chips-com-external-materials` (激进·每 5 天 9:00) - 轮询 12 个候选协议 + web 搜，写到 `_Inbox/`
   - 输出位置：`_System/cron-reports/scan-*.md` 和 `_Inbox/<协议>-<日期>-candidates.md`
 - 2026-07-30: A 盲区扫描首次跑通（`_System/cron-reports/scan-2026-07-30.md`）。关键发现：**实战案例 115 条已超额（2.3×）**，封口期结束条件之一已达成。10 倍频率生效（A 每天 12 次 / B 每天 2 次 + 24h 去重）。用户决定继续封口。
-- 2026-11-16: 统一计数口径：知识库文档 311 篇（含索引与模板）/ 约 3.1 MB，34 个索引主题，31 个 5 分主题（19 个核心 L4 + 12 个行业闭环）。修正 CAN / CANopen / J1939 / OBD-II / WWH-OBD / UDS / ISO-TP / CAN FD / USB / 无线等条目的篇数与体量；移除 LoRa、CAN FD 的空白误标。
+- 2026-11-16: 统一计数口径：知识库文档 312 篇（含索引与模板）/ 约 3.2 MB，34 个索引主题，31 个 5 分主题（19 个核心 L4 + 12 个行业闭环）。修正 CAN / CANopen / J1939 / OBD-II / WWH-OBD / UDS / ISO-TP / CAN FD / USB / 无线等条目的篇数与体量；移除 LoRa、CAN FD 的空白误标。
+- 2026-11-16: 扩写 reference/GLOSSARY、TOOLS、DOC_TEMPLATES，新增 STANDARDS；为全部 312 篇文档补 frontmatter 分类标签。

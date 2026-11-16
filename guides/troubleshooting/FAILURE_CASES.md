@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/guides
+  - type/failure-cases
+  - topic/troubleshooting
+---
+
 # Failure Cases
 
 ## 目标

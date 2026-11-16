@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/cjt188
+  - topic/power-rtu
+---
+
 # CJ/T 188 产线死机案例库
 
 ## 目标

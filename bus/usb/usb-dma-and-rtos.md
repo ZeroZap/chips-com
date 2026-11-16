@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/integration
+  - protocol/usb
+  - topic/usb
+---
+
 # USB DMA + RTOS 集成
 
 ## 目标

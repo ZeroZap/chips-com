@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/pwm
+---
+
 # PWM
 
 ## 定位

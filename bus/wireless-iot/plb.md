@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/plb
+  - topic/wireless-iot
+---
+
 # PLB（Personal Locator Beacon，个人定位信标）
 
 ## 定位

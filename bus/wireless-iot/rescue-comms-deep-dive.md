@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/rescue-comms
+  - topic/wireless-iot
+---
+
 # Rescue Communications 协议深挖
 
 ## 目标

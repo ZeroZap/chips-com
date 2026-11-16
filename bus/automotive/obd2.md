@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/obd2
+  - topic/automotive
+---
+
 # OBD-II 车载排放诊断协议
 
 ## 定位

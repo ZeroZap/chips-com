@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/gateway-design
+  - protocol/bacnet
+  - topic/power-rtu
+---
+
 # BACnet ↔ OPC UA 网关
 
 ## 定位

@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/practical
+  - protocol/spi
+---
+
 # SPI Practical Guide
 
 ## 目标

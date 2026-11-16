@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/vendor-bench
+  - protocol/iec104
+  - topic/power-rtu
+---
+
 # IEC 104 主流厂商 / 产品对标
 
 ## 定位

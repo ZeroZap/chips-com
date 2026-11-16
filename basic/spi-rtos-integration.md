@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/integration
+  - protocol/spi
+---
+
 # SPI RTOS 集成
 
 ## 目标

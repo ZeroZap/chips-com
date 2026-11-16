@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/cjt188
+  - topic/power-rtu
+---
+
 # CJ/T 188 Practical Guide
 
 ## 目标

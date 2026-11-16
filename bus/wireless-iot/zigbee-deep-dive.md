@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/zigbee
+  - topic/wireless-iot
+---
+
 # ZigBee Deep Dive
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/usb
+  - topic/usb
+---
+
 # USB 产线死机案例库
 
 ## 目标

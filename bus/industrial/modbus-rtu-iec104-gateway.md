@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/gateway-design
+  - protocol/modbus
+  - topic/industrial
+---
+
 # Modbus RTU ↔ IEC 104 网关
 
 ## 定位

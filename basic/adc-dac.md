@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/adc-dac
+---
+
 # ADC / DAC
 
 ## 定位

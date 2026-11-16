@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/ethernet-tsn
+  - topic/industrial
+---
+
 # Ethernet TSN
 
 ## 定位

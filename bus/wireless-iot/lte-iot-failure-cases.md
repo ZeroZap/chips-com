@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/lte-iot
+  - topic/wireless-iot
+---
+
 # LTE-IoT 产线实战案例库
 
 ## 目标

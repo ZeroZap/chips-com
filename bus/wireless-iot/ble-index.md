@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/index
+  - protocol/ble
+  - topic/wireless-iot
+---
+
 # BLE 主题总览
 
 ## 目标

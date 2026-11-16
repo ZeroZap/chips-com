@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/lte-iot
+  - topic/wireless-iot
+---
+
 # LTE-IoT Practical Guide
 
 ## 目标

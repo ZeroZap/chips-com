@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/thread
+  - topic/wireless-iot
+---
+
 # Thread Deep Dive
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/ble
+  - topic/wireless-iot
+---
+
 # BLE 产线实战案例库
 
 ## 目标

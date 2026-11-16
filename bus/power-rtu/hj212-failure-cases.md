@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/failure-cases
+  - protocol/hj212
+  - topic/power-rtu
+---
+
 # HJ 212 产线死机案例库
 
 ## 目标

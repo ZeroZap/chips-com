@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/profibus
+  - topic/industrial
+---
+
 # PROFIBUS
 
 ## 定位

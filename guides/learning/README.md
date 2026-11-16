@@ -1,6 +1,8 @@
 ---
 tags:
+  - layer/guides
   - type/index
+  - topic/learning
 ---
 
 # Learning · 学习与选型

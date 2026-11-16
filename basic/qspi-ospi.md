@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/overview
+  - protocol/qspi-ospi
+---
+
 # QSPI / OSPI
 
 ## 定位

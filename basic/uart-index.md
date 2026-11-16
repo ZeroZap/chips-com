@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/index
+  - protocol/uart
+---
+
 # UART 主题总览
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/j1939
+  - topic/automotive
+---
+
 # J1939 传输协议 (TP) 详解
 
 ## 目标

@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/deep-dive
+  - protocol/lte-iot
+  - topic/wireless-iot
+---
+
 # LTE-IoT Deep Dive
 
 ## 目标

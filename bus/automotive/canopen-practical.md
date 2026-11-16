@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/canopen
+  - topic/automotive
+---
+
 # CAN + CANopen Practical Guide
 
 ## 目标

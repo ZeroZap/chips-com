@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/szy206
+  - topic/power-rtu
+---
+
 # SZY 206-2016 Practical Guide
 
 ## 目标

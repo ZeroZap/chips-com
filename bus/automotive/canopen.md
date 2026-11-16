@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/canopen
+  - topic/automotive
+---
+
 # CANopen
 
 ## 定位

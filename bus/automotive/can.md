@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/overview
+  - protocol/can
+  - topic/automotive
+---
+
 # CAN
 
 ## 定位

@@ -1,3 +1,10 @@
+---
+tags:
+  - layer/basic
+  - type/comparison
+  - protocol/i2c
+---
+
 # I2C vs SMBus Bus Recovery 对比
 
 ## 目标

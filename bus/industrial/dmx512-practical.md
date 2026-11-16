@@ -1,3 +1,11 @@
+---
+tags:
+  - layer/bus
+  - type/practical
+  - protocol/dmx512
+  - topic/industrial
+---
+
 # DMX512 Practical Guide
 
 ## 目标
