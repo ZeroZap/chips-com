@@ -19,8 +19,8 @@ CAN 相关的标准**不止协议本身**。一个上车的 CAN 节点要过认�
 
 配套阅读：
 
-- `bus/automotive/can-protocol-family.md` —— CAN 家族协议全景与覆盖状态
-- `basic/can-failure-cases.md` / `bus/automotive/can-fd-failure-cases.md` —— 物理层与链路层案例
+- [[bus/automotive/can-protocol-family|can-protocol-family]] —— CAN 家族协议全景与覆盖状态
+- [[basic/can-failure-cases|can-failure-cases]] / [[bus/automotive/can-fd-failure-cases|can-fd-failure-cases]] —— 物理层与链路层案例
 
 ## 使用方式
 
@@ -350,7 +350,7 @@ WWH-OBD 在表示层和应用层借用了 UDS 的机制（ISO 27145-3 定义的�
 - 跨 OEM 的**协议差异适配**。
 - 抓包日志的**字段规范**与可观测性建设。
 
-这些在 `basic/can-failure-cases.md`、`bus/automotive/can-fd-failure-cases.md`、`bus/automotive/canopen-failure-cases.md` 等案例库里体现。
+这些在 [[basic/can-failure-cases|can-failure-cases]]、[[bus/automotive/can-fd-failure-cases|can-fd-failure-cases]]、[[bus/automotive/canopen-failure-cases|canopen-failure-cases]] 等案例库里体现。
 
 ---
 
@@ -427,21 +427,21 @@ WWH-OBD 在表示层和应用层借用了 UDS 的机制（ISO 27145-3 定义的�
 
 ## 关联主题
 
-- `bus/automotive/can-protocol-family.md` —— CAN 家族协议全景与 L0-L4 覆盖状态
-- `bus/automotive/can-fd-failure-cases.md` —— CAN FD 产线案例
-- `basic/can-failure-cases.md` —— CAN 物理层 / 链路层案例
-- `basic/can-index.md` —— CAN 主题导航
-- `bus/automotive/obd2.md` —— OBD-II 概览
-- `bus/automotive/wwh-obd.md` —— WWH-OBD（ISO 27145）商用车全球统一诊断
-- `bus/automotive/wwh-obd-deep-dive.md` —— WWH-OBD 深度（24 位 DTC / PID→DID 映射 / 初始化 / DoIP）
-- `bus/automotive/uds.md` —— UDS 概览
-- `bus/automotive/canopen.md` —— CANopen 概览
-- `bus/automotive/canopen-safety.md` —— CANopen Safety（CiA 304 / EN 50325-5）
-- `bus/automotive/iso-tp.md` —— ISO-TP 概览
-- `bus/automotive/j1939-index.md` —— J1939 导航
-- `bus/automotive/lin.md` —— LIN 概念
-- `LAYERED_MAP.md` —— 全库分层地图
-- `reference/ACRONYMS.md` / `reference/GLOSSARY.md` —— 术语表
+- [[bus/automotive/can-protocol-family|can-protocol-family]] —— CAN 家族协议全景与 L0-L4 覆盖状态
+- [[bus/automotive/can-fd-failure-cases|can-fd-failure-cases]] —— CAN FD 产线案例
+- [[basic/can-failure-cases|can-failure-cases]] —— CAN 物理层 / 链路层案例
+- [[basic/can-index|can-index]] —— CAN 主题导航
+- [[bus/automotive/obd2|obd2]] —— OBD-II 概览
+- [[bus/automotive/wwh-obd|wwh-obd]] —— WWH-OBD（ISO 27145）商用车全球统一诊断
+- [[bus/automotive/wwh-obd-deep-dive|wwh-obd-deep-dive]] —— WWH-OBD 深度（24 位 DTC / PID→DID 映射 / 初始化 / DoIP）
+- [[bus/automotive/uds|uds]] —— UDS 概览
+- [[bus/automotive/canopen|canopen]] —— CANopen 概览
+- [[bus/automotive/canopen-safety|canopen-safety]] —— CANopen Safety（CiA 304 / EN 50325-5）
+- [[bus/automotive/iso-tp|iso-tp]] —— ISO-TP 概览
+- [[bus/automotive/j1939-index|j1939-index]] —— J1939 导航
+- [[bus/automotive/lin|lin]] —— LIN 概念
+- [[LAYERED_MAP|LAYERED_MAP]] —— 全库分层地图
+- [[reference/ACRONYMS|ACRONYMS]] / [[reference/GLOSSARY|GLOSSARY]] —— 术语表
 
 ## 更新记录
 

@@ -675,6 +675,7 @@ S11 = -6 dB（-10 dB 才是合格）
 ### 现象
 
 某心率带项目（nRF52832 + Nordic S140 SoftDevice）量产发现：
+
 - 三星 S21 偶发 "Reason 5"（0x05 AUTHENTICATION_FAILURE）连接失败
 - iPhone 13 偶发连接成功 30s 后突然断链
 - 小米 11 / 华为 P40 永远扫不到设备广播
@@ -726,17 +727,17 @@ Step 4: 锁定 3 个差异：
      #define BLE_PAIRING_MODE_LEGACY_ONLY  0
      #define BLE_PAIRING_MODE_SC_ONLY       1
      #define BLE_PAIRING_MODE_SC_LEGACY     2  ← 推荐
-     
+
      if (peer_supports_sc) {
          use_sc_mode();
      } else {
          use_legacy_mode();
      }
-  
+
   2. L2CAP：未知信令不能断链，必须 Command Reject
      L2capSignalCommandReject(0x0000)  // 0x0000 = reject all unknown
      → 设备保持连接，对端超时后自然断
-     
+
   3. 广播 Flags = 0x1F（不是 0x06）
      // 0x1F = 0b00011111 = LE General + BR/EDR not + LE only + SIMUL
      adv_data[0] = 0x1F;
@@ -877,15 +878,15 @@ Zephyr 内部逻辑（issue #24086 复现）：
 
 ### 定位（7 项 SM 配置错误表）
 
-| # | 错误配置 | 现象 | 修复 |
-| --- | --- | --- | --- |
-| 1 | Security Level = 0 (No Security) | 配对请求被忽略 | 改为 Level 2 或 Level 4 |
-| 2 | IO Capability = NoInput/NoOutput + Just Works | 配对成功但易被 MitM | 改 DisplayYesNo + Numeric Comparison |
-| 3 | MITM Flag = 0 | 配对期间无中间人保护 | 置 1（除非强制 Just Works） |
-| 4 | Key Distribution 缺 IRK | 绑定后 Privacy 失效 | 4 个 Key 全发：LTK + IRK + CSRK + EDIV+Rand |
-| 5 | NVDS 写失败（BD_ADDR 校验错） | 绑定信息丢失 | 校验 NVDS BD_ADDR = 实际 MAC |
-| 6 | SMP 事件回调只注册 1 个 | 4 个关键事件缺回调 | 必须注册 PAIRING_REQ / PAIRING_RSP / ENC_CHANGE / BOND_MODIFY |
-| 7 | Bonding 容量 < 5 | 绑定满后新绑定覆盖 | 改 nvds_bond_max = 8（典型） |
+| #   | 错误配置                                      | 现象                 | 修复                                                          |
+| --- | --------------------------------------------- | -------------------- | ------------------------------------------------------------- |
+| 1   | Security Level = 0 (No Security)              | 配对请求被忽略       | 改为 Level 2 或 Level 4                                       |
+| 2   | IO Capability = NoInput/NoOutput + Just Works | 配对成功但易被 MitM  | 改 DisplayYesNo + Numeric Comparison                          |
+| 3   | MITM Flag = 0                                 | 配对期间无中间人保护 | 置 1（除非强制 Just Works）                                   |
+| 4   | Key Distribution 缺 IRK                       | 绑定后 Privacy 失效  | 4 个 Key 全发：LTK + IRK + CSRK + EDIV+Rand                   |
+| 5   | NVDS 写失败（BD_ADDR 校验错）                 | 绑定信息丢失         | 校验 NVDS BD_ADDR = 实际 MAC                                  |
+| 6   | SMP 事件回调只注册 1 个                       | 4 个关键事件缺回调   | 必须注册 PAIRING_REQ / PAIRING_RSP / ENC_CHANGE / BOND_MODIFY |
+| 7   | Bonding 容量 < 5                              | 绑定满后新绑定覆盖   | 改 nvds_bond_max = 8（典型）                                  |
 
 ### 修复
 
@@ -894,13 +895,13 @@ Zephyr 内部逻辑（issue #24086 复现）：
 void smp_init(void) {
     // 1. Security Level：Level 2（加密 + 认证）
     gap_set_security_level(2);
-    
+
     // 2. IO Capability：DisplayYesNo（支持 Numeric Comparison）
     gap_set_io_cap(GAP_IO_CAP_DISPLAY_YES_NO);
-    
+
     // 3. AuthReq：Bonding + MITM + SC 全开
     gap_set_auth_req(GAP_AUTH_BOND | GAP_AUTH_MITM | GAP_AUTH_SC);
-    
+
     // 4. Key Distribution：4 个 Key 全发
     gap_set_key_distribution(
         GAP_KDIST_ENCKEY |     // LTK
@@ -908,7 +909,7 @@ void smp_init(void) {
         GAP_KDIST_SIGNKEY |    // CSRK
         GAP_KDIST_LINKKEY      // EDIV + Rand
     );
-    
+
     // 5. NVDS BD_ADDR 校验
     uint8_t nvds_mac[6];
     nvds_get_bd_addr(nvds_mac);
@@ -916,13 +917,13 @@ void smp_init(void) {
         nvds_set_bd_addr(get_actual_mac());
         nvds_commit();
     }
-    
+
     // 6. 注册 4 个 SMP 事件回调
     smp_register_callback(SMP_EVT_PAIRING_REQ,    on_pairing_req);
     smp_register_callback(SMP_EVT_PAIRING_RSP,    on_pairing_rsp);
     smp_register_callback(SMP_EVT_ENC_CHANGE,     on_enc_change);
     smp_register_callback(SMP_EVT_BOND_MODIFY,    on_bond_modify);
-    
+
     // 7. 绑定容量
     nvds_set_bond_max(8);  // ≥ 5，避免满了被覆盖
 }
@@ -1081,16 +1082,16 @@ void assert_ram_size(void) {
   1. 测量 P99 延迟，不要只看 P50
      - 在现场跑 24h 收集 P99 / Pmax
      - 阈值：P99 < 30ms（实时）/ < 100ms（一般）
-     
+
   2. 关键 GATT 操作用专用任务 + 高优先级
      - 不和连接管理任务共用时间片
      - 优先级分层：GAP / GATT / Scan / Adv 分开
-     
+
   3. RF 拥塞感知
      - 监测连接事件成功率（CEV）
      - CEV < 90% → 主动断开 + 重连（换信道）
      - CEV < 70% → 报警（现场 RF 环境异常）
-     
+
   4. 应用层重发 + 业务幂等
      - 重要数据发送 3 次
      - 接收端去重（timestamp + seq）
@@ -1099,11 +1100,11 @@ void assert_ram_size(void) {
   1. 不在实验室测 RF 拥堵
      - 用 Wi-Fi + 蓝牙干扰器模拟
      - 或到现场拿真实环境测
-     
+
   2. 自动化 24h 抖动测试
      - 跑 1000 次 GATT 写，读 P99 / Pmax
      - 不只看平均成功率
-     
+
   3. 多设备并行测试
      - 50+ BLE 设备同时连 1 个中心
      - 看 CEV 下降曲线
@@ -1219,7 +1220,7 @@ Goodix 私有错误码映射（GR551x 系列）：
   1. GPIO_RF_ACTIVE：高电平 = RF 工作
      → 看 RF 实际工作时间 vs 协议时间
      → 偏差 > 10% = RF 链路异常
-     
+
   2. GPIO_LLCP_PENDING：高电平 = LLCP 在等
      → 看 LLCP 等待时长
      → 等待 > 100ms = 调度卡死
@@ -1301,11 +1302,11 @@ nRF52832 + S140 SoftDevice 项目，调 `sd_power_system_off()` 进入 System OF
   1. SPI DMA 未完成时进入 sleep
      - 之前启动的 SPI/I2S 传输还在 pending
      - SoftDevice 内部检查 → 返回错误
-     
+
   2. I2S / PWM / TWI 任意外设未 uninit
      - 这些外设占用 EasyDMA
      - sleep 前必须 nrfx_*_uninit()
-     
+
   3. Power Management 模块未 poll DMA
      - 默认 pm_handler 未注册
      - DMA 完成事件丢失
@@ -1316,17 +1317,17 @@ nRF52832 + S140 SoftDevice 项目，调 `sd_power_system_off()` 进入 System OF
       sd_power_system_off();
       // 偶发 NRF_ERROR_NOT_SUPPORTED
   }
-  
+
   void enter_sleep_correct(void) {
       // ✅ 对：先 uninit 所有外设
       nrfx_spi_uninit(&spi);
       nrfx_twi_uninit(&twi);
       nrfx_pwm_uninit(&pwm);
       nrfx_i2s_uninit(&i2s);
-      
+
       // Power Management poll
       nrf_pwr_mgmt_run();
-      
+
       // 再 sleep
       sd_power_system_off();
   }
@@ -1389,26 +1390,26 @@ nRF52832 量产 OTA 工具链踩坑：
      - 用于 bootloader 验签
      - 编译：wchar_t 必须 16 位（IAR 默认）/ 32 位（Keil / GCC）
      - 切换编译器必须重新编译
-     
+
   2. nrfutil keys generate 生成密钥对
      - private.pem + public.pem
      - 私钥保密（不在 git 提交）
      - 公钥烧入 bootloader
-     
+
   3. nrfutil pkg generate 生成 DFU 包
      - 签名 + 压缩 + 校验
      - nrfutil ≥ 6.0.0（6.0.0a1 校验 bug）
      - 错误：6.0.0a1 → 切换 6.0.0
-     
+
   4. mergehex 合并 hex
      - bootloader + softdevice + application
      - --sd-req 必须与 bootloader sd_config.h 一致
      - 不一致 → 升级失败
-     
+
   5. nrfjprog 一次烧录
      - nrfjprog --program merged.hex --chiperase
      - 量产治具自动跑
-     
+
   6. OTA 升级（产线 / 现场）
      - 手机 nRF Connect / nrfutil dfu ble
      - 校验签名 + 写入 + 校验
@@ -1540,7 +1541,7 @@ Android BluetoothGatt 错误码：
   133 (GATT_ERROR) = 上层 GATT 协议失败
     实际可能 = 0x85 / 0x0D / 0x06 / 0x08 等多个底层
     必须用 Ellisys 抓到具体 LL PDU 才能定位
-    
+
   257 (GATT_AUTH_FAIL) = 鉴权失败
     实际可能 = bonding 残留 + 加密参数不匹配
     必须看 SMP 流程
@@ -1619,17 +1620,17 @@ SAMD21 内存预算（典型 32KB RAM）：
      - .py 源码加载到 RAM
      - .mpy 预编译字节码，体积小 30-50%
      - 大型项目必须 .mpy
-     
+
   2. 列表 / 字符串增长
      - 业务 list.append() 不断增长
      - GC 触发不及时 → MemoryError
      - 修复：定期 list.clear() / del
-     
+
   3. BLE notify 缓存
      - notify buffer 默认 4 个
      - 客户端不读 → 缓存满 → 写失败
      - 修复：客户端及时 read 或加流控
-     
+
   4. import 模块过多
      - 每个 import 加载到 RAM
      - 大型项目 20+ import = 8KB+ 占用
@@ -1700,7 +1701,7 @@ Android 主机端连接 GATT 后立即调 `requestMtu(512)`：
   Step 1：connectGatt → onConnectionStateChange (STATE_CONNECTED)
   Step 2：❌ 直接 requestMtu(512) → 部分机型断链
   Step 3：cache 残留 → 下次 connect 立即失败
-  
+
 正确时序：
   Step 1：connectGatt
   Step 2：onConnectionStateChange (CONNECTED) → 缓存 callback
@@ -1710,7 +1711,7 @@ Android 主机端连接 GATT 后立即调 `requestMtu(512)`：
 
 错误时序（断链）：
   Step 1：connectGatt
-  Step 2：onConnectionStateChange (CONNECTED) → 
+  Step 2：onConnectionStateChange (CONNECTED) →
   Step 3：❌ requestMtu(512) 立即调，部分机型 ATT 请求并发
   Step 4：底层 L2CAP 死锁 → 断链
 ```
@@ -1745,7 +1746,7 @@ private void reconnectWithBackoff() {
 }
 
 // 3. 正确时序
-private final BluetoothGattCallback mCallback = 
+private final BluetoothGattCallback mCallback =
     new BluetoothGattCallback() {
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -1756,7 +1757,7 @@ private final BluetoothGattCallback mCallback =
             }, 200);
         }
     }
-    
+
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -1764,7 +1765,7 @@ private final BluetoothGattCallback mCallback =
             gatt.requestMtu(247);
         }
     }
-    
+
     @Override
     public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -1833,7 +1834,7 @@ private void connectHuawei(BluetoothDevice device) {
 }
 
 // 2. 通用：discoverServices 必须在连接回调里
-private final BluetoothGattCallback mCallback = 
+private final BluetoothGattCallback mCallback =
     new BluetoothGattCallback() {
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -1901,7 +1902,7 @@ private void connectSmart(BluetoothDevice device) {
   Step 3（3 min）：看日志时间线
   Step 4（2 min）：定位根因
   Step 5（2 min）：改 + 验证
-  
+
 vs 老排查方式：
   Step 1（1h）：抓 log
   Step 2（2h）：分析
@@ -2004,7 +2005,7 @@ ESP32-C3 + NimBLE 量产手环：
 
 ```c
 // 1. 调大 supervision timeout
-esp_ble_gap_set_prefer_conn_params(0x18, 0x28, 0, 400, 0);  
+esp_ble_gap_set_prefer_conn_params(0x18, 0x28, 0, 400, 0);
 // min = 30ms, max = 50ms, latency = 0, timeout = 4000ms
 
 // 2. 调大连接间隔（50ms，避免 mDNS 抢）
@@ -2260,25 +2261,25 @@ void ble_beacon_init_ship(void) {
     // 1. 关闭 DEBUG
     #undef DEBUG
     DEBUG_INIT();
-    
+
     // 2. 配置所有 GPIO 为 Analog
     GPIOA_ModeCfg(GPIO_Pin_All, GPIO_ModeIN_Floating);
     GPIOB_ModeCfg(GPIO_Pin_All, GPIO_ModeIN_Floating);
-    
+
     // 3. 关键 GPIO 显式下拉
     for (int i = 0; i < 38; i++) {
         if (i == BLE_ANT_PIN) continue;  // 保留天线
         if (i == LED_PIN) continue;       // 保留 LED
         GPIOA_ModeCfg(1 << i, GPIO_ModeIN_PD);
     }
-    
+
     // 4. 禁用未用软件定时器
     TMR0_Disable();  // 未用
     TMR1_Disable();  // 未用
-    
+
     // 5. 设置睡眠模式
     PWR_EnterSLEEP(PWR_ROM_CONSUMPTION_MODE);
-    
+
     // 6. 验证电流
     // 应 < 50μA
 }
@@ -2383,6 +2384,7 @@ HCI 抓包：
 **关键指控**：FDA 警告信指 **BLE connectivity testing 替代了 glucose accuracy 测试**——意思是用 BLE 连通性测试**替代**了血糖精度测试，导致假低血糖读数（实际上血糖正常但设备报低）。
 
 召回：3M Libre 3 / 3+ 设备
+
 - 严重等级：Class I（FDA 最严重）
 - 伤害：860 重伤 + 7 死
 - 触发：传感器在体温变化时读数漂移
@@ -2717,7 +2719,7 @@ spörk 嵌入式无线工程师 LinkedIn 实战：
     - 平均 4 小时 / 站
     - 现场测量、排查
     - 全凭经验
-    
+
   可自诊断：
     - 远程看数据 30 分钟
     - 现场直奔问题
@@ -2803,7 +2805,7 @@ spörk 嵌入式无线工程师 LinkedIn 实战：
   - 读传感器 5 mA × 15 ms = 75 µA·s
   - BLE 广播 11 mA × 8 ms = 88 µA·s
   - 合计：283 µA·s / 60s = 4.7 µA 平均
-  
+
 CR2032（220 mAh）：
   - 理论续航：220 / 4.7 × 1 / 24 / 365 = 5.35 年
   - 折扣后：3-4 年（考虑自放电）
@@ -3140,7 +3142,7 @@ CR2032（220 mAh）：
 原方案：持久连接
   设备：扫描 + 保持连接 + keepalive
   控制端：始终连着
-  
+
 问题：
   - 设备 keepalive 每 30-60s 一次 → 占空比 5-10%
   - 连接建立 + 维护 = 持续耗电
@@ -3151,7 +3153,7 @@ CR2032（220 mAh）：
   设备：周期性广播（5-10s）含状态信息
   控制端：常扫（iOS 用 ANCS / Android 用 background scan）
   业务触发：才建立连接 + 传数据
-  
+
 收益：
   - 广播 vs 持久连接 = 1/10 功耗
   - 业务数据传输 < 1s（连接 + 传 + 断开）
@@ -3213,7 +3215,7 @@ CR2032（220 mAh）：
   - 广播：30%
   - 业务触发连接：5%
   - 待机：65%  ← 提升 55%
-  
+
 续航：
   原：6 个月
   新：2 年（+4x）
@@ -3337,21 +3339,21 @@ ESP32 BLE 错误码表：
         - GATT 队列满
         - notify buffer 满
         - 多 service 同时操作
-        
+
   0x106  ESP_ERR_INVALID_STATE
         - profile 未注册就调用
         - service 注册顺序错
         - 回调未注册
-        
+
   0x3008 GATT_INSUF_RESOURCE
         - MTU 协商失败
         - characteristic 超过 20 字节
         - 多个 notify 同时发
-        
+
   0x2002 LINK_LAYER_NO_MEM
         - LL 队列满
         - 多连接 + 大数据
-        
+
   0x2003 LL_HCI_BUF_ALLOC
         - HCI 缓冲区分配失败
         - 短时间多个 connectGatt
@@ -3389,14 +3391,14 @@ ESP32 BLE 错误码表：
 // ESP32 BLE 初始化（推荐 NimBLE 模板）
 void ble_init(void) {
     esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
-    
+
     esp_nimble_hci_init();
     nimble_port_init();
-    
+
     // 注册 GATT 回调
     ble_svc_gap_init();
     ble_svc_gatt_init();
-    
+
     // 启动
     nimble_port_freertos_init(ble_host_task);
 }
@@ -3561,11 +3563,11 @@ DEWINE Labs 实测（30 ms 实时约束）：
      - 默认 RTOS 调度（优先级 + 时间片）
      - RF 拥塞 → MAC 重传 → 占 CPU 时间
      - 关键 GATT 操作被延迟
-     
+
   2. 控制 / 日志共享队列
      - 控制指令和日志混用同一队列
      - 日志拥塞时控制延迟
-     
+
   3. late packet = invalid packet
      - 实时系统 = 过期包无价值
      - BLE 重传让包过期
@@ -3661,6 +3663,7 @@ void LL_ProcessEvent(void) {
 ```
 
 逻辑分析仪观测：
+
 - P1_0（应用）：占空比 80-90%
 - P1_1（LL）：被错过
 - 7.5ms 是高负载分水岭
@@ -3932,11 +3935,11 @@ bluetoothctl scan on
   - 限制 BLE 启动时长
   - systemd 每日重启 bluetoothd
   - 监控 kmalloc slab 涨幅
-  
+
 中期方案：
   - 应用 patch series
   - 升级到修复版本内核
-  
+
 长期方案：
   - 永远不要在无 peer 时启 BLE
   - 应用启动时才 init BLE
@@ -4201,16 +4204,16 @@ void flush_cache_on_connect(void) {
 ```text
 BLE 吞吐公式：
   每秒包数 = 1000 / CI × 每 event 包数
-  
+
   实测：
     CI = 30ms
     每 event 包数 = 1
     实际吞吐 = 33 包/s
-    
+
   设计：
     期望 200 包/s
     需要 CI ≤ 5ms
-    
+
   差距 6x = 大量丢包
 ```
 
@@ -4252,7 +4255,7 @@ void send_data_notify(uint8_t *data, uint16_t len) {
         // 超时强制清标志
         tx_busy = false;
     }
-    
+
     uint32_t err_code = ble_nus_data_send(&m_nus, data, &len, m_conn_handle);
     if (err_code == NRF_SUCCESS) {
         tx_busy = true;
@@ -4538,6 +4541,7 @@ Step 4：状态机显式
 ### 现象
 
 遥控器产线 1000 台抽测 90% 出现"按 5 次有 1-2 次无响应"（用户视角"丢键"），抓包显示：
+
 - 连接建立正常，notify 链路通
 - 触发动作瞬间 → 连接突发断开（supervision timeout 7.5ms）
 - 重连成功率约 60%，剩下"卡死"需手动复位
@@ -4547,6 +4551,7 @@ Step 4：状态机显式
 #### 根因 1：电源纹波 → nRF52 brownout（**主因，60% 案例**）
 
 按键触发瞬间 nRF52 从 sleep（<5 µA）跳到 TX +4 dBm（18 mA 瞬态）。电源纹波：
+
 - 锂电池 3.0V 标称，+4dBm TX 瞬态下沉 >50mV → VCC < 2.85V 触发 nRF52 brownout
 - BOR 触发后 softdevice 不会自动恢复 → 必须手动复位（按键长按 5s）
 - **50 mV 阈值是 Nordic spec 第 38 章明确写**（不是经验值），所有 nRF52/53/52840 同样适用
@@ -4555,12 +4560,14 @@ Step 4：状态机显式
 
 产线隔壁工位 Wi-Fi AP × 3 + 蓝牙耳机 + ZigBee 网关 = -30 dBm 强干扰。  
 抓包显示 PER（packet error rate）从 lab 的 0.5% 涨到产线 8%：
+
 - BLE channel map 39 信道中可用降到 15 个
 - connection event 7.5ms 内多次重传 → supervision timeout 累加
 
 #### 根因 3：PCB 天线 VSWR > 3.0 失谐
 
 板端采用 PCB trace antenna（chip antenna 之外的低成本方案）：
+
 - DFM 阶段未做 PNA 网络分析仪校准
 - VSWR 实测 3.2（spec 应 < 2.0）
 - 反射损耗让 +4 dBm 实际只剩 +0 dBm 到空间
@@ -4569,6 +4576,7 @@ Step 4：状态机显式
 #### 根因 4：连接参数不当
 
 application layer 设 connection interval 7.5ms（最快），但 slave latency = 4：
+
 - 实际平均 30ms 才一次窗口
 - 按键事件靠 polling 捕获 → 用户感"丢键"
 - 同时 application 写 notify 频率 10Hz，超出 MTU 排队能力
@@ -4599,12 +4607,12 @@ Step 4：连接参数定位
 
 ### 修复
 
-| 根因 | 修复手段 | 验证 |
-| --- | --- | --- |
-| 1 brownout | 加 100µF 电容 + LDO 前置 + 限 TX 功率 0 dBm | 示波器 Vmin > 2.9V |
-| 2 拥堵 | 频谱避让 + AFH（adaptive frequency hopping）打开 | channel map 有效 > 30 |
-| 3 VSWR | 重画天线 + 调匹配网络 + 加 conductive shielding 罩 | VSWR < 1.8 |
-| 4 参数 | slave latency → 0 + interval 7.5ms | 1m 距离丢包率 < 0.1% |
+| 根因       | 修复手段                                           | 验证                  |
+| ---------- | -------------------------------------------------- | --------------------- |
+| 1 brownout | 加 100µF 电容 + LDO 前置 + 限 TX 功率 0 dBm        | 示波器 Vmin > 2.9V    |
+| 2 拥堵     | 频谱避让 + AFH（adaptive frequency hopping）打开   | channel map 有效 > 30 |
+| 3 VSWR     | 重画天线 + 调匹配网络 + 加 conductive shielding 罩 | VSWR < 1.8            |
+| 4 参数     | slave latency → 0 + interval 7.5ms                 | 1m 距离丢包率 < 0.1%  |
 
 ### 复盘
 
@@ -4625,6 +4633,7 @@ Step 4：连接参数定位
 ### 现象
 
 STM32F4 主机 UART 接蓝牙模块（NRF52/CSR8811），偶发（每天 1-3 次）出现：
+
 - HCI log 突然打 `HCI_HARDWARE_ERROR_EVENT (0x10)` 事件
 - 紧跟 ISR 延迟 50-200ms 抖动
 - FreeRTOS 任务卡死 / 随机崩溃
@@ -4707,12 +4716,12 @@ Step 4：代码审查
 
 ### 修复
 
-| 根因 | 修复 | 验证 |
-| --- | --- | --- |
-| 1 ISR 阻塞 | 用 RTOS queue + 信号量代替 `HAL_Delay`，ISR 只 enqueue | GPIO 测 ISR < 20 µs |
-| 2 关中断 | 拆为小块 + 开中断窗口，或用 DMA + double buffer | UART 无 RX 丢失 |
-| 3 NVIC 分组 | SysTick preemption 15，USART preemption 5 | `__get_IPSR()` 检查 |
-| 4 阻塞 printf | 用 ringbuffer + 低优先级 task 异步刷 | task monitor 无饥饿 |
+| 根因          | 修复                                                   | 验证                |
+| ------------- | ------------------------------------------------------ | ------------------- |
+| 1 ISR 阻塞    | 用 RTOS queue + 信号量代替 `HAL_Delay`，ISR 只 enqueue | GPIO 测 ISR < 20 µs |
+| 2 关中断      | 拆为小块 + 开中断窗口，或用 DMA + double buffer        | UART 无 RX 丢失     |
+| 3 NVIC 分组   | SysTick preemption 15，USART preemption 5              | `__get_IPSR()` 检查 |
+| 4 阻塞 printf | 用 ringbuffer + 低优先级 task 异步刷                   | task monitor 无饥饿 |
 
 ### 复盘
 
@@ -4733,6 +4742,7 @@ Step 4：代码审查
 ### 现象
 
 BLE→WiFi 网关做 800 KB 大文件传输（GATT notify + 应用层 SAR 分片重组）：
+
 - 高负载下**包乱序**：预期 A1, A2, A3, A4 → 实际 A1, A2, A2, A4
 - A3 丢 + A2 重复 → SAR 重组 buffer overflow → 文件 CRC fail
 - 客户端多次 retry 都失败
@@ -4797,13 +4807,13 @@ Step 4：SAR 算法改造
 
 ### 修复
 
-| 根因 | 修复 | 验证 |
-| --- | --- | --- |
-| 1 中断抢占 | SPI 中断降优先级到 6（低于 radio） | radio IRQ 不被打断 |
-| 1 备选 | radio 中断提到 0（最高） | 同上 |
-| 1 备选 | 双核分工：app core 只跑 BLE + SAR，net core 跑 WiFi | 彻底隔离 |
-| 3 SAR | 滑动窗口 SAR N=32 | 800KB 成功率 > 99.9% |
-| 3 备选 | MTU 改大（244B → 512B via BLE 5.0） | 分片数 -50% |
+| 根因       | 修复                                                | 验证                 |
+| ---------- | --------------------------------------------------- | -------------------- |
+| 1 中断抢占 | SPI 中断降优先级到 6（低于 radio）                  | radio IRQ 不被打断   |
+| 1 备选     | radio 中断提到 0（最高）                            | 同上                 |
+| 1 备选     | 双核分工：app core 只跑 BLE + SAR，net core 跑 WiFi | 彻底隔离             |
+| 3 SAR      | 滑动窗口 SAR N=32                                   | 800KB 成功率 > 99.9% |
+| 3 备选     | MTU 改大（244B → 512B via BLE 5.0）                 | 分片数 -50%          |
 
 ### 复盘
 
@@ -4825,6 +4835,7 @@ Step 4：SAR 算法改造
 ### 现象
 
 某 OEM 蓝牙模组产线（10K 件/月），测试 fail 流入下站后**无追溯机制**：
+
 - fail 件混流入成品 → 客户投诉
 - fail 件无 SN 记录 → 召回报废无法定位
 - fail 件无分类 → 复测/维修/报废**一刀切浪费**
@@ -4881,11 +4892,11 @@ Station 3：报废与统计分析站
 
 ### 修复 / 流程优化
 
-| Fail 类型 | 处理站 | 关键指标 | 修复 |
-| --- | --- | --- | --- |
-| 1 误测（35%） | Station 1 复测 | 复测通过率 > 30% | 换测试机型 + 屏蔽箱维护 + 线缆定期更换 |
+| Fail 类型         | 处理站         | 关键指标         | 修复                                     |
+| ----------------- | -------------- | ---------------- | ---------------------------------------- |
+| 1 误测（35%）     | Station 1 复测 | 复测通过率 > 30% | 换测试机型 + 屏蔽箱维护 + 线缆定期更换   |
 | 2 参数偏移（40%） | Station 2 维修 | 维修成功率 > 30% | 维修工作台 + 备用元器件库 + 测试序列重跑 |
-| 3 硬故障（25%） | Station 3 报废 | 报废率 < 6% | SN 追溯 + 8D 报告 + 反馈供应商 |
+| 3 硬故障（25%）   | Station 3 报废 | 报废率 < 6%      | SN 追溯 + 8D 报告 + 反馈供应商           |
 
 ### MES Fail 跟踪模块（关键能力）
 
@@ -4923,6 +4934,7 @@ MES Fail 跟踪模块：
 ### 现象
 
 Volvo Group 工厂部署 TE Connectivity BLE 压力传感器（监测液压管路）：
+
 - **握手时间 12.5 秒**（远超 2 秒 Linux 内核默认值）
 - BlueZ + Ubuntu Core 22 + 内核 `hci_conn.c` 硬编码 **conn_timeout = 2s**
 - 用户态 socket option 不覆盖内核 HCI 终止条件
@@ -4991,12 +5003,12 @@ Step 4：patch 测试
 
 ### 修复
 
-| 手段 | 实施 | 验证 |
-| --- | --- | --- |
-| Kernel patch | `HCI_CONN_TIMEOUT` 改 20s 或 sysfs 可调 | 100% 握手成功 |
-| 协调器 timeout 调整 | BlueZ `l2cap` socket option | 改 kernel 而非 userspace |
-| Sensor 端优化 | 传感器 cold start 8s → 5s（内部校准并行） | 总握手降到 7s |
-| 双保险 | 协调器 2s 超时后**立刻 retry**（不上报失败） | 2s + retry = 实际等 4s |
+| 手段                | 实施                                         | 验证                     |
+| ------------------- | -------------------------------------------- | ------------------------ |
+| Kernel patch        | `HCI_CONN_TIMEOUT` 改 20s 或 sysfs 可调      | 100% 握手成功            |
+| 协调器 timeout 调整 | BlueZ `l2cap` socket option                  | 改 kernel 而非 userspace |
+| Sensor 端优化       | 传感器 cold start 8s → 5s（内部校准并行）    | 总握手降到 7s            |
+| 双保险              | 协调器 2s 超时后**立刻 retry**（不上报失败） | 2s + retry = 实际等 4s   |
 
 ### 复盘
 
@@ -5019,6 +5031,7 @@ Step 4：patch 测试
 ### 现象
 
 工业现场（电机厂 / 焊接车间）BLE 部署大量断连，Ellisys 抓包看到：
+
 - 满屏 `LL_CONNECTION_UPDATE_IND` 超时
 - 大量 MIC Failure（Message Integrity Check）
 - 物理层 ACK 优先级被数据处理抢占
@@ -5103,12 +5116,12 @@ Step 4：信道扫描 + RSSI 图
 
 ### 修复
 
-| 维度 | 修复 | 验证 |
-| --- | --- | --- |
-| 1 信道图谱 | 启动后动态剔除 10-20 个拥堵信道 | 跳频只在干净信道 |
-| 2 T_IFS | radio ISR 优先级最高 + ISR 长度 < 50µs | T_IFS < 200µs |
-| 3 ACK 优先级 | ACK 在 radio ISR 处理，数据走 task | ACK 丢失 < 0.01% |
-| 4 天线 | BLE + WiFi 双天线 5cm 隔离 | 双方性能 +20% |
+| 维度         | 修复                                   | 验证             |
+| ------------ | -------------------------------------- | ---------------- |
+| 1 信道图谱   | 启动后动态剔除 10-20 个拥堵信道        | 跳频只在干净信道 |
+| 2 T_IFS      | radio ISR 优先级最高 + ISR 长度 < 50µs | T_IFS < 200µs    |
+| 3 ACK 优先级 | ACK 在 radio ISR 处理，数据走 task     | ACK 丢失 < 0.01% |
+| 4 天线       | BLE + WiFi 双天线 5cm 隔离             | 双方性能 +20%    |
 
 ### 复盘
 
@@ -5130,6 +5143,7 @@ Step 4：信道扫描 + RSSI 图
 ### 现象
 
 2020 年新加坡科技与设计大学（SUTD）披露 **SweynTooth** 漏洞族：
+
 - **12 个漏洞**，影响 **480+ IoT/可穿戴/医疗产品**
 - 受影响 SoC SDK：
   - Texas Instruments（CC2640 / CC2650）
@@ -5198,14 +5212,14 @@ Step 4：patch 跟踪
 
 ### 修复 / 选型防御
 
-| 维度 | 修复 | 验证 |
-| --- | --- | --- |
-| 选型 | SoC 选型必查 CVE 历史 + patch 节奏 | 季度 patch 节奏厂商 |
-| 1 SDK 升级 | 升到最新 SDK（含 patch） | vendor PSIRT 公告 |
-| 2 fuzzing | 内部实验室持续 fuzzing | crash 率 0 |
-| 3 配对加固 | Just Works 配对**禁用** → 必须 Numeric Comparison / Passkey | 攻击无法 bypass |
-| 4 加密 | 加 BLE 5.1+ LE Secure Connections | 防侧信道 |
-| 5 OTA | 设备支持 OTA patch（漏洞出后远程修） | OTA 通道验证 |
+| 维度       | 修复                                                        | 验证                |
+| ---------- | ----------------------------------------------------------- | ------------------- |
+| 选型       | SoC 选型必查 CVE 历史 + patch 节奏                          | 季度 patch 节奏厂商 |
+| 1 SDK 升级 | 升到最新 SDK（含 patch）                                    | vendor PSIRT 公告   |
+| 2 fuzzing  | 内部实验室持续 fuzzing                                      | crash 率 0          |
+| 3 配对加固 | Just Works 配对**禁用** → 必须 Numeric Comparison / Passkey | 攻击无法 bypass     |
+| 4 加密     | 加 BLE 5.1+ LE Secure Connections                           | 防侧信道            |
+| 5 OTA      | 设备支持 OTA patch（漏洞出后远程修）                        | OTA 通道验证        |
 
 ### SoC 选型 Checklist（关键决策表）
 
@@ -5243,6 +5257,7 @@ Step 4：patch 跟踪
 ### 现象
 
 IMTS 2024（9 万人制造展）现场某竞品蓝牙 SPC（Statistical Process Control）demo 彻底失效：
+
 - lab 测试：通信稳定，PDR 99%
 - 现场（金属展架 + 数万 WiFi AP + 数百蓝牙耳机 + ZigBee 网关）：**完全失效**
 - 客户展台演示时无法连接
@@ -5300,13 +5315,13 @@ Step 4：替代方案对比
 
 ### 修复
 
-| 维度 | 修复 | 验证 |
-| --- | --- | --- |
-| 1 跳频算法 | 跳频 → **固定信道 + 持续评估** | PDR 80% |
-| 1 备选 | AFH 加 hysteresis（避免频繁切换） | 切换频率 < 1 次/分 |
-| 1 备选 | 启动时强制剔除拥堵信道（保留 8-10 个 best） | clean channel 池稳定 |
-| 2 抗多径 | PCB 天线方向避开金属反射 | RSSI 改善 10 dB |
-| 2 备选 | 换 chip antenna（受多径影响小） | 链路预算 +5 dB |
+| 维度       | 修复                                        | 验证                 |
+| ---------- | ------------------------------------------- | -------------------- |
+| 1 跳频算法 | 跳频 → **固定信道 + 持续评估**              | PDR 80%              |
+| 1 备选     | AFH 加 hysteresis（避免频繁切换）           | 切换频率 < 1 次/分   |
+| 1 备选     | 启动时强制剔除拥堵信道（保留 8-10 个 best） | clean channel 池稳定 |
+| 2 抗多径   | PCB 天线方向避开金属反射                    | RSSI 改善 10 dB      |
+| 2 备选     | 换 chip antenna（受多径影响小）             | 链路预算 +5 dB       |
 
 ### 复盘
 
@@ -5329,6 +5344,7 @@ Step 4：替代方案对比
 ### 现象
 
 工业平板（Windows 系统，集成 USB 蓝牙适配器）连接外设频繁失败：
+
 - lab 测试：连接稳定
 - 工业现场：3-5 次连接有 1 次失败
 - 用户视角："蓝牙不稳"
@@ -5447,6 +5463,7 @@ Step 5：全维度组合验证
 ### 现象
 
 可穿戴 sensor 项目，固件请求 15ms 连接间隔，实际测量 400ms 延迟：
+
 - 固件代码：`sd_ble_gap_conn_param_update(min_interval=15, ...)`
 - 逻辑分析仪实测：固件执行 < 2ms（无误）
 - 但 iOS 实际给 30ms、Android 48ms
@@ -5466,11 +5483,11 @@ Step 5：全维度组合验证
 
 #### 根因 2：central 持卡行为
 
-| Central | 起步 interval | 实际给 interval | 备注 |
-| --- | --- | --- | --- |
-| iOS | 30ms | 30-50ms | 持续协商门槛高 |
-| Android | 48ms | 48-100ms | OEM 不同而不同 |
-| BlueZ (Linux) | 按请求值 | 按请求值 | 唯一"听话" |
+| Central       | 起步 interval | 实际给 interval | 备注           |
+| ------------- | ------------- | --------------- | -------------- |
+| iOS           | 30ms          | 30-50ms         | 持续协商门槛高 |
+| Android       | 48ms          | 48-100ms        | OEM 不同而不同 |
+| BlueZ (Linux) | 按请求值      | 按请求值        | 唯一"听话"     |
 
 - **关键**：central 持卡 = peripheral 不能强制
 - 固件请求 15ms 必须接受 30ms+ 实际值
@@ -5511,12 +5528,12 @@ Step 4：吞吐测试
 
 ### 修复
 
-| 维度 | 修复 | 验证 |
-| --- | --- | --- |
-| 1 接受现实 | peripheral 不请求 15ms（白费） | 接受 30ms+ |
-| 2 批量化 | 1 notify 推 N 个 sensor 读数 | 吞吐 ×N |
-| 3 跳 central | 用 BlueZ host（Linux）替换 iOS/Android | 真给 15ms |
-| 3 备选 | 设计成"central-tolerant"——应用层适配各种 central | 无需依赖 |
+| 维度         | 修复                                             | 验证       |
+| ------------ | ------------------------------------------------ | ---------- |
+| 1 接受现实   | peripheral 不请求 15ms（白费）                   | 接受 30ms+ |
+| 2 批量化     | 1 notify 推 N 个 sensor 读数                     | 吞吐 ×N    |
+| 3 跳 central | 用 BlueZ host（Linux）替换 iOS/Android           | 真给 15ms  |
+| 3 备选       | 设计成"central-tolerant"——应用层适配各种 central | 无需依赖   |
 
 ### 复盘
 
@@ -5539,6 +5556,7 @@ Step 4：吞吐测试
 ### 现象
 
 nRF52840 固件同套代码：
+
 - Android（小米、Oppo）：连接数小时稳定
 - iPhone：**每 30 秒断一次**
 - sniffer 抓：reason 0x08（LL_CONNECTION_UPDATE_IND timeout）
@@ -5659,6 +5677,7 @@ Step 4：双平台对比
 ### 现象
 
 nRF52 OTA 升级（1 MB 固件）：
+
 - 1 Mbps PHY 推 OTA → **实际仅 8 KB/s**
 - 1 MB / 8 KB/s = **125 秒**（超过大多数连接 timeout）
 - 升级超时失败率 30%
@@ -5771,6 +5790,7 @@ sd_ble_gap_conn_param_update(15, 15, 0, 6000, NULL);  // iOS 硬规则要 15 倍
 ### 现象
 
 智能可穿戴产线（1Hz sensor/IMU + event status 推送）：
+
 - Sensor/IMU/Battery 三个 characteristic **间歇丢失**（每 10 秒丢 1-2 包）
 - Status characteristic **正常**（事件驱动）
 - 现场能复现，lab 不能
@@ -5896,6 +5916,7 @@ void ble_send_task(void *arg) {
 ### 现象
 
 Android 客户端 BLE 项目：
+
 - 蓝牙连接成功（log 显示 connected）
 - 但**收不到任何数据**（siloence）
 - 工程师反复查协议 / GATT service → 都"对"
@@ -5911,6 +5932,7 @@ Android 客户端 BLE 项目：
 - `BluetoothGattCallback.onCharacteristicChanged()` = Notify 收到数据
 
 **关键**：
+
 - 连接成功 ≠ Notify 启用
 - **Notify 必须主动写 CCCD=0x0001**
 - 等 `onDescriptorWrite()` 成功回调 → 才算"链路真通"
@@ -6064,6 +6086,7 @@ Step 4：状态机检查
 ### 现象
 
 标签一致性检测系统（车间线），树莓派3B + BLE 双扫码枪 7×24 长连接：
+
 - 双枪并发扫描
 - SIGKILL 假连接（Zombie connection）
 - 双枪 InProgress 异常
@@ -6188,6 +6211,7 @@ Step 4：网络层 sniffing
 ### 现象
 
 BLE 5.x 2Mbps PHY 高吞吐场景（OTA / 大文件传输 / 高频 sensor）：
+
 - 实验室吞吐 80 KB/s
 - 现场吞吐跌到 20 KB/s（**4 倍降**）
 - 偶发完全卡死 1-2 秒（**Anchor Point 漂移**）
@@ -6259,12 +6283,12 @@ Step 4：credit 跟踪
 
 ### 修复
 
-| 维度 | 修复 | 验证 |
-| --- | --- | --- |
-| 1 T_IFS 偏移 | 优化 radio ISR 处理时间（< 30µs）+ 关中断时长 < 50µs | T_IFS < 160µs |
-| 2 Anchor Point 漂移 | 32 kHz 晶振 ±20 ppm 替换 + 温度补偿 | 漂移 < 10µs |
-| 3 Param Update 失败 | 读回协商参数 + central-tolerant 设计 | 实际 interval 验证 |
-| 4 L2CAP 静默丢 | 改 credit-based L2CAP + 监控 credit 余量 | 静默丢 = 0 |
+| 维度                | 修复                                                 | 验证               |
+| ------------------- | ---------------------------------------------------- | ------------------ |
+| 1 T_IFS 偏移        | 优化 radio ISR 处理时间（< 30µs）+ 关中断时长 < 50µs | T_IFS < 160µs      |
+| 2 Anchor Point 漂移 | 32 kHz 晶振 ±20 ppm 替换 + 温度补偿                  | 漂移 < 10µs        |
+| 3 Param Update 失败 | 读回协商参数 + central-tolerant 设计                 | 实际 interval 验证 |
+| 4 L2CAP 静默丢      | 改 credit-based L2CAP + 监控 credit 余量             | 静默丢 = 0         |
 
 ### 复盘
 
@@ -6288,6 +6312,7 @@ Step 4：credit 跟踪
 ### 现象
 
 工业 IoT BLE 接收机常见 4 大硬件根因，工程师凭经验无量化标准：
+
 - 电源纹波致 nRF52 brownout
 - 天线失配
 - 2.4 GHz 共信道阻塞
@@ -6402,6 +6427,7 @@ Step 4：天线 S11（阻抗域）
 ### 现象
 
 nRF52 项目：
+
 - 9 个 peripheral 外设
 - 3 个 iOS central（iPhone/iPad）
 - 实测**掉线与人数/距离正相关**
@@ -6413,12 +6439,12 @@ nRF52 项目：
 
 #### HCI 错误码字典
 
-| 错误码 | 含义 | 排查方向 |
-| --- | --- | --- |
-| **0x08** | HCI Command Timeout | 上层命令超时 → housekeeping / log 阻塞 |
-| **0x3E** | Connection Failed To Be Established | 连接建立失败 → RF / 距离 / 配对 |
-| **0x28** | Connection Rejected Due To Limited Resources | 资源耗尽 → 多连接超出能力 |
-| 0x22 | LMP Response Timeout | Link Layer 协议超时 → 物理层 L2CAP |
+| 错误码   | 含义                                         | 排查方向                               |
+| -------- | -------------------------------------------- | -------------------------------------- |
+| **0x08** | HCI Command Timeout                          | 上层命令超时 → housekeeping / log 阻塞 |
+| **0x3E** | Connection Failed To Be Established          | 连接建立失败 → RF / 距离 / 配对        |
+| **0x28** | Connection Rejected Due To Limited Resources | 资源耗尽 → 多连接超出能力              |
+| 0x22     | LMP Response Timeout                         | Link Layer 协议超时 → 物理层 L2CAP     |
 
 - **实战**：HCI 错误码字典**必须背熟**，否则定位无从下手
 
@@ -6533,6 +6559,7 @@ Step 4：多连接资源监控
 ### 现象
 
 STM32WBA65 Matter 设备（智能门锁 / 智能照明）：
+
 - BLE 配网（commissioning）失败
 - Alexa / Google Home 扫不到设备
 - 用户视角："Matter 配不上"
@@ -6635,7 +6662,7 @@ async def scan_matter():
 - **QR Code + Setup Passcode**——**Matter 设备产线必配**
 - **Matter ≠ Wi-Fi 配网**——先 BLE → 后 Wi-Fi/Thread
 - 跟 R19-7 案例 63（Android 五状态机）**角度相似**——本案例从 **Matter commissioning** 视角
-- **跟 bus/matter-deep-dive.md 主题互补**——本案例补 BLE commissioning 细节
+- **跟 [[bus/wireless-iot/matter-deep-dive|matter-deep-dive]] 主题互补**——本案例补 BLE commissioning 细节
 
 ### 来源
 
@@ -6650,6 +6677,7 @@ async def scan_matter():
 ### 现象
 
 Omi 可穿戴 BLE audio streaming
+
 - 表现：**"app 显示 connected 但音频断流"** ghost connection
 - Flutter 补丁堆 4 层状态混乱（provider / service / plugin / transport）
 - 崩溃率高
@@ -6708,13 +6736,13 @@ class AudioPlugin extends StreamAudio {
 // 重构后：单真值源
 class NativeBLETransporter {
   final MethodChannel _channel = MethodChannel('ble_transport');
-  
+
   // 唯一 connection state 真值源
   Stream<BLEConnectionState> get connectionState =>
       _channel.invokeMethod('observeConnectionState')
           .asStream()
           .map((event) => BLEConnectionState.values[event]);
-  
+
   // audio data 链路 monitor
   Stream<AudioData> get audioData =>
       _channel.invokeMethod('observeAudioNotify')
@@ -6728,7 +6756,7 @@ class BLETransporter: NSObject {
   var peripheral: CBPeripheral?
   var isConnected: Bool { peripheral?.state == .connected }
   var isAudioNotifyActive: Bool { audioChar?.isNotifying == true }
-  
+
   // 关键：isConnected && isAudioNotifyActive = 真 connected
   // 否则 ghost connection
 }
@@ -6768,6 +6796,7 @@ class BLETransporter: NSObject {
 ### 现象
 
 nRF52 固件请求广播间隔 40ms（标准），实际偶发连接失败：
+
 - 100 次配对 → 5 次失败
 - 失败后需重启才能恢复
 - 工程师反复查"信号弱"、"协议错"
@@ -6844,13 +6873,13 @@ sd_ble_gap_scan_start_extended(
 
 ### 4 维故障对策表（配对 / 安全 / 射频 / 供电 / 时序）
 
-| 维度 | 故障 | 对策 |
-| --- | --- | --- |
-| **配对** | 配对失败 5% | interval 随机化 + 全信道 + listen delay=1 |
-| **安全** | 配对过程中断 | Just Works vs Passkey Entry（场景选） |
-| **射频** | 连接后 RSSI 弱 | antenna diversity + PA 模式 |
-| **供电** | 配对瞬间 VCC 跌落 | 100µF bulk cap |
-| **时序** | 配对延迟波动 | 主扫窗 ≥ 从广播间隔 × 2 |
+| 维度     | 故障              | 对策                                      |
+| -------- | ----------------- | ----------------------------------------- |
+| **配对** | 配对失败 5%       | interval 随机化 + 全信道 + listen delay=1 |
+| **安全** | 配对过程中断      | Just Works vs Passkey Entry（场景选）     |
+| **射频** | 连接后 RSSI 弱    | antenna diversity + PA 模式               |
+| **供电** | 配对瞬间 VCC 跌落 | 100µF bulk cap                            |
+| **时序** | 配对延迟波动      | 主扫窗 ≥ 从广播间隔 × 2                   |
 
 ### 配对降功耗配方
 
@@ -6897,6 +6926,7 @@ sd_ble_gap_scan_start_extended(
 ### 现象
 
 BLE 工程师常见 10 类 bug 反复踩坑：
+
 - 连接参数算错
 - 跨厂商配对不一致
 - MTU 静默失败
@@ -7010,6 +7040,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 ### 现象
 
 27 个量产项目里 19 个卡点在蓝牙——**70% 项目都中招**：
+
 - 烧录一致性
 - 射频漂移
 - SPP 老化丢包
@@ -7026,6 +7057,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 - 表现：烧写时序错乱，校验失败
 
 **修复**：
+
 ```text
 - 治具 PCB 缩短到 ≤ 3 mm
 - 加 22 Ω 串联电阻抑制过冲
@@ -7043,6 +7075,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 - 辐射效率 **掉 63%**（3 dB → 5 dB）
 
 **修复**：
+
 ```text
 - 车壳内壁铜箔远离天线 ≥ 10 mm
 - 加 conductive shielding 隔离
@@ -7057,6 +7090,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 - 30ms 时 SPP 期望 ≤ 20ms，实测 127ms
 
 **修复**：
+
 ```text
 - BLE 广播间隔 ≥ 50ms
 - SPP 与 BLE 时槽错开
@@ -7070,6 +7104,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 - 表现：RF 灵敏度降 3-5 dB
 
 **修复**：
+
 ```text
 - VCC 加磁珠（Ferrite bead 100 MHz 1 kΩ）
 - 数字地 vs 模拟地分割
@@ -7115,6 +7150,7 @@ BLE 工程师常见 10 类 bug 反复踩坑：
 ### 现象
 
 nRF52840 Dongle + Wireshark 抓包实战：
+
 - 工程师手工验证 OTA 失败
 - 心率带 iPhone 反复重连
 - 睡醒后连接失效
@@ -7133,6 +7169,7 @@ nRF52840 Dongle + Wireshark 抓包实战：
 - 工程师手工重试才意识到
 
 **修复**：
+
 ```text
 □ 用 Write Request（含 ACK）不用 Write Command
 □ 总长度比对 + CRC32 全程校验
@@ -7151,6 +7188,7 @@ nRF52840 Dongle + Wireshark 抓包实战：
 - Android 容忍 ER（random）address
 
 **修复**：
+
 ```c
 // nRF52 Identity Address 修复
 ble_gap_privacy_params_t privacy_params = {
@@ -7170,6 +7208,7 @@ ble_gap_privacy_params_t privacy_params = {
 - 工程师只看代码日志没看出来，抓包直接看到
 
 **修复**：
+
 ```c
 // wake up 后 radio 重新初始化
 nrf_radio_state_reset();
@@ -7227,16 +7266,16 @@ sd_ble_gap_adv_set_configure(&adv_handle, &gap_adv_params,
 
 ## 案例汇总
 
-| # | 现象 | 根因 | 难度 |
-| --- | --- | --- | --- |
-| 1 | RTL8762E 配对 DoS | SMP 状态机 sequencing 错 | 中（CVE） |
-| 2 | 0x3E 断开 | Wi-Fi 干扰 + 同步包丢失 | 低 |
-| 3 | nRF51 ADC 干扰晶振 | 内部耦合 | 中 |
-| 4 | Bonding 残留 | flash 布局错 | 中 |
-| 5 | Notify 没启动 | CCCD 没写 | 低 |
-| 6 | 7.5ms 烧电 | 连接参数没优化 | 低 |
-| 7 | 0x3D MIC 误读 | 错误码方向错 | 中 |
-| 8 | 距离近 | 天线匹配差 | 中 |
+| #   | 现象               | 根因                     | 难度      |
+| --- | ------------------ | ------------------------ | --------- |
+| 1   | RTL8762E 配对 DoS  | SMP 状态机 sequencing 错 | 中（CVE） |
+| 2   | 0x3E 断开          | Wi-Fi 干扰 + 同步包丢失  | 低        |
+| 3   | nRF51 ADC 干扰晶振 | 内部耦合                 | 中        |
+| 4   | Bonding 残留       | flash 布局错             | 中        |
+| 5   | Notify 没启动      | CCCD 没写                | 低        |
+| 6   | 7.5ms 烧电         | 连接参数没优化           | 低        |
+| 7   | 0x3D MIC 误读      | 错误码方向错             | 中        |
+| 8   | 距离近             | 天线匹配差               | 中        |
 
 ## 关联文档
 

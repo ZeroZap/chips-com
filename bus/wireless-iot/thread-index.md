@@ -36,71 +36,71 @@ chips-com/bus/thread-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/thread.md`** — 主题入口, 5 分钟
-2. **`bus/wireless-iot/thread-practical.md`** — 关键参数 / 抓包工具
-3. **`bus/wireless-iot/thread-deep-dive.md`** — 协议栈 / 路由 / 配网
+1. **[[bus/wireless-iot/thread|thread]]** — 主题入口, 5 分钟
+2. **[[bus/wireless-iot/thread-practical|thread-practical]]** — 关键参数 / 抓包工具
+3. **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** — 协议栈 / 路由 / 配网
 
 ### 路径 B: "我在做 Thread 设备产线失败" (现场救火)
 
-1. **`bus/wireless-iot/thread-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/thread-failure-cases.md`** — 找类似案例（9 个）
-3. **`bus/wireless-iot/thread-deep-dive.md`** "## 错误码速查"
+1. **[[bus/wireless-iot/thread-practical|thread-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/thread-failure-cases|thread-failure-cases]]** — 找类似案例（9 个）
+3. **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** "## 错误码速查"
 
 ### 路径 C: "我在做 Thread 协议栈移植" (工程师)
 
-1. **`bus/wireless-iot/thread-deep-dive.md`** "## 协议栈分层"
-2. **`bus/wireless-iot/thread-practical.md`** "## OT CLI 常用命令"
-3. **`bus/wireless-iot/thread-deep-dive.md`** "## MLE / RPL"
+1. **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** "## 协议栈分层"
+2. **[[bus/wireless-iot/thread-practical|thread-practical]]** "## OT CLI 常用命令"
+3. **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** "## MLE / RPL"
 
 ### 路径 D: "我在做 Thread + Matter 集成" (Matter 工程师)
 
-1. **`bus/wireless-iot/thread.md`** "## Matter over Thread"
-2. **`bus/wireless-iot/thread-deep-dive.md`** "## Commissioning"
-3. **`bus/wireless-iot/matter-practical.md`** "## Matter over Thread"
+1. **[[bus/wireless-iot/thread|thread]]** "## Matter over Thread"
+2. **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** "## Commissioning"
+3. **[[bus/wireless-iot/matter-practical|matter-practical]]** "## Matter over Thread"
 
 ### 路径 E: "我在做 Border Router 部署" (运维)
 
-1. **`bus/wireless-iot/thread-practical.md`** "## Border Router 配置"
-2. **`bus/wireless-iot/thread-failure-cases.md`** 案例 6（BR 切换）
-3. **`bus/wireless-iot/thread-deep-dive.md`** "## Border Router"
+1. **[[bus/wireless-iot/thread-practical|thread-practical]]** "## Border Router 配置"
+2. **[[bus/wireless-iot/thread-failure-cases|thread-failure-cases]]** 案例 6（BR 切换）
+3. **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** "## Border Router"
 
 ### 路径 F: "我在做 Thread 大规模部署" (架构师)
 
-1. **`bus/wireless-iot/thread-failure-cases.md`** 案例 4（Router 子节点限制）
-2. **`bus/wireless-iot/thread-practical.md`** "## 关键参数"
-3. **`bus/wireless-iot/thread-deep-dive.md`** "## 性能数据"
+1. **[[bus/wireless-iot/thread-failure-cases|thread-failure-cases]]** 案例 4（Router 子节点限制）
+2. **[[bus/wireless-iot/thread-practical|thread-practical]]** "## 关键参数"
+3. **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** "## 性能数据"
 
 ## 主题速查矩阵
 
 按问题找文档:
 
-| 我想知道 | 看哪里 |
-| --- | --- |
-| 入网流程 | thread-practical.md "## 调试步骤" |
-| PSKc 派生 | thread-deep-dive.md "## PSKc / Joiner Key 派生" |
-| Channel 怎么选 | thread-practical.md "## Channel" |
-| Channel Mask | thread-practical.md "## Channel Mask 实战" |
-| Border Router 配置 | thread-practical.md "## Border Router 配置" |
-| 抓包工具 | thread-practical.md "## 抓包工具" |
-| 5 秒定位 | thread-practical.md "## 5 秒钟定位" |
-| 错误码 | thread-practical.md "## 错误码速查" |
-| RPL 路由 | thread-deep-dive.md "## RPL" |
-| MLE 链路 | thread-deep-dive.md "## MLE" |
-| 6LoWPAN | thread-deep-dive.md "## 6LoWPAN" |
-| 配网（Commissioning） | thread-deep-dive.md "## Commissioning" |
-| 设备类型 | thread.md "## 设备类型" |
-| 地址类型 | thread-deep-dive.md "## 地址" |
-| Network Data | thread-deep-dive.md "## Network Data" |
-| Sleepy End Device | thread-practical.md "## Sleepy End Device 配置" |
-| Joiner 找不到 Commissioner | thread-failure-cases.md 案例 1 |
-| Channel Mask 0 | thread-failure-cases.md 案例 2 |
-| 多网络共信道 | thread-failure-cases.md 案例 3 |
-| REED 升级 Router 失败 | thread-failure-cases.md 案例 4 |
-| RPL 路由震荡 | thread-failure-cases.md 案例 5 |
-| Border Router 切换 | thread-failure-cases.md 案例 6 |
-| SED 频繁唤醒 | thread-failure-cases.md 案例 7 |
-| Network Key 不匹配 | thread-failure-cases.md 案例 8 |
-| IPv6 通信断 | thread-failure-cases.md 案例 9 |
+| 我想知道                   | 看哪里                                          |
+| -------------------------- | ----------------------------------------------- |
+| 入网流程                   | [[bus/wireless-iot/thread-practical\|thread-practical]] "## 调试步骤"               |
+| PSKc 派生                  | [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]] "## PSKc / Joiner Key 派生" |
+| Channel 怎么选             | [[bus/wireless-iot/thread-practical\|thread-practical]] "## Channel"                |
+| Channel Mask               | [[bus/wireless-iot/thread-practical\|thread-practical]] "## Channel Mask 实战"      |
+| Border Router 配置         | [[bus/wireless-iot/thread-practical\|thread-practical]] "## Border Router 配置"     |
+| 抓包工具                   | [[bus/wireless-iot/thread-practical\|thread-practical]] "## 抓包工具"               |
+| 5 秒定位                   | [[bus/wireless-iot/thread-practical\|thread-practical]] "## 5 秒钟定位"             |
+| 错误码                     | [[bus/wireless-iot/thread-practical\|thread-practical]] "## 错误码速查"             |
+| RPL 路由                   | [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]] "## RPL"                    |
+| MLE 链路                   | [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]] "## MLE"                    |
+| 6LoWPAN                    | [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]] "## 6LoWPAN"                |
+| 配网（Commissioning）      | [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]] "## Commissioning"          |
+| 设备类型                   | [[bus/wireless-iot/thread\|thread]] "## 设备类型"                         |
+| 地址类型                   | [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]] "## 地址"                   |
+| Network Data               | [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]] "## Network Data"           |
+| Sleepy End Device          | [[bus/wireless-iot/thread-practical\|thread-practical]] "## Sleepy End Device 配置" |
+| Joiner 找不到 Commissioner | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 1                  |
+| Channel Mask 0             | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 2                  |
+| 多网络共信道               | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 3                  |
+| REED 升级 Router 失败      | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 4                  |
+| RPL 路由震荡               | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 5                  |
+| Border Router 切换         | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 6                  |
+| SED 频繁唤醒               | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 7                  |
+| Network Key 不匹配         | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 8                  |
+| IPv6 通信断                | [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] 案例 9                  |
 
 ## 关键概念地图
 
@@ -231,13 +231,13 @@ thread-index.md (本文件, 导航)
 
 ## Thread 主题 vs 其它主题对比
 
-| 主题 | 篇数 | 大小 | 重点 |
-| --- | --- | --- | --- |
+| 主题       | 篇数  | 大小       | 重点                                  |
+| ---------- | ----- | ---------- | ------------------------------------- |
 | **Thread** | **5** | **~55 KB** | **IPv6 mesh / MLE / RPL / 配网 / BR** |
-| Matter | 5 | ~60 KB | 应用层互操作 / 跨生态 / 配网 / 安全 |
-| BLE | 5 | ~50 KB | 低功耗 + GATT + 配对安全 |
-| ZigBee | 5 | ~70 KB | Mesh 自组网 + ZCL + Trust Center |
-| CAN | 8 | 120 KB | 实时多 master + 错误处理 |
+| Matter     | 5     | ~60 KB     | 应用层互操作 / 跨生态 / 配网 / 安全   |
+| BLE        | 5     | ~50 KB     | 低功耗 + GATT + 配对安全              |
+| ZigBee     | 5     | ~70 KB     | Mesh 自组网 + ZCL + Trust Center      |
+| CAN        | 8     | 120 KB     | 实时多 master + 错误处理              |
 
 **Thread 与 Matter / ZigBee 关系**：
 
@@ -254,20 +254,20 @@ ZigBee Cluster Library → Matter Cluster Library
 
 ## 文档维护
 
-| 文档 | 更新频率 | 维护者 |
-| --- | --- | --- |
-| thread.md | 改版才更新 | 主题入口 |
-| thread-practical.md | 改版才更新 | 速查 / 调试流程 |
-| thread-deep-dive.md | Thread 版本更新 | 原理体系 |
-| thread-failure-cases.md | **持续更新** | 产线案例 |
-| thread-index.md | 新增 / 删除文档时 | 导航 |
+| 文档                    | 更新频率          | 维护者          |
+| ----------------------- | ----------------- | --------------- |
+| [[bus/wireless-iot/thread\|thread]]               | 改版才更新        | 主题入口        |
+| [[bus/wireless-iot/thread-practical\|thread-practical]]     | 改版才更新        | 速查 / 调试流程 |
+| [[bus/wireless-iot/thread-deep-dive\|thread-deep-dive]]     | Thread 版本更新   | 原理体系        |
+| [[bus/wireless-iot/thread-failure-cases\|thread-failure-cases]] | **持续更新**      | 产线案例        |
+| [[bus/wireless-iot/thread-index\|thread-index]]         | 新增 / 删除文档时 | 导航            |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/matter-*.md`** — Matter over Thread（最常见部署）
-- **`bus/zigbee-*.md`** — 同源 PHY 对比（ZigBee 不走 IPv6）
-- **`bus/ble-*.md`** — BLE 配网通道
-- **`bus/ethernet-*.md`** — Matter over Ethernet
+- **[[bus/wireless-iot/matter-index|Matter]]** — Matter over Thread（最常见部署）
+- **[[bus/wireless-iot/zigbee-index|ZigBee]]** — 同源 PHY 对比（ZigBee 不走 IPv6）
+- **[[bus/wireless-iot/ble-index|BLE]]** — BLE 配网通道
+- **[[bus/industrial/ethernet|Ethernet]]** — Matter over Ethernet
 - **`bus/wi-fi-*.md`** — Wi-Fi IoT 协议（待建）
 
 ## 一句话总结

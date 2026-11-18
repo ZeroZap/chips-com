@@ -35,41 +35,41 @@ chips-com/basic/uart-*.md
 
 ### 路径 A: "我刚接触 UART, 想入门" (新人)
 
-1. **`uart-practical.md`** — 调试流程速查, 10 分钟
-2. **`uart-deep-dive.md`** — 原理, 重点:
+1. **[[basic/uart-practical|uart-practical]]** — 调试流程速查, 10 分钟
+2. **[[basic/uart-deep-dive|uart-deep-dive]]** — 原理, 重点:
    - "## UART 接收为什么能不同步"
    - "## 过采样"
    - "## 波特率误差"
    - "## 校验位能解决什么"
-3. **`uart-dma-circular-and-rtos.md`** 第 1-2 节 — DMA 和环形缓冲
+3. **[[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]]** 第 1-2 节 — DMA 和环形缓冲
 
 ### 路径 B: "我在做产线 UART 通信失败" (现场救火)
 
-1. **`uart-practical.md`** "## 5 秒钟定位"
-2. **`uart-deep-dive.md`** "## UART 故障树"
-3. **`uart-failure-cases.md`** — 找类似案例 (21 个)
-4. **`uart-rs485-and-flow-control.md`** 第 4 节 — RS485 方向控制
+1. **[[basic/uart-practical|uart-practical]]** "## 5 秒钟定位"
+2. **[[basic/uart-deep-dive|uart-deep-dive]]** "## UART 故障树"
+3. **[[basic/uart-failure-cases|uart-failure-cases]]** — 找类似案例 (21 个)
+4. **[[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]]** 第 4 节 — RS485 方向控制
 
 ### 路径 C: "我在做 RS485 / Modbus / 工业通信" (工程实现)
 
-1. **`uart-rs485-and-flow-control.md`** — RS485 完整专题
-2. **`uart-dma-circular-and-rtos.md`** — DMA + 环形缓冲
-3. **`uart-failure-cases.md`** 案例 4 / 9 / 10 — RS485 方向 + 距离 + 冲突
-4. **`bus/industrial/rs485-modbus-rtu-deep-dive.md`** — Modbus RTU 协议
+1. **[[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]]** — RS485 完整专题
+2. **[[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]]** — DMA + 环形缓冲
+3. **[[basic/uart-failure-cases|uart-failure-cases]]** 案例 4 / 9 / 10 — RS485 方向 + 距离 + 冲突
+4. **[[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]** — Modbus RTU 协议
 
 ### 路径 D: "我在写 UART 驱动, 要落地代码" (工程实现)
 
-1. **`uart-dma-circular-and-rtos.md`** — 完整代码骨架
-2. **`uart-rs485-and-flow-control.md`** — RS485 严格时序
-3. **`uart-deep-dive.md`** "## UART 状态机" / "## UART 错误码设计"
-4. **`uart-failure-cases.md`** — 看常见坑
+1. **[[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]]** — 完整代码骨架
+2. **[[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]]** — RS485 严格时序
+3. **[[basic/uart-deep-dive|uart-deep-dive]]** "## UART 状态机" / "## UART 错误码设计"
+4. **[[basic/uart-failure-cases|uart-failure-cases]]** — 看常见坑
 
 ### 路径 E: "我在做高速 (>= 1M) UART / 固件下载" (性能)
 
-1. **`uart-deep-dive.md`** "## 波特率计算与误差"
-2. **`uart-dma-circular-and-rtos.md`** — DMA + 环形缓冲 + 性能
-3. **`uart-rs485-and-flow-control.md`** 第 5 节 — 硬件流控
-4. **`uart-failure-cases.md`** 案例 3 / 12 — 高速丢包 + 流控
+1. **[[basic/uart-deep-dive|uart-deep-dive]]** "## 波特率计算与误差"
+2. **[[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]]** — DMA + 环形缓冲 + 性能
+3. **[[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]]** 第 5 节 — 硬件流控
+4. **[[basic/uart-failure-cases|uart-failure-cases]]** 案例 3 / 12 — 高速丢包 + 流控
 
 ## 主题速查矩阵
 
@@ -77,26 +77,26 @@ chips-com/basic/uart-*.md
 
 | 我想知道 | 看哪里 |
 | --- | --- |
-| 波特率怎么算, 误差多少 | uart-deep-dive.md "## 波特率计算与误差" |
-| 帧格式 (8N1, 8E1) 是什么 | uart-deep-dive.md "## UART 帧格式细节" |
-| TX/RX 接反了 | uart-failure-cases.md 案例 1 |
-| 乱码怎么定位 | uart-deep-dive.md "## UART 故障树" + uart-failure-cases.md 案例 2 |
-| 高速丢字节 | uart-failure-cases.md 案例 3 / uart-dma-circular-and-rtos.md |
-| RS485 怎么接 | uart-rs485-and-flow-control.md 第 1-2 节 |
-| RS485 方向控制时序 | uart-rs485-and-flow-control.md 第 3 节 |
-| RS485 总线冲突 | uart-failure-cases.md 案例 10 |
-| 长距离 RS485 | uart-failure-cases.md 案例 9 |
-| 硬件流控 (RTS/CTS) | uart-rs485-and-flow-control.md 第 5 节 |
-| 软件流控 (XON/XOFF) | uart-rs485-and-flow-control.md 第 6 节 |
-| DMA 怎么用 | uart-dma-circular-and-rtos.md 第 2 节 |
-| 环形缓冲怎么实现 | uart-dma-circular-and-rtos.md 第 1 节 |
-| 不定长接收 (idle) | uart-dma-circular-and-rtos.md 第 3 节 |
-| RTOS 怎么集成 | uart-dma-circular-and-rtos.md 第 5 节 |
-| 多任务并发 | uart-dma-circular-and-rtos.md 第 6 节 |
-| 协议分帧 | uart-dma-circular-and-rtos.md 第 4 节 / `stream-protocol-parser-psm.md` L1 |
-| 产线死机案例 | uart-failure-cases.md |
-| UART vs SPI vs I2C | uart-deep-dive.md "## UART vs SPI vs I2C 选型决策" |
-| Modbus RTU | rs485-modbus-rtu-deep-dive.md |
+| 波特率怎么算, 误差多少 | [[basic/uart-deep-dive\|uart-deep-dive]] "## 波特率计算与误差" |
+| 帧格式 (8N1, 8E1) 是什么 | [[basic/uart-deep-dive\|uart-deep-dive]] "## UART 帧格式细节" |
+| TX/RX 接反了 | [[basic/uart-failure-cases\|uart-failure-cases]] 案例 1 |
+| 乱码怎么定位 | [[basic/uart-deep-dive\|uart-deep-dive]] "## UART 故障树" + [[basic/uart-failure-cases\|uart-failure-cases]] 案例 2 |
+| 高速丢字节 | [[basic/uart-failure-cases\|uart-failure-cases]] 案例 3 / [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] |
+| RS485 怎么接 | [[basic/uart-rs485-and-flow-control\|uart-rs485-and-flow-control]] 第 1-2 节 |
+| RS485 方向控制时序 | [[basic/uart-rs485-and-flow-control\|uart-rs485-and-flow-control]] 第 3 节 |
+| RS485 总线冲突 | [[basic/uart-failure-cases\|uart-failure-cases]] 案例 10 |
+| 长距离 RS485 | [[basic/uart-failure-cases\|uart-failure-cases]] 案例 9 |
+| 硬件流控 (RTS/CTS) | [[basic/uart-rs485-and-flow-control\|uart-rs485-and-flow-control]] 第 5 节 |
+| 软件流控 (XON/XOFF) | [[basic/uart-rs485-and-flow-control\|uart-rs485-and-flow-control]] 第 6 节 |
+| DMA 怎么用 | [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] 第 2 节 |
+| 环形缓冲怎么实现 | [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] 第 1 节 |
+| 不定长接收 (idle) | [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] 第 3 节 |
+| RTOS 怎么集成 | [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] 第 5 节 |
+| 多任务并发 | [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] 第 6 节 |
+| 协议分帧 | [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] 第 4 节 / [[basic/stream-protocol-parser-psm\|stream-protocol-parser-psm]] L1 |
+| 产线死机案例 | [[basic/uart-failure-cases\|uart-failure-cases]] |
+| UART vs SPI vs I2C | [[basic/uart-deep-dive\|uart-deep-dive]] "## UART vs SPI vs I2C 选型决策" |
+| Modbus RTU | [[bus/industrial/rs485-modbus-rtu-deep-dive\|rs485-modbus-rtu-deep-dive]] |
 
 ## 关键概念地图
 
@@ -198,29 +198,29 @@ uart-index.md (本文件, 导航)
 
 | 文档 | 更新频率 | 维护者 |
 | --- | --- | --- |
-| uart-practical.md | 改版才更新 | 速查 / 调试流程 |
-| uart-deep-dive.md | 改版才更新 | 原理体系 |
-| uart-failure-cases.md | **持续更新** | 产线案例 |
-| uart-rs485-and-flow-control.md | 改版才更新 | RS485 / 流控 |
-| uart-dma-circular-and-rtos.md | 改版才更新 | DMA / RTOS |
-| uart-index.md | 新增 / 删除文档时 | 导航 |
+| [[basic/uart-practical\|uart-practical]] | 改版才更新 | 速查 / 调试流程 |
+| [[basic/uart-deep-dive\|uart-deep-dive]] | 改版才更新 | 原理体系 |
+| [[basic/uart-failure-cases\|uart-failure-cases]] | **持续更新** | 产线案例 |
+| [[basic/uart-rs485-and-flow-control\|uart-rs485-and-flow-control]] | 改版才更新 | RS485 / 流控 |
+| [[basic/uart-dma-circular-and-rtos\|uart-dma-circular-and-rtos]] | 改版才更新 | DMA / RTOS |
+| [[basic/uart-index\|uart-index]] | 新增 / 删除文档时 | 导航 |
 
 ## 关联主题 (chips-com 其他目录)
 
 - **`i2c-*.md`** — I2C 主题 (12 篇, 145 KB, 对比)
 - **`spi-*.md`** — SPI 主题 (6 篇, 75 KB, 对比)
-- **`rs232-rs485.md`** — 物理层基础
-- **`bus/industrial/modbus.md`** / **`bus/industrial/rs485-modbus-rtu-deep-dive.md`** — Modbus RTU
-- **`bus/automotive/can.md`** — CAN 总线 (用户后续单独做)
-- **`bus/display/mipi-csi-dsi-debug.md`** — 串口调试 sensor
+- **[[basic/rs232-rs485|rs232-rs485]]** — 物理层基础
+- **[[bus/industrial/modbus|modbus]]** / **[[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]** — Modbus RTU
+- **[[bus/automotive/can|can]]** — CAN 总线 (用户后续单独做)
+- **[[bus/display/mipi-csi-dsi-debug|mipi-csi-dsi-debug]]** — 串口调试 sensor
 
 ## 一句话总结
 
 UART 是最简单的异步总线, 但**协议分帧 + RS485 时序 + 流控 + 异步日志**是产线死机的 4 大根因区。从原理到产线案例, 6 篇笔记覆盖完整。
 
-**关联跨协议**：`stream-protocol-parser-psm.md` 把 UART 5 状态机 / TCP MBAP 状态机 / J1939 TP 多包重组 3 档复杂度抽象成统一的"流式协议 PSM 模式库"。
+**关联跨协议**：[[basic/stream-protocol-parser-psm|stream-protocol-parser-psm]] 把 UART 5 状态机 / TCP MBAP 状态机 / J1939 TP 多包重组 3 档复杂度抽象成统一的"流式协议 PSM 模式库"。
 
 ## 更新记录
 
-- 2026-08-23: 关联 `stream-protocol-parser-psm.md` (L1 UART 引用)
+- 2026-08-23: 关联 [[basic/stream-protocol-parser-psm|stream-protocol-parser-psm]] (L1 UART 引用)
 - 2026-07-24: 初版, 6 篇笔记全部完成

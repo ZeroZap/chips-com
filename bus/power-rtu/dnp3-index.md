@@ -74,19 +74,19 @@ chips-com/bus/dnp3-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| DNP3 是啥 | dnp3.md §定位 |
-| 三层架构 | dnp3.md §三层架构 |
-| 链路层帧 | dnp3-deep-dive.md §帧格式详解 |
-| 传输层 | dnp3-deep-dive.md §传输层 |
-| 应用层 | dnp3-deep-dive.md §应用层详解 |
-| 对象变体 | dnp3-deep-dive.md §数据对象完整列表 |
-| Class 报告 | dnp3-deep-dive.md §Class 报告策略 |
-| 命令链 | dnp3-deep-dive.md §命令详解 |
-| 时间 | dnp3-deep-dive.md §时间 |
-| SA v5/v6 | dnp3-deep-dive.md §Secure Authentication (SA) v5 |
-| 一致性测试 | dnp3-deep-dive.md §一致性测试 |
-| 16 个常见故障 | dnp3-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | dnp3-failure-cases.md |
+| DNP3 是啥 | [[bus/power-rtu/dnp3\|dnp3]] §定位 |
+| 三层架构 | [[bus/power-rtu/dnp3\|dnp3]] §三层架构 |
+| 链路层帧 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §帧格式详解 |
+| 传输层 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §传输层 |
+| 应用层 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §应用层详解 |
+| 对象变体 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §数据对象完整列表 |
+| Class 报告 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §Class 报告策略 |
+| 命令链 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §命令详解 |
+| 时间 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §时间 |
+| SA v5/v6 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §Secure Authentication (SA) v5 |
+| 一致性测试 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §一致性测试 |
+| 16 个常见故障 | [[bus/power-rtu/dnp3-deep-dive\|dnp3-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/dnp3-failure-cases\|dnp3-failure-cases]] |
 
 ## DNP3 vs IEC 104
 
@@ -137,10 +137,10 @@ chips-com/bus/dnp3-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/iec104.md`：国内电力 RTU 标配
-- `bus/power-rtu/iec61850.md`：变电站局域网高端
-- `bus/power-rtu/dnp3-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/iec104|iec104]]：国内电力 RTU 标配
+- [[bus/power-rtu/iec61850|iec61850]]：变电站局域网高端
+- [[bus/power-rtu/dnp3-failure-cases|dnp3-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

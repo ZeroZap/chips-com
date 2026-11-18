@@ -36,65 +36,65 @@ chips-com/bus/matter-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/matter.md`** — 主题入口, 5 分钟
-2. **`bus/wireless-iot/matter-practical.md`** — 配网流程 / 关键参数
-3. **`bus/wireless-iot/matter-deep-dive.md`** — 数据模型 / Interaction Model
+1. **[[bus/wireless-iot/matter|matter]]** — 主题入口, 5 分钟
+2. **[[bus/wireless-iot/matter-practical|matter-practical]]** — 配网流程 / 关键参数
+3. **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** — 数据模型 / Interaction Model
 
 ### 路径 B: "我在做 Matter 设备产线失败" (现场救火)
 
-1. **`bus/wireless-iot/matter-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/matter-failure-cases.md`** — 找类似案例（8 个）
-3. **`bus/wireless-iot/matter-deep-dive.md`** "## 错误码速查"
+1. **[[bus/wireless-iot/matter-practical|matter-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/matter-failure-cases|matter-failure-cases]]** — 找类似案例（8 个）
+3. **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** "## 错误码速查"
 
 ### 路径 C: "我在做 Matter 协议栈移植" (工程师)
 
-1. **`bus/wireless-iot/matter-deep-dive.md`** "## 协议栈分层"
-2. **`bus/wireless-iot/matter-practical.md`** "## chip-tool 常用命令"
-3. **`bus/wireless-iot/matter-failure-cases.md`** 案例 1 / 2（配网 / CASE）
+1. **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** "## 协议栈分层"
+2. **[[bus/wireless-iot/matter-practical|matter-practical]]** "## chip-tool 常用命令"
+3. **[[bus/wireless-iot/matter-failure-cases|matter-failure-cases]]** 案例 1 / 2（配网 / CASE）
 
 ### 路径 D: "我在做 Matter 安全加固" (安全工程师)
 
-1. **`bus/wireless-iot/matter-deep-dive.md`** "## 安全模型"
-2. **`bus/wireless-iot/matter-deep-dive.md`** "## 证书链"
-3. **`bus/wireless-iot/matter-failure-cases.md`** 案例 5（OTA 签名）
+1. **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** "## 安全模型"
+2. **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** "## 证书链"
+3. **[[bus/wireless-iot/matter-failure-cases|matter-failure-cases]]** 案例 5（OTA 签名）
 
 ### 路径 E: "我在做 Matter 选型" (架构师)
 
-1. **`bus/wireless-iot/matter.md`** "## 典型芯片"
-2. **`bus/wireless-iot/matter-deep-dive.md`** "## Matter over Thread / Wi-Fi / Ethernet"
-3. **`bus/wireless-iot/matter-practical.md`** "## 性能数据"
+1. **[[bus/wireless-iot/matter|matter]]** "## 典型芯片"
+2. **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** "## Matter over Thread / Wi-Fi / Ethernet"
+3. **[[bus/wireless-iot/matter-practical|matter-practical]]** "## 性能数据"
 
 ### 路径 F: "我在准备 Matter 认证" (CSA 认证工程师)
 
-1. **`bus/wireless-iot/matter-failure-cases.md`** 案例 7（Cluster 顺序）
-2. **`bus/wireless-iot/matter-deep-dive.md`** "## Matter 设备类型（Device Type Library）"
-3. **`bus/wireless-iot/matter-practical.md`** "## Matter 认证测试"
+1. **[[bus/wireless-iot/matter-failure-cases|matter-failure-cases]]** 案例 7（Cluster 顺序）
+2. **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** "## Matter 设备类型（Device Type Library）"
+3. **[[bus/wireless-iot/matter-practical|matter-practical]]** "## Matter 认证测试"
 
 ## 主题速查矩阵
 
 按问题找文档:
 
-| 我想知道 | 看哪里 |
-| --- | --- |
-| 配网流程 | matter-practical.md "## 配网流程" |
-| Setup Payload 怎么生成 | matter-practical.md "## Setup Payload" |
-| BLE 0xFEAF 抓包 | matter-practical.md "## Commissionable Discovery 抓包" |
-| 5 秒定位 | matter-practical.md "## 5 秒钟定位" |
-| 数据模型 | matter-deep-dive.md "## 数据模型" |
-| Interaction Model | matter-deep-dive.md "## Interaction Model" |
-| PASE 协议 | matter-deep-dive.md "## PASE" |
-| CASE 协议 | matter-deep-dive.md "## CASE" |
-| Attestation | matter-deep-dive.md "## Attestation" |
-| ACL | matter-deep-dive.md "## Access Control" |
-| 跨 Fabric | matter-deep-dive.md "## 多 Fabric" |
-| Binding | matter-deep-dive.md "## Subscription / Binding" |
-| OTA 升级 | matter-deep-dive.md "## OTA 升级" |
-| Matter over Thread | matter-deep-dive.md "## Matter over Thread / Wi-Fi / Ethernet" |
-| Device Type | matter-deep-dive.md "## Matter 设备类型" |
-| Cluster 顺序 | matter-failure-cases.md 案例 7 |
-| 跨生态测试 | matter-practical.md "## 跨生态测试" |
-| IM 错误码 | matter-practical.md "## Matter IM 错误" |
-| 性能数据 | matter-practical.md "## 性能数据" |
+| 我想知道               | 看哪里                                                         |
+| ---------------------- | -------------------------------------------------------------- |
+| 配网流程               | [[bus/wireless-iot/matter-practical\|matter-practical]] "## 配网流程"                              |
+| Setup Payload 怎么生成 | [[bus/wireless-iot/matter-practical\|matter-practical]] "## Setup Payload"                         |
+| BLE 0xFEAF 抓包        | [[bus/wireless-iot/matter-practical\|matter-practical]] "## Commissionable Discovery 抓包"         |
+| 5 秒定位               | [[bus/wireless-iot/matter-practical\|matter-practical]] "## 5 秒钟定位"                            |
+| 数据模型               | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## 数据模型"                              |
+| Interaction Model      | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## Interaction Model"                     |
+| PASE 协议              | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## PASE"                                  |
+| CASE 协议              | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## CASE"                                  |
+| Attestation            | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## Attestation"                           |
+| ACL                    | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## Access Control"                        |
+| 跨 Fabric              | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## 多 Fabric"                             |
+| Binding                | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## Subscription / Binding"                |
+| OTA 升级               | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## OTA 升级"                              |
+| Matter over Thread     | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## Matter over Thread / Wi-Fi / Ethernet" |
+| Device Type            | [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]] "## Matter 设备类型"                       |
+| Cluster 顺序           | [[bus/wireless-iot/matter-failure-cases\|matter-failure-cases]] 案例 7                                 |
+| 跨生态测试             | [[bus/wireless-iot/matter-practical\|matter-practical]] "## 跨生态测试"                            |
+| IM 错误码              | [[bus/wireless-iot/matter-practical\|matter-practical]] "## Matter IM 错误"                        |
+| 性能数据               | [[bus/wireless-iot/matter-practical\|matter-practical]] "## 性能数据"                              |
 
 ## 关键概念地图
 
@@ -219,13 +219,13 @@ matter-index.md (本文件, 导航)
 
 ## Matter 主题 vs 其它主题对比
 
-| 主题 | 篇数 | 大小 | 重点 |
-| --- | --- | --- | --- |
+| 主题       | 篇数  | 大小       | 重点                                    |
+| ---------- | ----- | ---------- | --------------------------------------- |
 | **Matter** | **5** | **~60 KB** | **应用层互操作 / 跨生态 / 配网 / 安全** |
-| Thread | 5 | ~50 KB | mesh / 6LoWPAN / IPv6 / Border Router |
-| BLE | 5 | ~50 KB | 低功耗 + GATT + 配对安全 |
-| ZigBee | 5 | ~70 KB | Mesh 自组网 + ZCL + Trust Center |
-| CAN | 8 | 120 KB | 实时多 master + 错误处理 |
+| Thread     | 5     | ~50 KB     | mesh / 6LoWPAN / IPv6 / Border Router   |
+| BLE        | 5     | ~50 KB     | 低功耗 + GATT + 配对安全                |
+| ZigBee     | 5     | ~70 KB     | Mesh 自组网 + ZCL + Trust Center        |
+| CAN        | 8     | 120 KB     | 实时多 master + 错误处理                |
 
 **Matter 与 Thread / ZigBee / BLE 关系**：
 
@@ -243,21 +243,21 @@ Matter 也跑在 Wi-Fi / Ethernet
 
 ## 文档维护
 
-| 文档 | 更新频率 | 维护者 |
-| --- | --- | --- |
-| matter.md | 改版才更新 | 主题入口 |
-| matter-practical.md | 改版才更新 | 速查 / 调试流程 |
-| matter-deep-dive.md | Matter 版本更新 | 原理体系 |
-| matter-failure-cases.md | **持续更新** | 产线案例 |
-| matter-index.md | 新增 / 删除文档时 | 导航 |
+| 文档                    | 更新频率          | 维护者          |
+| ----------------------- | ----------------- | --------------- |
+| [[bus/wireless-iot/matter\|matter]]               | 改版才更新        | 主题入口        |
+| [[bus/wireless-iot/matter-practical\|matter-practical]]     | 改版才更新        | 速查 / 调试流程 |
+| [[bus/wireless-iot/matter-deep-dive\|matter-deep-dive]]     | Matter 版本更新   | 原理体系        |
+| [[bus/wireless-iot/matter-failure-cases\|matter-failure-cases]] | **持续更新**      | 产线案例        |
+| [[bus/wireless-iot/matter-index\|matter-index]]         | 新增 / 删除文档时 | 导航            |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/thread-*.md`** — Matter over Thread（Matter 最常见部署）
-- **`bus/ble-*.md`** — BLE 配网通道
-- **`bus/zigbee-*.md`** — Cluster 沿用参考
-- **`bus/uds-*.md`** — 诊断协议（不同领域）
-- **`bus/ethernet-*.md`** — Matter over Ethernet
+- **[[bus/wireless-iot/thread-index|Thread]]** — Matter over Thread（Matter 最常见部署）
+- **[[bus/wireless-iot/ble-index|BLE]]** — BLE 配网通道
+- **[[bus/wireless-iot/zigbee-index|ZigBee]]** — Cluster 沿用参考
+- **[[bus/automotive/uds-index|UDS]]** — 诊断协议（不同领域）
+- **[[bus/industrial/ethernet|Ethernet]]** — Matter over Ethernet
 
 ## 一句话总结
 

@@ -71,32 +71,32 @@ chips-com/bus/dlt645-*.md
 
 ## 主题速查矩阵
 
-| 你想知道的事 | 文档位置 |
-| --- | --- |
-| DL/T 645 是啥 | dlt645.md §定位 |
-| 645-1997 vs 645-2007 | dlt645-deep-dive.md §版本对比 |
-| 帧格式 68 ... 68 ... 16 | dlt645-practical.md §帧格式速记 |
-| 表地址 6 字节 BCD | dlt645-deep-dive.md §表地址 |
-| DI 4 字节字典 | dlt645-deep-dive.md §数据标识（DI） |
-| 控制码 0x01/0x06 | dlt645-practical.md §控制码速查 |
-| 写数据密码流程 | dlt645-deep-dive.md §密码管理 |
-| 多帧协议（块读） | dlt645-deep-dive.md §多帧协议（块读） |
-| ESAM 安全 | dlt645-deep-dive.md §安全合规 |
-| BCD 解码 | dlt645-deep-dive.md §BCD 解码 |
-| 红外手持 | 通信 | dlt645-deep-dive.md §红外通信 |
-| 16 个常见故障 | dlt645-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | dlt645-failure-cases.md |
+| 你想知道的事            | 文档位置                                                               |
+| ----------------------- | ---------------------------------------------------------------------- |
+| DL/T 645 是啥           | [[bus/power-rtu/dlt645\|dlt645]] §定位                                 |
+| 645-1997 vs 645-2007    | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §版本对比         |
+| 帧格式 68 ... 68 ... 16 | [[bus/power-rtu/dlt645-practical\|dlt645-practical]] §帧格式速记       |
+| 表地址 6 字节 BCD       | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §表地址           |
+| DI 4 字节字典           | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §数据标识（DI）   |
+| 控制码 0x01/0x06        | [[bus/power-rtu/dlt645-practical\|dlt645-practical]] §控制码速查       |
+| 写数据密码流程          | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §密码管理         |
+| 多帧协议（块读）        | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §多帧协议（块读） |
+| ESAM 安全               | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §安全合规         |
+| BCD 解码                | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §BCD 解码         |
+| 红外手持通信            | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §红外通信         |
+| 16 个常见故障           | [[bus/power-rtu/dlt645-deep-dive\|dlt645-deep-dive]] §现场常见故障     |
+| 20 个产线死机案例       | [[bus/power-rtu/dlt645-failure-cases\|dlt645-failure-cases]]           |
 
 ## DL/T 645 vs CJ/T 188
 
-| 维度 | DL/T 645 | CJ/T 188 |
-| --- | --- | --- |
-| 应用 | 电能表 | 水气热量表 |
-| 表地址 | 6 字节 BCD | 7 字节 BCD |
-| DI 编码 | 4 字节 | 4 字节 |
-| 数据格式 | BCD | BCD |
-| 帧格式 | 68 ... 68 ... 16 | 68 ... 68 ... 16 |
-| 控制码 | 0x01/0x06 等 | 0x01/0x06 等 |
+| 维度     | DL/T 645         | CJ/T 188         |
+| -------- | ---------------- | ---------------- |
+| 应用     | 电能表           | 水气热量表       |
+| 表地址   | 6 字节 BCD       | 7 字节 BCD       |
+| DI 编码  | 4 字节           | 4 字节           |
+| 数据格式 | BCD              | BCD              |
+| 帧格式   | 68 ... 68 ... 16 | 68 ... 68 ... 16 |
+| 控制码   | 0x01/0x06 等     | 0x01/0x06 等     |
 
 两者结构相似，但 DI 字典完全不同。
 
@@ -134,10 +134,10 @@ chips-com/bus/dlt645-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/cjt188.md`：水气热量表协议（与 DL/T 645 结构类似）
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/industrial/rs485-modbus-rtu-practical.md`：RS485 半双工基础
-- `bus/power-rtu/dlt645-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/cjt188|cjt188]]：水气热量表协议（与 DL/T 645 结构类似）
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/industrial/rs485-modbus-rtu-practical|rs485-modbus-rtu-practical]]：RS485 半双工基础
+- [[bus/power-rtu/dlt645-failure-cases|dlt645-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

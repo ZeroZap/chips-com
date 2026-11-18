@@ -11,6 +11,7 @@ tags:
 ## 目标
 
 把产线常见的 J1939 通信失败、地址冲突、DM1 报错、传输协议错误等问题写成案例库。每个案例:
+
 - 现象 (现场)
 - 抓波形 / DBC 分析 (判断)
 - 定位 (根因)
@@ -56,7 +57,7 @@ uint64_t get_unique_name() {
     HAL_GetUIDw0(&uid[0]);  /* STM32 96 bit UID */
     HAL_GetUIDw1(&uid[1]);
     HAL_GetUIDw2(&uid[2]);
-    
+
     uint64_t name = 0;
     name |= ((uint64_t)(uid[2] & 0x1FFFFF) << 43);  /* 身份号 21 bit */
     name |= ((uint64_t)MY_MANUFACTURER_CODE << 35);  /* 厂商代码 11 bit */
@@ -119,7 +120,7 @@ void dm1_report() {
 
 - DM1 报 active DTC, DM2 报历史 DTC
 - 清除 DTC 时, CM 重置
-- 详细见 `bus/uds-*.md`
+- 详细见 [[bus/automotive/uds-index|UDS]]
 
 ---
 
@@ -150,17 +151,17 @@ TP 协议:
 int send_firmware_ecu(uint8_t *firmware, int len) {
     /* RTS (Request To Send) */
     can_send_tp_cm(PGN_TP_CM, RTS_MSG, total_bytes, total_packets, ...);
-    
+
     /* 等 CTS (Clear To Send) */
     wait_for_cts();
-    
+
     /* 按 CTS 指示的包数发 */
     for (packet = 0; packet < total_packets; packet++) {
         can_send_tp_dt(packet_num, data[packet]);
         /* 等下一 CTS */
         if (need_more_cts) wait_for_cts();
     }
-    
+
     /* EndOfMsgAck */
     wait_for_eoma();
     return 0;
@@ -171,7 +172,7 @@ int send_firmware_ecu(uint8_t *firmware, int len) {
 
 - 固件下载必须用 RTS/CTS (有重传)
 - BAM 只用于"广播" 场景 (e.g. 全网同步配置)
-- 详细见 `bus/automotive/j1939-transport-protocol.md`
+- 详细见 [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]]
 
 ---
 
@@ -208,7 +209,7 @@ can_send_ext_id(0x18EAFFFE, pgn, 3);
 ### 复盘
 
 - J1939 PGN 请求格式: ID 0x18EA** (PF=234, PS=255, target=0xFE)
-- 详细见 `bus/automotive/j1939-deep-dive.md` "## Request PGN"
+- 详细见 [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] "## Request PGN"
 
 ---
 
@@ -248,7 +249,7 @@ struct spn_data {
 
 - SPN 是局部编号, 跨 PGN 才有意义
 - 诊断工具必须按 (SA, PGN, SPN) 索引数据
-- 详细见 `bus/automotive/j1939-deep-dive.md` "## SPN 编号"
+- 详细见 [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] "## SPN 编号"
 
 ---
 
@@ -293,7 +294,7 @@ void send_cts(uint8_t next_packet, uint8_t max_packets) {
 
 - J1939-21 协议格式严格
 - 字节序和字段位置错, 整批数据错乱
-- 详细见 `bus/automotive/j1939-transport-protocol.md`
+- 详细见 [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]]
 
 ---
 
@@ -338,7 +339,7 @@ void can_process_task(void *arg) {
 
 - 高频广播需要接收方有专用处理任务
 - 不能用低优先级循环处理
-- 详细见 `can-rtos-integration.md`
+- 详细见 [[basic/can-rtos-integration|can-rtos-integration]]
 
 ---
 
@@ -386,7 +387,7 @@ uint64_t build_name(
 
 - NAME 字段是 J1939 身份核心
 - 厂商代码必须从 SAE 申请, 不能用 0
-- 详细见 `bus/automotive/j1939-network-management.md`
+- 详细见 [[bus/automotive/j1939-network-management|j1939-network-management]]
 
 ---
 
@@ -421,7 +422,7 @@ void dm14_handler(uint8_t *data, int len) {
        如果特定 SPN: 只清匹配的
        如果全 0xFF: 清所有 (谨慎!)
     */
-    
+
     if (specific_spn_requested) {
         clear_specific_dtc(spn, fmi);
     } else {
@@ -508,7 +509,7 @@ PGN 0xFEEE 是 SAE 保留的, 不同 OEM 自己定义。**0xFEEE 不是公共 PG
 
 - PGN 0xFEE0-0xFEFF 是 SAE 保留
 - 各厂商自定义会造成冲突
-- 详细见 `bus/automotive/j1939-deep-dive.md` "## PGN 分类"
+- 详细见 [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] "## PGN 分类"
 
 ---
 
@@ -546,7 +547,7 @@ J1939-14 物理层 (500 kbaud):
 
 - J1939-11 和 J1939-14 终端电阻位置不同
 - 产线必须验证 OBD 接口
-- 详细见 `can-failure-cases.md` 案例 2
+- 详细见 [[basic/can-failure-cases|can-failure-cases]] 案例 2
 
 ---
 
@@ -581,7 +582,7 @@ can_send_id(0x0CF6F104, data, 8);
 - J1939 PGN 优先级 (0-7) 由 CAN ID bit 26-28 决定
 - 0 = 最高, 7 = 最低
 - 关键报文 (发动机, 制动) 用 0-2
-- 详细见 `bus/automotive/j1939-deep-dive.md` "## CAN ID 编码"
+- 详细见 [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] "## CAN ID 编码"
 
 ---
 
@@ -616,11 +617,11 @@ data[4] = (fmi & 0x1F) | ((spn >> 16) << 5);  /* 错 */
 /* 对: 严格按 SAE J1939-73 编码 */
 void encode_dtc(uint32_t spn, uint8_t fmi, uint8_t occurrence_count, uint8_t *data) {
     /* data 是 4 字节: data[0]=lamp, data[1]=reserved/lamp, data[2-3]=SPN+encoded FMI */
-    
+
     uint32_t spn_low = spn & 0xFFFF;           /* 低 16 bit */
     uint8_t  spn_high = (spn >> 16) & 0x1F;     /* 高 5 bit */
     uint8_t  fmi_5bit = fmi & 0x1F;             /* 5 bit */
-    
+
     /* SAE 编码 */
     data[3] = spn_low & 0xFF;                   /* 字节 3 = SPN bit 7-0 */
     data[4] = ((spn_low >> 8) & 0xFF) |          /* 字节 4 = SPN bit 15-8 */
@@ -712,7 +713,7 @@ if (address_in_use(assigned_address)) {
 
 - J1939 地址分配必须 OEM 严格管理
 - 同一地址被多个 ECU 占用, 整个网络混乱
-- 详细见 `bus/automotive/j1939-network-management.md`
+- 详细见 [[bus/automotive/j1939-network-management|j1939-network-management]]
 
 ---
 
@@ -746,7 +747,7 @@ if (heartbeat_lost_timeout(30s)) {  /* 1Hz 心跳, 30s 阈值 */
 
 - 心跳超时时间必须 > 3 倍心跳周期
 - 考虑网络延迟 + 网关过滤
-- 详细见 `bus/automotive/j1939-network-management.md`
+- 详细见 [[bus/automotive/j1939-network-management|j1939-network-management]]
 
 ---
 
@@ -763,6 +764,7 @@ PGN 65265 (CCVS - Cruise Control/Vehicle Speed) 解析错。
 ### 定位
 
 PGN 65265 字段定义:
+
 ```text
 字节 0-1:  车速 (1/256 km/h)
 字节 2-3:  巡航控制车速 (1/256 km/h)
@@ -831,7 +833,7 @@ void dm1_send() {
 
 - DM1 单帧最多 2 个 DTC
 - 多 DTC 用 TP 协议 (BAM 或 RTS/CTS)
-- 详细见 `bus/automotive/j1939-transport-protocol.md`
+- 详细见 [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]]
 
 ---
 
@@ -848,6 +850,7 @@ void dm1_send() {
 ### 定位
 
 J1939-84 一致性测试覆盖:
+
 - 地址声明
 - 关键 PGN 应答
 - DM 格式
@@ -911,13 +914,13 @@ CAN 物理层 (终端 / EMC)      10%
 
 ## 关联文档
 
-- `bus/automotive/j1939-deep-dive.md` 原理
-- `bus/automotive/j1939-practical.md` 速查
-- `bus/automotive/j1939-transport-protocol.md` TP 多帧传输
-- `bus/automotive/j1939-network-management.md` 地址声明 / 网络管理
-- `bus/automotive/j1939-index.md` 导航
-- `can-deep-dive.md` CAN 基础
-- `can-failure-cases.md` CAN 产线案例
-- `can-multimaster-and-bus-off.md` CAN 多 master / Bus Off
-- `bus/uds-*.md` UDS 诊断
-- `bus/iso-tp-*.md` ISO-TP
+- [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] 原理
+- [[bus/automotive/j1939-practical|j1939-practical]] 速查
+- [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]] TP 多帧传输
+- [[bus/automotive/j1939-network-management|j1939-network-management]] 地址声明 / 网络管理
+- [[bus/automotive/j1939-index|j1939-index]] 导航
+- [[basic/can-deep-dive|can-deep-dive]] CAN 基础
+- [[basic/can-failure-cases|can-failure-cases]] CAN 产线案例
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] CAN 多 master / Bus Off
+- [[bus/automotive/uds-index|UDS]] 诊断
+- [[bus/automotive/iso-tp-index|ISO-TP]]

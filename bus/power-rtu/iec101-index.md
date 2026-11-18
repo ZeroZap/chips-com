@@ -74,20 +74,20 @@ chips-com/bus/iec101-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| IEC 101 是啥 | iec101.md §定位 |
-| FT1.2 帧格式 | iec101.md §FT1.2 帧结构 |
-| 固定长度帧 | iec101-practical.md §帧格式速记 |
-| 可变长度帧 | iec101-practical.md §帧格式速记 |
-| 控制域 1 字节 | iec101-deep-dive.md §控制域字节编码 |
-| DIR / PRM / FCB / FCV | iec101-deep-dive.md §FCB / FCV 翻转机制 |
-| 校验字节 CS | iec101-deep-dive.md §FT1.2 帧格式细节 |
-| 平衡 / 非平衡传输 | iec101-deep-dive.md §平衡 / 非平衡模式差异 |
-| 链路建立流程 | iec101-practical.md §链路建立过程 |
-| 主站实现要点 | iec101-deep-dive.md §主站实现要点 |
-| RTU 实现要点 | iec101-deep-dive.md §RTU 实现要点 |
-| 16 个常见故障 | iec101-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | iec101-failure-cases.md |
-| IEC 101 与 IEC 104 关系 | iec101.md §定位 |
+| IEC 101 是啥 | [[bus/power-rtu/iec101\|iec101]] §定位 |
+| FT1.2 帧格式 | [[bus/power-rtu/iec101\|iec101]] §FT1.2 帧结构 |
+| 固定长度帧 | [[bus/power-rtu/iec101-practical\|iec101-practical]] §帧格式速记 |
+| 可变长度帧 | [[bus/power-rtu/iec101-practical\|iec101-practical]] §帧格式速记 |
+| 控制域 1 字节 | [[bus/power-rtu/iec101-deep-dive\|iec101-deep-dive]] §控制域字节编码 |
+| DIR / PRM / FCB / FCV | [[bus/power-rtu/iec101-deep-dive\|iec101-deep-dive]] §FCB / FCV 翻转机制 |
+| 校验字节 CS | [[bus/power-rtu/iec101-deep-dive\|iec101-deep-dive]] §FT1.2 帧格式细节 |
+| 平衡 / 非平衡传输 | [[bus/power-rtu/iec101-deep-dive\|iec101-deep-dive]] §平衡 / 非平衡模式差异 |
+| 链路建立流程 | [[bus/power-rtu/iec101-practical\|iec101-practical]] §链路建立过程 |
+| 主站实现要点 | [[bus/power-rtu/iec101-deep-dive\|iec101-deep-dive]] §主站实现要点 |
+| RTU 实现要点 | [[bus/power-rtu/iec101-deep-dive\|iec101-deep-dive]] §RTU 实现要点 |
+| 16 个常见故障 | [[bus/power-rtu/iec101-deep-dive\|iec101-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/iec101-failure-cases\|iec101-failure-cases]] |
+| IEC 101 与 IEC 104 关系 | [[bus/power-rtu/iec101\|iec101]] §定位 |
 
 ## IEC 101 vs IEC 104 关键差异
 
@@ -135,10 +135,10 @@ chips-com/bus/iec101-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/iec104.md`：IEC 101 的 TCP 升级版
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/industrial/rs485-modbus-rtu-practical.md`：RS485 半双工基础
-- `bus/power-rtu/iec101-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/iec104|iec104]]：IEC 101 的 TCP 升级版
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/industrial/rs485-modbus-rtu-practical|rs485-modbus-rtu-practical]]：RS485 半双工基础
+- [[bus/power-rtu/iec101-failure-cases|iec101-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

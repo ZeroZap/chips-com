@@ -39,39 +39,39 @@ chips-com/bus/plb-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/plb.md`** — 主题入口, 5 分钟
-2. **`bus/wireless-iot/plb-practical.md`** — 关键参数 / 5 秒定位 / 烧录脚本
-3. **`bus/wireless-iot/plb-deep-dive.md`** — COSPAS-SARSAT 系统 + 406 MHz 编码
+1. **[[bus/wireless-iot/plb|plb]]** — 主题入口, 5 分钟
+2. **[[bus/wireless-iot/plb-practical|plb-practical]]** — 关键参数 / 5 秒定位 / 烧录脚本
+3. **[[bus/wireless-iot/plb-deep-dive|plb-deep-dive]]** — COSPAS-SARSAT 系统 + 406 MHz 编码
 
 ### 路径 B: "我在做 PLB 产线失败" (现场救火)
 
-1. **`bus/wireless-iot/plb-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/plb-failure-cases.md`** — 找类似案例（9 个）
-3. **`bus/wireless-iot/plb-deep-dive.md`** "## 关键芯片深度" 章节
+1. **[[bus/wireless-iot/plb-practical|plb-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/plb-failure-cases|plb-failure-cases]]** — 找类似案例（9 个）
+3. **[[bus/wireless-iot/plb-deep-dive|plb-deep-dive]]** "## 关键芯片深度" 章节
 
 ### 路径 C: "我在做 PLB 固件 / 协议栈" (工程师)
 
-1. **`bus/wireless-iot/plb-deep-dive.md`** "## 406 MHz 物理层" + "## BCH 纠错"
-2. **`bus/wireless-iot/plb-practical.md`** "## 烧录 UIN 实战"
-3. **`bus/wireless-iot/plb-failure-cases.md`** 案例 2 (BCH 错) + 案例 8 (协议码错)
+1. **[[bus/wireless-iot/plb-deep-dive|plb-deep-dive]]** "## 406 MHz 物理层" + "## BCH 纠错"
+2. **[[bus/wireless-iot/plb-practical|plb-practical]]** "## 烧录 UIN 实战"
+3. **[[bus/wireless-iot/plb-failure-cases|plb-failure-cases]]** 案例 2 (BCH 错) + 案例 8 (协议码错)
 
 ### 路径 D: "我在做 PLB 认证 (COSPAS-SARSAT T.007)" (认证工程师)
 
-1. **`bus/wireless-iot/plb-deep-dive.md`** "## 认证深挖"
-2. **`bus/wireless-iot/plb-practical.md`** "## 认证检查清单"
-3. **`bus/wireless-iot/plb-failure-cases.md`** 案例 2 / 3 (BCH + 121.5 频偏)
+1. **[[bus/wireless-iot/plb-deep-dive|plb-deep-dive]]** "## 认证深挖"
+2. **[[bus/wireless-iot/plb-practical|plb-practical]]** "## 认证检查清单"
+3. **[[bus/wireless-iot/plb-failure-cases|plb-failure-cases]]** 案例 2 / 3 (BCH + 121.5 频偏)
 
 ### 路径 E: "我在做 PLB 选型" (架构师 / 采购)
 
-1. **`bus/wireless-iot/plb.md`** "## 关键芯片 / 模块"
-2. **`bus/wireless-iot/plb-deep-dive.md`** "## 关键芯片深度" (Microsemi / 海积 / LKT4211 / u-blox)
-3. **`bus/wireless-iot/plb-practical.md`** "## 性能数据参考"
+1. **[[bus/wireless-iot/plb|plb]]** "## 关键芯片 / 模块"
+2. **[[bus/wireless-iot/plb-deep-dive|plb-deep-dive]]** "## 关键芯片深度" (Microsemi / 海积 / LKT4211 / u-blox)
+3. **[[bus/wireless-iot/plb-practical|plb-practical]]** "## 性能数据参考"
 
 ### 路径 F: "我在做 PLB 应急救援 / 户外产品" (产品经理)
 
-1. **`bus/wireless-iot/plb.md`** 主题入口
-2. **`bus/wireless-iot/plb.md`** "## 跟卫星通讯 / Garmin inReach 的关系"
-3. **`bus/wireless-iot/plb-failure-cases.md`** 案例 5 (误触) + 案例 9 (电池低温)
+1. **[[bus/wireless-iot/plb|plb]]** 主题入口
+2. **[[bus/wireless-iot/plb|plb]]** "## 跟卫星通讯 / Garmin inReach 的关系"
+3. **[[bus/wireless-iot/plb-failure-cases|plb-failure-cases]]** 案例 5 (误触) + 案例 9 (电池低温)
 
 ## 主题速查矩阵
 
@@ -79,36 +79,36 @@ chips-com/bus/plb-*.md
 
 | 我想知道 | 看哪里 |
 | --- | --- |
-| 什么是 PLB | plb.md "## 定位" |
-| 跟 EPIRB / ELT 区别 | plb.md "## 跟 EPIRB / ELT 的关系" |
-| 跟 inReach 区别 | plb.md "## 跟卫星通讯 / Garmin inReach 的关系" |
-| COSPAS-SARSAT 系统架构 | plb-deep-dive.md "## COSPAS-SARSAT 系统架构" |
-| 406 MHz 物理层 | plb-deep-dive.md "## 406 MHz 物理层" |
-| BCH 纠错 | plb-deep-dive.md "## 406 MHz 物理层" "## 协议解析实战" |
-| UIN 编码规则 | plb-deep-dive.md "## UIN 编码" |
-| MID 国家码表 | plb-deep-dive.md "## MID 分配" |
-| 121.5 MHz 测向 | plb-deep-dive.md "## 121.5 MHz 测向原理" |
-| GNSS 集成 | plb-deep-dive.md "## GNSS 集成" |
-| 多普勒定位原理 | plb-deep-dive.md "## 多普勒定位原理" |
-| 整机硬件 | plb-deep-dive.md "## 整机架构" |
-| Microsemi Syracuse 4 | plb-deep-dive.md "## Microsemi（Microchip）Syracuse 4 系列" |
-| 国产海积 HZB406 | plb-deep-dive.md "## 国产海积 HZB406" |
-| LKT4211 模组 | plb-deep-dive.md "## LKT4211（121.5 MHz 模组）" |
-| 5 秒定位 | plb-practical.md "## 5 秒钟定位" |
-| 抓包工具 | plb-practical.md "## 抓包工具" |
-| 烧录 UIN 脚本 | plb-practical.md "## 烧录 UIN 实战" |
-| 电池测试 | plb-practical.md "## 触发测试" |
-| 认证检查清单 | plb-practical.md "## 认证检查清单" |
-| 注册 UIN | plb-practical.md "## 配网流程" |
-| UIN 重复问题 | plb-failure-cases.md 案例 1 |
-| BCH 编码错 | plb-failure-cases.md 案例 2 |
-| 121.5 MHz 频偏 | plb-failure-cases.md 案例 3 |
-| 电池续航短 | plb-failure-cases.md 案例 4 |
-| 防误触设计 | plb-failure-cases.md 案例 5 |
-| 浸水失效 | plb-failure-cases.md 案例 6 |
-| GNSS 拉低频慢 | plb-failure-cases.md 案例 7 |
-| 协议码错 | plb-failure-cases.md 案例 8 |
-| 电池低温跌容 | plb-failure-cases.md 案例 9 |
+| 什么是 PLB | [[bus/wireless-iot/plb\|plb]] "## 定位" |
+| 跟 EPIRB / ELT 区别 | [[bus/wireless-iot/plb\|plb]] "## 跟 EPIRB / ELT 的关系" |
+| 跟 inReach 区别 | [[bus/wireless-iot/plb\|plb]] "## 跟卫星通讯 / Garmin inReach 的关系" |
+| COSPAS-SARSAT 系统架构 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## COSPAS-SARSAT 系统架构" |
+| 406 MHz 物理层 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## 406 MHz 物理层" |
+| BCH 纠错 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## 406 MHz 物理层" "## 协议解析实战" |
+| UIN 编码规则 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## UIN 编码" |
+| MID 国家码表 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## MID 分配" |
+| 121.5 MHz 测向 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## 121.5 MHz 测向原理" |
+| GNSS 集成 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## GNSS 集成" |
+| 多普勒定位原理 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## 多普勒定位原理" |
+| 整机硬件 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## 整机架构" |
+| Microsemi Syracuse 4 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## Microsemi（Microchip）Syracuse 4 系列" |
+| 国产海积 HZB406 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## 国产海积 HZB406" |
+| LKT4211 模组 | [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] "## LKT4211（121.5 MHz 模组）" |
+| 5 秒定位 | [[bus/wireless-iot/plb-practical\|plb-practical]] "## 5 秒钟定位" |
+| 抓包工具 | [[bus/wireless-iot/plb-practical\|plb-practical]] "## 抓包工具" |
+| 烧录 UIN 脚本 | [[bus/wireless-iot/plb-practical\|plb-practical]] "## 烧录 UIN 实战" |
+| 电池测试 | [[bus/wireless-iot/plb-practical\|plb-practical]] "## 触发测试" |
+| 认证检查清单 | [[bus/wireless-iot/plb-practical\|plb-practical]] "## 认证检查清单" |
+| 注册 UIN | [[bus/wireless-iot/plb-practical\|plb-practical]] "## 配网流程" |
+| UIN 重复问题 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 1 |
+| BCH 编码错 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 2 |
+| 121.5 MHz 频偏 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 3 |
+| 电池续航短 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 4 |
+| 防误触设计 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 5 |
+| 浸水失效 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 6 |
+| GNSS 拉低频慢 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 7 |
+| 协议码错 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 8 |
+| 电池低温跌容 | [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] 案例 9 |
 
 ## 关键概念地图
 
@@ -284,21 +284,21 @@ plb-index.md (本文件, 导航)
 
 | 文档 | 更新频率 | 维护者 |
 | --- | --- | --- |
-| plb.md | 改版才更新 | 主题入口 |
-| plb-practical.md | 改版才更新 | 速查 / 调试流程 |
-| plb-deep-dive.md | COSPAS-SARSAT 标准改版 | 原理体系 |
-| plb-failure-cases.md | **持续更新** | 产线案例 |
-| plb-index.md | 新增 / 删除文档时 | 导航 |
+| [[bus/wireless-iot/plb\|plb]] | 改版才更新 | 主题入口 |
+| [[bus/wireless-iot/plb-practical\|plb-practical]] | 改版才更新 | 速查 / 调试流程 |
+| [[bus/wireless-iot/plb-deep-dive\|plb-deep-dive]] | COSPAS-SARSAT 标准改版 | 原理体系 |
+| [[bus/wireless-iot/plb-failure-cases\|plb-failure-cases]] | **持续更新** | 产线案例 |
+| [[bus/wireless-iot/plb-index\|plb-index]] | 新增 / 删除文档时 | 导航 |
 
 ## 关联主题（chips-com 其他目录）
 
 PLB 是户外 / 应急救援主题，跟以下主题有交集：
 
-- **`bus/wireless-iot/lora-deep-dive.md`** — LoRa 长距（户外场景有部分替代关系）
-- **`bus/wireless-iot/matter-deep-dive.md`** — Matter 智能家居（户外场景少）
-- **`bus/wireless-iot/thread-deep-dive.md`** — Thread 802.15.4（Mesh 户外传感）
-- **`bus/wireless-iot/ble-deep-dive.md`** — BLE 近场（户外穿戴）
-- **`bus/automotive/canopen-deep-dive.md`** — 工业控制（户外基站）
+- **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** — LoRa 长距（户外场景有部分替代关系）
+- **[[bus/wireless-iot/matter-deep-dive|matter-deep-dive]]** — Matter 智能家居（户外场景少）
+- **[[bus/wireless-iot/thread-deep-dive|thread-deep-dive]]** — Thread 802.15.4（Mesh 户外传感）
+- **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** — BLE 近场（户外穿戴）
+- **[[bus/automotive/canopen-deep-dive|canopen-deep-dive]]** — 工业控制（户外基站）
 
 ## 一句话总结
 

@@ -77,23 +77,23 @@ chips-com/bus/iec104-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| IEC 104 是啥、解决啥 | iec104.md §定位 |
-| TCP 端口 / 启动流程 | iec104-practical.md §TCP 链路 |
-| APCI 4 字节控制域 | iec104-deep-dive.md §控制域详解 |
-| I/S/U 帧格式 | iec104-deep-dive.md §三种 APDU 格式 |
-| 总召唤流程 | iec104.md §通信流程 + iec104-practical.md §启动流程 |
-| ASDU 类型号表 | iec104-deep-dive.md §ASDU 字段详解 |
-| CP56Time2a 编解码 | iec104-deep-dive.md §CP56Time2a 详解 |
-| k/w/t 参数联动 | iec104-deep-dive.md §k / w / t 参数联动 |
-| 命令选择 / 执行 | iec104-deep-dive.md §双点命令选择 / 执行 / 撤销 |
-| 突发上传策略 | iec104-deep-dive.md §突发上传 |
-| 文件传输 | iec104-deep-dive.md §文件传输 |
-| 通用分类信息（GI） | iec104-deep-dive.md §通用分类信息 |
-| 主站实现 10 大要点 | iec104-deep-dive.md §主站实现要点 |
-| RTU 实现 10 大要点 | iec104-deep-dive.md §RTU 实现要点 |
-| 16 个常见故障 | iec104-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | iec104-failure-cases.md |
-| 选 IEC 104 还是 DNP3 | rtu-protocols.md §选型决策速查 |
+| IEC 104 是啥、解决啥 | [[bus/power-rtu/iec104\|iec104]] §定位 |
+| TCP 端口 / 启动流程 | [[bus/power-rtu/iec104-practical\|iec104-practical]] §TCP 链路 |
+| APCI 4 字节控制域 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §控制域详解 |
+| I/S/U 帧格式 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §三种 APDU 格式 |
+| 总召唤流程 | [[bus/power-rtu/iec104\|iec104]] §通信流程 + [[bus/power-rtu/iec104-practical\|iec104-practical]] §启动流程 |
+| ASDU 类型号表 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §ASDU 字段详解 |
+| CP56Time2a 编解码 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §CP56Time2a 详解 |
+| k/w/t 参数联动 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §k / w / t 参数联动 |
+| 命令选择 / 执行 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §双点命令选择 / 执行 / 撤销 |
+| 突发上传策略 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §突发上传 |
+| 文件传输 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §文件传输 |
+| 通用分类信息（GI） | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §通用分类信息 |
+| 主站实现 10 大要点 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §主站实现要点 |
+| RTU 实现 10 大要点 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §RTU 实现要点 |
+| 16 个常见故障 | [[bus/power-rtu/iec104-deep-dive\|iec104-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/iec104-failure-cases\|iec104-failure-cases]] |
+| 选 IEC 104 还是 DNP3 | [[bus/power-rtu/rtu-protocols\|rtu-protocols]] §选型决策速查 |
 
 ## 与相邻协议对比
 
@@ -157,12 +157,12 @@ chips-com/bus/iec104-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集总览
-- `bus/power-rtu/iec101.md`：IEC 104 串行版本
-- `bus/power-rtu/dnp3.md`：北美电力 RTU 标配
-- `bus/power-rtu/iec61850.md`：变电站局域网高端
-- `bus/industrial/modbus.md`：工业通用协议
-- `bus/power-rtu/iec104-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集总览
+- [[bus/power-rtu/iec101|iec101]]：IEC 104 串行版本
+- [[bus/power-rtu/dnp3|dnp3]]：北美电力 RTU 标配
+- [[bus/power-rtu/iec61850|iec61850]]：变电站局域网高端
+- [[bus/industrial/modbus|modbus]]：工业通用协议
+- [[bus/power-rtu/iec104-failure-cases|iec104-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

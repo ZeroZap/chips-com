@@ -36,39 +36,39 @@ chips-com/bus/zigbee-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/zigbee.md`** — 主题入口, 5 分钟
-2. **`bus/wireless-iot/zigbee-practical.md`** — 关键参数 / 5 秒定位
-3. **`bus/wireless-iot/zigbee-deep-dive.md`** — 协议栈分层 + ZCL 模型
+1. **[[bus/wireless-iot/zigbee|zigbee]]** — 主题入口, 5 分钟
+2. **[[bus/wireless-iot/zigbee-practical|zigbee-practical]]** — 关键参数 / 5 秒定位
+3. **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** — 协议栈分层 + ZCL 模型
 
 ### 路径 B: "我在做 ZigBee 设备产线失败" (现场救火)
 
-1. **`bus/wireless-iot/zigbee-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/zigbee-failure-cases.md`** — 找类似案例（8 个）
-3. **`bus/wireless-iot/zigbee-deep-dive.md`** "## NWK Status 速查"
+1. **[[bus/wireless-iot/zigbee-practical|zigbee-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/zigbee-failure-cases|zigbee-failure-cases]]** — 找类似案例（8 个）
+3. **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** "## NWK Status 速查"
 
 ### 路径 C: "我在做 ZigBee 协议栈移植" (工程师)
 
-1. **`bus/wireless-iot/zigbee-deep-dive.md`** "## IEEE 802.15.4 MAC"
-2. **`bus/wireless-iot/zigbee-practical.md`** "## 抓包工具"
-3. **`bus/wireless-iot/zigbee-deep-dive.md`** "## 入网流程"
+1. **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** "## IEEE 802.15.4 MAC"
+2. **[[bus/wireless-iot/zigbee-practical|zigbee-practical]]** "## 抓包工具"
+3. **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** "## 入网流程"
 
 ### 路径 D: "我在做 ZigBee 安全加固" (安全工程师)
 
-1. **`bus/wireless-iot/zigbee-deep-dive.md`** "## 安全"
-2. **`bus/wireless-iot/zigbee-failure-cases.md`** 案例 7（默认 Link Key 量产踩雷）
-3. **`bus/wireless-iot/zigbee-practical.md`** "## Trust Center 与安全"
+1. **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** "## 安全"
+2. **[[bus/wireless-iot/zigbee-failure-cases|zigbee-failure-cases]]** 案例 7（默认 Link Key 量产踩雷）
+3. **[[bus/wireless-iot/zigbee-practical|zigbee-practical]]** "## Trust Center 与安全"
 
 ### 路径 E: "我在做 ZigBee 选型" (架构师)
 
-1. **`bus/wireless-iot/zigbee.md`** "## 典型芯片"
-2. **`bus/wireless-iot/zigbee-deep-dive.md`** "## 厂商协议栈对比"
-3. **`bus/wireless-iot/zigbee-practical.md`** "## 性能数据参考"
+1. **[[bus/wireless-iot/zigbee|zigbee]]** "## 典型芯片"
+2. **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** "## 厂商协议栈对比"
+3. **[[bus/wireless-iot/zigbee-practical|zigbee-practical]]** "## 性能数据参考"
 
 ### 路径 F: "我在做智能家居 zigbee2mqtt 部署" (运维)
 
-1. **`bus/wireless-iot/zigbee-failure-cases.md`** 案例 2（zigbee2mqtt 50+ 设备掉线）
-2. **`bus/wireless-iot/zigbee-practical.md`** "## 抓包工具" 的 zigbee2mqtt 部分
-3. **`bus/wireless-iot/zigbee-deep-dive.md`** "## ZCL"
+1. **[[bus/wireless-iot/zigbee-failure-cases|zigbee-failure-cases]]** 案例 2（zigbee2mqtt 50+ 设备掉线）
+2. **[[bus/wireless-iot/zigbee-practical|zigbee-practical]]** "## 抓包工具" 的 zigbee2mqtt 部分
+3. **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** "## ZCL"
 
 ## 主题速查矩阵
 
@@ -76,61 +76,61 @@ chips-com/bus/zigbee-*.md
 
 | 我想知道 | 看哪里 |
 | --- | --- |
-| 入网流程 | zigbee-deep-dive.md "## 入网流程" |
-| 路由机制 | zigbee-deep-dive.md "## 路由" |
-| 信道怎么选 | zigbee-practical.md "## 信道" |
-| PAN ID 冲突 | zigbee-failure-cases.md 案例 5 |
-| CC2530 ReJoin 失败 | zigbee-failure-cases.md 案例 1 |
-| zigbee2mqtt 调优 | zigbee-failure-cases.md 案例 2 |
-| EFR32 NCP 调试 | zigbee-failure-cases.md 案例 3 |
-| End Device 续航 | zigbee-failure-cases.md 案例 4 |
-| ZCL Cluster | zigbee-deep-dive.md "## ZCL" |
-| ZCL 错误码 | zigbee-practical.md "## ZCL Status 速查" |
-| NWK 错误码 | zigbee-practical.md "## NWK Status 速查" |
-| APS 错误码 | zigbee-practical.md "## APS Status 速查" |
-| Bind / Group | zigbee-deep-dive.md "## Bind / Group" |
-| Trust Center | zigbee-practical.md "## Trust Center 与安全" |
-| Install Code | zigbee-failure-cases.md 案例 7 |
-| 抓包工具 | zigbee-practical.md "## 抓包工具" |
-| Daintree SNA 抓包硬件 | zigbee-practical.md "## 抓包工具"（Daintree SNA 行） |
-| 串口电平不匹配（DL-20） | zigbee-practical.md "### USB-TTL 串口电平匹配" |
-| CC2530 P0_4 端口 bug | zigbee-practical.md "## 常见问题速查" |
-| 改 PANID 后老节点不重连 | zigbee-failure-cases.md 案例 9（参考同类 NV 问题） |
-| EFR32MG21 入网卡 association | zigbee-failure-cases.md 案例 9 |
-| ZigBee 晶振选型实战 | zigbee-practical.md "### ZigBee 晶振选型实战" |
-| CH582 RISC-V 国产 BLE+USB | zigbee-practical.md "### CH582 RISC-V 自定义 BLE Service 实战" |
-| 3.3V LDO 浪涌烧毁 | zigbee-failure-cases.md 案例 10 |
-| 才茂 CM210 4 类故障 | zigbee-failure-cases.md 案例 11 |
-| CC2530 量产烧录 17 错误 | zigbee-failure-cases.md 案例 12 |
-| 单子网 ≤60 节点上限 | zigbee-failure-cases.md 案例 13 |
-| PAN ID 冲突 63/min 阈值 | zigbee-failure-cases.md 案例 14 |
-| 4 万亩滴灌吸盘天线脱落 | zigbee-failure-cases.md 案例 15 |
-| 路由风暴 + Neighbor Table 溢出 | zigbee-failure-cases.md 案例 16 |
-| 5 大入网失败 + 200 节点 | zigbee-failure-cases.md 案例 17 |
-| 涂鸦多网关离线 15-30% | zigbee-failure-cases.md 案例 18 |
-| Transport Key 失败 3 根因 | zigbee-failure-cases.md 案例 19 |
-| 自愈变自杀 化工厂凌晨雪崩 | zigbee-failure-cases.md 案例 20 |
-| 晓网 5 大根因 2000 平米仓库 | zigbee-failure-cases.md 案例 21 |
-| BlackHat 2015 + Aviatrix 2024 安全 | zigbee-failure-cases.md 案例 22 |
-| Green Power 全栈 + GP 失踪 5 根因 | zigbee-failure-cases.md 案例 23 |
-| EFR32 NCP 并发 OTA 0x19 buffer out | zigbee-failure-cases.md 案例 24 |
-| zigbee2mqtt 90 天 4.2h→8min ROI 7.5x | zigbee-failure-cases.md 案例 25 |
-| JN5169 量产回流焊 + 半孔钢网 | zigbee-failure-cases.md 案例 26 |
-| 泓格高雄酸洗吊挂 Router 互转 + VxCOMM | zigbee-failure-cases.md 案例 27 |
-| 智能家居 Mesh 5 条军规 | zigbee-failure-cases.md 案例 28 |
-| Kaspersky Securelist nRF52840 协调器 + 私有 profile | zigbee-failure-cases.md 案例 29 |
-| BDB/ZCL/ZGP + Reporting + APS_BindReq | zigbee-failure-cases.md 案例 30 |
-| Tuya Private vs Standard 3.0 30s 拥塞 | zigbee-failure-cases.md 案例 31 |
-| 仓库 ZigBee 40 跳 router 密度怪拓扑 | zigbee-failure-cases.md 案例 32 |
-| Hubitat FF01 广播风暴 7 设备同毫秒 | zigbee-failure-cases.md 案例 33 |
-| Z-Stack 20240710 BUFFER_FULL 0x11 物理重插 | zigbee-failure-cases.md 案例 34 |
-| ESP32-C6 sniffer RSSI histogram + desense | zigbee-failure-cases.md 案例 35 |
-| ESP32-C6 遥控器 4 层叠加故障 | zigbee-failure-cases.md 案例 36 |
-| SNZB-02DR2 Telink OTA + 晓网 WLT 380 节点 99.6% | zigbee-failure-cases.md 案例 37 |
-| Poll Interval | zigbee-practical.md "## End Device 睡眠参数" |
-| SoC vs NCP 差异 | zigbee-deep-dive.md "## SoC vs NCP 调试差异" |
-| 厂商协议栈对比 | zigbee-deep-dive.md "## 厂商协议栈对比" |
-| 协议栈版本兼容 | zigbee-failure-cases.md 案例 8 |
+| 入网流程 | [[bus/wireless-iot/zigbee-deep-dive\|zigbee-deep-dive]] "## 入网流程" |
+| 路由机制 | [[bus/wireless-iot/zigbee-deep-dive\|zigbee-deep-dive]] "## 路由" |
+| 信道怎么选 | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## 信道" |
+| PAN ID 冲突 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 5 |
+| CC2530 ReJoin 失败 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 1 |
+| zigbee2mqtt 调优 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 2 |
+| EFR32 NCP 调试 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 3 |
+| End Device 续航 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 4 |
+| ZCL Cluster | [[bus/wireless-iot/zigbee-deep-dive\|zigbee-deep-dive]] "## ZCL" |
+| ZCL 错误码 | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## ZCL Status 速查" |
+| NWK 错误码 | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## NWK Status 速查" |
+| APS 错误码 | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## APS Status 速查" |
+| Bind / Group | [[bus/wireless-iot/zigbee-deep-dive\|zigbee-deep-dive]] "## Bind / Group" |
+| Trust Center | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## Trust Center 与安全" |
+| Install Code | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 7 |
+| 抓包工具 | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## 抓包工具" |
+| Daintree SNA 抓包硬件 | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## 抓包工具"（Daintree SNA 行） |
+| 串口电平不匹配（DL-20） | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "### USB-TTL 串口电平匹配" |
+| CC2530 P0_4 端口 bug | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## 常见问题速查" |
+| 改 PANID 后老节点不重连 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 9（参考同类 NV 问题） |
+| EFR32MG21 入网卡 association | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 9 |
+| ZigBee 晶振选型实战 | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "### ZigBee 晶振选型实战" |
+| CH582 RISC-V 国产 BLE+USB | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "### CH582 RISC-V 自定义 BLE Service 实战" |
+| 3.3V LDO 浪涌烧毁 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 10 |
+| 才茂 CM210 4 类故障 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 11 |
+| CC2530 量产烧录 17 错误 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 12 |
+| 单子网 ≤60 节点上限 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 13 |
+| PAN ID 冲突 63/min 阈值 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 14 |
+| 4 万亩滴灌吸盘天线脱落 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 15 |
+| 路由风暴 + Neighbor Table 溢出 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 16 |
+| 5 大入网失败 + 200 节点 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 17 |
+| 涂鸦多网关离线 15-30% | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 18 |
+| Transport Key 失败 3 根因 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 19 |
+| 自愈变自杀 化工厂凌晨雪崩 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 20 |
+| 晓网 5 大根因 2000 平米仓库 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 21 |
+| BlackHat 2015 + Aviatrix 2024 安全 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 22 |
+| Green Power 全栈 + GP 失踪 5 根因 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 23 |
+| EFR32 NCP 并发 OTA 0x19 buffer out | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 24 |
+| zigbee2mqtt 90 天 4.2h→8min ROI 7.5x | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 25 |
+| JN5169 量产回流焊 + 半孔钢网 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 26 |
+| 泓格高雄酸洗吊挂 Router 互转 + VxCOMM | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 27 |
+| 智能家居 Mesh 5 条军规 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 28 |
+| Kaspersky Securelist nRF52840 协调器 + 私有 profile | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 29 |
+| BDB/ZCL/ZGP + Reporting + APS_BindReq | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 30 |
+| Tuya Private vs Standard 3.0 30s 拥塞 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 31 |
+| 仓库 ZigBee 40 跳 router 密度怪拓扑 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 32 |
+| Hubitat FF01 广播风暴 7 设备同毫秒 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 33 |
+| Z-Stack 20240710 BUFFER_FULL 0x11 物理重插 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 34 |
+| ESP32-C6 sniffer RSSI histogram + desense | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 35 |
+| ESP32-C6 遥控器 4 层叠加故障 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 36 |
+| SNZB-02DR2 Telink OTA + 晓网 WLT 380 节点 99.6% | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 37 |
+| Poll Interval | [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] "## End Device 睡眠参数" |
+| SoC vs NCP 差异 | [[bus/wireless-iot/zigbee-deep-dive\|zigbee-deep-dive]] "## SoC vs NCP 调试差异" |
+| 厂商协议栈对比 | [[bus/wireless-iot/zigbee-deep-dive\|zigbee-deep-dive]] "## 厂商协议栈对比" |
+| 协议栈版本兼容 | [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] 案例 8 |
 
 ## 关键概念地图
 
@@ -265,21 +265,21 @@ zigbee-index.md (本文件, 导航)
 
 | 文档 | 更新频率 | 维护者 |
 | --- | --- | --- |
-| zigbee.md | 改版才更新 | 主题入口 |
-| zigbee-practical.md | 改版才更新 | 速查 / 调试流程 |
-| zigbee-deep-dive.md | 协议改版 / ZigBee 4 出 | 原理体系 |
-| zigbee-failure-cases.md | **持续更新** | 产线案例 |
-| zigbee-index.md | 新增 / 删除文档时 | 导航 |
+| [[bus/wireless-iot/zigbee\|zigbee]] | 改版才更新 | 主题入口 |
+| [[bus/wireless-iot/zigbee-practical\|zigbee-practical]] | 改版才更新 | 速查 / 调试流程 |
+| [[bus/wireless-iot/zigbee-deep-dive\|zigbee-deep-dive]] | 协议改版 / ZigBee 4 出 | 原理体系 |
+| [[bus/wireless-iot/zigbee-failure-cases\|zigbee-failure-cases]] | **持续更新** | 产线案例 |
+| [[bus/wireless-iot/zigbee-index\|zigbee-index]] | 新增 / 删除文档时 | 导航 |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/wireless-iot/ble-deep-dive.md`** — BLE（IEEE 802.15.4 同源 PHY，但不同协议栈）
-- **`bus/wireless-iot/ble-practical.md`** — BLE 实战
-- **`bus/wireless-iot/ble-failure-cases.md`** — BLE 产线案例
-- **`bus/automotive/j1939-deep-dive.md`** — J1939（汽车总线，差分 CAN）
-- **`bus/automotive/canopen-deep-dive.md`** — CANopen（CAN 之上应用层）
-- **`bus/automotive/uds-deep-dive.md`** — 诊断协议（基于 CAN）
-- **`bus/industrial/ethercat-deep-dive.md`** — 工业 Ethernet
+- **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** — BLE（IEEE 802.15.4 同源 PHY，但不同协议栈）
+- **[[bus/wireless-iot/ble-practical|ble-practical]]** — BLE 实战
+- **[[bus/wireless-iot/ble-failure-cases|ble-failure-cases]]** — BLE 产线案例
+- **[[bus/automotive/j1939-deep-dive|j1939-deep-dive]]** — J1939（汽车总线，差分 CAN）
+- **[[bus/automotive/canopen-deep-dive|canopen-deep-dive]]** — CANopen（CAN 之上应用层）
+- **[[bus/automotive/uds-deep-dive|uds-deep-dive]]** — 诊断协议（基于 CAN）
+- **[[bus/industrial/ethercat-deep-dive|ethercat-deep-dive]]** — 工业 Ethernet
 
 ## 一句话总结
 

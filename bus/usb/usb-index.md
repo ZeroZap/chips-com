@@ -44,80 +44,80 @@ chips-com/bus/usb-*.md
 
 ### 路径 A: "我刚接触 USB, 想入门" (新人)
 
-1. **`bus/usb/usb.md`** — 1 页概念, 5 分钟
-2. **`bus/usb/usb-practical.md`** — 调试流程速查
-3. **`bus/usb/usb-deep-dive.md`** — 原理, 重点:
+1. **[[bus/usb/usb|usb]]** — 1 页概念, 5 分钟
+2. **[[bus/usb/usb-practical|usb-practical]]** — 调试流程速查
+3. **[[bus/usb/usb-deep-dive|usb-deep-dive]]** — 原理, 重点:
    - "## USB 协议的本质"
    - "## USB 物理层"
    - "## USB 枚举"
    - "## 描述符结构"
-4. **`bus/usb/usb-enumeration-and-descriptors.md`** — 描述符详细
+4. **[[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]]** — 描述符详细
 
 ### 路径 B: "我在做产线 USB 通信失败" (现场救火)
 
-1. **`bus/usb/usb-practical.md`** "## 5 秒钟定位"
-2. **`bus/usb/usb-deep-dive.md`** "## USB 故障树"
-3. **`bus/usb/usb-failure-cases.md`** — 找类似案例 (21 个)
-4. **`bus/usb/usb-enumeration-and-descriptors.md`** — 描述符检查
+1. **[[bus/usb/usb-practical|usb-practical]]** "## 5 秒钟定位"
+2. **[[bus/usb/usb-deep-dive|usb-deep-dive]]** "## USB 故障树"
+3. **[[bus/usb/usb-failure-cases|usb-failure-cases]]** — 找类似案例 (21 个)
+4. **[[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]]** — 描述符检查
 
 ### 路径 C: "我在做 CDC 串口 (USB 转 UART)" (工程实现)
 
-1. **`bus/usb/usb-class-drivers.md`** "## CDC" 部分
-2. **`bus/usb/usb-enumeration-and-descriptors.md`** CDC 描述符
-3. **`bus/usb/usb-dma-and-rtos.md`** 实战代码
-4. **`bus/usb/usb-failure-cases.md`** 案例 3 (CDC 串口打不开)
+1. **[[bus/usb/usb-class-drivers|usb-class-drivers]]** "## CDC" 部分
+2. **[[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]]** CDC 描述符
+3. **[[bus/usb/usb-dma-and-rtos|usb-dma-and-rtos]]** 实战代码
+4. **[[bus/usb/usb-failure-cases|usb-failure-cases]]** 案例 3 (CDC 串口打不开)
 
 ### 路径 D: "我在做 HID 设备 (键鼠 / 触摸 / 自定义)" (工程实现)
 
-1. **`bus/usb/usb-class-drivers.md`** "## HID" 部分
-2. **`bus/usb/usb-deep-dive.md`** "## HID 报告描述符"
-3. **`bus/usb/usb-failure-cases.md`** 案例 9 (HID 失效)
+1. **[[bus/usb/usb-class-drivers|usb-class-drivers]]** "## HID" 部分
+2. **[[bus/usb/usb-deep-dive|usb-deep-dive]]** "## HID 报告描述符"
+3. **[[bus/usb/usb-failure-cases|usb-failure-cases]]** 案例 9 (HID 失效)
 
 ### 路径 E: "我在做固件升级 DFU" (工程实现)
 
-1. **`bus/usb/usb-class-drivers.md`** "## DFU" 部分
-2. **`bus/usb/usb-dfu-deep-dive.md`** 协议
-3. **`bus/usb/usb-dfu-practical.md`** 实战
-4. **`bus/usb/usb-failure-cases.md`** DFU 相关
+1. **[[bus/usb/usb-class-drivers|usb-class-drivers]]** "## DFU" 部分
+2. **[[bus/usb/usb-dfu-deep-dive|usb-dfu-deep-dive]]** 协议
+3. **[[bus/usb/usb-dfu-practical|usb-dfu-practical]]** 实战
+4. **[[bus/usb/usb-failure-cases|usb-failure-cases]]** DFU 相关
 
 ### 路径 F: "我在做 USB + RTOS 集成"
 
-1. **`bus/usb/usb-dma-and-rtos.md`** — 完整模式
-2. **`bus/usb/usb-practical.md`** "## 调试工具"
-3. **`bus/usb/usb-failure-cases.md`** "## 案例 11" 之后的 RTOS 案例
+1. **[[bus/usb/usb-dma-and-rtos|usb-dma-and-rtos]]** — 完整模式
+2. **[[bus/usb/usb-practical|usb-practical]]** "## 调试工具"
+3. **[[bus/usb/usb-failure-cases|usb-failure-cases]]** "## 案例 11" 之后的 RTOS 案例
 
 ### 路径 G: "我在做 USB 跨协议桥接"
 
-1. **`bus/usb/usb-vs-other-bus.md`** — 跨总线对比
-2. **`bus/usb/usb-class-drivers.md`** CDC / HID 用作桥接
+1. **[[bus/usb/usb-vs-other-bus|usb-vs-other-bus]]** — 跨总线对比
+2. **[[bus/usb/usb-class-drivers|usb-class-drivers]]** CDC / HID 用作桥接
 3. 相关协议笔记 (CAN / I2C / SPI / UART)
 
 ## 主题速查矩阵
 
 按问题找文档:
 
-| 我想知道 | 看哪里 |
-| --- | --- |
-| 设备管理器看到 Unknown Device | usb-practical.md "## 5 秒钟定位" + usb-failure-cases.md 案例 2 |
-| CDC 串口打不开 | usb-failure-cases.md 案例 3 + usb-class-drivers.md CDC |
-| HID 设备识别但不响应 | usb-failure-cases.md 案例 9 + usb-class-drivers.md HID |
-| wTotalLength 算错 | usb-failure-cases.md 案例 4 + usb-enumeration-and-descriptors.md |
-| 16 bit 字段用 8 bit 接收 | usb-failure-cases.md 案例 13 + usb-enumeration-and-descriptors.md |
-| 高速协商失败 | usb-failure-cases.md 案例 5 + usb-deep-dive.md |
-| 端点地址冲突 | usb-failure-cases.md 案例 8 + usb-deep-dive.md |
-| VID 申请 | usb-enumeration-and-descriptors.md "VID 申请" |
-| 字符串乱码 | usb-failure-cases.md 案例 7 + usb-enumeration-and-descriptors.md |
-| CDC 是否省中断 IN | usb-class-drivers.md CDC 简化版 |
-| 复合设备 IAD 写法 | usb-enumeration-and-descriptors.md IAD |
-| USB DFU 实现 | usb-dfu-deep-dive.md + usb-dfu-practical.md |
-| USB + RTOS | usb-dma-and-rtos.md |
-| USB 中断优先级 | usb-dma-and-rtos.md |
-| USB DMA 双缓冲 | usb-dma-and-rtos.md "## USB DMA 模式" |
-| USB 缓存一致 (Cortex-M7) | usb-dma-and-rtos.md "## 缓存一致性" |
-| USB vs CAN 选哪个 | usb-vs-other-bus.md "## USB vs CAN" |
-| USB 在汽车的应用 | usb-vs-other-bus.md "## USB 在汽车中的应用" |
-| 产线死机案例 | usb-failure-cases.md |
-| Linux USB 调试 | usb-practical.md "## 调试工具" |
+| 我想知道                      | 看哪里                                                            |
+| ----------------------------- | ----------------------------------------------------------------- |
+| 设备管理器看到 Unknown Device | [[bus/usb/usb-practical\|usb-practical]] "## 5 秒钟定位" + [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 2    |
+| CDC 串口打不开                | [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 3 + [[bus/usb/usb-class-drivers\|usb-class-drivers]] CDC            |
+| HID 设备识别但不响应          | [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 9 + [[bus/usb/usb-class-drivers\|usb-class-drivers]] HID            |
+| wTotalLength 算错             | [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 4 + [[bus/usb/usb-enumeration-and-descriptors\|usb-enumeration-and-descriptors]]  |
+| 16 bit 字段用 8 bit 接收      | [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 13 + [[bus/usb/usb-enumeration-and-descriptors\|usb-enumeration-and-descriptors]] |
+| 高速协商失败                  | [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 5 + [[bus/usb/usb-deep-dive\|usb-deep-dive]]                    |
+| 端点地址冲突                  | [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 8 + [[bus/usb/usb-deep-dive\|usb-deep-dive]]                    |
+| VID 申请                      | [[bus/usb/usb-enumeration-and-descriptors\|usb-enumeration-and-descriptors]] "VID 申请"                     |
+| 字符串乱码                    | [[bus/usb/usb-failure-cases\|usb-failure-cases]] 案例 7 + [[bus/usb/usb-enumeration-and-descriptors\|usb-enumeration-and-descriptors]]  |
+| CDC 是否省中断 IN             | [[bus/usb/usb-class-drivers\|usb-class-drivers]] CDC 简化版                                   |
+| 复合设备 IAD 写法             | [[bus/usb/usb-enumeration-and-descriptors\|usb-enumeration-and-descriptors]] IAD                            |
+| USB DFU 实现                  | [[bus/usb/usb-dfu-deep-dive\|usb-dfu-deep-dive]] + [[bus/usb/usb-dfu-practical\|usb-dfu-practical]]                       |
+| USB + RTOS                    | [[bus/usb/usb-dma-and-rtos\|usb-dma-and-rtos]]                                               |
+| USB 中断优先级                | [[bus/usb/usb-dma-and-rtos\|usb-dma-and-rtos]]                                               |
+| USB DMA 双缓冲                | [[bus/usb/usb-dma-and-rtos\|usb-dma-and-rtos]] "## USB DMA 模式"                             |
+| USB 缓存一致 (Cortex-M7)      | [[bus/usb/usb-dma-and-rtos\|usb-dma-and-rtos]] "## 缓存一致性"                               |
+| USB vs CAN 选哪个             | [[bus/usb/usb-vs-other-bus\|usb-vs-other-bus]] "## USB vs CAN"                               |
+| USB 在汽车的应用              | [[bus/usb/usb-vs-other-bus\|usb-vs-other-bus]] "## USB 在汽车中的应用"                       |
+| 产线死机案例                  | [[bus/usb/usb-failure-cases\|usb-failure-cases]]                                              |
+| Linux USB 调试                | [[bus/usb/usb-practical\|usb-practical]] "## 调试工具"                                    |
 
 ## 关键概念地图
 
@@ -193,30 +193,35 @@ usb-index.md (本文件, 导航)
 ## 学习路径推荐 (按角色)
 
 ### 嵌入式软件工程师
+
 ```text
 速查 → 原理 → 枚举 → 类驱动 → DMA/RTOS
   0.5d   1d      1d      1d        1d
 ```
 
 ### USB 类驱动工程师 (CDC / HID / MSC)
+
 ```text
 枚举 → 类驱动 → DMA/RTOS → 产线案例
   0.5d   2d        1d          0.5d
 ```
 
 ### USB 设备硬件工程师
+
 ```text
 简介 → 速查 → 物理层 (deep-dive) → 高速信号完整性
   0.5d   0.5d      1d                    1d
 ```
 
 ### 固件升级工程师
+
 ```text
 DFU 简介 → DFU 实战 → DFU 协议 → 复合设备 (DFU + APP)
   0.5d       1d         1d              1d
 ```
 
 ### 跨协议工程师
+
 ```text
 USB 速查 → 跨总线对比 → USB 桥接 (USB <-> CAN / SPI / UART)
   0.5d       0.5d              1d
@@ -224,22 +229,24 @@ USB 速查 → 跨总线对比 → USB 桥接 (USB <-> CAN / SPI / UART)
 
 ## USB 主题 vs 其他主题对比
 
-| 主题 | 篇数 | 大小 | 重点 |
-| --- | --- | --- | --- |
+| 主题    | 篇数            | 大小        | 重点                                  |
+| ------- | --------------- | ----------- | ------------------------------------- |
 | **USB** | **8 + 3 (DFU)** | **~130 KB** | **PC 外设 / 类驱动 / 枚举 / VID-PID** |
-| I2C | 12 | 151 KB | 协议兼容性 + 总线恢复 (Recovery) |
-| SPI | 6 | 75 KB | 多从 / 菊花链 / 高速 |
-| UART | 6 | 80 KB | RS485 / 流控 / 异步日志 |
-| CAN | 9 | 107 KB | 实时多 master + 错误处理 + 演进 |
-| J1939 | 7 | 77 KB | 商用车网络协议 (NAME / TP) |
+| I2C     | 12              | 151 KB      | 协议兼容性 + 总线恢复 (Recovery)      |
+| SPI     | 6               | 75 KB       | 多从 / 菊花链 / 高速                  |
+| UART    | 6               | 80 KB       | RS485 / 流控 / 异步日志               |
+| CAN     | 9               | 107 KB      | 实时多 master + 错误处理 + 演进       |
+| J1939   | 7               | 77 KB       | 商用车网络协议 (NAME / TP)            |
 
 **共同点**:
+
 - 都有速查 + 原理 + 实战 + 专题 + 导航 5 层结构
 - 都有 failure-cases (产线死机案例)
 - 都有 RTOS 集成
 - 都有跨总线对比
 
 **差异**:
+
 - USB 重点: 类驱动生态 (CDC / HID / MSC / DFU) + 枚举 + VID/PID
 - I2C 重点: 总线恢复 (I2C 特色, 因为有 8 步 SOP)
 - SPI 重点: 多从 / 菊花链 (SPI 特色)
@@ -249,29 +256,29 @@ USB 速查 → 跨总线对比 → USB 桥接 (USB <-> CAN / SPI / UART)
 
 ## 文档维护
 
-| 文档 | 更新频率 | 维护者 |
-| --- | --- | --- |
-| usb.md | 改版才更新 | 简介 |
-| usb-practical.md | 改版才更新 | 速查 |
-| usb-deep-dive.md | 改版才更新 | 原理 |
-| usb-enumeration-and-descriptors.md | 改版才更新 | 枚举 |
-| usb-failure-cases.md | **持续更新** | 产线案例 |
-| usb-class-drivers.md | 类驱动改版时 | 类驱动 |
-| usb-dma-and-rtos.md | RTOS 改版时 | DMA + RTOS |
-| usb-vs-other-bus.md | 新总线出现时 | 跨总线 |
-| usb-dfu-*.md | 改版才更新 | DFU 子主题 |
-| usb-index.md | 新增 / 删除文档时 | 导航 |
+| 文档                               | 更新频率          | 维护者     |
+| ---------------------------------- | ----------------- | ---------- |
+| [[bus/usb/usb\|usb]]                             | 改版才更新        | 简介       |
+| [[bus/usb/usb-practical\|usb-practical]]                   | 改版才更新        | 速查       |
+| [[bus/usb/usb-deep-dive\|usb-deep-dive]]                   | 改版才更新        | 原理       |
+| [[bus/usb/usb-enumeration-and-descriptors\|usb-enumeration-and-descriptors]] | 改版才更新        | 枚举       |
+| [[bus/usb/usb-failure-cases\|usb-failure-cases]]               | **持续更新**      | 产线案例   |
+| [[bus/usb/usb-class-drivers\|usb-class-drivers]]               | 类驱动改版时      | 类驱动     |
+| [[bus/usb/usb-dma-and-rtos\|usb-dma-and-rtos]]                | RTOS 改版时       | DMA + RTOS |
+| [[bus/usb/usb-vs-other-bus\|usb-vs-other-bus]]                | 新总线出现时      | 跨总线     |
+| usb-dfu-*.md                       | 改版才更新        | DFU 子主题 |
+| [[bus/usb/usb-index\|usb-index]]                       | 新增 / 删除文档时 | 导航       |
 
 ## 关联主题 (chips-com 其他目录)
 
-- **`basic/can-*.md`** — CAN 基础 (USB 桥接用)
-- **`basic/i2c-*.md`** — I2C 基础 (USB 桥接用)
-- **`basic/spi-*.md`** — SPI 基础 (USB 桥接用)
-- **`basic/uart-*.md`** — UART 基础 (USB CDC 桥接)
-- **`bus/automotive/canopen-deep-dive.md`** — CANopen (USB <-> CAN 桥接)
-- **`bus/uds-*.md`** — UDS (USB 诊断之上)
-- **`can-vs-other-bus.md`** — CAN vs 其他总线 (对比参考)
-- **`i2c-vs-smbus-recovery.md`** — 跨协议对比参考
+- **[[basic/can-index|CAN 基础]]** — CAN 基础 (USB 桥接用)
+- **[[basic/i2c-index|I2C 基础]]** — I2C 基础 (USB 桥接用)
+- **[[basic/spi-index|SPI 基础]]** — SPI 基础 (USB 桥接用)
+- **[[basic/uart-index|UART 基础]]** — UART 基础 (USB CDC 桥接)
+- **[[bus/automotive/canopen-deep-dive|canopen-deep-dive]]** — CANopen (USB <-> CAN 桥接)
+- **[[bus/automotive/uds-index|UDS]]** — UDS (USB 诊断之上)
+- **[[basic/can-vs-other-bus|can-vs-other-bus]]** — CAN vs 其他总线 (对比参考)
+- **[[basic/i2c-vs-smbus-recovery|i2c-vs-smbus-recovery]]** — 跨协议对比参考
 
 ## 一句话总结
 

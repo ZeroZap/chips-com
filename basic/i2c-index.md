@@ -43,55 +43,55 @@ chips-com/basic/i2c-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`i2c-practical.md`** — 调试流程速查, 10 分钟读完
-2. **`i2c-deep-dive.md`** — 原理 + 体系, 重点看:
+1. **[[basic/i2c-practical|i2c-practical]]** — 调试流程速查, 10 分钟读完
+2. **[[basic/i2c-deep-dive|i2c-deep-dive]]** — 原理 + 体系, 重点看:
    - "## I2C 的工程定位"
    - "## 开漏结构为什么重要"
    - "## 7-bit 地址和 8-bit 地址"
    - "## ACK/NACK 定位"
    - "## 总线被拉死" 章节
-3. **`i2c-bus-recovery-playbook.md`** — 实战手册, 30 分钟现场排障流程
+3. **[[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]]** — 实战手册, 30 分钟现场排障流程
 
 ### 路径 B: "我在做产线死机, 卡在 SDA 拉低" (现场救火)
 
 按顺序读, 30-60 分钟能定位:
 
-1. **`i2c-bus-recovery-playbook.md`** 第 1-3 节 — 30 分钟排障流程
-2. **`i2c-deep-dive.md`** "## 总线被拉死" 章节 — 故障树
-3. **`i2c-failure-cases.md`** — 找类似案例 (21 个, 大概率命中)
-4. **`i2c-state-machine.md`** 第 4 节 — 常见死锁和竞态
+1. **[[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]]** 第 1-3 节 — 30 分钟排障流程
+2. **[[basic/i2c-deep-dive|i2c-deep-dive]]** "## 总线被拉死" 章节 — 故障树
+3. **[[basic/i2c-failure-cases|i2c-failure-cases]]** — 找类似案例 (21 个, 大概率命中)
+4. **[[basic/i2c-state-machine|i2c-state-machine]]** 第 4 节 — 常见死锁和竞态
 
 ### 路径 C: "我在做面试题, 准备嵌入式面试" (求职)
 
 按顺序读, 能答 I2C 任何题:
 
-1. **`i2c-practical.md`** — 调试速查
-2. **`i2c-deep-dive.md`** — 原理, 重点:
+1. **[[basic/i2c-practical|i2c-practical]]** — 调试速查
+2. **[[basic/i2c-deep-dive|i2c-deep-dive]]** — 原理, 重点:
    - "## 开漏结构为什么重要"
    - "## 总线被拉死" 章节 (8 步 SOP)
-3. **`i2c-bus-recovery-playbook.md`** 第 9 节 — 面试回答模板 (1 分钟 + 5 分钟版)
-4. **`i2c-multimaster.md`** — 多主机面试加分
-5. **`i2c-smbus-timeout.md`** — SMBus timeout 面试加分
+3. **[[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]]** 第 9 节 — 面试回答模板 (1 分钟 + 5 分钟版)
+4. **[[basic/i2c-multimaster|i2c-multimaster]]** — 多主机面试加分
+5. **[[basic/i2c-smbus-timeout|i2c-smbus-timeout]]** — SMBus timeout 面试加分
 
 ### 路径 D: "我在写 I2C 驱动, 要落地代码" (工程实现)
 
 按顺序读, 能产出可量产代码:
 
-1. **`i2c-bus-recovery-playbook.md`** — 代码骨架直接拷
-2. **`i2c-state-machine.md`** — 状态机 + ISR + 线程 + DMA
-3. **`i2c-rtos-integration.md`** — RTOS 集成模式
-4. **`i2c-deep-dive.md`** "## 多平台差异表" — 选你用的平台
-5. **`i2c-smbus-timeout.md`** — timeout 选型
+1. **[[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]]** — 代码骨架直接拷
+2. **[[basic/i2c-state-machine|i2c-state-machine]]** — 状态机 + ISR + 线程 + DMA
+3. **[[basic/i2c-rtos-integration|i2c-rtos-integration]]** — RTOS 集成模式
+4. **[[basic/i2c-deep-dive|i2c-deep-dive]]** "## 多平台差异表" — 选你用的平台
+5. **[[basic/i2c-smbus-timeout|i2c-smbus-timeout]]** — timeout 选型
 
 ### 路径 E: "我在做产品架构, 要做选型 / 评审" (架构师)
 
 按主题读, 各取所需:
 
-1. **`i2c-deep-dive.md`** "## I2C 的工程定位" — 什么场景用 I2C
-2. **`i2c-multimaster.md`** — 多 bus 设计的隐藏风险
-3. **`i2c-failure-cases.md`** 案例 6, 9, 14, 19 — 硬件设计教训
-4. **`i2c-bus-recovery-playbook.md`** 第 9 节 — 验收清单
-5. **`i2c-rtos-integration.md`** 第 4 节 — RTOS 选型
+1. **[[basic/i2c-deep-dive|i2c-deep-dive]]** "## I2C 的工程定位" — 什么场景用 I2C
+2. **[[basic/i2c-multimaster|i2c-multimaster]]** — 多 bus 设计的隐藏风险
+3. **[[basic/i2c-failure-cases|i2c-failure-cases]]** 案例 6, 9, 14, 19 — 硬件设计教训
+4. **[[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]]** 第 9 节 — 验收清单
+5. **[[basic/i2c-rtos-integration|i2c-rtos-integration]]** 第 4 节 — RTOS 选型
 
 ## 主题速查矩阵
 
@@ -99,29 +99,29 @@ chips-com/basic/i2c-*.md
 
 | 我想知道 | 看哪里 |
 | --- | --- |
-| I2C 上拉电阻怎么选 | i2c-deep-dive.md "## 上拉电阻选择" |
-| 7-bit 和 8-bit 地址区别 | i2c-deep-dive.md "## 7-bit 地址和 8-bit 地址" |
-| ACK / NACK 怎么排查 | i2c-deep-dive.md "## ACK/NACK 定位" |
-| Repeated START 是什么 | i2c-deep-dive.md "## Repeated START" |
-| Clock Stretching 是什么 | i2c-deep-dive.md "## Clock Stretching" |
-| SDA 被拉低怎么救 | i2c-deep-dive.md "## 总线被拉死", i2c-bus-recovery-playbook.md |
-| 产线死机 30 分钟定位流程 | i2c-bus-recovery-playbook.md 第 1 节 |
-| Bus recovery 代码骨架 | i2c-bus-recovery-playbook.md 第 2 节 |
-| STM32 HAL 怎么实现 | i2c-bus-recovery-playbook.md 第 3 节 |
-| RT-Thread / Zephyr / FreeRTOS 怎么集成 | i2c-rtos-integration.md |
-| 多 master 怎么仲裁 | i2c-multimaster.md |
-| SMBus timeout 数值 | i2c-smbus-timeout.md |
-| Linux 怎么 fault injection | i2c-linux-fault-injection.md |
-| I2C 和 SMBus 恢复有什么区别 | i2c-vs-smbus-recovery.md |
-| 怎么判断设备是 SMBus 还是 I2C | i2c-vs-smbus-recovery.md |
-| 状态机怎么设计 | i2c-state-machine.md |
-| DMA / 中断怎么协作 | i2c-state-machine.md 第 4 节 |
-| 竞态 / 死锁怎么避免 | i2c-state-machine.md 第 4 节 |
-| 产线真实死机案例 | i2c-failure-cases.md |
-| 错误码怎么设计 | i2c-deep-dive.md "## 错误码设计" |
-| 多设备共享总线定位 | i2c-deep-dive.md "## 多设备共享总线时如何定位谁拉低了 SDA" |
-| 与 SMBus / I3C 区别 | i2c-deep-dive.md "## I2C 与 SMBus", "## I2C 与 I3C" |
-| 面试怎么答 I2C Bus Recovery | i2c-bus-recovery-playbook.md 第 9 节 |
+| I2C 上拉电阻怎么选 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## 上拉电阻选择" |
+| 7-bit 和 8-bit 地址区别 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## 7-bit 地址和 8-bit 地址" |
+| ACK / NACK 怎么排查 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## ACK/NACK 定位" |
+| Repeated START 是什么 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## Repeated START" |
+| Clock Stretching 是什么 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## Clock Stretching" |
+| SDA 被拉低怎么救 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## 总线被拉死", [[basic/i2c-bus-recovery-playbook\|i2c-bus-recovery-playbook]] |
+| 产线死机 30 分钟定位流程 | [[basic/i2c-bus-recovery-playbook\|i2c-bus-recovery-playbook]] 第 1 节 |
+| Bus recovery 代码骨架 | [[basic/i2c-bus-recovery-playbook\|i2c-bus-recovery-playbook]] 第 2 节 |
+| STM32 HAL 怎么实现 | [[basic/i2c-bus-recovery-playbook\|i2c-bus-recovery-playbook]] 第 3 节 |
+| RT-Thread / Zephyr / FreeRTOS 怎么集成 | [[basic/i2c-rtos-integration\|i2c-rtos-integration]] |
+| 多 master 怎么仲裁 | [[basic/i2c-multimaster\|i2c-multimaster]] |
+| SMBus timeout 数值 | [[basic/i2c-smbus-timeout\|i2c-smbus-timeout]] |
+| Linux 怎么 fault injection | [[basic/i2c-linux-fault-injection\|i2c-linux-fault-injection]] |
+| I2C 和 SMBus 恢复有什么区别 | [[basic/i2c-vs-smbus-recovery\|i2c-vs-smbus-recovery]] |
+| 怎么判断设备是 SMBus 还是 I2C | [[basic/i2c-vs-smbus-recovery\|i2c-vs-smbus-recovery]] |
+| 状态机怎么设计 | [[basic/i2c-state-machine\|i2c-state-machine]] |
+| DMA / 中断怎么协作 | [[basic/i2c-state-machine\|i2c-state-machine]] 第 4 节 |
+| 竞态 / 死锁怎么避免 | [[basic/i2c-state-machine\|i2c-state-machine]] 第 4 节 |
+| 产线真实死机案例 | [[basic/i2c-failure-cases\|i2c-failure-cases]] |
+| 错误码怎么设计 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## 错误码设计" |
+| 多设备共享总线定位 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## 多设备共享总线时如何定位谁拉低了 SDA" |
+| 与 SMBus / I3C 区别 | [[basic/i2c-deep-dive\|i2c-deep-dive]] "## I2C 与 SMBus", "## I2C 与 I3C" |
+| 面试怎么答 I2C Bus Recovery | [[basic/i2c-bus-recovery-playbook\|i2c-bus-recovery-playbook]] 第 9 节 |
 
 ## 关键概念地图
 
@@ -211,24 +211,24 @@ i2c-index.md (本文件, 导航)
 
 | 文档 | 更新频率 | 维护者 |
 | --- | --- | --- |
-| i2c-practical.md | 改版才更新 | 速查 / 调试流程 |
-| i2c-deep-dive.md | 改版才更新 | 原理体系 |
-| i2c-bus-recovery-playbook.md | 产线案例新增时 | 实战 SOP |
-| i2c-rtos-integration.md | RTOS 改版时 | 平台集成 |
-| i2c-multimaster.md | 改版才更新 | 多 master |
-| i2c-smbus-timeout.md | 改版才更新 | SMBus |
-| i2c-linux-fault-injection.md | kernel 大版本更新 | Linux 实操 |
-| i2c-state-machine.md | 改版才更新 | 状态机 |
-| i2c-failure-cases.md | **持续更新** | 产线案例 |
-| i2c-index.md | 新增 / 删除文档时 | 导航 |
+| [[basic/i2c-practical\|i2c-practical]] | 改版才更新 | 速查 / 调试流程 |
+| [[basic/i2c-deep-dive\|i2c-deep-dive]] | 改版才更新 | 原理体系 |
+| [[basic/i2c-bus-recovery-playbook\|i2c-bus-recovery-playbook]] | 产线案例新增时 | 实战 SOP |
+| [[basic/i2c-rtos-integration\|i2c-rtos-integration]] | RTOS 改版时 | 平台集成 |
+| [[basic/i2c-multimaster\|i2c-multimaster]] | 改版才更新 | 多 master |
+| [[basic/i2c-smbus-timeout\|i2c-smbus-timeout]] | 改版才更新 | SMBus |
+| [[basic/i2c-linux-fault-injection\|i2c-linux-fault-injection]] | kernel 大版本更新 | Linux 实操 |
+| [[basic/i2c-state-machine\|i2c-state-machine]] | 改版才更新 | 状态机 |
+| [[basic/i2c-failure-cases\|i2c-failure-cases]] | **持续更新** | 产线案例 |
+| [[basic/i2c-index\|i2c-index]] | 新增 / 删除文档时 | 导航 |
 
 ## 关联主题 (chips-com 其他目录)
 
-- **`bus/onboard/smbus.md` / `bus/onboard/smbus-pmbus-practical.md`** — SMBus / PMBus, I2C 的严格化扩展
-- **`bus/onboard/i3c.md` / `bus/onboard/i3c-deep-dive.md`** — I3C, I2C 的演进
-- **`bus/display/mipi-csi-dsi-debug.md`** — 摄像头 I2C 初始化和调试
-- **`bus/display/fpd-link-gmsl-practical.md`** — 远端 I2C, SerDes 反向通道
-- **`bus/display/hdmi-edp-practical.md`** — DDC I2C, EDID 读取
+- **[[bus/onboard/smbus|smbus]] / [[bus/onboard/smbus-pmbus-practical|smbus-pmbus-practical]]** — SMBus / PMBus, I2C 的严格化扩展
+- **[[bus/onboard/i3c|i3c]] / [[bus/onboard/i3c-deep-dive|i3c-deep-dive]]** — I3C, I2C 的演进
+- **[[bus/display/mipi-csi-dsi-debug|mipi-csi-dsi-debug]]** — 摄像头 I2C 初始化和调试
+- **[[bus/display/fpd-link-gmsl-practical|fpd-link-gmsl-practical]]** — 远端 I2C, SerDes 反向通道
+- **[[bus/display/hdmi-edp-practical|hdmi-edp-practical]]** — DDC I2C, EDID 读取
 
 ## 一句话总结
 

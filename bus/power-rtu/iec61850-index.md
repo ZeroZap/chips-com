@@ -75,21 +75,21 @@ chips-com/bus/iec61850-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| IEC 61850 是啥 | iec61850.md §定位 |
-| 通信模型 | iec61850.md §通信模型 |
-| MMS | iec61850.md §MMS（Client/Server） |
-| GOOSE | iec61850.md §GOOSE |
-| SV | iec61850.md §SV |
-| 建模 | iec61850.md §建模层次 |
-| LN 类 | iec61850.md §逻辑节点（LN）类 |
-| ACSI 服务 | iec61850-deep-dive.md §ACSI 服务 |
-| BRCB / URCB | iec61850-deep-dive.md §报告控制块（BRCB / URCB） |
-| 命令模型 | iec61850-deep-dive.md §命令模型 |
-| MMS BER | iec61850-deep-dive.md §MMS PDU 编码 |
-| SCL XML | iec61850-deep-dive.md §SCL XML 详解 |
-| 一致性测试 | iec61850-deep-dive.md §一致性测试 |
-| 16 个常见故障 | iec61850-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | iec61850-failure-cases.md |
+| IEC 61850 是啥 | [[bus/power-rtu/iec61850\|iec61850]] §定位 |
+| 通信模型 | [[bus/power-rtu/iec61850\|iec61850]] §通信模型 |
+| MMS | [[bus/power-rtu/iec61850\|iec61850]] §MMS（Client/Server） |
+| GOOSE | [[bus/power-rtu/iec61850\|iec61850]] §GOOSE |
+| SV | [[bus/power-rtu/iec61850\|iec61850]] §SV |
+| 建模 | [[bus/power-rtu/iec61850\|iec61850]] §建模层次 |
+| LN 类 | [[bus/power-rtu/iec61850\|iec61850]] §逻辑节点（LN）类 |
+| ACSI 服务 | [[bus/power-rtu/iec61850-deep-dive\|iec61850-deep-dive]] §ACSI 服务 |
+| BRCB / URCB | [[bus/power-rtu/iec61850-deep-dive\|iec61850-deep-dive]] §报告控制块（BRCB / URCB） |
+| 命令模型 | [[bus/power-rtu/iec61850-deep-dive\|iec61850-deep-dive]] §命令模型 |
+| MMS BER | [[bus/power-rtu/iec61850-deep-dive\|iec61850-deep-dive]] §MMS PDU 编码 |
+| SCL XML | [[bus/power-rtu/iec61850-deep-dive\|iec61850-deep-dive]] §SCL XML 详解 |
+| 一致性测试 | [[bus/power-rtu/iec61850-deep-dive\|iec61850-deep-dive]] §一致性测试 |
+| 16 个常见故障 | [[bus/power-rtu/iec61850-deep-dive\|iec61850-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/iec61850-failure-cases\|iec61850-failure-cases]] |
 
 ## IEC 61850 vs IEC 104 vs DNP3
 
@@ -138,10 +138,10 @@ chips-com/bus/iec61850-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/iec104.md`：与 IEC 104 对比（站控上行）
-- `bus/power-rtu/dnp3.md`：与 DNP3 对比（北美）
-- `bus/power-rtu/iec61850-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/iec104|iec104]]：与 IEC 104 对比（站控上行）
+- [[bus/power-rtu/dnp3|dnp3]]：与 DNP3 对比（北美）
+- [[bus/power-rtu/iec61850-failure-cases|iec61850-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

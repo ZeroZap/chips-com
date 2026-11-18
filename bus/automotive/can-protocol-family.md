@@ -22,7 +22,7 @@ CAN 不是单一协议，而是覆盖物理层、数据链路、传输层与应�
 | 我的场景该选哪个协议？       | [协议矩阵](#协议矩阵) · [选型决策](#选型决策) |
 | 每个协议读到哪一步？         | [文档索引](#文档索引)                         |
 | 库内还缺什么？               | [覆盖缺口](#覆盖缺口)                         |
-| 标准号、电器规范与法规边界？ | [can-standards-map.md](can-standards-map.md)  |
+| 标准号、电器规范与法规边界？ | [[bus/automotive/can-standards-map\|can-standards-map]]  |
 
 ## 分层结构
 
@@ -68,9 +68,9 @@ CAN 不是单一协议，而是覆盖物理层、数据链路、传输层与应�
 | L4  | WWH-OBD        | **ISO 27145-1 ~ -4, -6**       | 商用车全球统一车载诊断（GTR No. 5 法规）       |
 | L4  | CANopen-Safety | CiA 304 / EN 50325-5           | 安全功能认证扩展                               |
 
-> **OBD-II 已于 2026-10-31 补齐**：`bus/automotive/obd2.md` / `bus/automotive/obd2-deep-dive.md` / `bus/automotive/obd2-practical.md` / `bus/automotive/obd2-failure-cases.md` 四篇。
+> **OBD-II 已于 2026-10-31 补齐**：[[bus/automotive/obd2|obd2]] / [[bus/automotive/obd2-deep-dive|obd2-deep-dive]] / [[bus/automotive/obd2-practical|obd2-practical]] / [[bus/automotive/obd2-failure-cases|obd2-failure-cases]] 四篇。
 >
-> **各协议的标准号、电器规范与环境/安全规范的完整总表见 `bus/automotive/can-standards-map.md`**。
+> **各协议的标准号、电器规范与环境/安全规范的完整总表见 [[bus/automotive/can-standards-map|can-standards-map]]**。
 
 ## 协议矩阵
 
@@ -146,58 +146,58 @@ CAN (L2)
 
 | 文档                                   | 定位                                            |
 | -------------------------------------- | ----------------------------------------------- |
-| `basic/can-index.md`                   | CAN PHY / 控制器层导航                          |
-| `basic/can-practical.md`               | 调试速查：终端电阻、can-utils、常见错误         |
-| `basic/can-deep-dive.md`               | 帧格式、仲裁、错误处理、波特率与过滤器          |
-| `basic/can-multimaster-and-bus-off.md` | 多主仲裁、TEC/REC、节点状态机与 Bus Off 恢复    |
-| `basic/can-failure-cases.md`           | 21 个产线案例（详见文档）                       |
-| `basic/can-fd-and-can-xl.md`           | CAN FD 关键改进、选型决策与 CAN XL              |
-| `basic/can-rtos-integration.md`        | RTOS 集成与 Linux SocketCAN                     |
-| `basic/can-vs-other-bus.md`            | CAN 与 I2C / SPI / UART / RS485 / Ethernet 对比 |
-| `basic/can-phy.md`                     | 差分物理层与收发器基础                          |
+| [[basic/can-index\|can-index]]                   | CAN PHY / 控制器层导航                          |
+| [[basic/can-practical\|can-practical]]               | 调试速查：终端电阻、can-utils、常见错误         |
+| [[basic/can-deep-dive\|can-deep-dive]]               | 帧格式、仲裁、错误处理、波特率与过滤器          |
+| [[basic/can-multimaster-and-bus-off\|can-multimaster-and-bus-off]] | 多主仲裁、TEC/REC、节点状态机与 Bus Off 恢复    |
+| [[basic/can-failure-cases\|can-failure-cases]]           | 21 个产线案例（详见文档）                       |
+| [[basic/can-fd-and-can-xl\|can-fd-and-can-xl]]           | CAN FD 关键改进、选型决策与 CAN XL              |
+| [[basic/can-rtos-integration\|can-rtos-integration]]        | RTOS 集成与 Linux SocketCAN                     |
+| [[basic/can-vs-other-bus\|can-vs-other-bus]]            | CAN 与 I2C / SPI / UART / RS485 / Ethernet 对比 |
+| [[basic/can-phy\|can-phy]]                     | 差分物理层与收发器基础                          |
 
 ### bus/automotive/ — CAN FD 与应用层协议
 
 | 文档                                         | 定位                                          | 案例 |
 | -------------------------------------------- | --------------------------------------------- | ---- |
-| `bus/automotive/can.md`                      | CAN / CAN FD 概览入口                         | —    |
-| `bus/automotive/can-fd-failure-cases.md`     | CAN FD 产线案例与排查（全库最大 CAN 文档）    | 21   |
-| `bus/automotive/canopen.md`                  | CANopen 定位、对象字典、SDO/PDO               | —    |
-| `bus/automotive/canopen-index.md`            | CANopen 主题导航                              | —    |
-| `bus/automotive/canopen-practical.md`        | COB-ID、SDO/PDO/NMT 与电机调试                | —    |
-| `bus/automotive/canopen-deep-dive.md`        | 位时序、PDO 映射、NMT 状态机与 CiA 402        | —    |
-| `bus/automotive/canopen-failure-cases.md`    | Node ID 冲突 / 字节序 / PDO 映射 / NMT        | 12   |
-| `bus/automotive/canopen-safety.md`           | CiA 304 / EN 50325-5：SRDO、SCT/SRVT、GFC     | —    |
-| `bus/automotive/iso-tp.md`                   | ISO-TP 定位、帧类型与关键参数                 | —    |
-| `bus/automotive/iso-tp-index.md`             | ISO-TP 主题导航                               | —    |
-| `bus/automotive/iso-tp-practical.md`         | 多帧调试、流控、BS/STmin                      | —    |
-| `bus/automotive/iso-tp-deep-dive.md`         | 序列号、超时与异常流控                        | —    |
-| `bus/automotive/iso-tp-failure-cases.md`     | SF 边界 / BS 语义 / STmin / SN 环绕           | 12   |
-| `bus/automotive/j1939.md`                    | J1939 概念入口                                | —    |
-| `bus/automotive/j1939-index.md`              | J1939 主题导航                                | —    |
-| `bus/automotive/j1939-protocol-spec.md`      | 标准号分层、报文类型、PGN/SPN 与 J1939-DA     | —    |
-| `bus/automotive/j1939-practical.md`          | 29-bit ID、地址声明、DBC 与网关调试           | —    |
-| `bus/automotive/j1939-deep-dive.md`          | NAME、PGN/SPN、多包与 DM 诊断                 | —    |
-| `bus/automotive/j1939-network-management.md` | NAME 编码、Address Claimed、Commanded Address | —    |
-| `bus/automotive/j1939-transport-protocol.md` | J1939-21：BAM 与 RTS/CTS                      | —    |
-| `bus/automotive/j1939-failure-cases.md`      | 地址冲突 / DM 格式 / TP 丢包                  | 21   |
-| `bus/automotive/uds.md`                      | UDS 定位、SID 服务表与 ISO-TP 关系            | —    |
-| `bus/automotive/uds-index.md`                | UDS 主题导航                                  | —    |
-| `bus/automotive/uds-practical.md`            | 会话、DID、DTC、安全访问与刷写                | —    |
-| `bus/automotive/uds-deep-dive.md`            | 诊断状态机、刷写事务与 DoIP/网关边界          | —    |
-| `bus/automotive/uds-failure-cases.md`        | 会话 / 种子密钥 / 刷写变砖 / BSC 循环         | 12   |
-| `bus/automotive/obd2.md`                     | OBD-II 概览、Mode、PID 与 DTC                 | —    |
-| `bus/automotive/obd2-index.md`               | OBD-II 主题导航                               | —    |
-| `bus/automotive/obd2-deep-dive.md`           | PID 协商、I/M 模型、与 UDS 的边界             | —    |
-| `bus/automotive/obd2-practical.md`           | ELM327 / SocketCAN 工具链与调试流程           | —    |
-| `bus/automotive/obd2-failure-cases.md`       | 适配器 / 解码 / 多 ECU 响应 / readiness       | 12   |
-| `bus/automotive/wwh-obd.md`                  | ISO 27145 分部分工、双链路与数据映射          | —    |
-| `bus/automotive/wwh-obd-index.md`            | WWH-OBD 主题导航                              | —    |
-| `bus/automotive/wwh-obd-deep-dive.md`        | 部分边界、24 位 DTC、初始化与 DoIP            | —    |
-| `bus/automotive/wwh-obd-practical.md`        | 双链路选型、路由激活与 DTC 解析               | —    |
-| `bus/automotive/wwh-obd-failure-cases.md`    | 链路识别 / 长寻址 / DTC 格式 / P2 超时        | 12   |
-| `bus/automotive/lin.md`                      | LIN 概念、帧结构、调度与 LDF                  | —    |
-| `bus/automotive/lin-practical.md`            | 主从调度、Break/Sync、Checksum                | —    |
+| [[bus/automotive/can\|can]]                      | CAN / CAN FD 概览入口                         | —    |
+| [[bus/automotive/can-fd-failure-cases\|can-fd-failure-cases]]     | CAN FD 产线案例与排查（全库最大 CAN 文档）    | 21   |
+| [[bus/automotive/canopen\|canopen]]                  | CANopen 定位、对象字典、SDO/PDO               | —    |
+| [[bus/automotive/canopen-index\|canopen-index]]            | CANopen 主题导航                              | —    |
+| [[bus/automotive/canopen-practical\|canopen-practical]]        | COB-ID、SDO/PDO/NMT 与电机调试                | —    |
+| [[bus/automotive/canopen-deep-dive\|canopen-deep-dive]]        | 位时序、PDO 映射、NMT 状态机与 CiA 402        | —    |
+| [[bus/automotive/canopen-failure-cases\|canopen-failure-cases]]    | Node ID 冲突 / 字节序 / PDO 映射 / NMT        | 12   |
+| [[bus/automotive/canopen-safety\|canopen-safety]]           | CiA 304 / EN 50325-5：SRDO、SCT/SRVT、GFC     | —    |
+| [[bus/automotive/iso-tp\|iso-tp]]                   | ISO-TP 定位、帧类型与关键参数                 | —    |
+| [[bus/automotive/iso-tp-index\|iso-tp-index]]             | ISO-TP 主题导航                               | —    |
+| [[bus/automotive/iso-tp-practical\|iso-tp-practical]]         | 多帧调试、流控、BS/STmin                      | —    |
+| [[bus/automotive/iso-tp-deep-dive\|iso-tp-deep-dive]]         | 序列号、超时与异常流控                        | —    |
+| [[bus/automotive/iso-tp-failure-cases\|iso-tp-failure-cases]]     | SF 边界 / BS 语义 / STmin / SN 环绕           | 12   |
+| [[bus/automotive/j1939\|j1939]]                    | J1939 概念入口                                | —    |
+| [[bus/automotive/j1939-index\|j1939-index]]              | J1939 主题导航                                | —    |
+| [[bus/automotive/j1939-protocol-spec\|j1939-protocol-spec]]      | 标准号分层、报文类型、PGN/SPN 与 J1939-DA     | —    |
+| [[bus/automotive/j1939-practical\|j1939-practical]]          | 29-bit ID、地址声明、DBC 与网关调试           | —    |
+| [[bus/automotive/j1939-deep-dive\|j1939-deep-dive]]          | NAME、PGN/SPN、多包与 DM 诊断                 | —    |
+| [[bus/automotive/j1939-network-management\|j1939-network-management]] | NAME 编码、Address Claimed、Commanded Address | —    |
+| [[bus/automotive/j1939-transport-protocol\|j1939-transport-protocol]] | J1939-21：BAM 与 RTS/CTS                      | —    |
+| [[bus/automotive/j1939-failure-cases\|j1939-failure-cases]]      | 地址冲突 / DM 格式 / TP 丢包                  | 21   |
+| [[bus/automotive/uds\|uds]]                      | UDS 定位、SID 服务表与 ISO-TP 关系            | —    |
+| [[bus/automotive/uds-index\|uds-index]]                | UDS 主题导航                                  | —    |
+| [[bus/automotive/uds-practical\|uds-practical]]            | 会话、DID、DTC、安全访问与刷写                | —    |
+| [[bus/automotive/uds-deep-dive\|uds-deep-dive]]            | 诊断状态机、刷写事务与 DoIP/网关边界          | —    |
+| [[bus/automotive/uds-failure-cases\|uds-failure-cases]]        | 会话 / 种子密钥 / 刷写变砖 / BSC 循环         | 12   |
+| [[bus/automotive/obd2\|obd2]]                     | OBD-II 概览、Mode、PID 与 DTC                 | —    |
+| [[bus/automotive/obd2-index\|obd2-index]]               | OBD-II 主题导航                               | —    |
+| [[bus/automotive/obd2-deep-dive\|obd2-deep-dive]]           | PID 协商、I/M 模型、与 UDS 的边界             | —    |
+| [[bus/automotive/obd2-practical\|obd2-practical]]           | ELM327 / SocketCAN 工具链与调试流程           | —    |
+| [[bus/automotive/obd2-failure-cases\|obd2-failure-cases]]       | 适配器 / 解码 / 多 ECU 响应 / readiness       | 12   |
+| [[bus/automotive/wwh-obd\|wwh-obd]]                  | ISO 27145 分部分工、双链路与数据映射          | —    |
+| [[bus/automotive/wwh-obd-index\|wwh-obd-index]]            | WWH-OBD 主题导航                              | —    |
+| [[bus/automotive/wwh-obd-deep-dive\|wwh-obd-deep-dive]]        | 部分边界、24 位 DTC、初始化与 DoIP            | —    |
+| [[bus/automotive/wwh-obd-practical\|wwh-obd-practical]]        | 双链路选型、路由激活与 DTC 解析               | —    |
+| [[bus/automotive/wwh-obd-failure-cases\|wwh-obd-failure-cases]]    | 链路识别 / 长寻址 / DTC 格式 / P2 超时        | 12   |
+| [[bus/automotive/lin\|lin]]                      | LIN 概念、帧结构、调度与 LDF                  | —    |
+| [[bus/automotive/lin-practical\|lin-practical]]            | 主从调度、Break/Sync、Checksum                | —    |
 
 ### _Inbox/ — 待处理候选
 
@@ -227,45 +227,45 @@ CAN (L2)
 | **ISO-TP**         | L4   | 5      | 12   | ✅ 完整   | —                                                                                |
 | **OBD-II**         | L4   | 5      | 12   | ✅ 完整   | —                                                                                |
 | **WWH-OBD**        | L4   | 5      | 12   | ✅ 完整   | —                                                                                |
-| **CAN XL**         | L2   | 0 独立 | 0    | 🟡 合并中 | 仅在 `basic/can-fd-and-can-xl.md` 内                                             |
-| **CANopen-Safety** | L3   | 1      | 0    | 🟡 有专篇 | 有 `bus/automotive/canopen-safety.md`（SRDO / CRC / GFC），缺 failure-cases      |
-| **LIN**            | L2   | 2      | 0    | 🟡 缺 FC  | 有 `bus/automotive/lin.md` + `bus/automotive/lin-practical.md`，缺 failure-cases |
+| **CAN XL**         | L2   | 0 独立 | 0    | 🟡 合并中 | 仅在 [[basic/can-fd-and-can-xl\|can-fd-and-can-xl]] 内                                             |
+| **CANopen-Safety** | L3   | 1      | 0    | 🟡 有专篇 | 有 [[bus/automotive/canopen-safety\|canopen-safety]]（SRDO / CRC / GFC），缺 failure-cases      |
+| **LIN**            | L2   | 2      | 0    | 🟡 缺 FC  | 有 [[bus/automotive/lin\|lin]] + [[bus/automotive/lin-practical\|lin-practical]]，缺 failure-cases |
 
 > **案例数口径**：统一按 `^## 案例` 统计**真实实战案例数**。
 >
-> 早期报告用的 `^### ` 是**子小节数**（现象/抓包/定位/修复/复盘），会虚报 4.6 倍 —— 例如 `basic/can-failure-cases.md` 真实 21 例但 h3 有 100 个。本文所有数字已统一为 `^## 案例` 口径。
+> 早期报告用的 `^### ` 是**子小节数**（现象/抓包/定位/修复/复盘），会虚报 4.6 倍 —— 例如 [[basic/can-failure-cases|can-failure-cases]] 真实 21 例但 h3 有 100 个。本文所有数字已统一为 `^## 案例` 口径。
 
 ### 剩余建议补齐顺序
 
-1. **CAN XL 独立笔记** — 等 CAN XL 量产落地再做，现在并入 `basic/can-fd-and-can-xl.md` 够用。
-2. **CANopen-Safety failure-cases** — 专篇已有（`bus/automotive/canopen-safety.md`），下一步补 SRDO 配置 CRC 不符 / SRVT 超时 / 取反帧失配的产线案例。
+1. **CAN XL 独立笔记** — 等 CAN XL 量产落地再做，现在并入 [[basic/can-fd-and-can-xl|can-fd-and-can-xl]] 够用。
+2. **CANopen-Safety failure-cases** — 专篇已有（[[bus/automotive/canopen-safety|canopen-safety]]），下一步补 SRDO 配置 CRC 不符 / SRVT 超时 / 取反帧失配的产线案例。
 3. **LIN failure-cases** — LIN 属车载低速分支，与 CAN 主线关联度低，按需补。
 
 > 各协议独立 index 已于 2026-11-16 补齐：`can-index` / `can-fd-index` / `canopen-index` / `iso-tp-index` / `uds-index` / `obd2-index` / `wwh-obd-index`。
 
-> 2026-10-31 已完成：ISO-TP / UDS / CANopen / OBD-II 四个协议的 failure-cases 全部补齐（各 12 例），OBD-II 从 L0 直接建到 L4；补齐 LIN 概念页；新增 `bus/automotive/can-standards-map.md` 标准规范总表。
+> 2026-10-31 已完成：ISO-TP / UDS / CANopen / OBD-II 四个协议的 failure-cases 全部补齐（各 12 例），OBD-II 从 L0 直接建到 L4；补齐 LIN 概念页；新增 [[bus/automotive/can-standards-map|can-standards-map]] 标准规范总表。
 >
 > 2026-11-16 已完成：WWH-OBD 从 L3 升至 L4（新增 deep-dive / practical / failure-cases 各一篇，12 例）。
 
 ## 关联主题
 
-- `basic/i2c-index.md` / `basic/spi-index.md` / `basic/uart-index.md` — 其他总线主题（结构对齐，见各 index 的对比表）
-- `basic/can-vs-other-bus.md` — CAN 与其他总线的横向对比
-- `bus/automotive/can-standards-map.md` — **CAN 家族标准规范总表**（按层 + 按协议 + 反查索引）
-- `bus/automotive/iso-tp.md` — ISO-TP 入口
-- `bus/automotive/uds.md` — UDS 入口
-- `bus/automotive/obd2.md` — OBD-II 入口
-- `bus/automotive/wwh-obd.md` — WWH-OBD 专篇（ISO 27145，商用车全球统一诊断）
-- `bus/automotive/wwh-obd-deep-dive.md` — WWH-OBD 深度（数据模型 / 24 位 DTC / 初始化 / DoIP）
-- `bus/automotive/wwh-obd-practical.md` — WWH-OBD 实战（初始化 / 路由激活 / DTC 解析）
-- `bus/automotive/wwh-obd-failure-cases.md` — WWH-OBD 案例库（12 例）
-- `bus/automotive/canopen-safety.md` — CANopen Safety 专篇（CiA 304 / EN 50325-5，SRDO）
-- `bus/automotive/j1939-index.md` — J1939 导航
-- `bus/automotive/j1939-protocol-spec.md` — J1939 协议规范层（标准号按层分解、报文类型、J1939-DA）
-- `bus/automotive/lin.md` — LIN 概念页（车身低速，与 CAN 互补）
-- `bus/automotive/lin-practical.md` — LIN 实战（主从调度、Break/Sync、Checksum、LDF）
-- `LAYERED_MAP.md` — 全库分层地图
-- `guides/learning/PROTOCOL_SELECTION.md` — 协议选型矩阵
+- [[basic/i2c-index|i2c-index]] / [[basic/spi-index|spi-index]] / [[basic/uart-index|uart-index]] — 其他总线主题（结构对齐，见各 index 的对比表）
+- [[basic/can-vs-other-bus|can-vs-other-bus]] — CAN 与其他总线的横向对比
+- [[bus/automotive/can-standards-map|can-standards-map]] — **CAN 家族标准规范总表**（按层 + 按协议 + 反查索引）
+- [[bus/automotive/iso-tp|iso-tp]] — ISO-TP 入口
+- [[bus/automotive/uds|uds]] — UDS 入口
+- [[bus/automotive/obd2|obd2]] — OBD-II 入口
+- [[bus/automotive/wwh-obd|wwh-obd]] — WWH-OBD 专篇（ISO 27145，商用车全球统一诊断）
+- [[bus/automotive/wwh-obd-deep-dive|wwh-obd-deep-dive]] — WWH-OBD 深度（数据模型 / 24 位 DTC / 初始化 / DoIP）
+- [[bus/automotive/wwh-obd-practical|wwh-obd-practical]] — WWH-OBD 实战（初始化 / 路由激活 / DTC 解析）
+- [[bus/automotive/wwh-obd-failure-cases|wwh-obd-failure-cases]] — WWH-OBD 案例库（12 例）
+- [[bus/automotive/canopen-safety|canopen-safety]] — CANopen Safety 专篇（CiA 304 / EN 50325-5，SRDO）
+- [[bus/automotive/j1939-index|j1939-index]] — J1939 导航
+- [[bus/automotive/j1939-protocol-spec|j1939-protocol-spec]] — J1939 协议规范层（标准号按层分解、报文类型、J1939-DA）
+- [[bus/automotive/lin|lin]] — LIN 概念页（车身低速，与 CAN 互补）
+- [[bus/automotive/lin-practical|lin-practical]] — LIN 实战（主从调度、Break/Sync、Checksum、LDF）
+- [[LAYERED_MAP|LAYERED_MAP]] — 全库分层地图
+- [[guides/learning/PROTOCOL_SELECTION|PROTOCOL_SELECTION]] — 协议选型矩阵
 
 ## 一句话总结
 
@@ -275,9 +275,9 @@ CAN 家族分四层：物理层 CAN PHY、数据链路 CAN / CAN FD / CAN XL、�
 
 - 2026-10-31: 初版。汇总 CAN 家族全部分层协议，标注各协议 L0-L4 覆盖状态，识别 4 个缺口（ISO-TP FC / UDS FC / CANopen FC / OBD-II 空白）。
 - 2026-10-31: 补齐。新增 ISO-TP / UDS / CANopen 三个 failure-cases（各 12 例）与 OBD-II 四篇（概览 + 深度 + 实战 + 12 例），四个协议全部升至 L4；补齐 LIN 概念页。缺口表重算为 3 项低优先级待补。
-- 2026-10-31: 规范与口径。新增 `bus/automotive/can-standards-map.md` 标准规范总表（按层 L0-L9 + 按协议，含 ISO 61 / SAE 21 / CiA 18 个标准号与 61 行反查索引）；修正 CAN XL（ISO 11898-1:2024）、OBD-II（SAE J1979）、J1939-84、J1939-81 四处标准号错误；**案例数口径统一为 `^## 案例`**（原 100/133 为 h3 子小节数，虚报 4.6 倍），实测 111 例；缺口表扩为 5 项（新增 CANopen-Safety / WWH-OBD 专篇）。
-- 2026-11-02: 补齐两个专篇。新增 `bus/automotive/canopen-safety.md`（CiA 304 / EN 50325-5：SRDO 1-out-of-2 取反冗余、SCT/SRVT 双超时、CRC-16-CCITT 小端配置签名、GFC）与 `bus/automotive/wwh-obd.md`（ISO 27145-1/2/3/4/6 分工，DoCAN + DoIP 双链路，PID/MID/ITID → DID/RID/DTC 映射）；两项从 🔴 真空白升到 L3 有专篇。**修正 standards-map 的 ISO 27145-3 描述**（原写「UDS 服务子集」，实为标题是 Common message dictionary，UDS 子集只是其内容范围）并补入 **ISO 27145-6:2015 External test equipment**（原标准表完全漏了 Part 6）；注明 **ISO 27145-5 不存在**。剩余缺口 5 → 3 项。
-- 2026-11-16: J1939 补规范层。新增 `bus/automotive/j1939-protocol-spec.md`，J1939 从 7 篇增至 **8 篇**，覆盖度仍为 L4（案例数不变）。补齐库内缺失的**协议规范层视角**：J1939 全系列标准号按物理/链路/传输/网络/管理/应用六层分解、5 种报文类型、PGN 全局/特定分类、EDP-DP 数据页对照表、8672 个 PGN 的容量计算、J1939-DA（Excel 而非 DBC）的来源、SPN 19 bit 范围与 SLOT 定义、DTC 的 SPN/FMI/OC/CM 字段、BAM 与 CM 的时序差异（50-200 ms vs 无限时）。
-- 2026-11-16: WWH-OBD 补齐至 L4。新增 `bus/automotive/wwh-obd-deep-dive.md`（ISO 27145 各部分确切边界：-2 管数据 / -3 管服务 / -4 管连接；Annex A-E 结构；PID·MID·ITID→DID·RID 映射；**24 位 DTC 格式**与 SAE J2012-DA BaseDTC/FTB 及 J1939 SPN/FMI 的对齐；ISO 27145-4 §7.1.2/7.1.3 的 11 位与 29 位 CAN ID 验证程序；DoCAN/DoIP 双链路与 DoIP payload type 集）、`bus/automotive/wwh-obd-practical.md`（双链路选型、初始化脚本、DoIP 路由激活、24 位 DTC 解析、商用车产线与检测站场景）、`bus/automotive/wwh-obd-failure-cases.md`（12 例）。WWH-OBD 从 L3 升至 L4，failure-cases 实测总数 111 → **123 例**，缺口表剩余 3 项 → **2 项**。**核对 ISO 27145-2/-3/-4 与 ISO 13400-2 官方范围声明**，确认 -3 标题为 "Common message dictionary" 且其范围确为「ISO 14229-1 中 UDS 服务的子集实现」（原表述正确，无需修正）；补入 **ISO 15765-4:2021** 为现行第 4 版（时间参数统一为 `t_ParameterName`、`P2_CAN_max` 更正为 `Δt_P2_CAN_Client_Max`）与 **GB/T 39851.3-2021** 中国对应标准。
+- 2026-10-31: 规范与口径。新增 [[bus/automotive/can-standards-map|can-standards-map]] 标准规范总表（按层 L0-L9 + 按协议，含 ISO 61 / SAE 21 / CiA 18 个标准号与 61 行反查索引）；修正 CAN XL（ISO 11898-1:2024）、OBD-II（SAE J1979）、J1939-84、J1939-81 四处标准号错误；**案例数口径统一为 `^## 案例`**（原 100/133 为 h3 子小节数，虚报 4.6 倍），实测 111 例；缺口表扩为 5 项（新增 CANopen-Safety / WWH-OBD 专篇）。
+- 2026-11-02: 补齐两个专篇。新增 [[bus/automotive/canopen-safety|canopen-safety]]（CiA 304 / EN 50325-5：SRDO 1-out-of-2 取反冗余、SCT/SRVT 双超时、CRC-16-CCITT 小端配置签名、GFC）与 [[bus/automotive/wwh-obd|wwh-obd]]（ISO 27145-1/2/3/4/6 分工，DoCAN + DoIP 双链路，PID/MID/ITID → DID/RID/DTC 映射）；两项从 🔴 真空白升到 L3 有专篇。**修正 standards-map 的 ISO 27145-3 描述**（原写「UDS 服务子集」，实为标题是 Common message dictionary，UDS 子集只是其内容范围）并补入 **ISO 27145-6:2015 External test equipment**（原标准表完全漏了 Part 6）；注明 **ISO 27145-5 不存在**。剩余缺口 5 → 3 项。
+- 2026-11-16: J1939 补规范层。新增 [[bus/automotive/j1939-protocol-spec|j1939-protocol-spec]]，J1939 从 7 篇增至 **8 篇**，覆盖度仍为 L4（案例数不变）。补齐库内缺失的**协议规范层视角**：J1939 全系列标准号按物理/链路/传输/网络/管理/应用六层分解、5 种报文类型、PGN 全局/特定分类、EDP-DP 数据页对照表、8672 个 PGN 的容量计算、J1939-DA（Excel 而非 DBC）的来源、SPN 19 bit 范围与 SLOT 定义、DTC 的 SPN/FMI/OC/CM 字段、BAM 与 CM 的时序差异（50-200 ms vs 无限时）。
+- 2026-11-16: WWH-OBD 补齐至 L4。新增 [[bus/automotive/wwh-obd-deep-dive|wwh-obd-deep-dive]]（ISO 27145 各部分确切边界：-2 管数据 / -3 管服务 / -4 管连接；Annex A-E 结构；PID·MID·ITID→DID·RID 映射；**24 位 DTC 格式**与 SAE J2012-DA BaseDTC/FTB 及 J1939 SPN/FMI 的对齐；ISO 27145-4 §7.1.2/7.1.3 的 11 位与 29 位 CAN ID 验证程序；DoCAN/DoIP 双链路与 DoIP payload type 集）、[[bus/automotive/wwh-obd-practical|wwh-obd-practical]]（双链路选型、初始化脚本、DoIP 路由激活、24 位 DTC 解析、商用车产线与检测站场景）、[[bus/automotive/wwh-obd-failure-cases|wwh-obd-failure-cases]]（12 例）。WWH-OBD 从 L3 升至 L4，failure-cases 实测总数 111 → **123 例**，缺口表剩余 3 项 → **2 项**。**核对 ISO 27145-2/-3/-4 与 ISO 13400-2 官方范围声明**，确认 -3 标题为 "Common message dictionary" 且其范围确为「ISO 14229-1 中 UDS 服务的子集实现」（原表述正确，无需修正）；补入 **ISO 15765-4:2021** 为现行第 4 版（时间参数统一为 `t_ParameterName`、`P2_CAN_max` 更正为 `Δt_P2_CAN_Client_Max`）与 **GB/T 39851.3-2021** 中国对应标准。
 
 - 2026-11-16: 描述与索引整理。补齐 CAN 家族 7 个索引页，关闭“独立 index”缺口；精简协议矩阵、文档索引与覆盖表描述；候选数量按 `_Inbox` 实况更新（6 待处理 + 6 历史）；目录迁移至 `bus/automotive/`。

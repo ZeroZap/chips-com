@@ -41,17 +41,17 @@ chips-com/bus/cjt188-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| CJ/T 188 是啥 | cjt188.md §定位 |
-| 与 DL/T 645 关系 | cjt188.md §与 DL/T 645 的关系 |
-| 帧格式 | cjt188-practical.md §帧格式速记 |
-| 表地址 7 字节 | cjt188-deep-dive.md §表地址 |
-| DI 字典 | cjt188-deep-dive.md §数据标识（DI）详解 |
-| 密码管理 | cjt188-deep-dive.md §密码管理 |
-| 多帧协议 | cjt188-deep-dive.md §多帧协议（块读） |
-| ESAM 安全 | cjt188-deep-dive.md §安全合规 |
-| 红外手持 | cjt188-deep-dive.md §红外通信 |
-| 16 个常见故障 | cjt188-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | cjt188-failure-cases.md |
+| CJ/T 188 是啥 | [[bus/power-rtu/cjt188\|cjt188]] §定位 |
+| 与 DL/T 645 关系 | [[bus/power-rtu/cjt188\|cjt188]] §与 DL/T 645 的关系 |
+| 帧格式 | [[bus/power-rtu/cjt188-practical\|cjt188-practical]] §帧格式速记 |
+| 表地址 7 字节 | [[bus/power-rtu/cjt188-deep-dive\|cjt188-deep-dive]] §表地址 |
+| DI 字典 | [[bus/power-rtu/cjt188-deep-dive\|cjt188-deep-dive]] §数据标识（DI）详解 |
+| 密码管理 | [[bus/power-rtu/cjt188-deep-dive\|cjt188-deep-dive]] §密码管理 |
+| 多帧协议 | [[bus/power-rtu/cjt188-deep-dive\|cjt188-deep-dive]] §多帧协议（块读） |
+| ESAM 安全 | [[bus/power-rtu/cjt188-deep-dive\|cjt188-deep-dive]] §安全合规 |
+| 红外手持 | [[bus/power-rtu/cjt188-deep-dive\|cjt188-deep-dive]] §红外通信 |
+| 16 个常见故障 | [[bus/power-rtu/cjt188-deep-dive\|cjt188-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/cjt188-failure-cases\|cjt188-failure-cases]] |
 
 ## CJ/T 188 vs DL/T 645
 
@@ -102,10 +102,10 @@ chips-com/bus/cjt188-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/dlt645.md`：DL/T 645（结构类似）
-- `bus/industrial/rs485-modbus-rtu-practical.md`：RS485 半双工基础
-- `bus/power-rtu/cjt188-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/dlt645|dlt645]]：DL/T 645（结构类似）
+- [[bus/industrial/rs485-modbus-rtu-practical|rs485-modbus-rtu-practical]]：RS485 半双工基础
+- [[bus/power-rtu/cjt188-failure-cases|cjt188-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

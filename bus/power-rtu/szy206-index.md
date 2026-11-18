@@ -75,17 +75,17 @@ chips-com/bus/szy206-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| SZY 206 是啥 | szy206.md §定位 |
-| 取水要素 | szy206.md §水资源要素编码 |
-| 与 SL 651 区别 | szy206-deep-dive.md §与 SL 651 的差异 |
-| 报文示例 | szy206-practical.md §报文示例 |
-| 自报策略 | szy206-deep-dive.md §自报策略 |
-| 加报触发 | szy206-deep-dive.md §加报策略 |
-| GSM 短信备份 | szy206-deep-dive.md §GSM 短信备份 |
-| 多信道备份 | szy206-deep-dive.md §多信道备份策略 |
-| 加密扩展 | szy206-deep-dive.md §链路密码 |
-| 16 个常见故障 | szy206-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | szy206-failure-cases.md |
+| SZY 206 是啥 | [[bus/power-rtu/szy206\|szy206]] §定位 |
+| 取水要素 | [[bus/power-rtu/szy206\|szy206]] §水资源要素编码 |
+| 与 SL 651 区别 | [[bus/power-rtu/szy206-deep-dive\|szy206-deep-dive]] §与 SL 651 的差异 |
+| 报文示例 | [[bus/power-rtu/szy206-practical\|szy206-practical]] §报文示例 |
+| 自报策略 | [[bus/power-rtu/szy206-deep-dive\|szy206-deep-dive]] §自报策略 |
+| 加报触发 | [[bus/power-rtu/szy206-deep-dive\|szy206-deep-dive]] §加报策略 |
+| GSM 短信备份 | [[bus/power-rtu/szy206-deep-dive\|szy206-deep-dive]] §GSM 短信备份 |
+| 多信道备份 | [[bus/power-rtu/szy206-deep-dive\|szy206-deep-dive]] §多信道备份策略 |
+| 加密扩展 | [[bus/power-rtu/szy206-deep-dive\|szy206-deep-dive]] §链路密码 |
+| 16 个常见故障 | [[bus/power-rtu/szy206-deep-dive\|szy206-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/szy206-failure-cases\|szy206-failure-cases]] |
 
 ## SZY 206 vs SL 651
 
@@ -137,10 +137,10 @@ chips-com/bus/szy206-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/sl651.md`：SL 651（结构相似）
-- `bus/power-rtu/slt427.md`：SL/T 427（补充）
-- `bus/power-rtu/szy206-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/sl651|sl651]]：SL 651（结构相似）
+- [[bus/power-rtu/slt427|slt427]]：SL/T 427（补充）
+- [[bus/power-rtu/szy206-failure-cases|szy206-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

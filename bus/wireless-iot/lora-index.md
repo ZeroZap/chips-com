@@ -36,39 +36,39 @@ chips-com/bus/lora-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/lora.md`** — 主题入口, 5 分钟
-2. **`bus/wireless-iot/lora-practical.md`** — 频段 / SF/BW / 5 秒定位
-3. **`bus/wireless-iot/lora-deep-dive.md`** — 物理层调制 + Class 状态机
+1. **[[bus/wireless-iot/lora|lora]]** — 主题入口, 5 分钟
+2. **[[bus/wireless-iot/lora-practical|lora-practical]]** — 频段 / SF/BW / 5 秒定位
+3. **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** — 物理层调制 + Class 状态机
 
 ### 路径 B: "我在做 LoRa 设备产线失败" (现场救火)
 
-1. **`bus/wireless-iot/lora-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/lora-failure-cases.md`** — 找类似案例（9 个）
-3. **`bus/wireless-iot/lora-deep-dive.md`** "## 错误码速查"
+1. **[[bus/wireless-iot/lora-practical|lora-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/lora-failure-cases|lora-failure-cases]]** — 找类似案例（9 个）
+3. **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** "## 错误码速查"
 
 ### 路径 C: "我在做 LoRa 协议栈移植" (工程师)
 
-1. **`bus/wireless-iot/lora-deep-dive.md`** "## 物理层（PHY）" + "## MAC 帧"
-2. **`bus/wireless-iot/lora-practical.md`** "## 抓包工具"
-3. **`bus/wireless-iot/lora-deep-dive.md`** "## SX1262 关键 API"
+1. **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** "## 物理层（PHY）" + "## MAC 帧"
+2. **[[bus/wireless-iot/lora-practical|lora-practical]]** "## 抓包工具"
+3. **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** "## SX1262 关键 API"
 
 ### 路径 D: "我在做 LoRaWAN 安全 / 配网" (安全工程师)
 
-1. **`bus/wireless-iot/lora-deep-dive.md`** "## OTAA 配网流程" + "## 安全"
-2. **`bus/wireless-iot/lora-failure-cases.md`** 案例 1（DevNonce）+ 案例 2（MIC Failure）+ 案例 8（Frame Counter 溢出）
-3. **`bus/wireless-iot/lora-practical.md`** "## 错误码速查" 的安全相关条目
+1. **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** "## OTAA 配网流程" + "## 安全"
+2. **[[bus/wireless-iot/lora-failure-cases|lora-failure-cases]]** 案例 1（DevNonce）+ 案例 2（MIC Failure）+ 案例 8（Frame Counter 溢出）
+3. **[[bus/wireless-iot/lora-practical|lora-practical]]** "## 错误码速查" 的安全相关条目
 
 ### 路径 E: "我在做 LoRaWAN 大规模部署" (架构师)
 
-1. **`bus/wireless-iot/lora.md`** "## Network Server" + "## 典型芯片"
-2. **`bus/wireless-iot/lora-deep-dive.md`** "## Network Server 架构" + "## SX1302 关键特性"
-3. **`bus/wireless-iot/lora-practical.md`** "## 性能数据参考" + `bus/wireless-iot/lora-failure-cases.md` 案例 4（GW 容量打满）
+1. **[[bus/wireless-iot/lora|lora]]** "## Network Server" + "## 典型芯片"
+2. **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** "## Network Server 架构" + "## SX1302 关键特性"
+3. **[[bus/wireless-iot/lora-practical|lora-practical]]** "## 性能数据参考" + [[bus/wireless-iot/lora-failure-cases|lora-failure-cases]] 案例 4（GW 容量打满）
 
 ### 路径 F: "我在做 LoRa 选型" (架构师 / PM)
 
-1. **`bus/wireless-iot/lora.md`** "## 跟其它无线协议的关系" + "## 频段"
-2. **`bus/wireless-iot/lora-deep-dive.md`** "## 性能数据参考"
-3. **`bus/wireless-iot/lora-failure-cases.md`** 案例 6（频段错配）
+1. **[[bus/wireless-iot/lora|lora]]** "## 跟其它无线协议的关系" + "## 频段"
+2. **[[bus/wireless-iot/lora-deep-dive|lora-deep-dive]]** "## 性能数据参考"
+3. **[[bus/wireless-iot/lora-failure-cases|lora-failure-cases]]** 案例 6（频段错配）
 
 ## 主题速查矩阵
 
@@ -76,62 +76,62 @@ chips-com/bus/lora-*.md
 
 | 我想知道 | 看哪里 |
 | --- | --- |
-| 频段怎么选 | lora.md "## 频段" |
-| 频段错配怎么办 | lora-failure-cases.md 案例 6 / 9 |
-| 距离近 | lora-failure-cases.md 案例 7 |
-| 怎么选 SF / BW | lora-practical.md "## SF / BW / 速率关系" |
-| ADR 怎么开 | lora-deep-dive.md "## ADR" |
-| ADR 不收敛 | lora-failure-cases.md 案例 4 |
-| OTAA vs ABP | lora.md "## 配网：OTAA vs ABP" |
-| AppKey 怎么配 | lora-deep-dive.md "## OTAA 配网流程" |
-| Join Fail | lora-failure-cases.md 案例 1 |
-| MIC Failure | lora-failure-cases.md 案例 2 |
-| Duty Cycle 1% | lora-practical.md "## EU868" + lora-failure-cases.md 案例 3 |
-| Class A/B/C 区别 | lora-deep-dive.md "## Class A / B / C 状态机" |
-| Class C 资源占用 | lora-failure-cases.md 案例 4 |
-| Class B 漂移 | lora-failure-cases.md 案例 5 |
-| Frame Counter 溢出 | lora-failure-cases.md 案例 8 |
-| NS 怎么选 | lora.md "## Network Server" |
-| ChirpStack 部署 | lora-deep-dive.md "## ChirpStack 组件" |
-| 抓包工具 | lora-practical.md "## 抓包工具" |
-| 错误码 | lora-practical.md "## 错误码速查" |
-| SX1262 怎么用 | lora-deep-dive.md "## SX1262 关键 API" |
-| LoRaMac-node 移植实战 | lora-deep-dive.md "## LoRaMac-node 协议栈移植实战" |
-| SX1302 GW 设计 | lora-deep-dive.md "## SX1302 关键特性" |
-| 私有频段 | lora-failure-cases.md 案例 9 |
-| LoRa vs NB-IoT | lora.md "## 跟其它无线协议的关系" |
-| LoRa CSS 工业抗干扰 | lora-deep-dive.md "### LoRa CSS 工业抗干扰" |
-| LoRa 天线设计实战 | lora-deep-dive.md "### LoRa 天线设计实战" |
-| Frame Counter MAX_FCNT_GAP | lora-deep-dive.md "### Frame Counter（FCnt）实战" |
-| 移动场景 ADR 失效 | lora-failure-cases.md 案例 4 → 移动场景子段 |
-| 气体探测器部署 | lora-failure-cases.md 案例 12 |
-| 智慧农业部署 | lora-failure-cases.md 案例 13 |
-| 智能水表 7 大掉线 | lora-failure-cases.md 案例 14 |
-| Join-Storm 5000 节点 | lora-failure-cases.md 案例 15 |
-| 14 步 LoRa 调试方法论 | lora-practical.md "## 14 步 LoRa 调试方法论" |
-| Dragino 14 步产线 checklist | lora-practical.md "### Dragino Wiki 14 步 checklist" |
-| SX1301 网关 5 个长期故障 | lora-failure-cases.md 案例 16 |
-| LoRa 低功耗 3 陷阱 + TCXO | lora-failure-cases.md 案例 17 |
-| chirp 物理层 + 3 翻车坑 | lora-failure-cases.md 案例 18 |
-| CN470 同异频 + 8 子带映射 | lora-failure-cases.md 案例 19 |
-| STM32WL LDRO + 32MHz 温漂 | lora-failure-cases.md 案例 20 |
-| Daviteq 16 项 LED 状态机 | lora-failure-cases.md 案例 21 |
-| 农业 SF7 硬编码 6 周放弃 | lora-failure-cases.md 案例 22 |
-| World Bank 城市空气 4 多故障 | lora-failure-cases.md 案例 23 |
-| 私网 LoRa 300 节点 99.8% | lora-failure-cases.md 案例 24 |
-| LR1120+STM32L433 1/10 join 间歇失败 | lora-failure-cases.md 案例 25 |
-| Azure IoT Edge LNS 24h 静默卡死 | lora-failure-cases.md 案例 26 |
-| 商业部署 5 坑（ADR + 移动节点） | lora-failure-cases.md 案例 27 |
-| SX1278 果园 500 亩 120 节点 1 年稳 | lora-failure-cases.md 案例 28 |
-| LoRaWAN 到云端 + DevEUI 大小端 + FCnt | lora-failure-cases.md 案例 29 |
-| 腾讯云空中资源挤兑 GW 8 上/1 下 | lora-failure-cases.md 案例 30 |
-| SX1278 距离不足 5 步排查 | lora-failure-cases.md 案例 31 |
-| ESP32 LMIC MSB/LSB 字节序 + US915 subband | lora-failure-cases.md 案例 32 |
-| SX1262 vs SX1278 决策树 + 47nH 电感 | lora-failure-cases.md 案例 33 |
-| 拓冰 420 节点 P0 三联 + 470 MHz 扫频 | lora-failure-cases.md 案例 34 |
-| pyMC_Repeater SF11+ airtime.py 死区 | lora-failure-cases.md 案例 35 |
-| LoRaWAN 下行 4 fault domain + MQTT | lora-failure-cases.md 案例 36 |
-| 工业 crane edge FFT LoRaWAN 10 周 | lora-failure-cases.md 案例 37 |
+| 频段怎么选 | [[bus/wireless-iot/lora\|lora]] "## 频段" |
+| 频段错配怎么办 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 6 / 9 |
+| 距离近 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 7 |
+| 怎么选 SF / BW | [[bus/wireless-iot/lora-practical\|lora-practical]] "## SF / BW / 速率关系" |
+| ADR 怎么开 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "## ADR" |
+| ADR 不收敛 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 4 |
+| OTAA vs ABP | [[bus/wireless-iot/lora\|lora]] "## 配网：OTAA vs ABP" |
+| AppKey 怎么配 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "## OTAA 配网流程" |
+| Join Fail | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 1 |
+| MIC Failure | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 2 |
+| Duty Cycle 1% | [[bus/wireless-iot/lora-practical\|lora-practical]] "## EU868" + [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 3 |
+| Class A/B/C 区别 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "## Class A / B / C 状态机" |
+| Class C 资源占用 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 4 |
+| Class B 漂移 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 5 |
+| Frame Counter 溢出 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 8 |
+| NS 怎么选 | [[bus/wireless-iot/lora\|lora]] "## Network Server" |
+| ChirpStack 部署 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "## ChirpStack 组件" |
+| 抓包工具 | [[bus/wireless-iot/lora-practical\|lora-practical]] "## 抓包工具" |
+| 错误码 | [[bus/wireless-iot/lora-practical\|lora-practical]] "## 错误码速查" |
+| SX1262 怎么用 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "## SX1262 关键 API" |
+| LoRaMac-node 移植实战 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "## LoRaMac-node 协议栈移植实战" |
+| SX1302 GW 设计 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "## SX1302 关键特性" |
+| 私有频段 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 9 |
+| LoRa vs NB-IoT | [[bus/wireless-iot/lora\|lora]] "## 跟其它无线协议的关系" |
+| LoRa CSS 工业抗干扰 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "### LoRa CSS 工业抗干扰" |
+| LoRa 天线设计实战 | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "### LoRa 天线设计实战" |
+| Frame Counter MAX_FCNT_GAP | [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] "### Frame Counter（FCnt）实战" |
+| 移动场景 ADR 失效 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 4 → 移动场景子段 |
+| 气体探测器部署 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 12 |
+| 智慧农业部署 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 13 |
+| 智能水表 7 大掉线 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 14 |
+| Join-Storm 5000 节点 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 15 |
+| 14 步 LoRa 调试方法论 | [[bus/wireless-iot/lora-practical\|lora-practical]] "## 14 步 LoRa 调试方法论" |
+| Dragino 14 步产线 checklist | [[bus/wireless-iot/lora-practical\|lora-practical]] "### Dragino Wiki 14 步 checklist" |
+| SX1301 网关 5 个长期故障 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 16 |
+| LoRa 低功耗 3 陷阱 + TCXO | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 17 |
+| chirp 物理层 + 3 翻车坑 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 18 |
+| CN470 同异频 + 8 子带映射 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 19 |
+| STM32WL LDRO + 32MHz 温漂 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 20 |
+| Daviteq 16 项 LED 状态机 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 21 |
+| 农业 SF7 硬编码 6 周放弃 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 22 |
+| World Bank 城市空气 4 多故障 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 23 |
+| 私网 LoRa 300 节点 99.8% | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 24 |
+| LR1120+STM32L433 1/10 join 间歇失败 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 25 |
+| Azure IoT Edge LNS 24h 静默卡死 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 26 |
+| 商业部署 5 坑（ADR + 移动节点） | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 27 |
+| SX1278 果园 500 亩 120 节点 1 年稳 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 28 |
+| LoRaWAN 到云端 + DevEUI 大小端 + FCnt | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 29 |
+| 腾讯云空中资源挤兑 GW 8 上/1 下 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 30 |
+| SX1278 距离不足 5 步排查 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 31 |
+| ESP32 LMIC MSB/LSB 字节序 + US915 subband | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 32 |
+| SX1262 vs SX1278 决策树 + 47nH 电感 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 33 |
+| 拓冰 420 节点 P0 三联 + 470 MHz 扫频 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 34 |
+| pyMC_Repeater SF11+ airtime.py 死区 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 35 |
+| LoRaWAN 下行 4 fault domain + MQTT | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 36 |
+| 工业 crane edge FFT LoRaWAN 10 周 | [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] 案例 37 |
 
 ## 关键概念地图
 
@@ -284,20 +284,20 @@ lora-index.md (本文件, 导航)
 
 | 文档 | 更新频率 | 维护者 |
 | --- | --- | --- |
-| lora.md | 改版才更新 | 主题入口 |
-| lora-practical.md | 改版才更新 | 速查 / 调试流程 |
-| lora-deep-dive.md | 协议改版 / LoRaWAN 1.1 出 | 原理体系 |
-| lora-failure-cases.md | **持续更新** | 产线案例 |
-| lora-index.md | 新增 / 删除文档时 | 导航 |
+| [[bus/wireless-iot/lora\|lora]] | 改版才更新 | 主题入口 |
+| [[bus/wireless-iot/lora-practical\|lora-practical]] | 改版才更新 | 速查 / 调试流程 |
+| [[bus/wireless-iot/lora-deep-dive\|lora-deep-dive]] | 协议改版 / LoRaWAN 1.1 出 | 原理体系 |
+| [[bus/wireless-iot/lora-failure-cases\|lora-failure-cases]] | **持续更新** | 产线案例 |
+| [[bus/wireless-iot/lora-index\|lora-index]] | 新增 / 删除文档时 | 导航 |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/wireless-iot/ble.md`** — BLE（短距高吞吐，互补关系）
-- **`bus/wireless-iot/zigbee.md`** — ZigBee（Mesh 短距，互补关系）
-- **`bus/wireless-iot/thread.md`** — Thread（IPv6 Mesh，互补关系）
-- **`bus/wireless-iot/matter.md`** — Matter（智能家居统一层）
-- **`basic/ethernet-phy.md`** — 物理层对比参考（Sub-GHz vs 2.4 GHz）
-- **`bus/industrial/modbus.md`** — Modbus（远程低速，竞品）
+- **[[bus/wireless-iot/ble|ble]]** — BLE（短距高吞吐，互补关系）
+- **[[bus/wireless-iot/zigbee|zigbee]]** — ZigBee（Mesh 短距，互补关系）
+- **[[bus/wireless-iot/thread|thread]]** — Thread（IPv6 Mesh，互补关系）
+- **[[bus/wireless-iot/matter|matter]]** — Matter（智能家居统一层）
+- **[[basic/ethernet-phy|ethernet-phy]]** — 物理层对比参考（Sub-GHz vs 2.4 GHz）
+- **[[bus/industrial/modbus|modbus]]** — Modbus（远程低速，竞品）
 
 ## 一句话总结
 

@@ -36,69 +36,69 @@ chips-com/bus/satellite-iot-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/satellite-iot.md`** — 主题入口, 5 大技术路线, 10 分钟
-2. **`bus/wireless-iot/satellite-iot-practical.md`** — 关键参数 / 5 秒定位 / 错误码
-3. **`bus/wireless-iot/satellite-iot-deep-dive.md`** — 协议栈 + 链路预算 + 多普勒
+1. **[[bus/wireless-iot/satellite-iot|satellite-iot]]** — 主题入口, 5 大技术路线, 10 分钟
+2. **[[bus/wireless-iot/satellite-iot-practical|satellite-iot-practical]]** — 关键参数 / 5 秒定位 / 错误码
+3. **[[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]]** — 协议栈 + 链路预算 + 多普勒
 
 ### 路径 B: "我在做卫星 IoT 设备产线失败" (现场救火)
 
-1. **`bus/wireless-iot/satellite-iot-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/satellite-iot-failure-cases.md`** — 找类似案例（9 个）
-3. **`bus/wireless-iot/satellite-iot-deep-dive.md`** "## 错误码速查" 章节
+1. **[[bus/wireless-iot/satellite-iot-practical|satellite-iot-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/satellite-iot-failure-cases|satellite-iot-failure-cases]]** — 找类似案例（9 个）
+3. **[[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]]** "## 错误码速查" 章节
 
 ### 路径 C: "我在做卫星 IoT 协议栈移植" (工程师)
 
-1. **`bus/wireless-iot/satellite-iot-deep-dive.md`** "## 3GPP NTN 协议栈" / "## Iridium SBD 协议栈"
-2. **`bus/wireless-iot/satellite-iot-practical.md`** "## 抓包工具"
-3. **`bus/wireless-iot/satellite-iot-failure-cases.md`** 案例 1 / 4（Doppler 补偿）
+1. **[[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]]** "## 3GPP NTN 协议栈" / "## Iridium SBD 协议栈"
+2. **[[bus/wireless-iot/satellite-iot-practical|satellite-iot-practical]]** "## 抓包工具"
+3. **[[bus/wireless-iot/satellite-iot-failure-cases|satellite-iot-failure-cases]]** 案例 1 / 4（Doppler 补偿）
 
 ### 路径 D: "我在做户外定位 / 救援设备" (产品经理)
 
-1. **`bus/wireless-iot/satellite-iot.md`** "## 5 大技术路线"
-2. **`bus/wireless-iot/satellite-iot-deep-dive.md`** "## Garmin inReach" / "## 北斗短报文"
-3. **`bus/wireless-iot/satellite-iot-practical.md`** "## 资费" / "## 户外测试"
+1. **[[bus/wireless-iot/satellite-iot|satellite-iot]]** "## 5 大技术路线"
+2. **[[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]]** "## Garmin inReach" / "## 北斗短报文"
+3. **[[bus/wireless-iot/satellite-iot-practical|satellite-iot-practical]]** "## 资费" / "## 户外测试"
 
 ### 路径 E: "我在做卫星 IoT 芯片选型" (架构师)
 
-1. **`bus/wireless-iot/satellite-iot.md`** "## 关键芯片 / 模组"
-2. **`bus/wireless-iot/satellite-iot-deep-dive.md`** "## 关键芯片 / 模组深挖"
-3. **`bus/wireless-iot/satellite-iot-practical.md`** "## 检查清单"
+1. **[[bus/wireless-iot/satellite-iot|satellite-iot]]** "## 关键芯片 / 模组"
+2. **[[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]]** "## 关键芯片 / 模组深挖"
+3. **[[bus/wireless-iot/satellite-iot-practical|satellite-iot-practical]]** "## 检查清单"
 
 ### 路径 F: "我在做海外项目（美国 / 欧洲）" (海外)
 
-1. **`bus/wireless-iot/satellite-iot.md`** "## Starlink IoT" / "## Iridium"
-2. **`bus/wireless-iot/satellite-iot-failure-cases.md`** 案例 3 / 7（Iridium / Starlink）
-3. **`bus/wireless-iot/satellite-iot-deep-dive.md`** "## Iridium SBD"
+1. **[[bus/wireless-iot/satellite-iot|satellite-iot]]** "## Starlink IoT" / "## Iridium"
+2. **[[bus/wireless-iot/satellite-iot-failure-cases|satellite-iot-failure-cases]]** 案例 3 / 7（Iridium / Starlink）
+3. **[[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]]** "## Iridium SBD"
 
 ## 主题速查矩阵
 
 按问题找文档:
 
-| 我想知道 | 看哪里 |
-| --- | --- |
-| 5 大路线选哪个 | satellite-iot.md "## 5 大技术路线对比" |
-| 卫星搜不到 | satellite-iot-failure-cases.md 案例 1 |
-| 频度超限 | satellite-iot-failure-cases.md 案例 2 |
-| Iridium +SBDI 错误 | satellite-iot-failure-cases.md 案例 3 |
-| NB-IoT NTN PRACH 失败 | satellite-iot-failure-cases.md 案例 4 |
-| MOMSN 溢出 | satellite-iot-failure-cases.md 案例 5 |
-| 北斗卡未激活 | satellite-iot-failure-cases.md 案例 6 |
-| Starlink 无信号 | satellite-iot-failure-cases.md 案例 7 |
-| 电文超长 | satellite-iot-failure-cases.md 案例 8 |
-| 极地丢包 | satellite-iot-failure-cases.md 案例 9 |
-| 链路预算 | satellite-iot-deep-dive.md "## 链路预算实战" |
-| 多普勒补偿 | satellite-iot-deep-dive.md "## Doppler / RTD 补偿" |
-| 3GPP NTN 协议栈 | satellite-iot-deep-dive.md "## 3GPP NTN" |
-| 北斗 RDSS 协议 | satellite-iot-deep-dive.md "## 北斗短报文（RDSS）协议" |
-| Iridium SBD 协议 | satellite-iot-deep-dive.md "## Iridium SBD 协议" |
-| 5 秒定位 | satellite-iot-practical.md "## 5 秒钟定位" |
-| +CME ERROR 错误码 | satellite-iot-practical.md "## NB-IoT NTN 错误码" |
-| +SBDI 错误码 | satellite-iot-practical.md "## Iridium SBD 错误码" |
-| 北斗错误码 | satellite-iot-practical.md "## 北斗短报文错误" |
-| 抓包工具 | satellite-iot-practical.md "## 抓包工具" |
-| 关键芯片 | satellite-iot.md "## 关键芯片 / 模组" |
-| 户外测试 | satellite-iot-practical.md "## 调试步骤" |
-| 资费 | satellite-iot-practical.md "## Iridium SBD 关键参数" |
+| 我想知道              | 看哪里                                                 |
+| --------------------- | ------------------------------------------------------ |
+| 5 大路线选哪个        | [[bus/wireless-iot/satellite-iot\|satellite-iot]] "## 5 大技术路线对比"                 |
+| 卫星搜不到            | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 1                  |
+| 频度超限              | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 2                  |
+| Iridium +SBDI 错误    | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 3                  |
+| NB-IoT NTN PRACH 失败 | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 4                  |
+| MOMSN 溢出            | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 5                  |
+| 北斗卡未激活          | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 6                  |
+| Starlink 无信号       | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 7                  |
+| 电文超长              | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 8                  |
+| 极地丢包              | [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] 案例 9                  |
+| 链路预算              | [[bus/wireless-iot/satellite-iot-deep-dive\|satellite-iot-deep-dive]] "## 链路预算实战"           |
+| 多普勒补偿            | [[bus/wireless-iot/satellite-iot-deep-dive\|satellite-iot-deep-dive]] "## Doppler / RTD 补偿"     |
+| 3GPP NTN 协议栈       | [[bus/wireless-iot/satellite-iot-deep-dive\|satellite-iot-deep-dive]] "## 3GPP NTN"               |
+| 北斗 RDSS 协议        | [[bus/wireless-iot/satellite-iot-deep-dive\|satellite-iot-deep-dive]] "## 北斗短报文（RDSS）协议" |
+| Iridium SBD 协议      | [[bus/wireless-iot/satellite-iot-deep-dive\|satellite-iot-deep-dive]] "## Iridium SBD 协议"       |
+| 5 秒定位              | [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]] "## 5 秒钟定位"             |
+| +CME ERROR 错误码     | [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]] "## NB-IoT NTN 错误码"      |
+| +SBDI 错误码          | [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]] "## Iridium SBD 错误码"     |
+| 北斗错误码            | [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]] "## 北斗短报文错误"         |
+| 抓包工具              | [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]] "## 抓包工具"               |
+| 关键芯片              | [[bus/wireless-iot/satellite-iot\|satellite-iot]] "## 关键芯片 / 模组"                  |
+| 户外测试              | [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]] "## 调试步骤"               |
+| 资费                  | [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]] "## Iridium SBD 关键参数"   |
 
 ## 关键概念地图
 
@@ -188,17 +188,17 @@ Satellite-IoT 协议栈
 
 ## 5 大技术路线对比
 
-| 维度 | NB-IoT NTN | 北斗短报文 | Iridium SBD | Starlink IoT | Garmin inReach |
-| --- | --- | --- | --- | --- | --- |
-| 标准化 | 3GPP R17 | 国内军用 / 民用 | Iridium 私有 | SpaceX 私有 | Iridium / Globalstar |
-| 轨道 | LEO + GEO | GEO + IGSO | LEO 66 颗 | LEO | LEO |
-| 频段 | L/S 频段 | L 频段入站 + S 频段出站 | L 频段 | 1.9 GHz | L 频段 |
-| 容量 | 26 / 127 kbps | 1000 汉字 | 340 B/条 | 数十 kbps | 160 字符 |
-| 时延 | 5~15 s | 1~5 s | 5~30 s | 5~15 s | 5~30 s |
-| 国内可用 | 2025+ | 已商用 | 需卫星卡 | 否 | 已商用 |
-| 终端 | 蜂窝模组 | 北斗 RDSS 模组 | Iridium 模组 | LTE 模组 | 成品 |
-| 资费 | 运营商流量 | 北斗卡 | $0.05/条 | T-Mobile 套餐 | $14.95/月起 |
-| 典型场景 | 蜂窝盲区 IoT | 国内户外救援 | 全球资产追踪 | 美国户外 | 户外运动 |
+| 维度     | NB-IoT NTN    | 北斗短报文              | Iridium SBD  | Starlink IoT  | Garmin inReach       |
+| -------- | ------------- | ----------------------- | ------------ | ------------- | -------------------- |
+| 标准化   | 3GPP R17      | 国内军用 / 民用         | Iridium 私有 | SpaceX 私有   | Iridium / Globalstar |
+| 轨道     | LEO + GEO     | GEO + IGSO              | LEO 66 颗    | LEO           | LEO                  |
+| 频段     | L/S 频段      | L 频段入站 + S 频段出站 | L 频段       | 1.9 GHz       | L 频段               |
+| 容量     | 26 / 127 kbps | 1000 汉字               | 340 B/条     | 数十 kbps     | 160 字符             |
+| 时延     | 5~15 s        | 1~5 s                   | 5~30 s       | 5~15 s        | 5~30 s               |
+| 国内可用 | 2025+         | 已商用                  | 需卫星卡     | 否            | 已商用               |
+| 终端     | 蜂窝模组      | 北斗 RDSS 模组          | Iridium 模组 | LTE 模组      | 成品                 |
+| 资费     | 运营商流量    | 北斗卡                  | $0.05/条     | T-Mobile 套餐 | $14.95/月起          |
+| 典型场景 | 蜂窝盲区 IoT  | 国内户外救援            | 全球资产追踪 | 美国户外      | 户外运动             |
 
 ## 文档关系图
 
@@ -253,15 +253,15 @@ satellite-iot-index.md (本文件, 导航)
 
 ## Satellite-IoT 主题 vs 其它主题对比
 
-| 主题 | 篇数 | 大小 | 重点 |
-| --- | --- | --- | --- |
+| 主题              | 篇数  | 大小       | 重点                                          |
+| ----------------- | ----- | ---------- | --------------------------------------------- |
 | **Satellite-IoT** | **5** | **~85 KB** | **远距覆盖 / 5 大路线 / 链路预算 / 户外实战** |
-| LTE-IoT | 5 | ~75 KB | 蜂窝 IoT（NB-IoT / Cat-M / Cat 1）|
-| LoRa | 5 | ~70 KB | 远距免许可（Sub-GHz）|
-| BLE | 5 | ~40 KB | 低功耗短距（2.4 GHz）|
-| Matter | 5 | ~60 KB | 智能家居协议（IP）|
-| Thread | 5 | ~50 KB | 低功耗 Mesh（IEEE 802.15.4）|
-| ZigBee | 5 | ~60 KB | 智能家居 Mesh（IEEE 802.15.4）|
+| LTE-IoT           | 5     | ~75 KB     | 蜂窝 IoT（NB-IoT / Cat-M / Cat 1）            |
+| LoRa              | 5     | ~70 KB     | 远距免许可（Sub-GHz）                         |
+| BLE               | 5     | ~40 KB     | 低功耗短距（2.4 GHz）                         |
+| Matter            | 5     | ~60 KB     | 智能家居协议（IP）                            |
+| Thread            | 5     | ~50 KB     | 低功耗 Mesh（IEEE 802.15.4）                  |
+| ZigBee            | 5     | ~60 KB     | 智能家居 Mesh（IEEE 802.15.4）                |
 
 **共同点**:
 
@@ -305,62 +305,62 @@ BLE / ZigBee   → 短距（10~100 m）
 
 ## 关键芯片 / 模组速查
 
-| 模组 | 路线 | 平台 | 特点 |
-| --- | --- | --- | --- |
-| 移远 BG95-M3 / BG77 | NB-IoT NTN | Qualcomm MDM9205 | 主流海外方案 |
-| 移远 CC200A | NB-IoT NTN + LTE | Linux OpenCPU | 高端 IoT 网关 |
-| 芯讯通 SIM7080G | NB-IoT NTN + GNSS | Qualcomm | 多频段 |
-| Nordic nRF9160 + NTN | NB-IoT NTN | Nordic SiP | 集成 M33 应用核 |
-| 中斗微星 ZD-V100 | 北斗短报文 | RDSS + RNSS | 国产化 |
-| 中电科 CETC-9 | 北斗短报文 | 加固型 | 国产化 |
-| 华力创通 HWA-RDSS-101 | 北斗短报文 | 模块化 | 国产化 |
-| Iridium 9602 | Iridium SBD | Iridium 经典 | 短数据 |
-| Iridium 9603 | Iridium SBD | Iridium 新 | 短数据 |
-| Iridium 9770 | Iridium SBD + Edge | Iridium | 新一代 IoT |
-| Quectel BG95-M3 NTN fw | NB-IoT NTN | Qualcomm | 海外主流 |
-| Garmin inReach Mini 2 | Iridium 双向 | Garmin 成品 | 户外运动 |
-| SPOT X | Globalstar | SPOT 成品 | 户外单向 |
+| 模组                   | 路线               | 平台             | 特点            |
+| ---------------------- | ------------------ | ---------------- | --------------- |
+| 移远 BG95-M3 / BG77    | NB-IoT NTN         | Qualcomm MDM9205 | 主流海外方案    |
+| 移远 CC200A            | NB-IoT NTN + LTE   | Linux OpenCPU    | 高端 IoT 网关   |
+| 芯讯通 SIM7080G        | NB-IoT NTN + GNSS  | Qualcomm         | 多频段          |
+| Nordic nRF9160 + NTN   | NB-IoT NTN         | Nordic SiP       | 集成 M33 应用核 |
+| 中斗微星 ZD-V100       | 北斗短报文         | RDSS + RNSS      | 国产化          |
+| 中电科 CETC-9          | 北斗短报文         | 加固型           | 国产化          |
+| 华力创通 HWA-RDSS-101  | 北斗短报文         | 模块化           | 国产化          |
+| Iridium 9602           | Iridium SBD        | Iridium 经典     | 短数据          |
+| Iridium 9603           | Iridium SBD        | Iridium 新       | 短数据          |
+| Iridium 9770           | Iridium SBD + Edge | Iridium          | 新一代 IoT      |
+| Quectel BG95-M3 NTN fw | NB-IoT NTN         | Qualcomm         | 海外主流        |
+| Garmin inReach Mini 2  | Iridium 双向       | Garmin 成品      | 户外运动        |
+| SPOT X                 | Globalstar         | SPOT 成品        | 户外单向        |
 
 ## 关键错误码速查
 
-| 错误码 | 路线 | 含义 |
-| --- | --- | --- |
-| `+CME ERROR: 30` | NB-IoT NTN | NO NETWORK 搜不到网络 |
-| `+CME ERROR: 514` | NB-IoT NTN | BUSY 并发 AT 命令阻塞 |
-| `+CME ERROR: 100` | NB-IoT NTN | INVALID SIM USIM 卡无效 |
-| `+CME ERROR: 133` | NB-IoT NTN | SERVICE NOT SUBSCRIBED 业务未订 |
-| `+SBDI: 0` | Iridium SBD | Success |
-| `+SBDI: 1` | Iridium SBD | Timeout |
-| `+SBDI: 3` | Iridium SBD | MO too many bytes > 340 B |
-| `+SBDI: 4` | Iridium SBD | Gateway not available |
-| `+SBDI: 7` | Iridium SBD | MOMSN out of range |
-| `+SBDI: 12` | Iridium SBD | IMEI not provisioned |
-| `RDSS_AUTH_FAIL` | 北斗 | 入网 / 认证失败 |
-| `RDSS_TX_FREQ_LIMIT` | 北斗 | 频度超限（1 min/1 条）|
-| `RDSS_LEN_EXCEED` | 北斗 | 电文超长（> 1000 汉字）|
-| `+CEREG: 0` | NB-IoT NTN | NOT REGISTERED |
-| `+CEREG: 1` | NB-IoT NTN | REGISTERED HOME |
-| `+CEREG: 5` | NB-IoT NTN | REGISTERED ROAMING |
+| 错误码               | 路线        | 含义                            |
+| -------------------- | ----------- | ------------------------------- |
+| `+CME ERROR: 30`     | NB-IoT NTN  | NO NETWORK 搜不到网络           |
+| `+CME ERROR: 514`    | NB-IoT NTN  | BUSY 并发 AT 命令阻塞           |
+| `+CME ERROR: 100`    | NB-IoT NTN  | INVALID SIM USIM 卡无效         |
+| `+CME ERROR: 133`    | NB-IoT NTN  | SERVICE NOT SUBSCRIBED 业务未订 |
+| `+SBDI: 0`           | Iridium SBD | Success                         |
+| `+SBDI: 1`           | Iridium SBD | Timeout                         |
+| `+SBDI: 3`           | Iridium SBD | MO too many bytes > 340 B       |
+| `+SBDI: 4`           | Iridium SBD | Gateway not available           |
+| `+SBDI: 7`           | Iridium SBD | MOMSN out of range              |
+| `+SBDI: 12`          | Iridium SBD | IMEI not provisioned            |
+| `RDSS_AUTH_FAIL`     | 北斗        | 入网 / 认证失败                 |
+| `RDSS_TX_FREQ_LIMIT` | 北斗        | 频度超限（1 min/1 条）          |
+| `RDSS_LEN_EXCEED`    | 北斗        | 电文超长（> 1000 汉字）         |
+| `+CEREG: 0`          | NB-IoT NTN  | NOT REGISTERED                  |
+| `+CEREG: 1`          | NB-IoT NTN  | REGISTERED HOME                 |
+| `+CEREG: 5`          | NB-IoT NTN  | REGISTERED ROAMING              |
 
 ## 文档维护
 
-| 文档 | 更新频率 | 维护者 |
-| --- | --- | --- |
-| satellite-iot.md | 改版才更新 | 主题入口 |
-| satellite-iot-practical.md | 改版才更新 | 速查 / 调试流程 |
-| satellite-iot-deep-dive.md | 协议改版 / 3GPP R18+ | 原理体系 |
-| satellite-iot-failure-cases.md | **持续更新** | 产线案例 |
-| satellite-iot-index.md | 新增 / 删除文档时 | 导航 |
+| 文档                           | 更新频率             | 维护者          |
+| ------------------------------ | -------------------- | --------------- |
+| [[bus/wireless-iot/satellite-iot\|satellite-iot]]               | 改版才更新           | 主题入口        |
+| [[bus/wireless-iot/satellite-iot-practical\|satellite-iot-practical]]     | 改版才更新           | 速查 / 调试流程 |
+| [[bus/wireless-iot/satellite-iot-deep-dive\|satellite-iot-deep-dive]]     | 协议改版 / 3GPP R18+ | 原理体系        |
+| [[bus/wireless-iot/satellite-iot-failure-cases\|satellite-iot-failure-cases]] | **持续更新**         | 产线案例        |
+| [[bus/wireless-iot/satellite-iot-index\|satellite-iot-index]]         | 新增 / 删除文档时    | 导航            |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/lte-iot-*.md`** — 蜂窝 IoT（NB-IoT / Cat-M / Cat 1 地面方案）
-- **`bus/lora-*.md`** — LoRa 远距免许可（地面自建网）
-- **`bus/ble-*.md`** — BLE 短距（手机 App 配置通道）
-- **`bus/can-*.md`** — CAN 总线（车载诊断）
-- **`bus/thread-*.md`** — Thread Mesh（智能家居）
-- **`bus/matter-*.md`** — Matter 协议（智能家居）
-- **`basic/can-phy.md`** — 物理层对比参考
+- **[[bus/wireless-iot/lte-iot-index|LTE-IoT]]** — 蜂窝 IoT（NB-IoT / Cat-M / Cat 1 地面方案）
+- **[[bus/wireless-iot/lora-index|LoRa]]** — LoRa 远距免许可（地面自建网）
+- **[[bus/wireless-iot/ble-index|BLE]]** — BLE 短距（手机 App 配置通道）
+- **[[basic/can-index|CAN]]** — CAN 总线（车载诊断）
+- **[[bus/wireless-iot/thread-index|Thread]]** — Thread Mesh（智能家居）
+- **[[bus/wireless-iot/matter-index|Matter]]** — Matter 协议（智能家居）
+- **[[basic/can-phy|can-phy]]** — 物理层对比参考
 
 ## 一句话总结
 

@@ -36,33 +36,33 @@ chips-com/bus/ble-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/ble.md`** — 主题入口, 5 分钟
-2. **`bus/wireless-iot/ble-practical.md`** — 关键参数 / 5 秒定位
-3. **`bus/wireless-iot/ble-deep-dive.md`** — 协议栈分层 + GATT 模型
+1. **[[bus/wireless-iot/ble|ble]]** — 主题入口, 5 分钟
+2. **[[bus/wireless-iot/ble-practical|ble-practical]]** — 关键参数 / 5 秒定位
+3. **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** — 协议栈分层 + GATT 模型
 
 ### 路径 B: "我在做 BLE 设备产线失败" (现场救火)
 
-1. **`bus/wireless-iot/ble-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/ble-failure-cases.md`** — 找类似案例（8 个）
-3. **`bus/wireless-iot/ble-deep-dive.md`** "## HCI STATUS 错误码速查"
+1. **[[bus/wireless-iot/ble-practical|ble-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/ble-failure-cases|ble-failure-cases]]** — 找类似案例（8 个）
+3. **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** "## HCI STATUS 错误码速查"
 
 ### 路径 C: "我在做 BLE 协议栈移植" (工程师)
 
-1. **`bus/wireless-iot/ble-deep-dive.md`** "## SoC vs NCP 调试差异"
-2. **`bus/wireless-iot/ble-practical.md`** "## 抓包工具"
-3. **`bus/wireless-iot/ble-deep-dive.md`** "## HCI" 章节
+1. **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** "## SoC vs NCP 调试差异"
+2. **[[bus/wireless-iot/ble-practical|ble-practical]]** "## 抓包工具"
+3. **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** "## HCI" 章节
 
 ### 路径 D: "我在做 BLE 安全加固" (安全工程师)
 
-1. **`bus/wireless-iot/ble-deep-dive.md`** "## SMP（Security Manager Protocol）"
-2. **`bus/wireless-iot/ble-failure-cases.md`** 案例 1（RTL8762E DoS 漏洞）
-3. **`bus/wireless-iot/ble-practical.md`** "## 5 秒钟定位" 的安全相关条目
+1. **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** "## SMP（Security Manager Protocol）"
+2. **[[bus/wireless-iot/ble-failure-cases|ble-failure-cases]]** 案例 1（RTL8762E DoS 漏洞）
+3. **[[bus/wireless-iot/ble-practical|ble-practical]]** "## 5 秒钟定位" 的安全相关条目
 
 ### 路径 E: "我在做 BLE 选型" (架构师)
 
-1. **`bus/wireless-iot/ble.md`** "## 典型芯片"
-2. **`bus/wireless-iot/ble-deep-dive.md`** "## PHY 档位" + "## BLE 5.x 扩展"
-3. **`bus/wireless-iot/ble-practical.md`** "## 性能数据参考"
+1. **[[bus/wireless-iot/ble|ble]]** "## 典型芯片"
+2. **[[bus/wireless-iot/ble-deep-dive|ble-deep-dive]]** "## PHY 档位" + "## BLE 5.x 扩展"
+3. **[[bus/wireless-iot/ble-practical|ble-practical]]** "## 性能数据参考"
 
 ## 主题速查矩阵
 
@@ -70,75 +70,75 @@ chips-com/bus/ble-*.md
 
 | 我想知道 | 看哪里 |
 | --- | --- |
-| 连接参数怎么配 | ble-practical.md "## 连接参数三件套" |
-| 连接参数协商失败（0x3B/0x08/0x05） | ble-practical.md "## 连接参数协商 SOP" |
-| 加密源码级细节（Cordio 视角） | ble-deep-dive.md "## SMP（Security Manager Protocol）" → 加密源码级要点 |
-| 配对攻击防御（Just Works / MitM） | ble-failure-cases.md 案例 1.5 |
-| PHY 选哪个 | ble-deep-dive.md "## BLE 5.x PHY 档位" |
-| 广播参数怎么设 | ble-practical.md "## 广播参数" |
-| MTU 怎么协商 | ble-practical.md "## MTU" |
-| GATT Service 怎么定义 | ble-deep-dive.md "## GATT（Generic Attribute Profile）" |
-| 配对失败 | ble-failure-cases.md 案例 1 / 4 / 5 |
-| 0x3E 断开 | ble-failure-cases.md 案例 2 |
-| 0x3D MIC 失败 | ble-failure-cases.md 案例 7 |
-| 距离近 | ble-failure-cases.md 案例 8 |
-| 功耗高 | ble-failure-cases.md 案例 6 |
-| ADC 影响 BLE | ble-failure-cases.md 案例 3 |
-| HCI 错误码 | ble-practical.md "## HCI STATUS 错误码速查" |
-| ATT 错误码 | ble-practical.md "## ATT Error 速查" |
-| nRF52832 实战 | ble-practical.md "## nRF52832 实战注意" |
-| 抓包工具 | ble-practical.md "## 抓包工具" |
-| Windows 端 BLE 调试 | ble-practical.md "## 抓包工具"（BLEDebug + CH9143 行） |
-| 配对方式 | ble-deep-dive.md "## GAP" / "## SMP" |
-| 加密流程 | ble-deep-dive.md "## SMP（Security Manager Protocol）" |
-| LE 2M / Coded | ble-deep-dive.md "## BLE 5.x 扩展" |
-| Privacy / RPA | ble-deep-dive.md "## Privacy 与地址轮换" |
-| SoC vs NCP 差异 | ble-deep-dive.md "## SoC vs NCP 调试差异" |
-| LE Audio / CIS / BIS | ble-deep-dive.md "## Connected Isochronous Stream" |
-| Android BLE MTU 20 字节硬限 | ble-practical.md "### Android BLE MTU 实战（20 字节硬限）" |
-| nRF52832 高数据率（HVN_TX_COMPLETE） | ble-practical.md "### nRF52832 高数据率发送实战" |
-| Windows Host 电源管理影响 | ble-practical.md "### Host 电源管理影响 BLE 链路（隐性坑）" |
-| 跨平台协议栈差异（SM/L2CAP/Flags） | ble-failure-cases.md 案例 10 |
-| Zephyr 绑定被静默覆盖 | ble-failure-cases.md 案例 11 |
-| RTL8762 配对诊断 SM 7 错误 | ble-failure-cases.md 案例 12 |
-| CC2340R5 换芯片变体 ICall abort | ble-failure-cases.md 案例 13 |
-| 工业 BLE 现场 P99 抖动 | ble-failure-cases.md 案例 14 |
-| Nordic DTM 产线筛片 | ble-failure-cases.md 案例 15 |
-| Goodix 私有错误码 + GPIO 诊断 | ble-failure-cases.md 案例 16 |
-| nRF52832 sd_power_system_off 间歇性 | ble-failure-cases.md 案例 17 |
-| Nordic OTA 工具链实战 | ble-failure-cases.md 案例 18 |
-| LightBlue 6 项产前 checklist | ble-practical.md "### LightBlue 6 项外设产前 checklist" |
-| Ellisys 抓包 + 错误码 133/257 | ble-failure-cases.md 案例 19 |
-| SAMD21 小内存 + BLE 预算 | ble-failure-cases.md 案例 20 |
-| L2CAP ECFC + EATT（SPSM=0x0027） | ble-deep-dive.md "### L2CAP 进阶：ECFC + EATT" |
-| Android requestMtu 断连 | ble-failure-cases.md 案例 22 |
-| 华为 / 小米 / OPPO GATT 碎片化 | ble-failure-cases.md 案例 23 |
-| 实时日志压到 10 分钟 | ble-failure-cases.md 案例 24 |
-| ESP32-C3 mDNS + WiFi coex | ble-failure-cases.md 案例 25 |
-| STM32+nRF52840 外挂 ISR 假休眠 | ble-failure-cases.md 案例 26 |
-| CH582 国产 RISC-V 漏电 3 坑 | ble-failure-cases.md 案例 27 |
-| STM32WB 0x02 BlueCore 升级 fix | ble-failure-cases.md 案例 28 |
-| Abbott Libre 3 FDA 召回 + iCGM | ble-failure-cases.md 案例 29 |
-| NVIDIA Tegra SE ECDH 0x05 silent fail | ble-failure-cases.md 案例 30 |
-| Arduino Nano 33 18mA brownout + BareOS | ble-failure-cases.md 案例 31 |
-| 零售 IoT overnight degradation | ble-failure-cases.md 案例 32 |
-| BLE sensor 60s 能量账本 | ble-failure-cases.md 案例 33 |
-| Ellisys PHY + Nordic Out-of-Order + NCP OTA 0x19 | ble-failure-cases.md 案例 34 |
-| BLE 5 大系统级错误 | ble-failure-cases.md 案例 35 |
-| 40 万台安全产品 BLE 重设计 | ble-failure-cases.md 案例 36 |
-| Zephyr 32.768kHz 晶振 ±500ppm SCA | ble-failure-cases.md 案例 37 |
-| ESP32 Bluedroid 110KB vs NimBLE 30KB | ble-failure-cases.md 案例 38 |
-| 工业 4 维排查 + USB Selective Suspend | ble-failure-cases.md 案例 39 |
-| 4 款 BLE 模块 Wi-Fi 干扰 30ms 对比 | ble-failure-cases.md 案例 40 |
-| CC254x 8KB RAM 7.5ms OSAL 死锁 | ble-failure-cases.md 案例 41 |
-| T20i A2 线 19.2% 不良 + KT6368A DMA | ble-failure-cases.md 案例 42 |
-| 仓库 RTL8852BU 0xfcf0 -16 $47k 损失 | ble-failure-cases.md 案例 43 |
-| Linux Kernel BLE 内存泄漏 4 天崩溃 | ble-failure-cases.md 案例 44 |
-| 可穿戴 72h→31h 现场电池 3 因素 | ble-failure-cases.md 案例 45 |
-| 医疗 6 个月 30% 测量丢失 256KB MCU | ble-failure-cases.md 案例 46 |
-| nRF52 GATT notify 5ms→30ms CI 丢包 | ble-failure-cases.md 案例 47 |
-| ESP32 BLE 5 症状矩阵 | ble-failure-cases.md 案例 48 |
-| BLE 4 大根因 + Deloitte 30-40% 调试降 | ble-failure-cases.md 案例 49 |
+| 连接参数怎么配 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## 连接参数三件套" |
+| 连接参数协商失败（0x3B/0x08/0x05） | [[bus/wireless-iot/ble-practical\|ble-practical]] "## 连接参数协商 SOP" |
+| 加密源码级细节（Cordio 视角） | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## SMP（Security Manager Protocol）" → 加密源码级要点 |
+| 配对攻击防御（Just Works / MitM） | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 1.5 |
+| PHY 选哪个 | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## BLE 5.x PHY 档位" |
+| 广播参数怎么设 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## 广播参数" |
+| MTU 怎么协商 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## MTU" |
+| GATT Service 怎么定义 | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## GATT（Generic Attribute Profile）" |
+| 配对失败 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 1 / 4 / 5 |
+| 0x3E 断开 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 2 |
+| 0x3D MIC 失败 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 7 |
+| 距离近 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 8 |
+| 功耗高 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 6 |
+| ADC 影响 BLE | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 3 |
+| HCI 错误码 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## HCI STATUS 错误码速查" |
+| ATT 错误码 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## ATT Error 速查" |
+| nRF52832 实战 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## nRF52832 实战注意" |
+| 抓包工具 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## 抓包工具" |
+| Windows 端 BLE 调试 | [[bus/wireless-iot/ble-practical\|ble-practical]] "## 抓包工具"（BLEDebug + CH9143 行） |
+| 配对方式 | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## GAP" / "## SMP" |
+| 加密流程 | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## SMP（Security Manager Protocol）" |
+| LE 2M / Coded | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## BLE 5.x 扩展" |
+| Privacy / RPA | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## Privacy 与地址轮换" |
+| SoC vs NCP 差异 | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## SoC vs NCP 调试差异" |
+| LE Audio / CIS / BIS | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "## Connected Isochronous Stream" |
+| Android BLE MTU 20 字节硬限 | [[bus/wireless-iot/ble-practical\|ble-practical]] "### Android BLE MTU 实战（20 字节硬限）" |
+| nRF52832 高数据率（HVN_TX_COMPLETE） | [[bus/wireless-iot/ble-practical\|ble-practical]] "### nRF52832 高数据率发送实战" |
+| Windows Host 电源管理影响 | [[bus/wireless-iot/ble-practical\|ble-practical]] "### Host 电源管理影响 BLE 链路（隐性坑）" |
+| 跨平台协议栈差异（SM/L2CAP/Flags） | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 10 |
+| Zephyr 绑定被静默覆盖 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 11 |
+| RTL8762 配对诊断 SM 7 错误 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 12 |
+| CC2340R5 换芯片变体 ICall abort | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 13 |
+| 工业 BLE 现场 P99 抖动 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 14 |
+| Nordic DTM 产线筛片 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 15 |
+| Goodix 私有错误码 + GPIO 诊断 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 16 |
+| nRF52832 sd_power_system_off 间歇性 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 17 |
+| Nordic OTA 工具链实战 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 18 |
+| LightBlue 6 项产前 checklist | [[bus/wireless-iot/ble-practical\|ble-practical]] "### LightBlue 6 项外设产前 checklist" |
+| Ellisys 抓包 + 错误码 133/257 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 19 |
+| SAMD21 小内存 + BLE 预算 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 20 |
+| L2CAP ECFC + EATT（SPSM=0x0027） | [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] "### L2CAP 进阶：ECFC + EATT" |
+| Android requestMtu 断连 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 22 |
+| 华为 / 小米 / OPPO GATT 碎片化 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 23 |
+| 实时日志压到 10 分钟 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 24 |
+| ESP32-C3 mDNS + WiFi coex | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 25 |
+| STM32+nRF52840 外挂 ISR 假休眠 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 26 |
+| CH582 国产 RISC-V 漏电 3 坑 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 27 |
+| STM32WB 0x02 BlueCore 升级 fix | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 28 |
+| Abbott Libre 3 FDA 召回 + iCGM | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 29 |
+| NVIDIA Tegra SE ECDH 0x05 silent fail | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 30 |
+| Arduino Nano 33 18mA brownout + BareOS | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 31 |
+| 零售 IoT overnight degradation | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 32 |
+| BLE sensor 60s 能量账本 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 33 |
+| Ellisys PHY + Nordic Out-of-Order + NCP OTA 0x19 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 34 |
+| BLE 5 大系统级错误 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 35 |
+| 40 万台安全产品 BLE 重设计 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 36 |
+| Zephyr 32.768kHz 晶振 ±500ppm SCA | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 37 |
+| ESP32 Bluedroid 110KB vs NimBLE 30KB | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 38 |
+| 工业 4 维排查 + USB Selective Suspend | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 39 |
+| 4 款 BLE 模块 Wi-Fi 干扰 30ms 对比 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 40 |
+| CC254x 8KB RAM 7.5ms OSAL 死锁 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 41 |
+| T20i A2 线 19.2% 不良 + KT6368A DMA | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 42 |
+| 仓库 RTL8852BU 0xfcf0 -16 $47k 损失 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 43 |
+| Linux Kernel BLE 内存泄漏 4 天崩溃 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 44 |
+| 可穿戴 72h→31h 现场电池 3 因素 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 45 |
+| 医疗 6 个月 30% 测量丢失 256KB MCU | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 46 |
+| nRF52 GATT notify 5ms→30ms CI 丢包 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 47 |
+| ESP32 BLE 5 症状矩阵 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 48 |
+| BLE 4 大根因 + Deloitte 30-40% 调试降 | [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] 案例 49 |
 
 ## 关键概念地图
 
@@ -278,21 +278,21 @@ ble-index.md (本文件, 导航)
 
 | 文档 | 更新频率 | 维护者 |
 | --- | --- | --- |
-| ble.md | 改版才更新 | 主题入口 |
-| ble-practical.md | 改版才更新 | 速查 / 调试流程 |
-| ble-deep-dive.md | 协议改版 / BLE 6 出 | 原理体系 |
-| ble-failure-cases.md | **持续更新** | 产线案例 |
-| ble-index.md | 新增 / 删除文档时 | 导航 |
+| [[bus/wireless-iot/ble\|ble]] | 改版才更新 | 主题入口 |
+| [[bus/wireless-iot/ble-practical\|ble-practical]] | 改版才更新 | 速查 / 调试流程 |
+| [[bus/wireless-iot/ble-deep-dive\|ble-deep-dive]] | 协议改版 / BLE 6 出 | 原理体系 |
+| [[bus/wireless-iot/ble-failure-cases\|ble-failure-cases]] | **持续更新** | 产线案例 |
+| [[bus/wireless-iot/ble-index\|ble-index]] | 新增 / 删除文档时 | 导航 |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/wireless-iot/zigbee-deep-dive.md`** — ZigBee（IEEE 802.15.4 同源 PHY）
-- **`bus/wireless-iot/zigbee-practical.md`** — ZigBee 实战
-- **`bus/wireless-iot/zigbee-failure-cases.md`** — ZigBee 产线案例
-- **`basic/can-phy.md`** — 物理层对比参考
-- **`bus/automotive/j1939-deep-dive.md`** — 商用车协议栈（不同物理层）
-- **`bus/automotive/uds-deep-dive.md`** — 诊断协议（基于 CAN）
-- **`bus/industrial/ethercat-deep-dive.md`** — 工业 Ethernet（不同物理层）
+- **[[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]]** — ZigBee（IEEE 802.15.4 同源 PHY）
+- **[[bus/wireless-iot/zigbee-practical|zigbee-practical]]** — ZigBee 实战
+- **[[bus/wireless-iot/zigbee-failure-cases|zigbee-failure-cases]]** — ZigBee 产线案例
+- **[[basic/can-phy|can-phy]]** — 物理层对比参考
+- **[[bus/automotive/j1939-deep-dive|j1939-deep-dive]]** — 商用车协议栈（不同物理层）
+- **[[bus/automotive/uds-deep-dive|uds-deep-dive]]** — 诊断协议（基于 CAN）
+- **[[bus/industrial/ethercat-deep-dive|ethercat-deep-dive]]** — 工业 Ethernet（不同物理层）
 
 ## 一句话总结
 

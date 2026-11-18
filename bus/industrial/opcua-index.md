@@ -41,20 +41,20 @@ chips-com/bus/opcua-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| OPC UA 是啥 | opcua.md §定位 |
-| 信息建模 | opcua.md §信息建模 |
-| 节点类型 | opcua.md §信息建模 |
-| 服务 | opcua.md §服务 |
-| 安全策略 | opcua.md §安全 |
-| 编码 | opcua-deep-dive.md §编码 |
-| NodeId 编码 | opcua-deep-dive.md §节点 ID（NodeId） |
-| 地址空间浏览 | opcua-deep-dive.md §地址空间建模 |
-| 订阅 / 通知 | opcua-deep-dive.md §订阅 / 通知 |
-| 历史访问 | opcua-deep-dive.md §历史访问 |
-| 证书管理 | opcua-deep-dive.md §安全机制 |
-| Companion Specifications | opcua-deep-dive.md §Companion Specifications |
-| 16 个常见故障 | opcua-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | opcua-failure-cases.md |
+| OPC UA 是啥 | [[bus/industrial/opcua\|opcua]] §定位 |
+| 信息建模 | [[bus/industrial/opcua\|opcua]] §信息建模 |
+| 节点类型 | [[bus/industrial/opcua\|opcua]] §信息建模 |
+| 服务 | [[bus/industrial/opcua\|opcua]] §服务 |
+| 安全策略 | [[bus/industrial/opcua\|opcua]] §安全 |
+| 编码 | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §编码 |
+| NodeId 编码 | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §节点 ID（NodeId） |
+| 地址空间浏览 | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §地址空间建模 |
+| 订阅 / 通知 | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §订阅 / 通知 |
+| 历史访问 | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §历史访问 |
+| 证书管理 | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §安全机制 |
+| Companion Specifications | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §Companion Specifications |
+| 16 个常见故障 | [[bus/industrial/opcua-deep-dive\|opcua-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/industrial/opcua-failure-cases\|opcua-failure-cases]] |
 
 ## OPC UA vs BACnet vs MQTT
 
@@ -105,10 +105,10 @@ chips-com/bus/opcua-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/bacnet.md`：与 BACnet 对比
-- `bus/industrial/mqtt.md`：与 MQTT 对比
-- `bus/industrial/opcua-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/bacnet|bacnet]]：与 BACnet 对比
+- [[bus/industrial/mqtt|mqtt]]：与 MQTT 对比
+- [[bus/industrial/opcua-failure-cases|opcua-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

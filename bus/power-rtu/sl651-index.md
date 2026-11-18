@@ -75,21 +75,21 @@ chips-com/bus/sl651-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| SL 651 是啥 | sl651.md §定位 |
-| 协议分层 | sl651.md §协议分层 |
-| 网络结构 | sl651.md §网络结构 |
-| 链路帧 | sl651-deep-dive.md §链路帧 |
-| 信息帧 | sl651-deep-dive.md §信息帧 |
-| 链路建立流程 | sl651-practical.md §链路建立 |
-| 自报 | sl651-deep-dive.md §自报策略 |
-| 加报触发 | sl651-deep-dive.md §加报触发 |
-| GSM 短信备份 | sl651-deep-dive.md §GSM 短信备份 |
-| 北斗短报文 | sl651-deep-dive.md §北斗短报文 |
-| 加密扩展 | sl651-deep-dive.md §链路密码 |
-| 主站实现要点 | sl651-deep-dive.md §主站（测站）实现要点 |
-| 中心站实现要点 | sl651-deep-dive.md §中心站实现要点 |
-| 16 个常见故障 | sl651-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | sl651-failure-cases.md |
+| SL 651 是啥 | [[bus/power-rtu/sl651\|sl651]] §定位 |
+| 协议分层 | [[bus/power-rtu/sl651\|sl651]] §协议分层 |
+| 网络结构 | [[bus/power-rtu/sl651\|sl651]] §网络结构 |
+| 链路帧 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §链路帧 |
+| 信息帧 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §信息帧 |
+| 链路建立流程 | [[bus/power-rtu/sl651-practical\|sl651-practical]] §链路建立 |
+| 自报 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §自报策略 |
+| 加报触发 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §加报触发 |
+| GSM 短信备份 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §GSM 短信备份 |
+| 北斗短报文 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §北斗短报文 |
+| 加密扩展 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §链路密码 |
+| 主站实现要点 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §主站（测站）实现要点 |
+| 中心站实现要点 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §中心站实现要点 |
+| 16 个常见故障 | [[bus/power-rtu/sl651-deep-dive\|sl651-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/sl651-failure-cases\|sl651-failure-cases]] |
 
 ## SL 651 vs SZY 206 vs IEC 104
 
@@ -141,11 +141,11 @@ chips-com/bus/sl651-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/szy206.md`：SZY 206（与 SL 651 配套）
-- `bus/power-rtu/slt427.md`：SL/T 427（补充）
-- `bus/power-rtu/hj212.md`：HJ 212（环保）
-- `bus/power-rtu/sl651-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/szy206|szy206]]：SZY 206（与 SL 651 配套）
+- [[bus/power-rtu/slt427|slt427]]：SL/T 427（补充）
+- [[bus/power-rtu/hj212|hj212]]：HJ 212（环保）
+- [[bus/power-rtu/sl651-failure-cases|sl651-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

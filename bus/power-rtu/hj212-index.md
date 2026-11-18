@@ -75,22 +75,22 @@ chips-com/bus/hj212-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| HJ 212 是啥 | hj212.md §定位 |
-| 应用领域 | hj212.md §应用领域 |
-| Header 字段 | hj212-deep-dive.md §Header 字段详解 |
-| Data 段 | hj212-deep-dive.md §Data 段详解 |
-| QN 请求编号 | hj212-deep-dive.md §QN（请求编号） |
-| CN 命令码 | hj212-deep-dive.md §CN（命令编号） |
-| ST 系统编号 | hj212-deep-dive.md §ST（系统编号） |
-| MN 设备编号 | hj212-deep-dive.md §MN（设备唯一编号） |
-| 因子字典 | hj212-deep-dive.md §因子字典 |
-| 心跳策略 | hj212-deep-dive.md §心跳 |
-| CRC 校验 | hj212-deep-dive.md §CRC 校验 |
-| 省级平台差异 | hj212-deep-dive.md §省级平台差异 |
-| 主站实现要点 | hj212-deep-dive.md §主站实现要点 |
-| 中心站实现要点 | hj212-deep-dive.md §中心站实现要点 |
-| 16 个常见故障 | hj212-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | hj212-failure-cases.md |
+| HJ 212 是啥 | [[bus/power-rtu/hj212\|hj212]] §定位 |
+| 应用领域 | [[bus/power-rtu/hj212\|hj212]] §应用领域 |
+| Header 字段 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §Header 字段详解 |
+| Data 段 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §Data 段详解 |
+| QN 请求编号 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §QN（请求编号） |
+| CN 命令码 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §CN（命令编号） |
+| ST 系统编号 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §ST（系统编号） |
+| MN 设备编号 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §MN（设备唯一编号） |
+| 因子字典 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §因子字典 |
+| 心跳策略 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §心跳 |
+| CRC 校验 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §CRC 校验 |
+| 省级平台差异 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §省级平台差异 |
+| 主站实现要点 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §主站实现要点 |
+| 中心站实现要点 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §中心站实现要点 |
+| 16 个常见故障 | [[bus/power-rtu/hj212-deep-dive\|hj212-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/hj212-failure-cases\|hj212-failure-cases]] |
 
 ## HJ 212 vs SL 651 vs IEC 104
 
@@ -139,10 +139,10 @@ chips-com/bus/hj212-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/sl651.md`：SL 651（结构相似）
-- `bus/industrial/mqtt.md`：与 MQTT 互通
-- `bus/power-rtu/hj212-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/sl651|sl651]]：SL 651（结构相似）
+- [[bus/industrial/mqtt|mqtt]]：与 MQTT 互通
+- [[bus/power-rtu/hj212-failure-cases|hj212-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

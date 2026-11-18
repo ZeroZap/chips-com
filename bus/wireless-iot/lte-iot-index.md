@@ -36,33 +36,33 @@ chips-com/bus/lte-iot*.md
 
 按顺序读，1-2 天能上手：
 
-1. **`bus/wireless-iot/lte-iot.md`** — 主题入口，5 分钟
-2. **`bus/wireless-iot/lte-iot-practical.md`** — APN / 蜂窝注册 / 5 秒定位
-3. **`bus/wireless-iot/lte-iot-deep-dive.md`** — 协议栈分层 + NAS 流程
+1. **[[bus/wireless-iot/lte-iot|lte-iot]]** — 主题入口，5 分钟
+2. **[[bus/wireless-iot/lte-iot-practical|lte-iot-practical]]** — APN / 蜂窝注册 / 5 秒定位
+3. **[[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]]** — 协议栈分层 + NAS 流程
 
 ### 路径 B："我在做 LTE-IoT 设备产线失败"（现场救火）
 
-1. **`bus/wireless-iot/lte-iot-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/lte-iot-failure-cases.md`** — 找类似案例（9 个）
-3. **`bus/wireless-iot/lte-iot-practical.md`** "## 错误码速查"
+1. **[[bus/wireless-iot/lte-iot-practical|lte-iot-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/lte-iot-failure-cases|lte-iot-failure-cases]]** — 找类似案例（9 个）
+3. **[[bus/wireless-iot/lte-iot-practical|lte-iot-practical]]** "## 错误码速查"
 
 ### 路径 C："我在做 LTE-IoT 模组驱动移植"（工程师）
 
-1. **`bus/wireless-iot/lte-iot-deep-dive.md`** "## 蜂窝注册流程"
-2. **`bus/wireless-iot/lte-iot-practical.md`** "## AT 命令 / QMI / RmNet"
-3. **`bus/wireless-iot/lte-iot-deep-dive.md`** "## 协议栈分层"
+1. **[[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]]** "## 蜂窝注册流程"
+2. **[[bus/wireless-iot/lte-iot-practical|lte-iot-practical]]** "## AT 命令 / QMI / RmNet"
+3. **[[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]]** "## 协议栈分层"
 
 ### 路径 D："我在做低功耗 IoT 选型"（架构师）
 
-1. **`bus/wireless-iot/lte-iot.md`** "## 三大类对比"
-2. **`bus/wireless-iot/lte-iot-deep-dive.md`** "## PSM / eDRX"
-3. **`bus/wireless-iot/lte-iot-practical.md`** "## 功耗数据"
+1. **[[bus/wireless-iot/lte-iot|lte-iot]]** "## 三大类对比"
+2. **[[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]]** "## PSM / eDRX"
+3. **[[bus/wireless-iot/lte-iot-practical|lte-iot-practical]]** "## 功耗数据"
 
 ### 路径 E："我在做蜂窝协议安全"（安全工程师）
 
-1. **`bus/wireless-iot/lte-iot-deep-dive.md`** "## NAS / 鉴权 / 加密"
-2. **`bus/wireless-iot/lte-iot-failure-cases.md`** 案例 2 / 7（APN 错 / SIM 不识别）
-3. **`bus/wireless-iot/lte-iot-practical.md`** "## NAS EMM 拒绝原因"
+1. **[[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]]** "## NAS / 鉴权 / 加密"
+2. **[[bus/wireless-iot/lte-iot-failure-cases|lte-iot-failure-cases]]** 案例 2 / 7（APN 错 / SIM 不识别）
+3. **[[bus/wireless-iot/lte-iot-practical|lte-iot-practical]]** "## NAS EMM 拒绝原因"
 
 ## 主题速查矩阵
 
@@ -70,34 +70,34 @@ chips-com/bus/lte-iot*.md
 
 | 我想知道 | 看哪里 |
 | --- | --- |
-| 三大类（Cat 1 / M1 / NB-IoT）怎么选 | lte-iot.md "## 三大类对比" |
-| 国内频段是哪些 | lte-iot.md "## 国内频段" |
-| APN 怎么配 | lte-iot-practical.md "## APN 配置" |
-| 搜不到网 | lte-iot-failure-cases.md 案例 1 |
-| PDP 激活失败 | lte-iot-failure-cases.md 案例 2 |
-| PSM 启用后下行丢 | lte-iot-failure-cases.md 案例 3 |
-| DNS 解析失败 | lte-iot-failure-cases.md 案例 4 |
-| 模组过温 | lte-iot-failure-cases.md 案例 5 |
-| 模组重启（电流塌陷） | lte-iot-failure-cases.md 案例 6 |
-| SIM 不识别 | lte-iot-failure-cases.md 案例 7 |
-| NB-IoT 卡插 4G 设备 | lte-iot-failure-cases.md 案例 8 |
-| 地下停车场注册不上 | lte-iot-failure-cases.md 案例 9 |
-| CME ERROR 码 | lte-iot-practical.md "## +CME ERROR" |
-| CMS ERROR 码 | lte-iot-practical.md "## +CMS ERROR" |
-| TCP 错误码 | lte-iot-practical.md "## TCP / IP 错误" |
-| NAS EMM 拒绝原因 | lte-iot-practical.md "## NAS EMM 拒绝原因" |
-| 蜂窝注册流程 | lte-iot-deep-dive.md "## 蜂窝注册流程" |
-| PSM 怎么配 | lte-iot-deep-dive.md "## PSM" |
-| eDRX 怎么配 | lte-iot-deep-dive.md "## eDRX" |
-| 协议栈分层 | lte-iot-deep-dive.md "## 协议栈分层" |
-| NAS 状态机 | lte-iot-deep-dive.md "## NAS" |
-| 鉴权 AKA | lte-iot-deep-dive.md "## 鉴权（AKA）" |
-| 抓包工具 | lte-iot.md "## 抓包工具" |
-| 模组选型 | lte-iot.md "## 典型芯片 / 模组" |
-| 移动 vs 电信 vs 联通 | lte-iot.md "## 国内频段" |
-| 与 5G RedCap 关系 | lte-iot.md "## 跟其它无线技术的关系" |
-| 功耗数据 | lte-iot-deep-dive.md "## 功耗数据参考" |
-| 产线测试清单 | lte-iot-practical.md "## 检查清单" |
+| 三大类（Cat 1 / M1 / NB-IoT）怎么选 | [[bus/wireless-iot/lte-iot\|lte-iot]] "## 三大类对比" |
+| 国内频段是哪些 | [[bus/wireless-iot/lte-iot\|lte-iot]] "## 国内频段" |
+| APN 怎么配 | [[bus/wireless-iot/lte-iot-practical\|lte-iot-practical]] "## APN 配置" |
+| 搜不到网 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 1 |
+| PDP 激活失败 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 2 |
+| PSM 启用后下行丢 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 3 |
+| DNS 解析失败 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 4 |
+| 模组过温 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 5 |
+| 模组重启（电流塌陷） | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 6 |
+| SIM 不识别 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 7 |
+| NB-IoT 卡插 4G 设备 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 8 |
+| 地下停车场注册不上 | [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] 案例 9 |
+| CME ERROR 码 | [[bus/wireless-iot/lte-iot-practical\|lte-iot-practical]] "## +CME ERROR" |
+| CMS ERROR 码 | [[bus/wireless-iot/lte-iot-practical\|lte-iot-practical]] "## +CMS ERROR" |
+| TCP 错误码 | [[bus/wireless-iot/lte-iot-practical\|lte-iot-practical]] "## TCP / IP 错误" |
+| NAS EMM 拒绝原因 | [[bus/wireless-iot/lte-iot-practical\|lte-iot-practical]] "## NAS EMM 拒绝原因" |
+| 蜂窝注册流程 | [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] "## 蜂窝注册流程" |
+| PSM 怎么配 | [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] "## PSM" |
+| eDRX 怎么配 | [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] "## eDRX" |
+| 协议栈分层 | [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] "## 协议栈分层" |
+| NAS 状态机 | [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] "## NAS" |
+| 鉴权 AKA | [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] "## 鉴权（AKA）" |
+| 抓包工具 | [[bus/wireless-iot/lte-iot\|lte-iot]] "## 抓包工具" |
+| 模组选型 | [[bus/wireless-iot/lte-iot\|lte-iot]] "## 典型芯片 / 模组" |
+| 移动 vs 电信 vs 联通 | [[bus/wireless-iot/lte-iot\|lte-iot]] "## 国内频段" |
+| 与 5G RedCap 关系 | [[bus/wireless-iot/lte-iot\|lte-iot]] "## 跟其它无线技术的关系" |
+| 功耗数据 | [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] "## 功耗数据参考" |
+| 产线测试清单 | [[bus/wireless-iot/lte-iot-practical\|lte-iot-practical]] "## 检查清单" |
 
 ## 关键概念地图
 
@@ -260,21 +260,21 @@ lte-iot-index.md (本文件，导航)
 
 | 文档 | 更新频率 | 维护者 |
 | --- | --- | --- |
-| lte-iot.md | 改版才更新 | 主题入口 |
-| lte-iot-practical.md | 改版才更新 | 速查 / 调试流程 |
-| lte-iot-deep-dive.md | 协议改版 / 5G 演进 | 原理体系 |
-| lte-iot-failure-cases.md | **持续更新** | 产线案例 |
-| lte-iot-index.md | 新增 / 删除文档时 | 导航 |
+| [[bus/wireless-iot/lte-iot\|lte-iot]] | 改版才更新 | 主题入口 |
+| [[bus/wireless-iot/lte-iot-practical\|lte-iot-practical]] | 改版才更新 | 速查 / 调试流程 |
+| [[bus/wireless-iot/lte-iot-deep-dive\|lte-iot-deep-dive]] | 协议改版 / 5G 演进 | 原理体系 |
+| [[bus/wireless-iot/lte-iot-failure-cases\|lte-iot-failure-cases]] | **持续更新** | 产线案例 |
+| [[bus/wireless-iot/lte-iot-index\|lte-iot-index]] | 新增 / 删除文档时 | 导航 |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/wireless-iot/ble.md`** — BLE（短距 IoT，与 LTE-IoT 互补）
-- **`bus/wireless-iot/zigbee.md`** — ZigBee（Mesh 局域网）
-- **`bus/wireless-iot/thread.md`** — Thread（IPv6 局域网）
-- **`bus/wireless-iot/matter.md`** — Matter（应用层跨协议）
-- **`bus/industrial/mqtt-deep-dive.md`** — MQTT（常用于 LTE-IoT 业务层）
-- **`bus/automotive/can-protocol-family.md`** — 车载 CAN（车机 / TBOX 与 Cat 1 集成）
-- **`basic/can-phy.md`** — 物理层对比参考
+- **[[bus/wireless-iot/ble|ble]]** — BLE（短距 IoT，与 LTE-IoT 互补）
+- **[[bus/wireless-iot/zigbee|zigbee]]** — ZigBee（Mesh 局域网）
+- **[[bus/wireless-iot/thread|thread]]** — Thread（IPv6 局域网）
+- **[[bus/wireless-iot/matter|matter]]** — Matter（应用层跨协议）
+- **[[bus/industrial/mqtt-deep-dive|mqtt-deep-dive]]** — MQTT（常用于 LTE-IoT 业务层）
+- **[[bus/automotive/can-protocol-family|can-protocol-family]]** — 车载 CAN（车机 / TBOX 与 Cat 1 集成）
+- **[[basic/can-phy|can-phy]]** — 物理层对比参考
 
 ## 一句话总结
 

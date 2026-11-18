@@ -16,13 +16,13 @@ tags:
 
 | 文档 | 定位 | 读者 |
 | --- | --- | --- |
-| `bus/automotive/j1939.md` | 1 页概念 | 所有人 |
-| **`bus/automotive/j1939-protocol-spec.md`（本文）** | **协议规范层 / 标准分解** | **需要引用标准号、写规范文档、做架构评审** |
-| `bus/automotive/j1939-deep-dive.md` | 工程原理（PGN 计算、网关、排查） | 开发 |
-| `bus/automotive/j1939-transport-protocol.md` | TP 多包实现细节 + 代码 | 开发 |
-| `bus/automotive/j1939-network-management.md` | NAME / 地址声明 | 开发 |
-| `bus/automotive/j1939-practical.md` | 调试速查 | 现场 |
-| `bus/automotive/j1939-failure-cases.md` | 21 个产线案例 | 现场 |
+| [[bus/automotive/j1939\|j1939]] | 1 页概念 | 所有人 |
+| **[[bus/automotive/j1939-protocol-spec\|j1939-protocol-spec]]（本文）** | **协议规范层 / 标准分解** | **需要引用标准号、写规范文档、做架构评审** |
+| [[bus/automotive/j1939-deep-dive\|j1939-deep-dive]] | 工程原理（PGN 计算、网关、排查） | 开发 |
+| [[bus/automotive/j1939-transport-protocol\|j1939-transport-protocol]] | TP 多包实现细节 + 代码 | 开发 |
+| [[bus/automotive/j1939-network-management\|j1939-network-management]] | NAME / 地址声明 | 开发 |
+| [[bus/automotive/j1939-practical\|j1939-practical]] | 调试速查 | 现场 |
+| [[bus/automotive/j1939-failure-cases\|j1939-failure-cases]] | 21 个产线案例 | 现场 |
 
 资料来源：三篇知乎协议整理（[SAE-J1939中的PGN MSB和SPN，以及多包传输](https://zhuanlan.zhihu.com/p/708220331)、[商用车网络设计利器—SAE J1939协议](https://zhuanlan.zhihu.com/p/234694992)、[知识分享｜了解 SAE J1939](https://zhuanlan.zhihu.com/p/545737616)），并按 SAE J1939-DA 校核。
 
@@ -401,7 +401,7 @@ Classic CAN 数据帧只有 8 字节。当某个参数组需要 **9 ~ 1785 字�
 | TP 帧 CAN ID 中的 PGN | 标识"这是一组 TP 帧" | 65259（0x00FEEB） |
 | TP.CM 字节 6~7 | 被传输报文的目标 PGN | 16 位（低字节在前） |
 
-> 详细的 TP.CM 字节布局、CTS/Abort 语义、超时（T1~T4）与 C 代码骨架见 `bus/automotive/j1939-transport-protocol.md`。
+> 详细的 TP.CM 字节布局、CTS/Abort 语义、超时（T1~T4）与 C 代码骨架见 [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]]。
 
 ## 八、诊断：DTC 与 DM 报文
 
@@ -549,20 +549,20 @@ J1939 正是为此而生，它实现了两件事：
 | 会话/权限 | 无 | 有（种子密钥） | 无 |
 | DTC 格式 | SPN + FMI + OC + CM | 3 字节 DTC | 3 字节 DTC |
 
-> **OBD-II 与 UDS 是两套体系，不是升级关系**；同一辆车上两者共存，OBD-II 走 0x7DF 功能寻址，UDS 走 OEM 物理寻址。商用车另有 WWH-OBD（ISO 27145 系列）作为全球统一车载诊断，见 `bus/automotive/wwh-obd.md`。
+> **OBD-II 与 UDS 是两套体系，不是升级关系**；同一辆车上两者共存，OBD-II 走 0x7DF 功能寻址，UDS 走 OEM 物理寻址。商用车另有 WWH-OBD（ISO 27145 系列）作为全球统一车载诊断，见 [[bus/automotive/wwh-obd|wwh-obd]]。
 
 ## 十二、关联文档
 
-- `bus/automotive/j1939.md` — 1 页概念
-- `bus/automotive/j1939-deep-dive.md` — 工程原理与排查
-- `bus/automotive/j1939-transport-protocol.md` — TP 多包实现与代码
-- `bus/automotive/j1939-network-management.md` — NAME / 地址声明
-- `bus/automotive/j1939-practical.md` — 调试速查
-- `bus/automotive/j1939-failure-cases.md` — 21 个产线案例
-- `bus/automotive/j1939-index.md` — 主题导航
-- `bus/automotive/can-standards-map.md` — CAN 家族标准总表
-- `bus/automotive/uds-deep-dive.md` — UDS 协议
-- `bus/automotive/wwh-obd.md` — WWH-OBD（商用车全球统一诊断）
+- [[bus/automotive/j1939|j1939]] — 1 页概念
+- [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] — 工程原理与排查
+- [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]] — TP 多包实现与代码
+- [[bus/automotive/j1939-network-management|j1939-network-management]] — NAME / 地址声明
+- [[bus/automotive/j1939-practical|j1939-practical]] — 调试速查
+- [[bus/automotive/j1939-failure-cases|j1939-failure-cases]] — 21 个产线案例
+- [[bus/automotive/j1939-index|j1939-index]] — 主题导航
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准总表
+- [[bus/automotive/uds-deep-dive|uds-deep-dive]] — UDS 协议
+- [[bus/automotive/wwh-obd|wwh-obd]] — WWH-OBD（商用车全球统一诊断）
 
 ## 一句话总结
 

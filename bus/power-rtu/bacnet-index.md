@@ -75,18 +75,18 @@ chips-com/bus/bacnet-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| BACnet 是啥 | bacnet.md §定位 |
-| BACnet/IP | bacnet.md §BACnet/IP |
-| BACnet MS/TP | bacnet.md §BACnet MS/TP |
-| 对象模型 | bacnet.md §BACnet 对象模型 |
-| 服务 | bacnet.md §BACnet 服务 |
-| APDU 编码 | bacnet-deep-dive.md §APDU 详解 |
-| COV 订阅 | bacnet-deep-dive.md §COV 订阅机制 |
-| MS/TP 令牌环 | bacnet-deep-dive.md §MS/TP 详解 |
-| BBMD | bacnet-deep-dive.md §BBMD 跨子网 |
-| 主站实现 | bacnet-deep-dive.md §工程实现 |
-| 16 个常见故障 | bacnet-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | bacnet-failure-cases.md |
+| BACnet 是啥 | [[bus/power-rtu/bacnet\|bacnet]] §定位 |
+| BACnet/IP | [[bus/power-rtu/bacnet\|bacnet]] §BACnet/IP |
+| BACnet MS/TP | [[bus/power-rtu/bacnet\|bacnet]] §BACnet MS/TP |
+| 对象模型 | [[bus/power-rtu/bacnet\|bacnet]] §BACnet 对象模型 |
+| 服务 | [[bus/power-rtu/bacnet\|bacnet]] §BACnet 服务 |
+| APDU 编码 | [[bus/power-rtu/bacnet-deep-dive\|bacnet-deep-dive]] §APDU 详解 |
+| COV 订阅 | [[bus/power-rtu/bacnet-deep-dive\|bacnet-deep-dive]] §COV 订阅机制 |
+| MS/TP 令牌环 | [[bus/power-rtu/bacnet-deep-dive\|bacnet-deep-dive]] §MS/TP 详解 |
+| BBMD | [[bus/power-rtu/bacnet-deep-dive\|bacnet-deep-dive]] §BBMD 跨子网 |
+| 主站实现 | [[bus/power-rtu/bacnet-deep-dive\|bacnet-deep-dive]] §工程实现 |
+| 16 个常见故障 | [[bus/power-rtu/bacnet-deep-dive\|bacnet-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/bacnet-failure-cases\|bacnet-failure-cases]] |
 
 ## BACnet vs Modbus vs OPC UA
 
@@ -131,10 +131,10 @@ chips-com/bus/bacnet-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/industrial/modbus.md`：与 Modbus 对比
-- `bus/industrial/opcua.md`：与 OPC UA 对比
-- `bus/power-rtu/bacnet-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/industrial/modbus|modbus]]：与 Modbus 对比
+- [[bus/industrial/opcua|opcua]]：与 OPC UA 对比
+- [[bus/power-rtu/bacnet-failure-cases|bacnet-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

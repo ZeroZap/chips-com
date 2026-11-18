@@ -21,8 +21,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
 配套工程方法文档：
 
-- `guides/troubleshooting/DEBUG_PLAYBOOK.md`：跨协议分层排障方法。
-- `guides/learning/PROTOCOL_SELECTION.md`：通信协议选型矩阵。
+- [[guides/troubleshooting/DEBUG_PLAYBOOK|DEBUG_PLAYBOOK]]：跨协议分层排障方法。
+- [[guides/learning/PROTOCOL_SELECTION|PROTOCOL_SELECTION]]：通信协议选型矩阵。
 
 ## 阶段 1：基础接口打牢
 
@@ -32,8 +32,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `basic/uart-practical.md`
-   - `basic/uart-deep-dive.md`
+   - [[basic/uart-practical|uart-practical]]
+   - [[basic/uart-deep-dive|uart-deep-dive]]
 
    重点能力：
 
@@ -47,8 +47,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `basic/i2c-practical.md`
-   - `basic/i2c-deep-dive.md`
+   - [[basic/i2c-practical|i2c-practical]]
+   - [[basic/i2c-deep-dive|i2c-deep-dive]]
 
    重点能力：
 
@@ -62,8 +62,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `basic/spi-practical.md`
-   - `basic/spi-deep-dive.md`
+   - [[basic/spi-practical|spi-practical]]
+   - [[basic/spi-deep-dive|spi-deep-dive]]
 
    重点能力：
 
@@ -81,8 +81,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/industrial/rs485-modbus-rtu-practical.md`
-   - `bus/industrial/rs485-modbus-rtu-deep-dive.md`
+   - [[bus/industrial/rs485-modbus-rtu-practical|rs485-modbus-rtu-practical]]
+   - [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]
 
    重点能力：
 
@@ -96,8 +96,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/automotive/canopen-practical.md`
-   - `bus/automotive/canopen-deep-dive.md`
+   - [[bus/automotive/canopen-practical|canopen-practical]]
+   - [[bus/automotive/canopen-deep-dive|canopen-deep-dive]]
 
    重点能力：
 
@@ -112,7 +112,7 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/automotive/lin-practical.md`
+   - [[bus/automotive/lin-practical|lin-practical]]
 
    重点能力：
 
@@ -128,9 +128,9 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/onboard/i3c.md`
-   - `bus/onboard/i3c-topic.md`
-   - `bus/onboard/i3c-deep-dive.md`
+   - [[bus/onboard/i3c|i3c]]
+   - [[bus/onboard/i3c-topic|i3c-topic]]
+   - [[bus/onboard/i3c-deep-dive|i3c-deep-dive]]
 
    重点能力：
 
@@ -144,7 +144,7 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/onboard/smbus-pmbus-practical.md`
+   - [[bus/onboard/smbus-pmbus-practical|smbus-pmbus-practical]]
 
    重点能力：
 
@@ -163,8 +163,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/usb/usb-practical.md`
-   - `bus/usb/usb-deep-dive.md`
+   - [[bus/usb/usb-practical|usb-practical]]
+   - [[bus/usb/usb-deep-dive|usb-deep-dive]]
 
    重点能力：
 
@@ -178,8 +178,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/industrial/ethernet-deep-dive.md`
-   - `bus/industrial/ethernet-modbus-tcp-practical.md`
+   - [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]
+   - [[bus/industrial/ethernet-modbus-tcp-practical|ethernet-modbus-tcp-practical]]
 
    重点能力：
 
@@ -198,8 +198,8 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/display/mipi-csi-dsi-debug.md`
-   - `bus/display/mipi-csi-dsi-deep-dive.md`
+   - [[bus/display/mipi-csi-dsi-debug|mipi-csi-dsi-debug]]
+   - [[bus/display/mipi-csi-dsi-deep-dive|mipi-csi-dsi-deep-dive]]
 
    重点能力：
 
@@ -214,7 +214,7 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/onboard/pcie-practical.md`
+   - [[bus/onboard/pcie-practical|pcie-practical]]
 
    重点能力：
 
@@ -229,7 +229,7 @@ P1 进展：`basic/` 10 个 L1 主题已升级到 L2，并新增 Comparator；`g
 
    已完成文档：
 
-   - `bus/onboard/sdio-practical.md`
+   - [[bus/onboard/sdio-practical|sdio-practical]]
 
    重点能力：
 
@@ -254,13 +254,13 @@ Add Real-World Failure Cases And Measurement Examples
 
 当前基础主题已补齐为：
 
-- `basic/gpio.md`
-- `basic/pwm.md`
-- `basic/adc-dac.md`
-- `basic/i2s.md`
-- `basic/qspi-ospi.md`
-- `basic/jtag-swd.md`
-- `basic/lvds.md`
+- [[basic/gpio|gpio]]
+- [[basic/pwm|pwm]]
+- [[basic/adc-dac|adc-dac]]
+- [[basic/i2s|i2s]]
+- [[basic/qspi-ospi|qspi-ospi]]
+- [[basic/jtag-swd|jtag-swd]]
+- [[basic/lvds|lvds]]
 
 建议下一批优先文档：
 
@@ -268,7 +268,7 @@ Add Real-World Failure Cases And Measurement Examples
 Add real-world failure cases and measurement examples
 ```
 
-`bus/industrial/profinet-practical.md`、`bus/industrial/ethernet-ip-practical.md`、`bus/automotive/j1939-practical.md`、`bus/automotive/uds-practical.md`、`bus/industrial/profinet-deep-dive.md`、`bus/industrial/ethernet-ip-deep-dive.md`、`bus/automotive/j1939-deep-dive.md`、`bus/automotive/uds-deep-dive.md`、`bus/industrial/ethernet-tsn-practical.md`、`bus/industrial/profibus-deep-dive.md`、`bus/industrial/dmx512-deep-dive.md`、`bus/display/hdmi-edp-deep-dive.md` 和 `bus/display/fpd-link-gmsl-deep-dive.md` 已完成。下一步建议从“补齐协议文档”转向“补真实案例和测量样例”。
+[[bus/industrial/profinet-practical|profinet-practical]]、[[bus/industrial/ethernet-ip-practical|ethernet-ip-practical]]、[[bus/automotive/j1939-practical|j1939-practical]]、[[bus/automotive/uds-practical|uds-practical]]、[[bus/industrial/profinet-deep-dive|profinet-deep-dive]]、[[bus/industrial/ethernet-ip-deep-dive|ethernet-ip-deep-dive]]、[[bus/automotive/j1939-deep-dive|j1939-deep-dive]]、[[bus/automotive/uds-deep-dive|uds-deep-dive]]、[[bus/industrial/ethernet-tsn-practical|ethernet-tsn-practical]]、[[bus/industrial/profibus-deep-dive|profibus-deep-dive]]、[[bus/industrial/dmx512-deep-dive|dmx512-deep-dive]]、[[bus/display/hdmi-edp-deep-dive|hdmi-edp-deep-dive]] 和 [[bus/display/fpd-link-gmsl-deep-dive|fpd-link-gmsl-deep-dive]] 已完成。下一步建议从“补齐协议文档”转向“补真实案例和测量样例”。
 
 建议覆盖：
 
@@ -276,7 +276,7 @@ Add real-world failure cases and measurement examples
 - 示波器、逻辑分析仪、Wireshark 或寄存器 dump 的观测点。
 - 正常样机与故障样机的对比数据。
 - 分层排查路径和最终根因。
-- 可沉淀到 `guides/troubleshooting/FAILURE_CASES.md`、`guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md` 和各协议 deep-dive 的案例索引。
+- 可沉淀到 [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]、[[guides/troubleshooting/TROUBLESHOOTING_QUICKREF|TROUBLESHOOTING_QUICKREF]] 和各协议 deep-dive 的案例索引。
 
 ## 阶段 6：实战沉淀期（2026-07-29 起）
 
@@ -290,7 +290,7 @@ Add real-world failure cases and measurement examples
 
 | 触发                                                       | 动作                                                                               |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| 项目中遇到 I2C / SPI / UART / CAN / J1939 / USB 真实故障   | 写 `xxx-failure-cases.md` 或在 `guides/troubleshooting/DEBUG_PLAYBOOK.md` 加案例段 |
+| 项目中遇到 I2C / SPI / UART / CAN / J1939 / USB 真实故障   | 写 `xxx-failure-cases.md` 或在 [[guides/troubleshooting/DEBUG_PLAYBOOK\|DEBUG_PLAYBOOK]] 加案例段 |
 | 读到高质量实战文章                                         | 整理进对应主题的 deep-dive，附"实战补充"标记                                       |
 | 跨主题横向工作（PROTOCOL_SELECTION / DEBUG_PLAYBOOK 升级） | 持续                                                                               |
 | 仍未覆盖的协议（FlexRay / SENT / USB 3.x / HDMI 2.1）      | **挂起**，等真实项目需要再激活                                                     |
@@ -300,7 +300,7 @@ Add real-world failure cases and measurement examples
 
 - 不主动开新主题
 - 不主动扩 deep-dive
-- 实战案例优先：`guides/troubleshooting/FAILURE_CASES.md` / `guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md` / `guides/troubleshooting/MEASUREMENT_EXAMPLES.md` 三件套持续更新
+- 实战案例优先：[[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]] / [[guides/troubleshooting/TROUBLESHOOTING_QUICKREF|TROUBLESHOOTING_QUICKREF]] / [[guides/troubleshooting/MEASUREMENT_EXAMPLES|MEASUREMENT_EXAMPLES]] 三件套持续更新
 - 每遇到一次真实调试，做"现象 → 抓包 → 定位 → 修复 → 复盘"5 段式记录
 
 **封口期结束条件**（任一满足即重新评估）：
@@ -311,5 +311,5 @@ Add real-world failure cases and measurement examples
 
 **关联文档**：
 
-- `TOPIC_MATRIX.md` 的"候选主题执行计划"已改名为"候选主题（沉淀期挂起）"
-- `INDEX.md` 底部记录 v3.x 封口里程碑
+- [[TOPIC_MATRIX|TOPIC_MATRIX]] 的"候选主题执行计划"已改名为"候选主题（沉淀期挂起）"
+- [[INDEX|INDEX]] 底部记录 v3.x 封口里程碑

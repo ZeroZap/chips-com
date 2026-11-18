@@ -41,17 +41,17 @@ chips-com/bus/slt427-*.md
 
 | 你想知道的事 | 文档位置 |
 | --- | --- |
-| SL/T 427 是啥 | slt427.md §定位 |
-| 与 SZY 206 关系 | slt427.md §与 SZY 206 关系 |
-| 水质要素 | slt427.md §要素编码扩展 |
-| 灌区要素 | slt427.md §要素编码扩展 |
-| 历史数据回传 | slt427-deep-dive.md §历史数据回传（FC=0x35） |
-| 多中心站切换 | slt427-deep-dive.md §多中心站切换 |
-| 加密信道 | slt427-deep-dive.md §加密信道 |
-| 设备状态 | slt427-deep-dive.md §设备状态扩展 |
-| GSM 短信备份 | slt427-deep-dive.md §GSM 短信备份 |
-| 16 个常见故障 | slt427-deep-dive.md §现场常见故障 |
-| 20 个产线死机案例 | slt427-failure-cases.md |
+| SL/T 427 是啥 | [[bus/power-rtu/slt427\|slt427]] §定位 |
+| 与 SZY 206 关系 | [[bus/power-rtu/slt427\|slt427]] §与 SZY 206 关系 |
+| 水质要素 | [[bus/power-rtu/slt427\|slt427]] §要素编码扩展 |
+| 灌区要素 | [[bus/power-rtu/slt427\|slt427]] §要素编码扩展 |
+| 历史数据回传 | [[bus/power-rtu/slt427-deep-dive\|slt427-deep-dive]] §历史数据回传（FC=0x35） |
+| 多中心站切换 | [[bus/power-rtu/slt427-deep-dive\|slt427-deep-dive]] §多中心站切换 |
+| 加密信道 | [[bus/power-rtu/slt427-deep-dive\|slt427-deep-dive]] §加密信道 |
+| 设备状态 | [[bus/power-rtu/slt427-deep-dive\|slt427-deep-dive]] §设备状态扩展 |
+| GSM 短信备份 | [[bus/power-rtu/slt427-deep-dive\|slt427-deep-dive]] §GSM 短信备份 |
+| 16 个常见故障 | [[bus/power-rtu/slt427-deep-dive\|slt427-deep-dive]] §现场常见故障 |
+| 20 个产线死机案例 | [[bus/power-rtu/slt427-failure-cases\|slt427-failure-cases]] |
 
 ## SL/T 427 vs SZY 206
 
@@ -101,10 +101,10 @@ chips-com/bus/slt427-*.md
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- `bus/power-rtu/szy206.md`：SZY 206（配套）
-- `bus/power-rtu/sl651.md`：SL 651（水文）
-- `bus/power-rtu/slt427-failure-cases.md`：20 个产线死机案例库
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- [[bus/power-rtu/szy206|szy206]]：SZY 206（配套）
+- [[bus/power-rtu/sl651|sl651]]：SL 651（水文）
+- [[bus/power-rtu/slt427-failure-cases|slt427-failure-cases]]：20 个产线死机案例库
 
 ## 版本演进
 

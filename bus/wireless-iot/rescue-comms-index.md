@@ -39,82 +39,82 @@ chips-com/bus/rescue-comms-*.md
 
 按顺序读, 1-2 天能上手:
 
-1. **`bus/wireless-iot/rescue-comms.md`** — 主题入口, 5 分钟
-2. **`bus/wireless-iot/rescue-comms-practical.md`** — 关键参数 / 5 秒定位 / 错误码
-3. **`bus/wireless-iot/rescue-comms-deep-dive.md`** — 协议栈分层 + 卫星链路
+1. **[[bus/wireless-iot/rescue-comms|rescue-comms]]** — 主题入口, 5 分钟
+2. **[[bus/wireless-iot/rescue-comms-practical|rescue-comms-practical]]** — 关键参数 / 5 秒定位 / 错误码
+3. **[[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]]** — 协议栈分层 + 卫星链路
 
 ### 路径 B: "我在做救援终端产线失败" (现场救火)
 
-1. **`bus/wireless-iot/rescue-comms-practical.md`** "## 5 秒钟定位"
-2. **`bus/wireless-iot/rescue-comms-failure-cases.md`** — 找类似案例（9 个）
-3. **`bus/wireless-iot/rescue-comms-deep-dive.md`** "## 错误码速查"
+1. **[[bus/wireless-iot/rescue-comms-practical|rescue-comms-practical]]** "## 5 秒钟定位"
+2. **[[bus/wireless-iot/rescue-comms-failure-cases|rescue-comms-failure-cases]]** — 找类似案例（9 个）
+3. **[[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]]** "## 错误码速查"
 
 ### 路径 C: "我在做卫星模组嵌入式开发" (工程师)
 
-1. **`bus/wireless-iot/rescue-comms-deep-dive.md`** "## 卫星 SOS 双向链路深挖"
-2. **`bus/wireless-iot/rescue-comms-practical.md`** "## 抓包工具"
-3. **`bus/wireless-iot/rescue-comms-failure-cases.md`** 案例 4（inReach 延迟）
+1. **[[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]]** "## 卫星 SOS 双向链路深挖"
+2. **[[bus/wireless-iot/rescue-comms-practical|rescue-comms-practical]]** "## 抓包工具"
+3. **[[bus/wireless-iot/rescue-comms-failure-cases|rescue-comms-failure-cases]]** 案例 4（inReach 延迟）
 
 ### 路径 D: "我在做海上 / 航空救援" (航海/航空人)
 
-1. **`bus/wireless-iot/rescue-comms.md`** "## 实战场景 → 海上 / 航空"
-2. **`bus/wireless-iot/rescue-comms-deep-dive.md`** "## PLB 406 MHz 协议深挖" + "## 海上 VHF DSC"
-3. **`bus/wireless-iot/rescue-comms-failure-cases.md`** 案例 7（DSC MMSI 重复）
+1. **[[bus/wireless-iot/rescue-comms|rescue-comms]]** "## 实战场景 → 海上 / 航空"
+2. **[[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]]** "## PLB 406 MHz 协议深挖" + "## 海上 VHF DSC"
+3. **[[bus/wireless-iot/rescue-comms-failure-cases|rescue-comms-failure-cases]]** 案例 7（DSC MMSI 重复）
 
 ### 路径 E: "我在做户外登山/应急装备" (户外人)
 
-1. **`bus/wireless-iot/rescue-comms.md`** "## 实战场景 → 户外登山"
-2. **`bus/wireless-iot/rescue-comms-practical.md`** "## PLB 实战注意" + "## Apple Emergency SOS"
-3. **`bus/wireless-iot/rescue-comms-failure-cases.md`** 案例 1（iPhone 楼内）+ 案例 3（PLB 电池）
+1. **[[bus/wireless-iot/rescue-comms|rescue-comms]]** "## 实战场景 → 户外登山"
+2. **[[bus/wireless-iot/rescue-comms-practical|rescue-comms-practical]]** "## PLB 实战注意" + "## Apple Emergency SOS"
+3. **[[bus/wireless-iot/rescue-comms-failure-cases|rescue-comms-failure-cases]]** 案例 1（iPhone 楼内）+ 案例 3（PLB 电池）
 
 ### 路径 F: "我在做选型 / 产品规划" (产品经理/架构师)
 
-1. **`bus/wireless-iot/rescue-comms.md`** "## 5 大技术路线对比" + "## 典型产品对标"
-2. **`bus/wireless-iot/rescue-comms-deep-dive.md`** "## 多模融合"
-3. **`bus/wireless-iot/rescue-comms-failure-cases.md`** 全部案例
+1. **[[bus/wireless-iot/rescue-comms|rescue-comms]]** "## 5 大技术路线对比" + "## 典型产品对标"
+2. **[[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]]** "## 多模融合"
+3. **[[bus/wireless-iot/rescue-comms-failure-cases|rescue-comms-failure-cases]]** 全部案例
 
 ## 主题速查矩阵
 
 按问题找文档:
 
-| 我想知道 | 看哪里 |
-| --- | --- |
-| 5 大技术路线 | rescue-comms.md "## 5 大技术路线对比" |
-| 典型产品 | rescue-comms.md "## 典型产品对标" |
-| Iridium SBD 协议 | rescue-comms-deep-dive.md "## 1.1 Iridium" |
-| 北斗 RDSS 协议 | rescue-comms-deep-dive.md "## 1.2 北斗 RDSS" |
-| Apple Emergency SOS | rescue-comms-deep-dive.md "## 1.3 Apple Emergency SOS" |
-| PLB 406 MHz 协议 | rescue-comms-deep-dive.md "## 3. PLB 406 MHz 协议深挖" |
-| VoLTE Emergency | rescue-comms-deep-dive.md "## 4.1 VoLTE Emergency" |
-| 卫星 IoT 平台 | rescue-comms-deep-dive.md "## 4.2 卫星 IoT 备份" |
-| 海上 VHF DSC | rescue-comms-deep-dive.md "## 5.2 海上 VHF DSC" |
-| 业余无线电 | rescue-comms-deep-dive.md "## 5.1 业余无线电 VHF/UHF" |
-| 端到端加密 | rescue-comms-deep-dive.md "## 6. 端到端加密" |
-| 电池续航设计 | rescue-comms-deep-dive.md "## 7. 电池续航设计" |
-| 多模融合架构 | rescue-comms-deep-dive.md "## 8. 多模融合" |
-| 抓包工具 | rescue-comms-practical.md "## 抓包 / 抓 log 工具" |
-| 5 秒定位 | rescue-comms-practical.md "## 5 秒钟定位" |
-| Iridium 错误码 | rescue-comms-practical.md "## 错误码速查（Iridium 9602/9603）" |
-| 北斗 RDSS 错误码 | rescue-comms-practical.md "## 错误码速查（北斗 RDSS）" |
-| PLB 闪灯编码 | rescue-comms-practical.md "## 错误码速查（PLB 406 MHz）" |
-| inReach 实战 | rescue-comms-practical.md "## inReach / Garmin 实战注意" |
-| Apple SOS 实战 | rescue-comms-practical.md "## Apple Emergency SOS 实战注意" |
-| PLB 实战 | rescue-comms-practical.md "## PLB 实战注意" |
-| 北斗短报文实战 | rescue-comms-practical.md "## 北斗短报文实战注意" |
-| 户外登山场景 | rescue-comms.md "## 实战场景 → 户外登山" |
-| 海上场景 | rescue-comms.md "## 实战场景 → 海上" |
-| 航空场景 | rescue-comms.md "## 实战场景 → 航空" |
-| 城市应急场景 | rescue-comms.md "## 实战场景 → 城市应急" |
-| 产线失败案例 | rescue-comms-failure-cases.md |
-| iPhone 楼内 SOS 失败 | rescue-comms-failure-cases.md 案例 1 |
-| 华为短报文误发 | rescue-comms-failure-cases.md 案例 2 |
-| PLB 电池 3 年失效 | rescue-comms-failure-cases.md 案例 3 |
-| inReach 延迟 | rescue-comms-failure-cases.md 案例 4 |
-| 北斗入网失败 | rescue-comms-failure-cases.md 案例 5 |
-| DJI 4G 备份不工作 | rescue-comms-failure-cases.md 案例 6 |
-| DSC MMSI 重复 | rescue-comms-failure-cases.md 案例 7 |
-| HAM 中继震中失效 | rescue-comms-failure-cases.md 案例 8 |
-| Spot X 低温关机 | rescue-comms-failure-cases.md 案例 9 |
+| 我想知道             | 看哪里                                                         |
+| -------------------- | -------------------------------------------------------------- |
+| 5 大技术路线         | [[bus/wireless-iot/rescue-comms\|rescue-comms]] "## 5 大技术路线对比"                          |
+| 典型产品             | [[bus/wireless-iot/rescue-comms\|rescue-comms]] "## 典型产品对标"                              |
+| Iridium SBD 协议     | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 1.1 Iridium"                     |
+| 北斗 RDSS 协议       | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 1.2 北斗 RDSS"                   |
+| Apple Emergency SOS  | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 1.3 Apple Emergency SOS"         |
+| PLB 406 MHz 协议     | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 3. PLB 406 MHz 协议深挖"         |
+| VoLTE Emergency      | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 4.1 VoLTE Emergency"             |
+| 卫星 IoT 平台        | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 4.2 卫星 IoT 备份"               |
+| 海上 VHF DSC         | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 5.2 海上 VHF DSC"                |
+| 业余无线电           | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 5.1 业余无线电 VHF/UHF"          |
+| 端到端加密           | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 6. 端到端加密"                   |
+| 电池续航设计         | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 7. 电池续航设计"                 |
+| 多模融合架构         | [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]] "## 8. 多模融合"                     |
+| 抓包工具             | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## 抓包 / 抓 log 工具"              |
+| 5 秒定位             | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## 5 秒钟定位"                      |
+| Iridium 错误码       | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## 错误码速查（Iridium 9602/9603）" |
+| 北斗 RDSS 错误码     | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## 错误码速查（北斗 RDSS）"         |
+| PLB 闪灯编码         | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## 错误码速查（PLB 406 MHz）"       |
+| inReach 实战         | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## inReach / Garmin 实战注意"       |
+| Apple SOS 实战       | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## Apple Emergency SOS 实战注意"    |
+| PLB 实战             | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## PLB 实战注意"                    |
+| 北斗短报文实战       | [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]] "## 北斗短报文实战注意"              |
+| 户外登山场景         | [[bus/wireless-iot/rescue-comms\|rescue-comms]] "## 实战场景 → 户外登山"                       |
+| 海上场景             | [[bus/wireless-iot/rescue-comms\|rescue-comms]] "## 实战场景 → 海上"                           |
+| 航空场景             | [[bus/wireless-iot/rescue-comms\|rescue-comms]] "## 实战场景 → 航空"                           |
+| 城市应急场景         | [[bus/wireless-iot/rescue-comms\|rescue-comms]] "## 实战场景 → 城市应急"                       |
+| 产线失败案例         | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]]                                  |
+| iPhone 楼内 SOS 失败 | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 1                           |
+| 华为短报文误发       | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 2                           |
+| PLB 电池 3 年失效    | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 3                           |
+| inReach 延迟         | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 4                           |
+| 北斗入网失败         | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 5                           |
+| DJI 4G 备份不工作    | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 6                           |
+| DSC MMSI 重复        | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 7                           |
+| HAM 中继震中失效     | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 8                           |
+| Spot X 低温关机      | [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] 案例 9                           |
 
 ## 关键概念地图
 
@@ -230,16 +230,16 @@ rescue-comms-index.md (本文件, 导航)
 
 ## 救援通讯主题 vs 其它主题对比
 
-| 主题 | 篇数 | 大小 | 重点 |
-| --- | --- | --- | --- |
-| BLE | 5 | ~40 KB | 低功耗 + GATT + 配对 + 安全 |
+| 主题             | 篇数  | 大小       | 重点                              |
+| ---------------- | ----- | ---------- | --------------------------------- |
+| BLE              | 5     | ~40 KB     | 低功耗 + GATT + 配对 + 安全       |
 | **Rescue Comms** | **5** | **~70 KB** | **多模链路 + 卫星 + 应急 + 户外** |
-| CAN | 8 | 120 KB | 实时多 master + 错误处理 + 演进 |
-| USB | 9 | ~130 KB | 描述符 + 类驱动 + DMA |
-| I2C | 12 | 151 KB | 协议兼容性 + 总线恢复 |
-| SPI | 6 | 75 KB | 多从 / 菊花链 / 高速 |
-| UART | 6 | 80 KB | RS485 / 流控 / 异步日志 |
-| J1939 | 7 | ~95 KB | 商用车协议栈 + 地址声明 |
+| CAN              | 8     | 120 KB     | 实时多 master + 错误处理 + 演进   |
+| USB              | 9     | ~130 KB    | 描述符 + 类驱动 + DMA             |
+| I2C              | 12    | 151 KB     | 协议兼容性 + 总线恢复             |
+| SPI              | 6     | 75 KB      | 多从 / 菊花链 / 高速              |
+| UART             | 6     | 80 KB      | RS485 / 流控 / 异步日志           |
+| J1939            | 7     | ~95 KB     | 商用车协议栈 + 地址声明           |
 
 **共同点**:
 
@@ -255,22 +255,22 @@ rescue-comms-index.md (本文件, 导航)
 
 ## 文档维护
 
-| 文档 | 更新频率 | 维护者 |
-| --- | --- | --- |
-| rescue-comms.md | 改版才更新 | 主题入口 |
-| rescue-comms-practical.md | 改版才更新 | 速查 / 调试流程 |
-| rescue-comms-deep-dive.md | 协议改版 / 新卫星 | 原理体系 |
-| rescue-comms-failure-cases.md | **持续更新** | 实战案例 |
-| rescue-comms-index.md | 新增 / 删除文档时 | 导航 |
+| 文档                          | 更新频率          | 维护者          |
+| ----------------------------- | ----------------- | --------------- |
+| [[bus/wireless-iot/rescue-comms\|rescue-comms]]               | 改版才更新        | 主题入口        |
+| [[bus/wireless-iot/rescue-comms-practical\|rescue-comms-practical]]     | 改版才更新        | 速查 / 调试流程 |
+| [[bus/wireless-iot/rescue-comms-deep-dive\|rescue-comms-deep-dive]]     | 协议改版 / 新卫星 | 原理体系        |
+| [[bus/wireless-iot/rescue-comms-failure-cases\|rescue-comms-failure-cases]] | **持续更新**      | 实战案例        |
+| [[bus/wireless-iot/rescue-comms-index\|rescue-comms-index]]         | 新增 / 删除文档时 | 导航            |
 
 ## 关联主题（chips-com 其他目录）
 
-- **`bus/ble-*.md`** — BLE / BLE Mesh（户外手表 / 队友间近距通信）
-- **`bus/lorawan-*.md`** — LoRaWAN（户外自建中继）
-- **`bus/wifi-*.md`** — Wi-Fi（营地高吞吐）
-- **`bus/nb-iot-*.md`** — NB-IoT（蜂窝 IoT 备份）
-- **`bus/wireless-iot/satellite-iot-deep-dive.md`** — 卫星通信基础
-- **`bus/wireless-iot/plb-deep-dive.md`** — GPS / 北斗定位与 PLB 定位实践
+- **[[bus/wireless-iot/ble-index|BLE]]** — BLE / BLE Mesh（户外手表 / 队友间近距通信）
+- **[[bus/wireless-iot/lora-index|LoRaWAN]]** — LoRaWAN（户外自建中继）
+- **`bus/wifi-*.md`** — Wi-Fi（营地高吞吐，暂无独立文档）
+- **[[bus/wireless-iot/lte-iot-index|NB-IoT]]** — NB-IoT（蜂窝 IoT 备份）
+- **[[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]]** — 卫星通信基础
+- **[[bus/wireless-iot/plb-deep-dive|plb-deep-dive]]** — GPS / 北斗定位与 PLB 定位实践
 
 ## 一句话总结
 
