@@ -16,7 +16,7 @@ tags:
 - 修复 (代码 / 硬件)
 - 复盘 (如何预防)
 
-按主题分类, 配 `spi-deep-dive.md` / `spi-practical.md` 使用。
+按主题分类, 配 [[basic/spi-deep-dive|spi-deep-dive]] / [[basic/spi-practical|spi-practical]] 使用。
 
 ---
 
@@ -312,7 +312,7 @@ HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 3, 0);
 
 - 中断优先级数字小 = 高 (NVIC)
 - SPI EV 中断不能比 DMA 中断低
-- 详细见 `i2c-state-machine.md` 同类问题
+- 详细见 [[basic/i2c-state-machine|i2c-state-machine]] 同类问题
 
 ---
 
@@ -759,7 +759,7 @@ int spi1_xfer(uint8_t *tx, uint8_t *rx, int len, uint32_t timeout) {
 
 - HAL 库不是 thread-safe
 - 任何被多 task 访问的 SPI 控制器, 必须 mutex
-- 详细见 `spi-rtos-integration.md`
+- 详细见 [[basic/spi-rtos-integration|spi-rtos-integration]]
 
 ---
 
@@ -797,9 +797,9 @@ Mode/CS/接线 + 信号完整性加起来 45%, 是产线 SPI 死机的主要根�
 
 ## 关联文档
 
-- `spi-deep-dive.md` 原理 + 故障树
-- `spi-practical.md` 速查
-- `spi-multislave-and-dma.md` 多从 / 菊花链 / DMA
-- `spi-rtos-integration.md` RTOS 集成
-- `spi-index.md` 导航
-- `qspi-ospi.md` 高速 SPI Flash
+- [[basic/spi-deep-dive|spi-deep-dive]] 原理 + 故障树
+- [[basic/spi-practical|spi-practical]] 速查
+- [[basic/spi-multislave-and-dma|spi-multislave-and-dma]] 多从 / 菊花链 / DMA
+- [[basic/spi-rtos-integration|spi-rtos-integration]] RTOS 集成
+- [[basic/spi-index|spi-index]] 导航
+- [[basic/qspi-ospi|qspi-ospi]] 高速 SPI Flash

@@ -89,11 +89,11 @@ SAE J3054 (TP1.6)    ── VAG 的 CAN 11 bit 数据链路
 
 ## 延伸阅读
 
-- `bus/automotive/can.md`
-- `bus/automotive/j1939.md`
-- `bus/automotive/uds-deep-dive.md`
-- `bus/automotive/uds-practical.md`
-- `bus/automotive/uds-failure-cases.md`
-- `bus/automotive/iso-tp.md`
-- `bus/automotive/obd2.md` — OBD-II 与 UDS 的规范边界
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表
+- [[bus/automotive/can|can]]
+- [[bus/automotive/j1939|j1939]]
+- [[bus/automotive/uds-deep-dive|uds-deep-dive]]
+- [[bus/automotive/uds-practical|uds-practical]]
+- [[bus/automotive/uds-failure-cases|uds-failure-cases]]
+- [[bus/automotive/iso-tp|iso-tp]]
+- [[bus/automotive/obd2|obd2]] — OBD-II 与 UDS 的规范边界
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表

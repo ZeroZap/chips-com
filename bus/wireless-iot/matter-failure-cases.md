@@ -803,10 +803,10 @@ void cross_ecosystem_test(void) {
 
 ## 关联文档
 
-- `bus/wireless-iot/matter.md` 主题入口
-- `bus/wireless-iot/matter-practical.md` 调试流程速查
-- `bus/wireless-iot/matter-deep-dive.md` 协议栈深挖
-- `bus/wireless-iot/matter-index.md` 主题地图 + 导航
-- `bus/thread-*.md` Matter over Thread
-- `bus/wireless-iot/ble-deep-dive.md` BLE 配网通道
-- `bus/zigbee-*.md` Cluster 沿用参考
+- [[bus/wireless-iot/matter|matter]] 主题入口
+- [[bus/wireless-iot/matter-practical|matter-practical]] 调试流程速查
+- [[bus/wireless-iot/matter-deep-dive|matter-deep-dive]] 协议栈深挖
+- [[bus/wireless-iot/matter-index|matter-index]] 主题地图 + 导航
+- [[bus/wireless-iot/thread-index|Thread]] Matter over Thread
+- [[bus/wireless-iot/ble-deep-dive|ble-deep-dive]] BLE 配网通道
+- [[bus/wireless-iot/zigbee-index|ZigBee]] Cluster 沿用参考

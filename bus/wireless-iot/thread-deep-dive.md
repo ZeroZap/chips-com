@@ -569,9 +569,9 @@ Wi-Fi 网络
 
 ## 关联文档
 
-- `bus/wireless-iot/thread.md` 主题入口
-- `bus/wireless-iot/thread-practical.md` 调试流程速查
-- `bus/wireless-iot/thread-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/thread-index.md` 主题地图 + 导航
-- `bus/matter-*.md` Matter over Thread
-- `bus/zigbee-*.md` 同源 PHY 对比
+- [[bus/wireless-iot/thread|thread]] 主题入口
+- [[bus/wireless-iot/thread-practical|thread-practical]] 调试流程速查
+- [[bus/wireless-iot/thread-failure-cases|thread-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/thread-index|thread-index]] 主题地图 + 导航
+- [[bus/wireless-iot/matter-index|Matter]] Matter over Thread
+- [[bus/wireless-iot/zigbee-index|ZigBee]] 同源 PHY 对比

@@ -227,9 +227,9 @@ RTU 设备的本质是 **多协议汇聚 + 北向上行**：
 
 ## 延伸阅读
 
-- `bus/industrial/modbus.md`：Modbus 协议本身（RTU/TCP/ASCII 数据模型和功能码）。
-- `bus/industrial/mqtt.md`：MQTT 物联网上云标准协议。
-- `bus/industrial/industrial-ethernet-comparison.md`：工业以太网协议横向对比。
+- [[bus/industrial/modbus|modbus]]：Modbus 协议本身（RTU/TCP/ASCII 数据模型和功能码）。
+- [[bus/industrial/mqtt|mqtt]]：MQTT 物联网上云标准协议。
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]：工业以太网协议横向对比。
 
 ## 检查清单
 

@@ -54,6 +54,6 @@ Modbus 传统数据区：
 
 ## 延伸阅读
 
-- `bus/industrial/rs485-modbus-rtu-practical.md`
-- `bus/industrial/rs485-modbus-rtu-deep-dive.md`
-- `bus/industrial/ethernet-modbus-tcp-practical.md`
+- [[bus/industrial/rs485-modbus-rtu-practical|rs485-modbus-rtu-practical]]
+- [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]
+- [[bus/industrial/ethernet-modbus-tcp-practical|ethernet-modbus-tcp-practical]]

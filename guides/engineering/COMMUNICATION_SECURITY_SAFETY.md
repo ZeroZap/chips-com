@@ -56,7 +56,7 @@ Safety：通信失败或异常输入时系统仍进入可控安全状态
 | S3 | 诊断例程、DTC 清除、远程控制 | 会话、安全等级、操作条件 |
 | S4 | 固件升级、运动控制、安全相关输出 | 认证、完整性、回滚、失效安全 |
 
-风险等级应进入 `guides/engineering/COMMUNICATION_QUALITY_GATE.md` 和 `guides/engineering/COMMUNICATION_TRACEABILITY.md`。
+风险等级应进入 [[guides/engineering/COMMUNICATION_QUALITY_GATE|COMMUNICATION_QUALITY_GATE]] 和 [[guides/engineering/COMMUNICATION_TRACEABILITY|COMMUNICATION_TRACEABILITY]]。
 
 ## 最小安全原则
 
@@ -268,7 +268,7 @@ counter
 | 通信断线 | 验证失效安全 | 状态机、输出状态 |
 | 日志导出 | 验证脱敏 | 导出包检查 |
 
-这些测试应进入 `guides/engineering/REGRESSION_TEST_MATRIX.md` 的 R3/R4 用例。
+这些测试应进入 [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]] 的 R3/R4 用例。
 
 ## 安全门禁
 
@@ -322,10 +322,10 @@ R3/R4 通信功能发布前必须确认：
 
 ## 延伸阅读
 
-- `guides/engineering/COMMUNICATION_QUALITY_GATE.md`
-- `guides/engineering/COMMUNICATION_TRACEABILITY.md`
-- `guides/engineering/COMMUNICATION_OBSERVABILITY.md`
-- `guides/troubleshooting/FIELD_DIAGNOSTIC_RUNBOOK.md`
-- `guides/engineering/REGRESSION_TEST_MATRIX.md`
-- `bus/automotive/uds-deep-dive.md`
-- `bus/usb/usb-dfu-deep-dive.md`
+- [[guides/engineering/COMMUNICATION_QUALITY_GATE|COMMUNICATION_QUALITY_GATE]]
+- [[guides/engineering/COMMUNICATION_TRACEABILITY|COMMUNICATION_TRACEABILITY]]
+- [[guides/engineering/COMMUNICATION_OBSERVABILITY|COMMUNICATION_OBSERVABILITY]]
+- [[guides/troubleshooting/FIELD_DIAGNOSTIC_RUNBOOK|FIELD_DIAGNOSTIC_RUNBOOK]]
+- [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]]
+- [[bus/automotive/uds-deep-dive|uds-deep-dive]]
+- [[bus/usb/usb-dfu-deep-dive|usb-dfu-deep-dive]]

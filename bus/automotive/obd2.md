@@ -442,17 +442,17 @@ UDS      (ISO 14229)  ───── OEM 诊断，全车系
 
 ## 更新记录
 
-- 2026-11-16: 补充「为什么写作 SAE J1979 / ISO 15031-5」。依据 SAE J1979_200705 引言原文（*"technically equivalent to a draft version of ISO 15031-5 ... This version of SAE J1979 includes all of the editorial changes that were included in the published version of the ISO document"*），说明二者是**同一份技术内容的两种发布形态**、平行出版，而非两个并列标准。同时补充三项此前缺失的关键事实：① **ISO 15031-5 正文只定义服务格式，PID/MID/TID/INFOTYPE 与 DTC/FTB 的实际数据在 SAE 数字附录**（J1979-DA / J2012-DA / J1930-DA，数据更新走附录、服务定义走正文，两条独立更新线）；② **SAE J1979 正在拆分为系列**——J1979-2（OBDonUDS，2021-04，燃烧车）与 J1979-3（ZEVonUDS，2022/2023-10，零排放），把 OBD 数据改用 UDS 承载，法规时间线 MY2026 起 40% / MY2027 起 100% / MY2028 起全部 ZEV 必须支持（CARB CCR 1962.5 另有替代时间表）；③ 补入现行版本号 ISO 15031-5:2015（第 3 版，2026-10 复审确认）与 SAE J1979_202505，以及中国对应 GB/T 42193 系列（GB/T 42193.5-2026 ≡ ISO 15031-5:2015）。同步更新 `bus/automotive/obd2-deep-dive.md` 与 `bus/automotive/can-standards-map.md` 的标准表。
+- 2026-11-16: 补充「为什么写作 SAE J1979 / ISO 15031-5」。依据 SAE J1979_200705 引言原文（*"technically equivalent to a draft version of ISO 15031-5 ... This version of SAE J1979 includes all of the editorial changes that were included in the published version of the ISO document"*），说明二者是**同一份技术内容的两种发布形态**、平行出版，而非两个并列标准。同时补充三项此前缺失的关键事实：① **ISO 15031-5 正文只定义服务格式，PID/MID/TID/INFOTYPE 与 DTC/FTB 的实际数据在 SAE 数字附录**（J1979-DA / J2012-DA / J1930-DA，数据更新走附录、服务定义走正文，两条独立更新线）；② **SAE J1979 正在拆分为系列**——J1979-2（OBDonUDS，2021-04，燃烧车）与 J1979-3（ZEVonUDS，2022/2023-10，零排放），把 OBD 数据改用 UDS 承载，法规时间线 MY2026 起 40% / MY2027 起 100% / MY2028 起全部 ZEV 必须支持（CARB CCR 1962.5 另有替代时间表）；③ 补入现行版本号 ISO 15031-5:2015（第 3 版，2026-10 复审确认）与 SAE J1979_202505，以及中国对应 GB/T 42193 系列（GB/T 42193.5-2026 ≡ ISO 15031-5:2015）。同步更新 [[bus/automotive/obd2-deep-dive|obd2-deep-dive]] 与 [[bus/automotive/can-standards-map|can-standards-map]] 的标准表。
 
 ---
 
 ## 扩展阅读
 
-- `bus/automotive/obd2-deep-dive.md` — PID 空间、监测项状态、I/M 就绪、Mode 详解
-- `bus/automotive/obd2-practical.md` — ELM327、candump、调试流程、检查清单
-- `bus/automotive/obd2-failure-cases.md` — 产线与售后故障案例
-- `bus/automotive/uds.md` — UDS 入口（与 OBD-II 的对照）
-- `bus/automotive/wwh-obd.md` — WWH-OBD（ISO 27145）——商用车版 OBD，与本文是**并列体系**不是升级
-- `bus/automotive/iso-tp.md` — ISO-TP 入口（OBD-II 的传输底座）
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/obd2-deep-dive|obd2-deep-dive]] — PID 空间、监测项状态、I/M 就绪、Mode 详解
+- [[bus/automotive/obd2-practical|obd2-practical]] — ELM327、candump、调试流程、检查清单
+- [[bus/automotive/obd2-failure-cases|obd2-failure-cases]] — 产线与售后故障案例
+- [[bus/automotive/uds|uds]] — UDS 入口（与 OBD-II 的对照）
+- [[bus/automotive/wwh-obd|wwh-obd]] — WWH-OBD（ISO 27145）——商用车版 OBD，与本文是**并列体系**不是升级
+- [[bus/automotive/iso-tp|iso-tp]] — ISO-TP 入口（OBD-II 的传输底座）
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景

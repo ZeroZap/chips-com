@@ -212,17 +212,17 @@ WWH-OBD 体系**大量引用 SAE J1939**：
 
 | 本库文档 | 关系 |
 | --- | --- |
-| `bus/automotive/obd2.md` | 乘用车 OBD-II 概览（九 Mode / PID 速查 / DTC 格式） |
-| `bus/automotive/obd2-deep-dive.md` | OBD-II 深入（PID 协商 / I-M 监测模型） |
-| `bus/automotive/obd2-practical.md` | ELM327 / SocketCAN 实操 |
-| `bus/automotive/obd2-failure-cases.md` | OBD-II 产线案例（12 例） |
-| `bus/automotive/wwh-obd-deep-dive.md` | WWH-OBD 深入（各部分边界 / PID→DID 映射 / 24 位 DTC / 初始化 / DoIP 协议） |
-| `bus/automotive/wwh-obd-practical.md` | WWH-OBD 实战（初始化脚本 / 路由激活 / 24 位 DTC 解析） |
-| `bus/automotive/wwh-obd-failure-cases.md` | WWH-OBD 案例（12 例） |
-| `bus/automotive/uds.md` / `bus/automotive/uds-practical.md` | UDS 会话 / DID / 安全访问 / 刷写 |
-| `bus/automotive/iso-tp.md` | DoCAN 的传输层（ISO 15765-2） |
-| `bus/automotive/j1939-index.md` | 商用车网络地基（PGN/SPN / DM） |
-| `bus/automotive/can-standards-map.md` | ISO 27145 系列在标准总表中的位置 |
+| [[bus/automotive/obd2\|obd2]] | 乘用车 OBD-II 概览（九 Mode / PID 速查 / DTC 格式） |
+| [[bus/automotive/obd2-deep-dive\|obd2-deep-dive]] | OBD-II 深入（PID 协商 / I-M 监测模型） |
+| [[bus/automotive/obd2-practical\|obd2-practical]] | ELM327 / SocketCAN 实操 |
+| [[bus/automotive/obd2-failure-cases\|obd2-failure-cases]] | OBD-II 产线案例（12 例） |
+| [[bus/automotive/wwh-obd-deep-dive\|wwh-obd-deep-dive]] | WWH-OBD 深入（各部分边界 / PID→DID 映射 / 24 位 DTC / 初始化 / DoIP 协议） |
+| [[bus/automotive/wwh-obd-practical\|wwh-obd-practical]] | WWH-OBD 实战（初始化脚本 / 路由激活 / 24 位 DTC 解析） |
+| [[bus/automotive/wwh-obd-failure-cases\|wwh-obd-failure-cases]] | WWH-OBD 案例（12 例） |
+| [[bus/automotive/uds\|uds]] / [[bus/automotive/uds-practical\|uds-practical]] | UDS 会话 / DID / 安全访问 / 刷写 |
+| [[bus/automotive/iso-tp\|iso-tp]] | DoCAN 的传输层（ISO 15765-2） |
+| [[bus/automotive/j1939-index\|j1939-index]] | 商用车网络地基（PGN/SPN / DM） |
+| [[bus/automotive/can-standards-map\|can-standards-map]] | ISO 27145 系列在标准总表中的位置 |
 
 ## 相关标准
 

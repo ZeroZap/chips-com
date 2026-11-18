@@ -357,7 +357,7 @@ IoTClass 总结的 14 类坑 + "四件套 review rule"：
 
 ## 关联文档
 
-- `bus/wireless-iot/lora.md` 主题入口
-- `bus/wireless-iot/lora-deep-dive.md` 协议栈深挖
-- `bus/wireless-iot/lora-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/lora-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/lora|lora]] 主题入口
+- [[bus/wireless-iot/lora-deep-dive|lora-deep-dive]] 协议栈深挖
+- [[bus/wireless-iot/lora-failure-cases|lora-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/lora-index|lora-index]] 主题地图 + 导航

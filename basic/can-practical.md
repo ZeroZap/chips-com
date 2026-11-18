@@ -221,13 +221,13 @@ Node A --- CAN_H ----- CAN_H --- ... --- CAN_H --- Node B
 
 ## 关联文档
 
-- `can-deep-dive.md` 原理和体系
-- `can-failure-cases.md` 产线死机案例
-- `can-multimaster-and-bus-off.md` 多 master + 总线关闭
-- `can-fd-and-can-xl.md` 演进
-- `can-rtos-integration.md` RTOS + SocketCAN
-- `can-vs-other-bus.md` 跨总线对比
-- `can-index.md` 导航
-- `bus/automotive/canopen-deep-dive.md` CANopen (CAN 之上的应用层协议)
-- `bus/automotive/canopen-practical.md` CANopen 实战
-- `basic/can-phy.md` CAN 物理层
+- [[basic/can-deep-dive|can-deep-dive]] 原理和体系
+- [[basic/can-failure-cases|can-failure-cases]] 产线死机案例
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] 多 master + 总线关闭
+- [[basic/can-fd-and-can-xl|can-fd-and-can-xl]] 演进
+- [[basic/can-rtos-integration|can-rtos-integration]] RTOS + SocketCAN
+- [[basic/can-vs-other-bus|can-vs-other-bus]] 跨总线对比
+- [[basic/can-index|can-index]] 导航
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]] CANopen (CAN 之上的应用层协议)
+- [[bus/automotive/canopen-practical|canopen-practical]] CANopen 实战
+- [[basic/can-phy|can-phy]] CAN 物理层

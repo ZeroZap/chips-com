@@ -33,7 +33,7 @@ tags:
 
 ## 模式库 1：L1 字节流分帧（UART）
 
-**来源**：`basic/uart-failure-cases.md` 案例 7（协议分帧错，字节流错乱）。
+**来源**：[[basic/uart-failure-cases|uart-failure-cases]] 案例 7（协议分帧错，字节流错乱）。
 
 ### 5 状态机：SOF + LEN + DATA + CRC
 
@@ -113,7 +113,7 @@ void line_rx_byte(rx_ctx_t *ctx, uint8_t byte) {
 
 ## 模式库 2：L2 TCP 半包/沾包（Modbus TCP）
 
-**来源**：`bus/industrial/ethernet-deep-dive.md` §TCP 粘包和半包 + `bus/industrial/ethernet-modbus-tcp-practical.md` + `bus/industrial/modbus-tcp-deep-dive.md`。
+**来源**：[[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]] §TCP 粘包和半包 + [[bus/industrial/ethernet-modbus-tcp-practical|ethernet-modbus-tcp-practical]] + [[bus/industrial/modbus-tcp-deep-dive|modbus-tcp-deep-dive]]。
 
 ### 现象
 
@@ -205,7 +205,7 @@ frame_done:
 
 ## 模式库 3：L3 多包流控重组（J1939 TP）
 
-**来源**：`bus/automotive/j1939-transport-protocol.md`。
+**来源**：[[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]]。
 
 CAN 经典帧只能传 8 字节，> 8 字节的数据必须拆成多帧（TP，Transport Protocol）。这相当于"在帧流之上又叠了一层字节流"，所以有了**二级 PSM**：
 
@@ -319,11 +319,11 @@ void tp_rx_dt_handler(uint8_t src_addr, uint8_t *dt_data) {
 
 ## 实战代码位置
 
-- **UART 5 状态机完整代码**：`basic/uart-failure-cases.md` 案例 7（行 289-365）
-- **UART Ring Buffer + DMA + Idle**：`basic/uart-dma-circular-and-rtos.md` §1-3
-- **Modbus TCP 状态机**：`bus/industrial/modbus-tcp-deep-dive.md` §MBAP + `bus/industrial/ethernet-modbus-tcp-practical.md` §解析
-- **J1939 TP 完整代码**：`bus/automotive/j1939-transport-protocol.md` §完整 RTS/CTS 示例 + §超时和重传
-- **DRIVER_PATTERNS TCP 解析器 6 必修**：`guides/troubleshooting/DRIVER_PATTERNS.md` §Ethernet TCP Server（行 132-154）
+- **UART 5 状态机完整代码**：[[basic/uart-failure-cases|uart-failure-cases]] 案例 7（行 289-365）
+- **UART Ring Buffer + DMA + Idle**：[[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]] §1-3
+- **Modbus TCP 状态机**：[[bus/industrial/modbus-tcp-deep-dive|modbus-tcp-deep-dive]] §MBAP + [[bus/industrial/ethernet-modbus-tcp-practical|ethernet-modbus-tcp-practical]] §解析
+- **J1939 TP 完整代码**：[[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]] §完整 RTS/CTS 示例 + §超时和重传
+- **DRIVER_PATTERNS TCP 解析器 6 必修**：[[guides/troubleshooting/DRIVER_PATTERNS|DRIVER_PATTERNS]] §Ethernet TCP Server（行 132-154）
 
 ## 一句话总结
 
@@ -331,4 +331,4 @@ void tp_rx_dt_handler(uint8_t src_addr, uint8_t *dt_data) {
 
 ## 更新记录
 
-- 2026-08-23：初版，从 `uart-failure-cases.md` 案例 7 + `bus/industrial/ethernet-modbus-tcp-practical.md` + `bus/automotive/j1939-transport-protocol.md` 反向抽象而成。
+- 2026-08-23：初版，从 [[basic/uart-failure-cases|uart-failure-cases]] 案例 7 + [[bus/industrial/ethernet-modbus-tcp-practical|ethernet-modbus-tcp-practical]] + [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]] 反向抽象而成。

@@ -359,7 +359,7 @@ string0_desc[3] = (LANG_ID_EN_US >> 8) & 0xFF;
 
 - 字符串描述符语言 ID 必须有效
 - 0x0409 (en-US) 是最通用
-- 详细见 `bus/usb/usb-enumeration-and-descriptors.md`
+- 详细见 [[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]]
 
 ---
 
@@ -560,7 +560,7 @@ if (remote_wakeup_enabled) {
 
 - Suspend / Resume 必须有明确处理
 - 低功耗时保持 USB 中断唤醒
-- 详细见 `bus/usb/usb-deep-dive.md` 状态机
+- 详细见 [[bus/usb/usb-deep-dive|usb-deep-dive]] 状态机
 
 ---
 
@@ -654,7 +654,7 @@ _Static_assert(sizeof(((usb_config_desc_t *)0)->wTotalLength) == 2,
 
 - USB 描述符 16 bit 字段必须用 uint16_t
 - 编译期断言防御
-- 详细见 `bus/usb/usb-practical.md` "描述符长度检查"
+- 详细见 [[bus/usb/usb-practical|usb-practical]] "描述符长度检查"
 
 ---
 
@@ -692,7 +692,7 @@ _Static_assert(sizeof(((usb_config_desc_t *)0)->wTotalLength) == 2,
 
 - Hub 兼容性是产线隐性死因
 - 必须用多种 Hub 测
-- 详细见 `bus/usb/usb-practical.md` "调试工具"
+- 详细见 [[bus/usb/usb-practical|usb-practical]] "调试工具"
 
 ---
 
@@ -735,7 +735,7 @@ device_desc.idProduct = MY_PID;  /* 厂商自己定 */
 ### 复盘
 
 - VID 必须申请, 不能用 0
-- 详细见 `bus/usb/usb-enumeration-and-descriptors.md` "VID 申请"
+- 详细见 [[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]] "VID 申请"
 
 ---
 
@@ -810,7 +810,7 @@ USB 接口机械寿命:
 ### 复盘
 
 - 拔插寿命是产线良率的关键
-- 详细见 `bus/usb/usb-failure-cases.md` 案例 16
+- 详细见 [[bus/usb/usb-failure-cases|usb-failure-cases]] 案例 16
 
 ---
 
@@ -859,7 +859,7 @@ if (otg_role == HOST) {
 
 - OTG 角色协商基于 ID pin
 - 必须有 5V 升压电路 (Host 模式给 Device 供电)
-- 详细见 `bus/usb/usb-deep-dive.md` "OTG"
+- 详细见 [[bus/usb/usb-deep-dive|usb-deep-dive]] "OTG"
 
 ---
 
@@ -948,7 +948,7 @@ if (usb_controller_stuck) {
 
 - 拔插恢复是 USB 设备关键体验
 - 必须有 VBUS 检测和自动恢复
-- 详细见 `bus/usb/usb-deep-dive.md` 状态机
+- 详细见 [[bus/usb/usb-deep-dive|usb-deep-dive]] 状态机
 
 ---
 
@@ -990,14 +990,14 @@ USB 控制器 / 固件                         5%
 
 ## 关联文档
 
-- `bus/usb/usb-deep-dive.md` 原理 + 故障树
-- `bus/usb/usb-practical.md` 速查
-- `bus/usb/usb-enumeration-and-descriptors.md` 枚举详细
-- `bus/usb/usb-class-drivers.md` CDC / HID / MSC / DFU
-- `bus/usb/usb-dma-and-rtos.md` DMA + RTOS
-- `bus/usb/usb-vs-other-bus.md` 跨总线对比
-- `bus/usb/usb-index.md` 导航
-- `bus/usb/usb-dfu-deep-dive.md` DFU 协议
-- `bus/usb/usb-dfu-practical.md` DFU 实战
-- `can-failure-cases.md` CAN 产线案例
-- `i2c-failure-cases.md` I2C 产线案例
+- [[bus/usb/usb-deep-dive|usb-deep-dive]] 原理 + 故障树
+- [[bus/usb/usb-practical|usb-practical]] 速查
+- [[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]] 枚举详细
+- [[bus/usb/usb-class-drivers|usb-class-drivers]] CDC / HID / MSC / DFU
+- [[bus/usb/usb-dma-and-rtos|usb-dma-and-rtos]] DMA + RTOS
+- [[bus/usb/usb-vs-other-bus|usb-vs-other-bus]] 跨总线对比
+- [[bus/usb/usb-index|usb-index]] 导航
+- [[bus/usb/usb-dfu-deep-dive|usb-dfu-deep-dive]] DFU 协议
+- [[bus/usb/usb-dfu-practical|usb-dfu-practical]] DFU 实战
+- [[basic/can-failure-cases|can-failure-cases]] CAN 产线案例
+- [[basic/i2c-failure-cases|i2c-failure-cases]] I2C 产线案例

@@ -538,9 +538,9 @@ UDS 调试重点是会话、安全等级、NRC、传输层完整性和 ECU 业�
 
 ## 延伸阅读
 
-- `bus/automotive/uds.md`
-- `bus/automotive/uds-practical.md`
-- `bus/automotive/iso-tp-practical.md`
-- `bus/automotive/iso-tp-deep-dive.md`
-- `bus/automotive/j1939-deep-dive.md`
-- `bus/automotive/can.md`
+- [[bus/automotive/uds|uds]]
+- [[bus/automotive/uds-practical|uds-practical]]
+- [[bus/automotive/iso-tp-practical|iso-tp-practical]]
+- [[bus/automotive/iso-tp-deep-dive|iso-tp-deep-dive]]
+- [[bus/automotive/j1939-deep-dive|j1939-deep-dive]]
+- [[bus/automotive/can|can]]

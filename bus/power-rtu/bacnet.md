@@ -351,9 +351,9 @@ Unconfirmed Request (Service Choice 0x02 = Unconfirmed COV Notification):
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集。
-- `bus/industrial/modbus.md`：与 Modbus 系列对比。
-- `bus/industrial/opcua.md`：与 OPC UA 对比。
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集。
+- [[bus/industrial/modbus|modbus]]：与 Modbus 系列对比。
+- [[bus/industrial/opcua|opcua]]：与 OPC UA 对比。
 
 ## 检查清单
 

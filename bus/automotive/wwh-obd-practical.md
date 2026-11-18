@@ -481,12 +481,12 @@ print(d['base_dtc'], d['ftb'], d['spn'], d['fmi'])
 
 ## 延伸阅读
 
-- `bus/automotive/wwh-obd.md` — WWH-OBD 专篇
-- `bus/automotive/wwh-obd-deep-dive.md` — 数据模型、24 位 DTC、初始化、DoIP 协议
-- `bus/automotive/wwh-obd-failure-cases.md` — 故障案例
-- `bus/automotive/obd2-practical.md` — 乘用车 OBD-II 实战（对照）
-- `bus/automotive/uds-practical.md` — UDS 实战（WWH-OBD 的服务底座）
-- `bus/automotive/iso-tp-practical.md` — ISO-TP 实战（DoCAN 传输层）
-- `bus/automotive/j1939-index.md` — J1939 导航（商用车网络地基）
-- `basic/can-practical.md` — CAN 调试基础
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/wwh-obd|wwh-obd]] — WWH-OBD 专篇
+- [[bus/automotive/wwh-obd-deep-dive|wwh-obd-deep-dive]] — 数据模型、24 位 DTC、初始化、DoIP 协议
+- [[bus/automotive/wwh-obd-failure-cases|wwh-obd-failure-cases]] — 故障案例
+- [[bus/automotive/obd2-practical|obd2-practical]] — 乘用车 OBD-II 实战（对照）
+- [[bus/automotive/uds-practical|uds-practical]] — UDS 实战（WWH-OBD 的服务底座）
+- [[bus/automotive/iso-tp-practical|iso-tp-practical]] — ISO-TP 实战（DoCAN 传输层）
+- [[bus/automotive/j1939-index|j1939-index]] — J1939 导航（商用车网络地基）
+- [[basic/can-practical|can-practical]] — CAN 调试基础
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景

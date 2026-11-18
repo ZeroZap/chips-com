@@ -314,8 +314,8 @@ if (bus_has_smbus_device()) {
 
 ## 关联文档
 
-- `i2c-deep-dive.md` 总线恢复基础
-- `i2c-bus-recovery-playbook.md` 实战 SOP
-- `bus/onboard/smbus.md` / `bus/onboard/smbus-pmbus-practical.md` SMBus 基础
+- [[basic/i2c-deep-dive|i2c-deep-dive]] 总线恢复基础
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] 实战 SOP
+- [[bus/onboard/smbus|smbus]] / [[bus/onboard/smbus-pmbus-practical|smbus-pmbus-practical]] SMBus 基础
 - SMBus 2.0 spec 第 4.3.3 节 (Timeouts)
 - SMBus 3.0 spec 第 4.3.3 节

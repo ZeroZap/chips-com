@@ -249,7 +249,7 @@ CAN_H / CAN_L 上有 10MHz 噪声叠加。
 
 - 工业 / 汽车环境, EMC 是隐性死因
 - 屏蔽层必须正确接地
-- 详细见 `i2c-failure-cases.md` EMC 案例
+- 详细见 [[basic/i2c-failure-cases|i2c-failure-cases]] EMC 案例
 
 ---
 
@@ -411,7 +411,7 @@ VCC -> 收发器 VCC
 
 - 收发器供电是隐性死因
 - 必须有高频 + 低频双重去耦
-- 详细见 `i2c-failure-cases.md` 电源案例
+- 详细见 [[basic/i2c-failure-cases|i2c-failure-cases]] 电源案例
 
 ---
 
@@ -448,7 +448,7 @@ HAL_CAN_GetTxMailboxesFreeLevel(&hcan1);  // 0 = 满了, 失败
 
 - 仲裁失败不是 bug, 是 CAN 设计
 - 自动重传必须开
-- 详细见 `can-multimaster-and-bus-off.md`
+- 详细见 [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]]
 
 ---
 
@@ -505,7 +505,7 @@ CAN_H = CAN_L = 0V, 总线被强拉到低。
 
 - 总线短路是产线常见物理故障
 - 必须能快速定位故障段
-- 详细见 `i2c-failure-cases.md` 短路案例
+- 详细见 [[basic/i2c-failure-cases|i2c-failure-cases]] 短路案例
 
 ---
 
@@ -541,7 +541,7 @@ hcan1.Init.TransmitFifoPriority = DISABLE;
 
 - 多 master 仲裁 + 应用层调度 = 关键
 - OBD 诊断有 ISO 14229 标准, 响应时间要求
-- 详细见 `uds-*.md`
+- 详细见 [[bus/automotive/uds-index|UDS]]
 
 ---
 
@@ -658,7 +658,7 @@ A 节点用 TJA1050 (故障保护 ±60V), B 节点用 TJA1042 (故障保护 ±58
 ### 复盘
 
 - 上电时序是产线死机常见根因
-- 详细见 `i2c-failure-cases.md` 上电时序案例
+- 详细见 [[basic/i2c-failure-cases|i2c-failure-cases]] 上电时序案例
 
 ---
 
@@ -721,7 +721,7 @@ A 和 B GND 不等, 长距离通信有地电位差。
 ### 复盘
 
 - 长距离 / 工业场景, 隔离是必须的
-- 详细见 `i2c-failure-cases.md` GND 电位差案例
+- 详细见 [[basic/i2c-failure-cases|i2c-failure-cases]] GND 电位差案例
 
 ---
 
@@ -764,13 +764,13 @@ ID 分配 / 过滤器           7%
 
 ## 关联文档
 
-- `can-deep-dive.md` 原理 + 故障树
-- `can-practical.md` 速查
-- `can-multimaster-and-bus-off.md` 多 master + bus off
-- `can-fd-and-can-xl.md` 演进
-- `can-rtos-integration.md` RTOS + SocketCAN
-- `can-vs-other-bus.md` 跨总线对比
-- `can-index.md` 导航
-- `bus/automotive/canopen-deep-dive.md` CANopen
-- `bus/automotive/uds-*.md` UDS (诊断)
-- `bus/automotive/j1939-*.md` J1939 (商用车)
+- [[basic/can-deep-dive|can-deep-dive]] 原理 + 故障树
+- [[basic/can-practical|can-practical]] 速查
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] 多 master + bus off
+- [[basic/can-fd-and-can-xl|can-fd-and-can-xl]] 演进
+- [[basic/can-rtos-integration|can-rtos-integration]] RTOS + SocketCAN
+- [[basic/can-vs-other-bus|can-vs-other-bus]] 跨总线对比
+- [[basic/can-index|can-index]] 导航
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]] CANopen
+- [[bus/automotive/uds-index|UDS]] UDS (诊断)
+- [[bus/automotive/j1939-index|J1939]] J1939 (商用车)

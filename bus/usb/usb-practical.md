@@ -640,15 +640,15 @@ USB 时钟精度要求:
 
 ## 关联文档
 
-- `bus/usb/usb-deep-dive.md` 原理和体系
-- `bus/usb/usb-failure-cases.md` 产线死机案例
-- `bus/usb/usb-enumeration-and-descriptors.md` 枚举 + 描述符
-- `bus/usb/usb-class-drivers.md` CDC / HID / MSC / DFU
-- `bus/usb/usb-dma-and-rtos.md` DMA + RTOS 集成
-- `bus/usb/usb-vs-other-bus.md` 跨总线对比
-- `bus/usb/usb-index.md` 导航
-- `bus/usb/usb-dfu-deep-dive.md` DFU 协议 (升级模式)
-- `bus/usb/usb-dfu-practical.md` DFU 实战
-- `basic/spi-*.md` SPI 类比 (差分信号)
-- `can-vs-other-bus.md` 跨总线对比参考
+- [[bus/usb/usb-deep-dive|usb-deep-dive]] 原理和体系
+- [[bus/usb/usb-failure-cases|usb-failure-cases]] 产线死机案例
+- [[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]] 枚举 + 描述符
+- [[bus/usb/usb-class-drivers|usb-class-drivers]] CDC / HID / MSC / DFU
+- [[bus/usb/usb-dma-and-rtos|usb-dma-and-rtos]] DMA + RTOS 集成
+- [[bus/usb/usb-vs-other-bus|usb-vs-other-bus]] 跨总线对比
+- [[bus/usb/usb-index|usb-index]] 导航
+- [[bus/usb/usb-dfu-deep-dive|usb-dfu-deep-dive]] DFU 协议 (升级模式)
+- [[bus/usb/usb-dfu-practical|usb-dfu-practical]] DFU 实战
+- [[basic/spi-index|SPI]] SPI 类比 (差分信号)
+- [[basic/can-vs-other-bus|can-vs-other-bus]] 跨总线对比参考
 

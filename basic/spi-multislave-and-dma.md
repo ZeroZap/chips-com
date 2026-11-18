@@ -402,7 +402,7 @@ void spi_thread() {
 
 #### 竞态 3: 多 task 共享 SPI 控制器
 
-见 `spi-rtos-integration.md` 的 mutex 部分。
+见 [[basic/spi-rtos-integration|spi-rtos-integration]] 的 mutex 部分。
 
 #### 竞态 4: CS 在事务中途被外部中断拉高
 
@@ -582,9 +582,9 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi) {
 
 ## 关联文档
 
-- `spi-deep-dive.md` 原理
-- `spi-practical.md` 速查
-- `spi-failure-cases.md` 产线案例
-- `spi-rtos-integration.md` RTOS 集成
-- `qspi-ospi.md` 高速 SPI Flash
-- `i2c-state-machine.md` 类似 race condition
+- [[basic/spi-deep-dive|spi-deep-dive]] 原理
+- [[basic/spi-practical|spi-practical]] 速查
+- [[basic/spi-failure-cases|spi-failure-cases]] 产线案例
+- [[basic/spi-rtos-integration|spi-rtos-integration]] RTOS 集成
+- [[basic/qspi-ospi|qspi-ospi]] 高速 SPI Flash
+- [[basic/i2c-state-machine|i2c-state-machine]] 类似 race condition

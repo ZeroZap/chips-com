@@ -67,7 +67,7 @@ tags:
 
 证据：
 
-- `guides/learning/PROTOCOL_SELECTION.md` 对应结论。
+- [[guides/learning/PROTOCOL_SELECTION|PROTOCOL_SELECTION]] 对应结论。
 - 需求表或接口规格。
 - 风险清单。
 
@@ -97,7 +97,7 @@ tags:
 
 证据：
 
-- `REVIEW_CHECKLIST.md` 评审记录。
+- [[REVIEW_CHECKLIST|REVIEW_CHECKLIST]] 评审记录。
 - 原理图检查结果。
 - 驱动状态机草图。
 - 测试计划。
@@ -127,7 +127,7 @@ tags:
 
 证据：
 
-- `guides/troubleshooting/MEASUREMENT_EXAMPLES.md` 对应样例。
+- [[guides/troubleshooting/MEASUREMENT_EXAMPLES|MEASUREMENT_EXAMPLES]] 对应样例。
 - 波形、抓包、日志或寄存器 dump。
 - bring-up 测试记录。
 
@@ -165,7 +165,7 @@ tags:
 
 必须覆盖：
 
-- `guides/engineering/REGRESSION_TEST_MATRIX.md` 中对应协议的核心用例。
+- [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]] 中对应协议的核心用例。
 - 近期修复过的故障案例。
 - 高风险异常注入。
 - 长时间稳定性。
@@ -206,7 +206,7 @@ tags:
 
 证据：
 
-- `guides/engineering/PRODUCTION_TEST.md` 测试策略。
+- [[guides/engineering/PRODUCTION_TEST|PRODUCTION_TEST]] 测试策略。
 - 工位测试报告。
 - 治具版本和校验记录。
 - 抽检波形或抓包。
@@ -264,11 +264,11 @@ tags:
 
 ## 与其他文档的关系
 
-- `guides/learning/PROTOCOL_SELECTION.md`：决定 G0 的协议和风险。
-- `REVIEW_CHECKLIST.md`：支撑 G1 设计评审。
-- `guides/troubleshooting/MEASUREMENT_EXAMPLES.md`：支撑 G2/G3 证据采集。
-- `guides/engineering/REGRESSION_TEST_MATRIX.md`：支撑 G4 回归范围。
-- `guides/engineering/AUTOMATED_TEST_HARNESS.md`：支撑 G4 自动执行。
-- `guides/engineering/PRODUCTION_TEST.md`：支撑 G5 量产测试。
-- `guides/engineering/COMMUNICATION_OBSERVABILITY.md`：支撑 G3 到 G6 的日志、状态和远程诊断。
-- `guides/troubleshooting/FAILURE_CASES.md`：把现场问题反向沉淀到门禁和回归。
+- [[guides/learning/PROTOCOL_SELECTION|PROTOCOL_SELECTION]]：决定 G0 的协议和风险。
+- [[REVIEW_CHECKLIST|REVIEW_CHECKLIST]]：支撑 G1 设计评审。
+- [[guides/troubleshooting/MEASUREMENT_EXAMPLES|MEASUREMENT_EXAMPLES]]：支撑 G2/G3 证据采集。
+- [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]]：支撑 G4 回归范围。
+- [[guides/engineering/AUTOMATED_TEST_HARNESS|AUTOMATED_TEST_HARNESS]]：支撑 G4 自动执行。
+- [[guides/engineering/PRODUCTION_TEST|PRODUCTION_TEST]]：支撑 G5 量产测试。
+- [[guides/engineering/COMMUNICATION_OBSERVABILITY|COMMUNICATION_OBSERVABILITY]]：支撑 G3 到 G6 的日志、状态和远程诊断。
+- [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]：把现场问题反向沉淀到门禁和回归。

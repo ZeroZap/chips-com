@@ -240,7 +240,7 @@ SIM ──────────── Iridium SBD 卡（运营商提供）
 
 ## 关联文档
 
-- `bus/wireless-iot/rescue-comms.md` 主题入口
-- `bus/wireless-iot/rescue-comms-deep-dive.md` 卫星链路深挖
-- `bus/wireless-iot/rescue-comms-failure-cases.md` 产线 + 户外实战案例
-- `bus/wireless-iot/rescue-comms-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/rescue-comms|rescue-comms]] 主题入口
+- [[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]] 卫星链路深挖
+- [[bus/wireless-iot/rescue-comms-failure-cases|rescue-comms-failure-cases]] 产线 + 户外实战案例
+- [[bus/wireless-iot/rescue-comms-index|rescue-comms-index]] 主题地图 + 导航

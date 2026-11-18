@@ -16,7 +16,7 @@ tags:
 - 修复 (代码 / 硬件)
 - 复盘 (如何预防)
 
-按主题分类, 配 `i2c-deep-dive.md` / `i2c-bus-recovery-playbook.md` 使用。
+按主题分类, 配 [[basic/i2c-deep-dive|i2c-deep-dive]] / [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] 使用。
 
 ---
 
@@ -395,7 +395,7 @@ USB-I2C 适配器正在用总线, MCU 突然插一脚。
 
 1. 调试模式标志: 启动前检查是否有外部 master
 2. 调试器使用单独 bus, 不与生产 bus 混
-3. 多 master 检测: 见 `i2c-multimaster.md`
+3. 多 master 检测: 见 [[basic/i2c-multimaster|i2c-multimaster]]
 
 ```c
 int i2c_check_external_master() {
@@ -583,7 +583,7 @@ N/A (数据问题)。
 
 ### 修复
 
-1. Driver 错误码细分 (见 `i2c-deep-dive.md` 错误码设计)
+1. Driver 错误码细分 (见 [[basic/i2c-deep-dive|i2c-deep-dive]] 错误码设计)
 2. MES 接收的测试结果包含:
    - error code (NACK / timeout / ARLO / recover_fail)
    - recover count
@@ -802,9 +802,9 @@ ESD / 接触不良       7%
 
 ## 关联文档
 
-- `i2c-deep-dive.md` 原理 + 故障树
-- `i2c-bus-recovery-playbook.md` SOP
-- `i2c-multimaster.md` 多 master
-- `i2c-smbus-timeout.md` SMBus timeout
-- `i2c-state-machine.md` 状态机
-- `i2c-rtos-integration.md` RTOS 集成
+- [[basic/i2c-deep-dive|i2c-deep-dive]] 原理 + 故障树
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] SOP
+- [[basic/i2c-multimaster|i2c-multimaster]] 多 master
+- [[basic/i2c-smbus-timeout|i2c-smbus-timeout]] SMBus timeout
+- [[basic/i2c-state-machine|i2c-state-machine]] 状态机
+- [[basic/i2c-rtos-integration|i2c-rtos-integration]] RTOS 集成

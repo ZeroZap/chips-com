@@ -706,10 +706,10 @@ int uart_drv_recv_fi(...) {
 
 ## 关联文档
 
-- `uart-deep-dive.md` 原理
-- `uart-practical.md` 速查
-- `uart-failure-cases.md` 产线案例
-- `uart-rs485-and-flow-control.md` RS485 / 流控
-- `uart-index.md` 导航
-- `i2c-rtos-integration.md` I2C RTOS 集成 (对比)
-- `spi-rtos-integration.md` SPI RTOS 集成 (对比)
+- [[basic/uart-deep-dive|uart-deep-dive]] 原理
+- [[basic/uart-practical|uart-practical]] 速查
+- [[basic/uart-failure-cases|uart-failure-cases]] 产线案例
+- [[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]] RS485 / 流控
+- [[basic/uart-index|uart-index]] 导航
+- [[basic/i2c-rtos-integration|i2c-rtos-integration]] I2C RTOS 集成 (对比)
+- [[basic/spi-rtos-integration|spi-rtos-integration]] SPI RTOS 集成 (对比)

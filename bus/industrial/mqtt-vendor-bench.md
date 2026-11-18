@@ -236,6 +236,6 @@ Inductive Ignition：
 
 ## 延伸阅读
 
-- `bus/industrial/mqtt.md`：MQTT 协议
-- `bus/industrial/modbus-rtu-mqtt-gateway.md`：Modbus RTU ↔ MQTT 网关
-- `bus/power-rtu/hj212-mqtt-gateway.md`：HJ 212 ↔ MQTT 网关
+- [[bus/industrial/mqtt|mqtt]]：MQTT 协议
+- [[bus/industrial/modbus-rtu-mqtt-gateway|modbus-rtu-mqtt-gateway]]：Modbus RTU ↔ MQTT 网关
+- [[bus/power-rtu/hj212-mqtt-gateway|hj212-mqtt-gateway]]：HJ 212 ↔ MQTT 网关

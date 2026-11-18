@@ -1192,13 +1192,13 @@ void detect_caps(uint8_t node_id, node_caps_t *caps) {
 
 ## 关联主题
 
-- `bus/automotive/canopen.md` — CANopen 定位、对象字典、SDO/PDO
-- `bus/automotive/canopen-deep-dive.md` — COB-ID 规则、SDO 命令字、PDO 映射、NMT、CiA 402
-- `bus/automotive/canopen-practical.md` — CAN 物理层 + COB-ID + 电机调试流程
-- `basic/can-failure-cases.md` — CAN 物理层/链路层案例
-- `basic/can-multimaster-and-bus-off.md` — 仲裁与 Bus Off
-- `bus/automotive/uds-failure-cases.md` — UDS 诊断案例对比
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/canopen|canopen]] — CANopen 定位、对象字典、SDO/PDO
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]] — COB-ID 规则、SDO 命令字、PDO 映射、NMT、CiA 402
+- [[bus/automotive/canopen-practical|canopen-practical]] — CAN 物理层 + COB-ID + 电机调试流程
+- [[basic/can-failure-cases|can-failure-cases]] — CAN 物理层/链路层案例
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] — 仲裁与 Bus Off
+- [[bus/automotive/uds-failure-cases|uds-failure-cases]] — UDS 诊断案例对比
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景
 
 ## 更新记录
 

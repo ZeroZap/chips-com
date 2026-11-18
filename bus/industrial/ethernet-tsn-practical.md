@@ -360,9 +360,9 @@ TSN 问题：时间同步、队列、调度、流量分类
 
 ## 延伸阅读
 
-- `bus/industrial/ethernet-tsn.md`
-- `bus/industrial/ethernet-deep-dive.md`
-- `basic/ethernet-phy.md`
-- `bus/industrial/profinet-deep-dive.md`
-- `bus/industrial/ethernet-ip-deep-dive.md`
-- `bus/industrial/industrial-ethernet-comparison.md`
+- [[bus/industrial/ethernet-tsn|ethernet-tsn]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]
+- [[basic/ethernet-phy|ethernet-phy]]
+- [[bus/industrial/profinet-deep-dive|profinet-deep-dive]]
+- [[bus/industrial/ethernet-ip-deep-dive|ethernet-ip-deep-dive]]
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]

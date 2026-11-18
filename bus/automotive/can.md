@@ -49,7 +49,7 @@ CAN 需要 CAN 收发器连接 `CANH/CANL`。
 
 ## 相关规范
 
-CAN 涉及的标准从物理层一直排到法规，完整总表见 `bus/automotive/can-standards-map.md`。核心几项：
+CAN 涉及的标准从物理层一直排到法规，完整总表见 [[bus/automotive/can-standards-map|can-standards-map]]。核心几项：
 
 | 层 | 标准 | 作用 |
 | --- | --- | --- |
@@ -88,9 +88,9 @@ CAN 涉及的标准从物理层一直排到法规，完整总表见 `bus/automot
 
 ## 延伸阅读
 
-- `basic/can-phy.md`
-- `bus/automotive/canopen-practical.md`
-- `bus/automotive/canopen-deep-dive.md`
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表
-- `bus/automotive/can-protocol-family.md` — CAN 家族协议全景
-- `bus/automotive/can-fd-failure-cases.md`（CAN FD / CAN XL 产线实战案例：位定时 / 采样点 / BRS / TDC / CRC-17；2026 增 15 案例：装车 TDC / S32K SSP / Daimler 铰接巴士 / 50m 长距离 / 4 层定位 / VCC 跌落 / 400ns 边沿 $15K 幻影保修 / 4 大 killer lab 通产线崩 / Ford 438 万辆 ITRM 召回 / SN65HVD234 4% 失效率 RS pin silent mode / TDCO 指纹 bit 24/28 + 装车 / 模块化插卡 120Ω 并联 + 万用表 SOP / **STM32H5 FDCAN + 收发器 4 模式原子切换** / **TEC/REC 阈值 + REC↑=EMC/TEC↑=硬件 + FreeRTOS 监控模板** / **STM32 FDCAN 硬件 CRC 含位填充 vs 软件不含 + UDS 时序 + 量产 SOP 4 类验证清单**）
+- [[basic/can-phy|can-phy]]
+- [[bus/automotive/canopen-practical|canopen-practical]]
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]]
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族协议全景
+- [[bus/automotive/can-fd-failure-cases|can-fd-failure-cases]]（CAN FD / CAN XL 产线实战案例：位定时 / 采样点 / BRS / TDC / CRC-17；2026 增 15 案例：装车 TDC / S32K SSP / Daimler 铰接巴士 / 50m 长距离 / 4 层定位 / VCC 跌落 / 400ns 边沿 $15K 幻影保修 / 4 大 killer lab 通产线崩 / Ford 438 万辆 ITRM 召回 / SN65HVD234 4% 失效率 RS pin silent mode / TDCO 指纹 bit 24/28 + 装车 / 模块化插卡 120Ω 并联 + 万用表 SOP / **STM32H5 FDCAN + 收发器 4 模式原子切换** / **TEC/REC 阈值 + REC↑=EMC/TEC↑=硬件 + FreeRTOS 监控模板** / **STM32 FDCAN 硬件 CRC 含位填充 vs 软件不含 + UDS 时序 + 量产 SOP 4 类验证清单**）

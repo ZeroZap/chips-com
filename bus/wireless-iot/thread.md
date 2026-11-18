@@ -117,10 +117,10 @@ Border Router (Thread ↔ Wi-Fi / Ethernet)
 
 ## 延伸阅读
 
-- `bus/wireless-iot/thread-practical.md` 调试流程速查
-- `bus/wireless-iot/thread-deep-dive.md` 协议栈 / 路由 / 安全深挖
-- `bus/wireless-iot/thread-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/thread-index.md` 主题地图 + 读者路径
-- `bus/matter-*.md` Matter over Thread（最常见部署）
-- `bus/zigbee-*.md` 同源 PHY 对比
-- `bus/wireless-iot/ble-deep-dive.md` BLE Commissioning 通道
+- [[bus/wireless-iot/thread-practical|thread-practical]] 调试流程速查
+- [[bus/wireless-iot/thread-deep-dive|thread-deep-dive]] 协议栈 / 路由 / 安全深挖
+- [[bus/wireless-iot/thread-failure-cases|thread-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/thread-index|thread-index]] 主题地图 + 读者路径
+- [[bus/wireless-iot/matter-index|Matter]] Matter over Thread（最常见部署）
+- [[bus/wireless-iot/zigbee-index|ZigBee]] 同源 PHY 对比
+- [[bus/wireless-iot/ble-deep-dive|ble-deep-dive]] BLE Commissioning 通道

@@ -175,11 +175,11 @@ Sleep: 主机发送 0x3C + 0x01 + 0x00 + pulse
 
 ## 延伸阅读
 
-- `bus/automotive/lin-practical.md` — LIN 实战：调试步骤、故障定位、检查清单
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景（LIN 与 CAN 的对比）
-- `basic/can-vs-other-bus.md` — CAN 与其他总线横向对比
-- `basic/uart-deep-dive.md` — LIN 数据格式与 UART 的关系
-- `LAYERED_MAP.md` — 全库分层地图
+- [[bus/automotive/lin-practical|lin-practical]] — LIN 实战：调试步骤、故障定位、检查清单
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景（LIN 与 CAN 的对比）
+- [[basic/can-vs-other-bus|can-vs-other-bus]] — CAN 与其他总线横向对比
+- [[basic/uart-deep-dive|uart-deep-dive]] — LIN 数据格式与 UART 的关系
+- [[LAYERED_MAP|LAYERED_MAP]] — 全库分层地图
 
 ## 更新记录
 

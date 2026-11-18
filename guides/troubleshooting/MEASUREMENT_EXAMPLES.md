@@ -546,9 +546,9 @@ eth.addr == <talker-mac>
 
 ## 延伸阅读
 
-- `reference/TOOLS.md`
-- `guides/troubleshooting/WAVEFORM_GUIDE.md`
-- `guides/troubleshooting/FAILURE_CASES.md`
-- `guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md`
-- `guides/learning/LABS.md`
-- `guides/learning/EXPERIMENT_TEMPLATE.md`
+- [[reference/TOOLS|TOOLS]]
+- [[guides/troubleshooting/WAVEFORM_GUIDE|WAVEFORM_GUIDE]]
+- [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]
+- [[guides/troubleshooting/TROUBLESHOOTING_QUICKREF|TROUBLESHOOTING_QUICKREF]]
+- [[guides/learning/LABS|LABS]]
+- [[guides/learning/EXPERIMENT_TEMPLATE|EXPERIMENT_TEMPLATE]]

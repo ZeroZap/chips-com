@@ -233,7 +233,7 @@ void on_total_energy_change(uint8_t *bcd_data, int len) {
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-gateway-design.md`：RTU 网关总体设计
-- `bus/power-rtu/dlt645.md`：DL/T 645 协议
-- `bus/power-rtu/iec104.md`：IEC 104 协议
-- `bus/industrial/modbus-rtu-iec104-gateway.md`：相关 Modbus 网关
+- [[bus/power-rtu/rtu-gateway-design|rtu-gateway-design]]：RTU 网关总体设计
+- [[bus/power-rtu/dlt645|dlt645]]：DL/T 645 协议
+- [[bus/power-rtu/iec104|iec104]]：IEC 104 协议
+- [[bus/industrial/modbus-rtu-iec104-gateway|modbus-rtu-iec104-gateway]]：相关 Modbus 网关

@@ -114,10 +114,10 @@ Amazon Alexa    ┘
 
 ## 延伸阅读
 
-- `bus/wireless-iot/matter-practical.md` 调试流程速查
-- `bus/wireless-iot/matter-deep-dive.md` 协议栈 / 数据模型 / 配网 / 安全深挖
-- `bus/wireless-iot/matter-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/matter-index.md` 主题地图 + 读者路径
-- `bus/thread-*.md` Matter over Thread（最常见部署）
-- `bus/wireless-iot/ble-deep-dive.md` BLE 配网通道
-- `bus/zigbee-*.md` Cluster 沿用参考
+- [[bus/wireless-iot/matter-practical|matter-practical]] 调试流程速查
+- [[bus/wireless-iot/matter-deep-dive|matter-deep-dive]] 协议栈 / 数据模型 / 配网 / 安全深挖
+- [[bus/wireless-iot/matter-failure-cases|matter-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/matter-index|matter-index]] 主题地图 + 读者路径
+- [[bus/wireless-iot/thread-index|Thread]] Matter over Thread（最常见部署）
+- [[bus/wireless-iot/ble-deep-dive|ble-deep-dive]] BLE 配网通道
+- [[bus/wireless-iot/zigbee-index|ZigBee]] Cluster 沿用参考

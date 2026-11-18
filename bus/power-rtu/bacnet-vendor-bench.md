@@ -133,5 +133,5 @@ Schneider EcoStruxure：
 
 ## 延伸阅读
 
-- `bus/power-rtu/bacnet.md`：BACnet 协议
-- `bus/industrial/opcua-vendor-bench.md`：OPC UA 对标（楼宇 + 工业 4.0 集成）
+- [[bus/power-rtu/bacnet|bacnet]]：BACnet 协议
+- [[bus/industrial/opcua-vendor-bench|opcua-vendor-bench]]：OPC UA 对标（楼宇 + 工业 4.0 集成）

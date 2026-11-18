@@ -6799,7 +6799,7 @@ typedef struct {
 
 ## 关联文档
 
-- `bus/wireless-iot/lora.md` 主题入口
-- `bus/wireless-iot/lora-practical.md` 调试流程速查
-- `bus/wireless-iot/lora-deep-dive.md` 协议栈深挖
-- `bus/wireless-iot/lora-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/lora|lora]] 主题入口
+- [[bus/wireless-iot/lora-practical|lora-practical]] 调试流程速查
+- [[bus/wireless-iot/lora-deep-dive|lora-deep-dive]] 协议栈深挖
+- [[bus/wireless-iot/lora-index|lora-index]] 主题地图 + 导航

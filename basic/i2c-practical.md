@@ -133,7 +133,7 @@ STOP
 - **恢复后必须复位 I2C 外设**：清 `BUSY`/`BERR`/`ARLO`。
 - **重试有限次**：每个事务最多 1 次 bus recovery，每个设备窗口内有限次。
 
-详细 SOP、状态机、代码骨架和易错点见 `i2c-deep-dive.md` 的「总线被拉死」章节。
+详细 SOP、状态机、代码骨架和易错点见 [[basic/i2c-deep-dive|i2c-deep-dive]] 的「总线被拉死」章节。
 
 ## 常见问题
 

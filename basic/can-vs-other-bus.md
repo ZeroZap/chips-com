@@ -364,16 +364,16 @@ LIN 是 CAN 的简化版, 用于对实时性要求不高的低成本场景。
 
 ## 关联文档
 
-- `can-practical.md` 速查
-- `can-deep-dive.md` 原理
-- `can-failure-cases.md` 产线案例
-- `can-multimaster-and-bus-off.md` 多 master
-- `can-fd-and-can-xl.md` 演进
-- `can-rtos-integration.md` RTOS + Linux
-- `can-index.md` 导航
-- `bus/automotive/canopen-deep-dive.md` CANopen (CAN 之上的应用层)
-- `bus/automotive/j1939-*.md` J1939 (商用车主从)
-- `bus/automotive/uds-*.md` UDS (诊断)
-- `bus/industrial/rs485-modbus-*.md` Modbus RS485
-- `bus/industrial/ethernet-*.md` Ethernet
-- `i2c-vs-smbus-recovery.md` 跨协议对比参考
+- [[basic/can-practical|can-practical]] 速查
+- [[basic/can-deep-dive|can-deep-dive]] 原理
+- [[basic/can-failure-cases|can-failure-cases]] 产线案例
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] 多 master
+- [[basic/can-fd-and-can-xl|can-fd-and-can-xl]] 演进
+- [[basic/can-rtos-integration|can-rtos-integration]] RTOS + Linux
+- [[basic/can-index|can-index]] 导航
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]] CANopen (CAN 之上的应用层)
+- [[bus/automotive/j1939-index|J1939]] J1939 (商用车主从)
+- [[bus/automotive/uds-index|UDS]] UDS (诊断)
+- [[bus/industrial/rs485-modbus-rtu-deep-dive|Modbus RTU]] Modbus RS485
+- [[bus/industrial/ethernet|Ethernet]] Ethernet
+- [[basic/i2c-vs-smbus-recovery|i2c-vs-smbus-recovery]] 跨协议对比参考

@@ -684,14 +684,14 @@ int can_node_send(can_node_t *node, const struct can_frame *frame) {
 
 ## 关联文档
 
-- `can-practical.md` 速查
-- `can-deep-dive.md` 原理
-- `can-failure-cases.md` 产线死机案例
-- `can-multimaster-and-bus-off.md` 多 master + bus off
-- `can-fd-and-can-xl.md` 演进
-- `can-vs-other-bus.md` 跨总线对比
-- `can-index.md` 导航
-- `bus/automotive/canopen-deep-dive.md` CANopen (RT-Thread 集成)
-- `i2c-rtos-integration.md` I2C RTOS 集成 (对比)
-- `spi-rtos-integration.md` SPI RTOS 集成 (对比)
-- `uart-dma-circular-and-rtos.md` UART RTOS 集成 (对比)
+- [[basic/can-practical|can-practical]] 速查
+- [[basic/can-deep-dive|can-deep-dive]] 原理
+- [[basic/can-failure-cases|can-failure-cases]] 产线死机案例
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] 多 master + bus off
+- [[basic/can-fd-and-can-xl|can-fd-and-can-xl]] 演进
+- [[basic/can-vs-other-bus|can-vs-other-bus]] 跨总线对比
+- [[basic/can-index|can-index]] 导航
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]] CANopen (RT-Thread 集成)
+- [[basic/i2c-rtos-integration|i2c-rtos-integration]] I2C RTOS 集成 (对比)
+- [[basic/spi-rtos-integration|spi-rtos-integration]] SPI RTOS 集成 (对比)
+- [[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]] UART RTOS 集成 (对比)

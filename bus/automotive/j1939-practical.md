@@ -314,8 +314,8 @@ J1939 常围绕 Source Address、PGN、SPN、Address Claim、Request、BAM/RTS/C
 
 ## 延伸阅读
 
-- `bus/automotive/j1939.md`
-- `bus/automotive/can.md`
-- `basic/can-phy.md`
-- `bus/automotive/canopen-practical.md`
-- `bus/automotive/canopen-deep-dive.md`
+- [[bus/automotive/j1939|j1939]]
+- [[bus/automotive/can|can]]
+- [[basic/can-phy|can-phy]]
+- [[bus/automotive/canopen-practical|canopen-practical]]
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]]

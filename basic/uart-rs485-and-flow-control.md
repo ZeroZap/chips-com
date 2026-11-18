@@ -493,7 +493,7 @@ void uart_tx_check_xoff(uint8_t byte) {
 - RTS/CTS 流控 (高速)
 - Modbus RTU 协议 (主从)
 
-详细见 `bus/industrial/rs485-modbus-rtu-deep-dive.md`。
+详细见 [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]。
 
 ## RS485 实战代码骨架
 
@@ -653,11 +653,11 @@ A - B 差分电压:
 
 ## 关联文档
 
-- `uart-deep-dive.md` 原理
-- `uart-practical.md` 速查
-- `uart-failure-cases.md` 产线案例 (RS485 方向控制错 案例 4)
-- `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
-- `uart-index.md` 导航
-- `rs232-rs485.md` 物理层基础
-- `bus/industrial/rs485-modbus-rtu-deep-dive.md` Modbus RTU 详细
-- `bus/industrial/modbus.md` Modbus 概览
+- [[basic/uart-deep-dive|uart-deep-dive]] 原理
+- [[basic/uart-practical|uart-practical]] 速查
+- [[basic/uart-failure-cases|uart-failure-cases]] 产线案例 (RS485 方向控制错 案例 4)
+- [[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]] DMA + 环形缓冲 + RTOS
+- [[basic/uart-index|uart-index]] 导航
+- [[basic/rs232-rs485|rs232-rs485]] 物理层基础
+- [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]] Modbus RTU 详细
+- [[bus/industrial/modbus|modbus]] Modbus 概览

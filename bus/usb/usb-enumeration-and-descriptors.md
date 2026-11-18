@@ -583,12 +583,12 @@ system_profiler SPUSBDataType
 
 ## 关联文档
 
-- `bus/usb/usb-deep-dive.md` 原理
-- `bus/usb/usb-practical.md` 速查
-- `bus/usb/usb-failure-cases.md` 产线案例
-- `bus/usb/usb-class-drivers.md` CDC / HID / MSC / DFU
-- `bus/usb/usb-dma-and-rtos.md` DMA + RTOS
-- `bus/usb/usb-vs-other-bus.md` 跨总线对比
-- `bus/usb/usb-index.md` 导航
-- `bus/usb/usb-dfu-deep-dive.md` DFU 协议
-- `bus/usb/usb-dfu-practical.md` DFU 实战
+- [[bus/usb/usb-deep-dive|usb-deep-dive]] 原理
+- [[bus/usb/usb-practical|usb-practical]] 速查
+- [[bus/usb/usb-failure-cases|usb-failure-cases]] 产线案例
+- [[bus/usb/usb-class-drivers|usb-class-drivers]] CDC / HID / MSC / DFU
+- [[bus/usb/usb-dma-and-rtos|usb-dma-and-rtos]] DMA + RTOS
+- [[bus/usb/usb-vs-other-bus|usb-vs-other-bus]] 跨总线对比
+- [[bus/usb/usb-index|usb-index]] 导航
+- [[bus/usb/usb-dfu-deep-dive|usb-dfu-deep-dive]] DFU 协议
+- [[bus/usb/usb-dfu-practical|usb-dfu-practical]] DFU 实战

@@ -500,9 +500,9 @@ UDS 主要用于诊断会话、DID、DTC、例程、安全访问和刷写，强�
 
 ## 延伸阅读
 
-- `bus/automotive/j1939.md`
-- `bus/automotive/j1939-practical.md`
-- `bus/automotive/can.md`
-- `basic/can-phy.md`
-- `bus/automotive/uds-practical.md`
-- `bus/automotive/iso-tp-deep-dive.md`
+- [[bus/automotive/j1939|j1939]]
+- [[bus/automotive/j1939-practical|j1939-practical]]
+- [[bus/automotive/can|can]]
+- [[basic/can-phy|can-phy]]
+- [[bus/automotive/uds-practical|uds-practical]]
+- [[bus/automotive/iso-tp-deep-dive|iso-tp-deep-dive]]

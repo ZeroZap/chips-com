@@ -512,12 +512,12 @@ void can_fd_send(uint32_t can_id, uint8_t *data, uint8_t len) {
 
 ## 关联文档
 
-- `can-practical.md` 速查
-- `can-deep-dive.md` 原理
-- `can-failure-cases.md` 产线死机案例
-- `can-multimaster-and-bus-off.md` 多 master + bus off
-- `can-rtos-integration.md` RTOS + SocketCAN
-- `can-vs-other-bus.md` 跨总线对比
-- `can-index.md` 导航
-- `bus/automotive/canopen-deep-dive.md` CANopen
-- `i2c-vs-smbus-recovery.md` 跨协议对比参考
+- [[basic/can-practical|can-practical]] 速查
+- [[basic/can-deep-dive|can-deep-dive]] 原理
+- [[basic/can-failure-cases|can-failure-cases]] 产线死机案例
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] 多 master + bus off
+- [[basic/can-rtos-integration|can-rtos-integration]] RTOS + SocketCAN
+- [[basic/can-vs-other-bus|can-vs-other-bus]] 跨总线对比
+- [[basic/can-index|can-index]] 导航
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]] CANopen
+- [[basic/i2c-vs-smbus-recovery|i2c-vs-smbus-recovery]] 跨协议对比参考

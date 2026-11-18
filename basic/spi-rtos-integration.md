@@ -607,9 +607,9 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi) {
 
 ## 关联文档
 
-- `spi-deep-dive.md` 原理
-- `spi-practical.md` 速查
-- `spi-failure-cases.md` 产线案例
-- `spi-multislave-and-dma.md` 多从 / 菊花链 / DMA
-- `spi-index.md` 导航
-- `i2c-rtos-integration.md` I2C RTOS 集成 (对比)
+- [[basic/spi-deep-dive|spi-deep-dive]] 原理
+- [[basic/spi-practical|spi-practical]] 速查
+- [[basic/spi-failure-cases|spi-failure-cases]] 产线案例
+- [[basic/spi-multislave-and-dma|spi-multislave-and-dma]] 多从 / 菊花链 / DMA
+- [[basic/spi-index|spi-index]] 导航
+- [[basic/i2c-rtos-integration|i2c-rtos-integration]] I2C RTOS 集成 (对比)

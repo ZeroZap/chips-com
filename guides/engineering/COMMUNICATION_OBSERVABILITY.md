@@ -372,10 +372,10 @@ cml_fault=0
 
 ## 延伸阅读
 
-- `guides/troubleshooting/DEBUG_PLAYBOOK.md`
-- `guides/troubleshooting/DRIVER_PATTERNS.md`
-- `guides/engineering/RELIABILITY_GUIDE.md`
-- `guides/engineering/AUTOMATED_TEST_HARNESS.md`
-- `guides/engineering/REGRESSION_TEST_MATRIX.md`
-- `guides/troubleshooting/MEASUREMENT_EXAMPLES.md`
-- `guides/troubleshooting/FAILURE_CASES.md`
+- [[guides/troubleshooting/DEBUG_PLAYBOOK|DEBUG_PLAYBOOK]]
+- [[guides/troubleshooting/DRIVER_PATTERNS|DRIVER_PATTERNS]]
+- [[guides/engineering/RELIABILITY_GUIDE|RELIABILITY_GUIDE]]
+- [[guides/engineering/AUTOMATED_TEST_HARNESS|AUTOMATED_TEST_HARNESS]]
+- [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]]
+- [[guides/troubleshooting/MEASUREMENT_EXAMPLES|MEASUREMENT_EXAMPLES]]
+- [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]

@@ -251,8 +251,8 @@ bus/iec61850-iec104-gateway.md         # IEC 61850 ↔ IEC 104
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集
-- 各协议三件套：详见各协议 -index.md
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集
+- 各协议三件套：详见各协议 -[[INDEX|INDEX]]
 - `MODBUS / IEC 104 / DNP3` 等具体协议文档
 
 ## 检查清单

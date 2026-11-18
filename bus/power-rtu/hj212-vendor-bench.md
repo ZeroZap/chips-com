@@ -115,5 +115,5 @@ HJ 212 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/hj212.md`：HJ 212 协议
-- `bus/power-rtu/sl651-vendor-bench.md`：SL 651 对标
+- [[bus/power-rtu/hj212|hj212]]：HJ 212 协议
+- [[bus/power-rtu/sl651-vendor-bench|sl651-vendor-bench]]：SL 651 对标

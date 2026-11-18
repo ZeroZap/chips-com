@@ -104,5 +104,5 @@ SL 651 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/sl651.md`：SL 651 协议
-- `bus/power-rtu/szy206-vendor-bench.md`：SZY 206 对标（取水口）
+- [[bus/power-rtu/sl651|sl651]]：SL 651 协议
+- [[bus/power-rtu/szy206-vendor-bench|szy206-vendor-bench]]：SZY 206 对标（取水口）

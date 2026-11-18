@@ -99,7 +99,7 @@ Satellite-IoT      → 覆盖海洋 / 沙漠 / 极地 / 灾区，地面网络盲
 
 ## 延伸阅读
 
-- `bus/wireless-iot/satellite-iot-practical.md` 调试流程速查 / 5 秒定位 / 错误码表
-- `bus/wireless-iot/satellite-iot-deep-dive.md` 协议栈 / 卫星注册 / 链路预算 / 多普勒补偿深挖
-- `bus/wireless-iot/satellite-iot-failure-cases.md` 产线实战案例（NB-IoT NTN / 北斗 / Iridium 等 8-9 例）
-- `bus/wireless-iot/satellite-iot-index.md` 主题地图 + 读者路径
+- [[bus/wireless-iot/satellite-iot-practical|satellite-iot-practical]] 调试流程速查 / 5 秒定位 / 错误码表
+- [[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]] 协议栈 / 卫星注册 / 链路预算 / 多普勒补偿深挖
+- [[bus/wireless-iot/satellite-iot-failure-cases|satellite-iot-failure-cases]] 产线实战案例（NB-IoT NTN / 北斗 / Iridium 等 8-9 例）
+- [[bus/wireless-iot/satellite-iot-index|satellite-iot-index]] 主题地图 + 读者路径

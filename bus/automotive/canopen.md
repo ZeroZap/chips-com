@@ -90,8 +90,8 @@ CANopen (CiA 301)
 
 ## 延伸阅读
 
-- `bus/automotive/canopen-practical.md`
-- `bus/automotive/canopen-deep-dive.md`
-- `bus/automotive/canopen-failure-cases.md`
-- `bus/automotive/canopen-safety.md` — CANopen Safety（CiA 304 / EN 50325-5，SRDO 功能安全扩展）
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表
+- [[bus/automotive/canopen-practical|canopen-practical]]
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]]
+- [[bus/automotive/canopen-failure-cases|canopen-failure-cases]]
+- [[bus/automotive/canopen-safety|canopen-safety]] — CANopen Safety（CiA 304 / EN 50325-5，SRDO 功能安全扩展）
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表

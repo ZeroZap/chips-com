@@ -424,9 +424,9 @@ Server → Client (PublishRequest 服务端推送):
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集。
-- `bus/power-rtu/bacnet.md`：与 BACnet 对比（楼宇场景）。
-- `bus/industrial/mqtt.md`：与 MQTT 对比（云场景）。
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集。
+- [[bus/power-rtu/bacnet|bacnet]]：与 BACnet 对比（楼宇场景）。
+- [[bus/industrial/mqtt|mqtt]]：与 MQTT 对比（云场景）。
 
 ## 检查清单
 

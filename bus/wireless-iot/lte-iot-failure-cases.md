@@ -876,7 +876,7 @@ NB-IoT 覆盖增强：
 
 ## 关联文档
 
-- `bus/wireless-iot/lte-iot.md` 主题入口
-- `bus/wireless-iot/lte-iot-practical.md` 调试流程速查
-- `bus/wireless-iot/lte-iot-deep-dive.md` 协议栈深挖
-- `bus/wireless-iot/lte-iot-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/lte-iot|lte-iot]] 主题入口
+- [[bus/wireless-iot/lte-iot-practical|lte-iot-practical]] 调试流程速查
+- [[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]] 协议栈深挖
+- [[bus/wireless-iot/lte-iot-index|lte-iot-index]] 主题地图 + 导航

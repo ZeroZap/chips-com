@@ -166,6 +166,6 @@ arp
 
 ## 延伸阅读
 
-- `bus/industrial/profinet.md`
-- `bus/industrial/industrial-ethernet-comparison.md`
-- `bus/industrial/ethernet-deep-dive.md`
+- [[bus/industrial/profinet|profinet]]
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]

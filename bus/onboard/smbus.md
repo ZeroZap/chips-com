@@ -32,4 +32,4 @@ SMBus 比普通 I2C 更强调：
 
 ## 延伸阅读
 
-- `bus/onboard/smbus-pmbus-practical.md`
+- [[bus/onboard/smbus-pmbus-practical|smbus-pmbus-practical]]

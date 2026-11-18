@@ -311,12 +311,12 @@ void usb_cdc_uart_bridge() {
 
 ## 关联文档
 
-- `bus/usb/usb-deep-dive.md` 原理
-- `bus/usb/usb-practical.md` 速查
-- `bus/usb/usb-failure-cases.md` 产线案例
-- `bus/usb/usb-enumeration-and-descriptors.md` 枚举
-- `bus/usb/usb-class-drivers.md` CDC / HID / MSC / DFU
-- `bus/usb/usb-dma-and-rtos.md` DMA + RTOS
-- `bus/usb/usb-index.md` 导航
-- `can-vs-other-bus.md` CAN vs 其他总线 (参考)
-- `i2c-vs-smbus-recovery.md` 跨协议对比参考
+- [[bus/usb/usb-deep-dive|usb-deep-dive]] 原理
+- [[bus/usb/usb-practical|usb-practical]] 速查
+- [[bus/usb/usb-failure-cases|usb-failure-cases]] 产线案例
+- [[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]] 枚举
+- [[bus/usb/usb-class-drivers|usb-class-drivers]] CDC / HID / MSC / DFU
+- [[bus/usb/usb-dma-and-rtos|usb-dma-and-rtos]] DMA + RTOS
+- [[bus/usb/usb-index|usb-index]] 导航
+- [[basic/can-vs-other-bus|can-vs-other-bus]] CAN vs 其他总线 (参考)
+- [[basic/i2c-vs-smbus-recovery|i2c-vs-smbus-recovery]] 跨协议对比参考

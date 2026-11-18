@@ -331,7 +331,7 @@ AT+CENG=1
 
 ## 关联文档
 
-- `bus/wireless-iot/lte-iot.md` 主题入口
-- `bus/wireless-iot/lte-iot-deep-dive.md` 协议栈深挖 / 信令流程
-- `bus/wireless-iot/lte-iot-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/lte-iot-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/lte-iot|lte-iot]] 主题入口
+- [[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]] 协议栈深挖 / 信令流程
+- [[bus/wireless-iot/lte-iot-failure-cases|lte-iot-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/lte-iot-index|lte-iot-index]] 主题地图 + 导航

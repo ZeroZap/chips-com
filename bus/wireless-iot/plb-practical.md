@@ -415,7 +415,7 @@ PLB 出厂后**必须注册**才能被救援中心识别：
 
 ## 关联文档
 
-- `bus/wireless-iot/plb.md` 主题入口
-- `bus/wireless-iot/plb-deep-dive.md` COSPAS-SARSAT / 406 MHz 编码 / BCH / UIN 解析深挖
-- `bus/wireless-iot/plb-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/plb-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/plb|plb]] 主题入口
+- [[bus/wireless-iot/plb-deep-dive|plb-deep-dive]] COSPAS-SARSAT / 406 MHz 编码 / BCH / UIN 解析深挖
+- [[bus/wireless-iot/plb-failure-cases|plb-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/plb-index|plb-index]] 主题地图 + 导航

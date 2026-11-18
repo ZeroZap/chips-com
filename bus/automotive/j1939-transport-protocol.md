@@ -494,11 +494,11 @@ TP 传输期间, ECU 心跳 (PGN 65260) 仍要发
 
 ## 关联文档
 
-- `bus/automotive/j1939-deep-dive.md` 原理
-- `bus/automotive/j1939-practical.md` 速查
-- `bus/automotive/j1939-failure-cases.md` 产线案例
-- `bus/automotive/j1939-network-management.md` 地址声明 / 网络管理
-- `bus/automotive/j1939-index.md` 导航
-- `bus/automotive/iso-tp-deep-dive.md` ISO-TP (类似, 但用于 UDS)
-- `can-failure-cases.md` CAN 基础
-- `can-multimaster-and-bus-off.md` CAN 多 master
+- [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] 原理
+- [[bus/automotive/j1939-practical|j1939-practical]] 速查
+- [[bus/automotive/j1939-failure-cases|j1939-failure-cases]] 产线案例
+- [[bus/automotive/j1939-network-management|j1939-network-management]] 地址声明 / 网络管理
+- [[bus/automotive/j1939-index|j1939-index]] 导航
+- [[bus/automotive/iso-tp-deep-dive|iso-tp-deep-dive]] ISO-TP (类似, 但用于 UDS)
+- [[basic/can-failure-cases|can-failure-cases]] CAN 基础
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] CAN 多 master

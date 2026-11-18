@@ -89,6 +89,6 @@ SZY 206 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/szy206.md`：SZY 206 协议
-- `bus/power-rtu/sl651-vendor-bench.md`：SL 651 对标
-- `bus/power-rtu/slt427-vendor-bench.md`：SL/T 427 对标
+- [[bus/power-rtu/szy206|szy206]]：SZY 206 协议
+- [[bus/power-rtu/sl651-vendor-bench|sl651-vendor-bench]]：SL 651 对标
+- [[bus/power-rtu/slt427-vendor-bench|slt427-vendor-bench]]：SL/T 427 对标

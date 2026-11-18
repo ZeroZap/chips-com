@@ -329,7 +329,7 @@ struct i2c_known_secondary_master {
 
 ## 关联文档
 
-- `i2c-deep-dive.md` 总线恢复基础
-- `i2c-bus-recovery-playbook.md` 单 master 恢复 SOP
-- `i2c-state-machine.md` 状态机
+- [[basic/i2c-deep-dive|i2c-deep-dive]] 总线恢复基础
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] 单 master 恢复 SOP
+- [[basic/i2c-state-machine|i2c-state-machine]] 状态机
 - NXP UM10204 第 16 节: Multi-master

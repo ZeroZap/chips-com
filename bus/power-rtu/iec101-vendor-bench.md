@@ -65,5 +65,5 @@ IEC 101 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/iec101.md`：IEC 101 协议
-- `bus/power-rtu/iec104-vendor-bench.md`：IEC 104 对标
+- [[bus/power-rtu/iec101|iec101]]：IEC 101 协议
+- [[bus/power-rtu/iec104-vendor-bench|iec104-vendor-bench]]：IEC 104 对标

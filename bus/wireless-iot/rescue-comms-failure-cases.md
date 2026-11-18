@@ -837,7 +837,7 @@ void cold_start(void) {
 
 ## 关联文档
 
-- `bus/wireless-iot/rescue-comms.md` 主题入口
-- `bus/wireless-iot/rescue-comms-practical.md` 调试速查
-- `bus/wireless-iot/rescue-comms-deep-dive.md` 协议深挖
-- `bus/wireless-iot/rescue-comms-index.md` 主题地图
+- [[bus/wireless-iot/rescue-comms|rescue-comms]] 主题入口
+- [[bus/wireless-iot/rescue-comms-practical|rescue-comms-practical]] 调试速查
+- [[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]] 协议深挖
+- [[bus/wireless-iot/rescue-comms-index|rescue-comms-index]] 主题地图

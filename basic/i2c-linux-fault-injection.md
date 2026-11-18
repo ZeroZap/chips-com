@@ -440,7 +440,7 @@ QEMU 限制:
 
 ## 关联文档
 
-- `i2c-deep-dive.md` 原理
-- `i2c-bus-recovery-playbook.md` SOP
-- `i2c-multimaster.md` 多 master
+- [[basic/i2c-deep-dive|i2c-deep-dive]] 原理
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] SOP
+- [[basic/i2c-multimaster|i2c-multimaster]] 多 master
 - Linux I2C GPIO Fault Injection

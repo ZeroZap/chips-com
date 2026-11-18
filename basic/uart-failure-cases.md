@@ -17,7 +17,7 @@ tags:
 - 修复 (代码 / 硬件)
 - 复盘 (如何预防)
 
-按主题分类, 配 `uart-deep-dive.md` / `uart-practical.md` 使用。
+按主题分类, 配 [[basic/uart-deep-dive|uart-deep-dive]] / [[basic/uart-practical|uart-practical]] 使用。
 
 ---
 
@@ -498,7 +498,7 @@ void master_poll_slave(uint8_t slave_addr) {
 
 - RS485 物理层不能阻止冲突, 必须协议层防
 - Modbus RTU 的"沉默间隔 3.5 字符"就是防冲突机制
-- 详细见 `bus/industrial/rs485-modbus-rtu-deep-dive.md`
+- 详细见 [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]
 
 ---
 
@@ -808,7 +808,7 @@ HAL_NVIC_SetPriority(TIM2_IRQn, 5, 0);
 
 - 中断优先级数字小 = 高
 - UART 中断必须能及时响应, 否则丢数据
-- 详细见 `i2c-state-machine.md` 类似问题
+- 详细见 [[basic/i2c-state-machine|i2c-state-machine]] 类似问题
 
 ---
 
@@ -869,7 +869,7 @@ UART 波形正常, 但数据偶尔错位 (1 bit 错)。
 
 - 老化测试是产线良率的保证
 - UART 高速 (1M+) 引脚对焊点质量敏感
-- 详细见 `i2c-failure-cases.md` 案例 16
+- 详细见 [[basic/i2c-failure-cases|i2c-failure-cases]] 案例 16
 
 ---
 
@@ -908,11 +908,11 @@ EMC / ESD               5%
 
 ## 关联文档
 
-- `uart-deep-dive.md` 原理 + 故障树
-- `uart-practical.md` 速查
-- `uart-rs485-and-flow-control.md` RS485 / 流控专题
-- `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
-- `uart-index.md` 导航
-- `rs232-rs485.md` 物理层基础
-- `bus/industrial/rs485-modbus-rtu-deep-dive.md` Modbus RTU
-- `i2c-failure-cases.md` 类似产线案例
+- [[basic/uart-deep-dive|uart-deep-dive]] 原理 + 故障树
+- [[basic/uart-practical|uart-practical]] 速查
+- [[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]] RS485 / 流控专题
+- [[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]] DMA + 环形缓冲 + RTOS
+- [[basic/uart-index|uart-index]] 导航
+- [[basic/rs232-rs485|rs232-rs485]] 物理层基础
+- [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]] Modbus RTU
+- [[basic/i2c-failure-cases|i2c-failure-cases]] 类似产线案例

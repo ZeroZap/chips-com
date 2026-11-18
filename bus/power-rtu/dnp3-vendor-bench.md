@@ -111,5 +111,5 @@ DNP3 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/dnp3.md`：DNP3 协议
-- `bus/power-rtu/iec61850-vendor-bench.md`：IEC 61850 对标
+- [[bus/power-rtu/dnp3|dnp3]]：DNP3 协议
+- [[bus/power-rtu/iec61850-vendor-bench|iec61850-vendor-bench]]：IEC 61850 对标

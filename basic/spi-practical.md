@@ -201,10 +201,10 @@ CS
 
 ## 关联文档
 
-- `spi-deep-dive.md` 原理和体系
-- `spi-failure-cases.md` 产线死机案例
-- `spi-multislave-and-dma.md` 多从 / 菊花链 / DMA
-- `spi-rtos-integration.md` RTOS 集成
-- `spi-index.md` 总览导航
-- `qspi-ospi.md` 高速 SPI Flash
-- `i2c-deep-dive.md` I2C 原理 (与 SPI 对比)
+- [[basic/spi-deep-dive|spi-deep-dive]] 原理和体系
+- [[basic/spi-failure-cases|spi-failure-cases]] 产线死机案例
+- [[basic/spi-multislave-and-dma|spi-multislave-and-dma]] 多从 / 菊花链 / DMA
+- [[basic/spi-rtos-integration|spi-rtos-integration]] RTOS 集成
+- [[basic/spi-index|spi-index]] 总览导航
+- [[basic/qspi-ospi|qspi-ospi]] 高速 SPI Flash
+- [[basic/i2c-deep-dive|i2c-deep-dive]] I2C 原理 (与 SPI 对比)

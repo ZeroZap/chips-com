@@ -894,7 +894,7 @@ float predict_elevation(double lat, double lon, double alt) {
 
 ## 关联文档
 
-- `bus/wireless-iot/satellite-iot.md` 主题入口
-- `bus/wireless-iot/satellite-iot-practical.md` 调试流程速查
-- `bus/wireless-iot/satellite-iot-deep-dive.md` 协议栈 / 链路预算深挖
-- `bus/wireless-iot/satellite-iot-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/satellite-iot|satellite-iot]] 主题入口
+- [[bus/wireless-iot/satellite-iot-practical|satellite-iot-practical]] 调试流程速查
+- [[bus/wireless-iot/satellite-iot-deep-dive|satellite-iot-deep-dive]] 协议栈 / 链路预算深挖
+- [[bus/wireless-iot/satellite-iot-index|satellite-iot-index]] 主题地图 + 导航

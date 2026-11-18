@@ -326,10 +326,10 @@ VIN 是 17 字节，**一定走多帧**。如果只收到一部分，检查 ISO-
 
 ## 延伸阅读
 
-- `bus/automotive/obd2.md` — OBD-II 概览
-- `bus/automotive/obd2-deep-dive.md` — PID 空间、监测模型、Mode 详解
-- `bus/automotive/obd2-failure-cases.md` — 故障案例
-- `bus/automotive/uds-practical.md` — UDS 实战（对照）
-- `bus/automotive/iso-tp-practical.md` — ISO-TP 实战
-- `basic/can-practical.md` — CAN 调试基础
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/obd2|obd2]] — OBD-II 概览
+- [[bus/automotive/obd2-deep-dive|obd2-deep-dive]] — PID 空间、监测模型、Mode 详解
+- [[bus/automotive/obd2-failure-cases|obd2-failure-cases]] — 故障案例
+- [[bus/automotive/uds-practical|uds-practical]] — UDS 实战（对照）
+- [[bus/automotive/iso-tp-practical|iso-tp-practical]] — ISO-TP 实战
+- [[basic/can-practical|can-practical]] — CAN 调试基础
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景

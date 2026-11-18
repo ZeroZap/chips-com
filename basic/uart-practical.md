@@ -196,11 +196,11 @@ noise error:      噪声干扰
 
 ## 关联文档
 
-- `uart-deep-dive.md` 原理和体系
-- `uart-failure-cases.md` 产线死机案例
-- `uart-rs485-and-flow-control.md` RS485 / 流控专题
-- `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
-- `uart-index.md` 导航
-- `rs232-rs485.md` 物理层基础
-- `bus/industrial/modbus.md` Modbus RTU (UART 上层协议)
-- `i2c-practical.md` I2C 速查 (对比)
+- [[basic/uart-deep-dive|uart-deep-dive]] 原理和体系
+- [[basic/uart-failure-cases|uart-failure-cases]] 产线死机案例
+- [[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]] RS485 / 流控专题
+- [[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]] DMA + 环形缓冲 + RTOS
+- [[basic/uart-index|uart-index]] 导航
+- [[basic/rs232-rs485|rs232-rs485]] 物理层基础
+- [[bus/industrial/modbus|modbus]] Modbus RTU (UART 上层协议)
+- [[basic/i2c-practical|i2c-practical]] I2C 速查 (对比)

@@ -68,5 +68,5 @@ FPD-Link/GMSL 解决：
 
 ## 延伸阅读
 
-- `bus/display/mipi-csi-dsi-deep-dive.md`
-- `bus/display/display-interfaces.md`
+- [[bus/display/mipi-csi-dsi-deep-dive|mipi-csi-dsi-deep-dive]]
+- [[bus/display/display-interfaces|display-interfaces]]

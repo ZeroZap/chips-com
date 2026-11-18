@@ -59,5 +59,5 @@ PROFINET 更像自动化设备体系，包含设备模型、组态和诊断。
 
 ## 延伸阅读
 
-- `bus/industrial/industrial-ethernet-comparison.md`
-- `bus/industrial/ethernet-deep-dive.md`
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]

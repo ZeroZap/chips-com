@@ -46,7 +46,7 @@ ECU 的多帧发送实现有缺陷：发完 FF 后等待 FC，但 FC 用错了 C
 
 ### 修复
 
-参照 `bus/automotive/iso-tp-failure-cases.md` 案例 2 和案例 10。核心是：
+参照 [[bus/automotive/iso-tp-failure-cases|iso-tp-failure-cases]] 案例 2 和案例 10。核心是：
 
 ```c
 /* ECU 侧: 发 FC 必须用接收方的 ID (请求 ID) */
@@ -896,13 +896,13 @@ void diag_reset_comm_state(diag_ctx_t *c) {
 
 ## 关联主题
 
-- `bus/automotive/uds.md` — UDS 定位、服务表、ISO-TP 关系
-- `bus/automotive/uds-deep-dive.md` — 状态机、NRC 决策顺序、刷写事务、DoIP
-- `bus/automotive/uds-practical.md` — 调试流程、检查清单
-- `bus/automotive/iso-tp-failure-cases.md` — 传输层案例（多帧问题的根因常在 ISO-TP）
-- `bus/automotive/j1939-failure-cases.md` — J1939 诊断（DM1/DM2）案例对比
-- `basic/can-failure-cases.md` — CAN 物理层/链路层案例
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/uds|uds]] — UDS 定位、服务表、ISO-TP 关系
+- [[bus/automotive/uds-deep-dive|uds-deep-dive]] — 状态机、NRC 决策顺序、刷写事务、DoIP
+- [[bus/automotive/uds-practical|uds-practical]] — 调试流程、检查清单
+- [[bus/automotive/iso-tp-failure-cases|iso-tp-failure-cases]] — 传输层案例（多帧问题的根因常在 ISO-TP）
+- [[bus/automotive/j1939-failure-cases|j1939-failure-cases]] — J1939 诊断（DM1/DM2）案例对比
+- [[basic/can-failure-cases|can-failure-cases]] — CAN 物理层/链路层案例
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景
 
 ## 更新记录
 

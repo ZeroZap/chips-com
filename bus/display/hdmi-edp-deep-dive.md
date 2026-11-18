@@ -428,8 +428,8 @@ HDMI 强调外接显示、HPD、DDC/EDID、线缆、兼容性和内容保护。
 
 ## 延伸阅读
 
-- `bus/display/hdmi-edp.md`
-- `bus/display/hdmi-edp-practical.md`
-- `bus/display/display-interfaces.md`
-- `basic/lvds.md`
-- `bus/display/mipi-csi-dsi-deep-dive.md`
+- [[bus/display/hdmi-edp|hdmi-edp]]
+- [[bus/display/hdmi-edp-practical|hdmi-edp-practical]]
+- [[bus/display/display-interfaces|display-interfaces]]
+- [[basic/lvds|lvds]]
+- [[bus/display/mipi-csi-dsi-deep-dive|mipi-csi-dsi-deep-dive]]

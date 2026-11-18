@@ -323,7 +323,7 @@ EtherNet/IP 更常围绕 EDS、CIP 对象路径、Assembly、Forward Open、RPI 
 
 ## 延伸阅读
 
-- `bus/industrial/ethernet-ip.md`
-- `bus/industrial/profinet-practical.md`
-- `bus/industrial/industrial-ethernet-comparison.md`
-- `bus/industrial/ethernet-deep-dive.md`
+- [[bus/industrial/ethernet-ip|ethernet-ip]]
+- [[bus/industrial/profinet-practical|profinet-practical]]
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]

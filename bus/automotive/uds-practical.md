@@ -446,8 +446,8 @@ UDS 返回 NRC 时，再进入会话、权限和业务条件排查
 
 ## 延伸阅读
 
-- `bus/automotive/uds.md`
-- `bus/automotive/iso-tp-practical.md`
-- `bus/automotive/iso-tp-deep-dive.md`
-- `bus/automotive/can.md`
-- `basic/can-phy.md`
+- [[bus/automotive/uds|uds]]
+- [[bus/automotive/iso-tp-practical|iso-tp-practical]]
+- [[bus/automotive/iso-tp-deep-dive|iso-tp-deep-dive]]
+- [[bus/automotive/can|can]]
+- [[basic/can-phy|can-phy]]

@@ -7279,7 +7279,7 @@ sd_ble_gap_adv_set_configure(&adv_handle, &gap_adv_params,
 
 ## 关联文档
 
-- `bus/wireless-iot/ble.md` 主题入口
-- `bus/wireless-iot/ble-practical.md` 调试流程速查
-- `bus/wireless-iot/ble-deep-dive.md` 协议栈深挖
-- `bus/wireless-iot/ble-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/ble|ble]] 主题入口
+- [[bus/wireless-iot/ble-practical|ble-practical]] 调试流程速查
+- [[bus/wireless-iot/ble-deep-dive|ble-deep-dive]] 协议栈深挖
+- [[bus/wireless-iot/ble-index|ble-index]] 主题地图 + 导航

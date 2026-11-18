@@ -71,7 +71,7 @@ Broadcaster / Observer  → 无连接单向广播（BLE 5.x 扩展）
 
 ## 延伸阅读
 
-- `bus/wireless-iot/ble-practical.md` 调试流程速查
-- `bus/wireless-iot/ble-deep-dive.md` 协议栈 / 状态机 / 配对 / 安全深挖
-- `bus/wireless-iot/ble-failure-cases.md` 产线实战案例（0x3E / DoS / ADC 干扰等）
-- `bus/wireless-iot/ble-index.md` 主题地图 + 读者路径
+- [[bus/wireless-iot/ble-practical|ble-practical]] 调试流程速查
+- [[bus/wireless-iot/ble-deep-dive|ble-deep-dive]] 协议栈 / 状态机 / 配对 / 安全深挖
+- [[bus/wireless-iot/ble-failure-cases|ble-failure-cases]] 产线实战案例（0x3E / DoS / ADC 干扰等）
+- [[bus/wireless-iot/ble-index|ble-index]] 主题地图 + 读者路径

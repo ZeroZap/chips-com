@@ -40,4 +40,4 @@ Device 负责上报描述符并响应 Host 请求。
 
 ## 延伸阅读
 
-- `bus/usb/usb-practical.md`
+- [[bus/usb/usb-practical|usb-practical]]

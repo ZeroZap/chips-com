@@ -85,10 +85,10 @@ ISO-TP (ISO 15765-2)
 
 ## 延伸阅读
 
-- `bus/automotive/uds.md`
-- `bus/automotive/can.md`
-- `bus/automotive/canopen-deep-dive.md`
-- `bus/automotive/iso-tp-deep-dive.md`
-- `bus/automotive/iso-tp-practical.md`
-- `bus/automotive/iso-tp-failure-cases.md`
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表
+- [[bus/automotive/uds|uds]]
+- [[bus/automotive/can|can]]
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]]
+- [[bus/automotive/iso-tp-deep-dive|iso-tp-deep-dive]]
+- [[bus/automotive/iso-tp-practical|iso-tp-practical]]
+- [[bus/automotive/iso-tp-failure-cases|iso-tp-failure-cases]]
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表

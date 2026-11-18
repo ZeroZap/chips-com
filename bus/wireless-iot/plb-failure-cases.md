@@ -969,7 +969,7 @@ void battery_heat_control(void) {
 
 ## 关联文档
 
-- `bus/wireless-iot/plb.md` 主题入口
-- `bus/wireless-iot/plb-practical.md` 调试流程速查
-- `bus/wireless-iot/plb-deep-dive.md` 协议栈 / 编码 / BCH / GNSS 深挖
-- `bus/wireless-iot/plb-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/plb|plb]] 主题入口
+- [[bus/wireless-iot/plb-practical|plb-practical]] 调试流程速查
+- [[bus/wireless-iot/plb-deep-dive|plb-deep-dive]] 协议栈 / 编码 / BCH / GNSS 深挖
+- [[bus/wireless-iot/plb-index|plb-index]] 主题地图 + 导航

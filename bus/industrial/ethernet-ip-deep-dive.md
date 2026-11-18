@@ -535,8 +535,8 @@ PROFINET 以 GSDML、Device Name、DCP、AR/CR、PNIO 和 PLC 诊断为核心。
 
 ## 延伸阅读
 
-- `bus/industrial/ethernet-ip.md`
-- `bus/industrial/ethernet-ip-practical.md`
-- `bus/industrial/profinet-deep-dive.md`
-- `bus/industrial/industrial-ethernet-comparison.md`
-- `bus/industrial/ethernet-deep-dive.md`
+- [[bus/industrial/ethernet-ip|ethernet-ip]]
+- [[bus/industrial/ethernet-ip-practical|ethernet-ip-practical]]
+- [[bus/industrial/profinet-deep-dive|profinet-deep-dive]]
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]

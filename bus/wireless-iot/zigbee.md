@@ -88,7 +88,7 @@ Coordinator
 
 ## 延伸阅读
 
-- `bus/wireless-iot/zigbee-practical.md` 调试流程速查
-- `bus/wireless-iot/zigbee-deep-dive.md` 协议栈 / 入网 / 路由 / 安全深挖
-- `bus/wireless-iot/zigbee-failure-cases.md` 产线实战案例（CC2530 BUG / 50+ 设备掉线 / NCP crash 等）
-- `bus/wireless-iot/zigbee-index.md` 主题地图 + 读者路径
+- [[bus/wireless-iot/zigbee-practical|zigbee-practical]] 调试流程速查
+- [[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]] 协议栈 / 入网 / 路由 / 安全深挖
+- [[bus/wireless-iot/zigbee-failure-cases|zigbee-failure-cases]] 产线实战案例（CC2530 BUG / 50+ 设备掉线 / NCP crash 等）
+- [[bus/wireless-iot/zigbee-index|zigbee-index]] 主题地图 + 读者路径

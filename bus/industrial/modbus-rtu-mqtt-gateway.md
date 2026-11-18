@@ -272,6 +272,6 @@ client.on_message = on_command_received
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-gateway-design.md`：RTU 网关总体设计
-- `bus/industrial/modbus.md`：Modbus 协议
-- `bus/industrial/mqtt.md`：MQTT 协议
+- [[bus/power-rtu/rtu-gateway-design|rtu-gateway-design]]：RTU 网关总体设计
+- [[bus/industrial/modbus|modbus]]：Modbus 协议
+- [[bus/industrial/mqtt|mqtt]]：MQTT 协议

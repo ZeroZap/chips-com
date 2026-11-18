@@ -555,8 +555,8 @@ void test_timeout() {
 
 ## 关联文档
 
-- `i2c-deep-dive.md` 原理
-- `i2c-bus-recovery-playbook.md` 实战 SOP
-- `i2c-rtos-integration.md` RTOS 集成
-- `i2c-multimaster.md` 多 master
-- `i2c-smbus-timeout.md` SMBus timeout
+- [[basic/i2c-deep-dive|i2c-deep-dive]] 原理
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] 实战 SOP
+- [[basic/i2c-rtos-integration|i2c-rtos-integration]] RTOS 集成
+- [[basic/i2c-multimaster|i2c-multimaster]] 多 master
+- [[basic/i2c-smbus-timeout|i2c-smbus-timeout]] SMBus timeout

@@ -523,13 +523,13 @@ static inline void dtc_to_spn_fmi(wwh_dtc_t dtc, uint32_t *spn, uint8_t *fmi)
 
 ## 延伸阅读
 
-- `bus/automotive/wwh-obd.md` — WWH-OBD 专篇（标准分工 / 分层结构 / 三方对比）
-- `bus/automotive/wwh-obd-practical.md` — 工具链、初始化流程、DoIP 实操、检查清单
-- `bus/automotive/wwh-obd-failure-cases.md` — 故障案例
-- `bus/automotive/obd2.md` — 乘用车 OBD-II 概览（对照）
-- `bus/automotive/uds.md` / `bus/automotive/uds-deep-dive.md` — UDS 服务与会话（WWH-OBD 的服务底座）
-- `bus/automotive/iso-tp.md` — ISO-TP（DoCAN 的传输层）
-- `bus/automotive/j1939-index.md` — J1939 导航（商用车网络地基）
-- `bus/automotive/j1939-protocol-spec.md` — J1939 协议规范层（PGN/SPN/DTC 字段）
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/wwh-obd|wwh-obd]] — WWH-OBD 专篇（标准分工 / 分层结构 / 三方对比）
+- [[bus/automotive/wwh-obd-practical|wwh-obd-practical]] — 工具链、初始化流程、DoIP 实操、检查清单
+- [[bus/automotive/wwh-obd-failure-cases|wwh-obd-failure-cases]] — 故障案例
+- [[bus/automotive/obd2|obd2]] — 乘用车 OBD-II 概览（对照）
+- [[bus/automotive/uds|uds]] / [[bus/automotive/uds-deep-dive|uds-deep-dive]] — UDS 服务与会话（WWH-OBD 的服务底座）
+- [[bus/automotive/iso-tp|iso-tp]] — ISO-TP（DoCAN 的传输层）
+- [[bus/automotive/j1939-index|j1939-index]] — J1939 导航（商用车网络地基）
+- [[bus/automotive/j1939-protocol-spec|j1939-protocol-spec]] — J1939 协议规范层（PGN/SPN/DTC 字段）
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景

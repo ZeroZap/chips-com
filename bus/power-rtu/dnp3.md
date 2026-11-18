@@ -345,9 +345,9 @@ TCP 端口：20000（DNP3 默认）
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-protocols.md`：RTU 设备协议全集。
-- `bus/power-rtu/iec104.md`：与 IEC 104 对比（国内 vs 海外）。
-- `bus/power-rtu/dnp3-deep-dive.md`：DNP3 三层结构（应用 / 链路 / 物理）细节。
+- [[bus/power-rtu/rtu-protocols|rtu-protocols]]：RTU 设备协议全集。
+- [[bus/power-rtu/iec104|iec104]]：与 IEC 104 对比（国内 vs 海外）。
+- [[bus/power-rtu/dnp3-deep-dive|dnp3-deep-dive]]：DNP3 三层结构（应用 / 链路 / 物理）细节。
 - IEEE 1815 标准细节：本库暂无专篇，需查 IEEE 官方标准原文。
 
 ## 检查清单

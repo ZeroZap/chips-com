@@ -167,11 +167,11 @@ A：国内：国网 / 电力科学研究院；海外：DNV KEMA / TUV。
 
 ## 延伸阅读
 
-- `bus/power-rtu/iec104.md`：IEC 104 协议
-- `bus/power-rtu/iec104-practical.md`：IEC 104 实战
-- `bus/power-rtu/iec104-deep-dive.md`：IEC 104 深度
-- `bus/power-rtu/iec104-index.md`：IEC 104 导航
-- `bus/power-rtu/iec104-failure-cases.md`：20 个产线死机案例
+- [[bus/power-rtu/iec104|iec104]]：IEC 104 协议
+- [[bus/power-rtu/iec104-practical|iec104-practical]]：IEC 104 实战
+- [[bus/power-rtu/iec104-deep-dive|iec104-deep-dive]]：IEC 104 深度
+- [[bus/power-rtu/iec104-index|iec104-index]]：IEC 104 导航
+- [[bus/power-rtu/iec104-failure-cases|iec104-failure-cases]]：20 个产线死机案例
 
 ## 信息更新说明
 

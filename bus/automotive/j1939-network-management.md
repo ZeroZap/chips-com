@@ -11,6 +11,7 @@ tags:
 ## 目标
 
 J1939 网络管理是商用车 ECU 的核心, 涉及:
+
 - 64 bit NAME 字段
 - 地址声明协议 (Address Claimed, PGN 60928)
 - 命令地址 (Commanded Address, PGN 65240)
@@ -32,6 +33,7 @@ J1939 网络管理是商用车 ECU 的核心, 涉及:
 ```
 
 **关键**:
+
 - **身份号 (21 bit)**: 唯一标识, 多数用芯片 UID
 - **厂商代码 (11 bit)**: SAE 分配, 不可自定义
 - **ECU 实例 (6 bit, 但只有 0-3 有效, 4-7 保留)**: 同一 NAME 中区分
@@ -86,7 +88,7 @@ NAME 数值越小, 优先级越高
   相同身份号 -> 厂商代码小的优先
   相同厂商代码 -> ECU 实例小的优先
   ...
-  
+
 仲裁失败 (NAME 大的 ECU 输了) -> 不能用该地址, 必须换地址或 NAME
 ```
 
@@ -121,7 +123,7 @@ CAN ID: 0x18EEFF + SA (Source Address)
   PF = 238 (0xEE)
   PS = 0xFF (255, 全局, 因为是 Address Claimed)
   SA = 0-253 (自己的地址)
-  
+
 数据 (8 字节): NAME 字段 (LSB 在前)
 ```
 
@@ -188,9 +190,9 @@ void j1939_nm_on_claim(j1939_nm_t *nm, uint8_t src_addr, uint8_t *data) {
     for (int i = 0; i < 8; i++) {
         peer_name |= ((uint64_t)data[i] << (i * 8));
     }
-    
+
     nm->peer_names[src_addr] = peer_name;
-    
+
     /* 检查是否和我冲突 */
     if (src_addr == nm->my_address) {
         if (peer_name == nm->my_name) {
@@ -229,7 +231,7 @@ void j1939_nm_periodic(j1939_nm_t *nm) {
         j1939_nm_send_claim(nm);
         last_claim = HAL_GetTick();
     }
-    
+
     /* 检查冲突后处理 */
     if (nm->address_conflict) {
         uint8_t new_addr = j1939_nm_find_free_address(nm);
@@ -283,7 +285,7 @@ void j1939_nm_on_commanded_addr(j1939_nm_t *nm, uint8_t *data) {
     for (int i = 0; i < 7; i++) {
         new_name |= ((uint64_t)data[i+1] << (i * 8));
     }
-    
+
     if (new_name == nm->my_name) {
         log_info("J1939 收到命令地址 0x%02x -> 0x%02x", nm->my_address, new_addr);
         nm->my_address = new_addr;
@@ -387,9 +389,9 @@ const uint8_t j1939_address_map[256] = {
 ```text
 SAE 厂商代码 (MFC) 必须申请:
   https://www.sae.org/standards/content/j1924/
-  
+
   申请后获得 11 bit 数字, 例如 0x4F1 (Altera 厂商代码)
-  
+
   不可自定义, 否则冲突
 ```
 
@@ -522,12 +524,12 @@ recvmsg(s, &msg, ...);
 
 ## 关联文档
 
-- `bus/automotive/j1939-deep-dive.md` 原理
-- `bus/automotive/j1939-practical.md` 速查
-- `bus/automotive/j1939-failure-cases.md` 产线案例
-- `bus/automotive/j1939-transport-protocol.md` TP 多帧
-- `bus/automotive/j1939-index.md` 导航
-- `can-deep-dive.md` CAN 基础
-- `can-multimaster-and-bus-off.md` CAN 多 master
-- `bus/uds-*.md` UDS (诊断)
-- `bus/iso-tp-*.md` ISO-TP
+- [[bus/automotive/j1939-deep-dive|j1939-deep-dive]] 原理
+- [[bus/automotive/j1939-practical|j1939-practical]] 速查
+- [[bus/automotive/j1939-failure-cases|j1939-failure-cases]] 产线案例
+- [[bus/automotive/j1939-transport-protocol|j1939-transport-protocol]] TP 多帧
+- [[bus/automotive/j1939-index|j1939-index]] 导航
+- [[basic/can-deep-dive|can-deep-dive]] CAN 基础
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] CAN 多 master
+- [[bus/automotive/uds-index|UDS]] (诊断)
+- [[bus/automotive/iso-tp-index|ISO-TP]]

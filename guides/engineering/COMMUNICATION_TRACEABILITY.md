@@ -135,13 +135,13 @@ ID 应稳定，不随文档标题变化。
 
 | Gate | 必须覆盖 | 输入文档 | 输出证据 |
 | --- | --- | --- | --- |
-| G0 | 需求和风险 | `guides/learning/PROTOCOL_SELECTION.md` | 需求表、风险表 |
-| G1 | 设计控制 | `REVIEW_CHECKLIST.md` | 评审记录、设计问题关闭 |
-| G2 | 最小通信 | `guides/troubleshooting/MEASUREMENT_EXAMPLES.md` | 波形、抓包、bring-up log |
-| G3 | 集成和错误路径 | `guides/troubleshooting/DEBUG_PLAYBOOK.md` | 协议 trace、错误计数 |
-| G4 | 回归 | `guides/engineering/REGRESSION_TEST_MATRIX.md` | 自动化结果、artifact |
-| G5 | 量产 | `guides/engineering/PRODUCTION_TEST.md` | 工位测试记录 |
-| G6 | 发布 | `guides/engineering/COMMUNICATION_QUALITY_GATE.md` | 发布报告、风险接受 |
+| G0 | 需求和风险 | [[guides/learning/PROTOCOL_SELECTION\|PROTOCOL_SELECTION]] | 需求表、风险表 |
+| G1 | 设计控制 | [[REVIEW_CHECKLIST\|REVIEW_CHECKLIST]] | 评审记录、设计问题关闭 |
+| G2 | 最小通信 | [[guides/troubleshooting/MEASUREMENT_EXAMPLES\|MEASUREMENT_EXAMPLES]] | 波形、抓包、bring-up log |
+| G3 | 集成和错误路径 | [[guides/troubleshooting/DEBUG_PLAYBOOK\|DEBUG_PLAYBOOK]] | 协议 trace、错误计数 |
+| G4 | 回归 | [[guides/engineering/REGRESSION_TEST_MATRIX\|REGRESSION_TEST_MATRIX]] | 自动化结果、artifact |
+| G5 | 量产 | [[guides/engineering/PRODUCTION_TEST\|PRODUCTION_TEST]] | 工位测试记录 |
+| G6 | 发布 | [[guides/engineering/COMMUNICATION_QUALITY_GATE\|COMMUNICATION_QUALITY_GATE]] | 发布报告、风险接受 |
 
 每个 R3/R4 风险都应至少出现在 G3、G4 和 G6。
 
@@ -203,9 +203,9 @@ ID 应稳定，不随文档标题变化。
 
 ## 延伸阅读
 
-- `guides/engineering/COMMUNICATION_QUALITY_GATE.md`
-- `guides/engineering/REGRESSION_TEST_MATRIX.md`
-- `guides/engineering/AUTOMATED_TEST_HARNESS.md`
-- `guides/engineering/COMMUNICATION_OBSERVABILITY.md`
-- `guides/troubleshooting/FIELD_DIAGNOSTIC_RUNBOOK.md`
-- `guides/troubleshooting/FAILURE_CASES.md`
+- [[guides/engineering/COMMUNICATION_QUALITY_GATE|COMMUNICATION_QUALITY_GATE]]
+- [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]]
+- [[guides/engineering/AUTOMATED_TEST_HARNESS|AUTOMATED_TEST_HARNESS]]
+- [[guides/engineering/COMMUNICATION_OBSERVABILITY|COMMUNICATION_OBSERVABILITY]]
+- [[guides/troubleshooting/FIELD_DIAGNOSTIC_RUNBOOK|FIELD_DIAGNOSTIC_RUNBOOK]]
+- [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]

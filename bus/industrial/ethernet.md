@@ -46,6 +46,6 @@ MCU/SoC MAC <-> PHY <-> RJ45
 
 ## 延伸阅读
 
-- `basic/ethernet-phy.md`
-- `bus/industrial/ethernet-deep-dive.md`
-- `bus/industrial/ethernet-modbus-tcp-practical.md`
+- [[basic/ethernet-phy|ethernet-phy]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]
+- [[bus/industrial/ethernet-modbus-tcp-practical|ethernet-modbus-tcp-practical]]

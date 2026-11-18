@@ -742,7 +742,7 @@ Semtech 官方 [LoRaMac-node](https://github.com/Lora-net/LoRaMac-node) 是 LoRa
 
 ## 关联文档
 
-- `bus/wireless-iot/lora.md` 主题入口
-- `bus/wireless-iot/lora-practical.md` 调试流程速查
-- `bus/wireless-iot/lora-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/lora-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/lora|lora]] 主题入口
+- [[bus/wireless-iot/lora-practical|lora-practical]] 调试流程速查
+- [[bus/wireless-iot/lora-failure-cases|lora-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/lora-index|lora-index]] 主题地图 + 导航

@@ -359,7 +359,7 @@ void gfc_rx_cb(const can_frame_t *f) {
 
 ## 相关文档
 
-- `bus/automotive/canopen.md` — CANopen 定位、对象字典、SDO/PDO/NMT
-- `bus/automotive/canopen-failure-cases.md` — CANopen 产线案例（Node ID 冲突 / SDO 字节序 / PDO 映射 / NMT）
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表（按层 + 按协议）
-- `bus/automotive/can-protocol-family.md` — CAN 协议全景与覆盖缺口
+- [[bus/automotive/canopen|canopen]] — CANopen 定位、对象字典、SDO/PDO/NMT
+- [[bus/automotive/canopen-failure-cases|canopen-failure-cases]] — CANopen 产线案例（Node ID 冲突 / SDO 字节序 / PDO 映射 / NMT）
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表（按层 + 按协议）
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 协议全景与覆盖缺口

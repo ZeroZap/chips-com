@@ -66,5 +66,5 @@ MQTT 偏云端消息发布/订阅。
 
 ## 延伸阅读
 
-- `bus/industrial/ethernet-deep-dive.md`
-- `guides/learning/APPLICATION_SCENARIOS.md`
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]
+- [[guides/learning/APPLICATION_SCENARIOS|APPLICATION_SCENARIOS]]

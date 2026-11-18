@@ -367,9 +367,9 @@ uint32_t channel_mask = 0x08280000;  // bit 11, 15, 19, 25 = 1
 
 ## 关联文档
 
-- `bus/wireless-iot/thread.md` 主题入口
-- `bus/wireless-iot/thread-deep-dive.md` 协议栈深挖
-- `bus/wireless-iot/thread-failure-cases.md` 产线实战案例
-- `bus/wireless-iot/thread-index.md` 主题地图 + 导航
-- `bus/matter-*.md` Matter over Thread
-- `bus/zigbee-*.md` 同源 PHY 对比
+- [[bus/wireless-iot/thread|thread]] 主题入口
+- [[bus/wireless-iot/thread-deep-dive|thread-deep-dive]] 协议栈深挖
+- [[bus/wireless-iot/thread-failure-cases|thread-failure-cases]] 产线实战案例
+- [[bus/wireless-iot/thread-index|thread-index]] 主题地图 + 导航
+- [[bus/wireless-iot/matter-index|Matter]] Matter over Thread
+- [[bus/wireless-iot/zigbee-index|ZigBee]] 同源 PHY 对比

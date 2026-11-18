@@ -105,8 +105,8 @@ DL/T 645 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/dlt645.md`：DL/T 645 协议
-- `bus/power-rtu/cjt188-vendor-bench.md`：CJ/T 188 对标（水气表）
+- [[bus/power-rtu/dlt645|dlt645]]：DL/T 645 协议
+- [[bus/power-rtu/cjt188-vendor-bench|cjt188-vendor-bench]]：CJ/T 188 对标（水气表）
 
 ## 信息更新说明
 

@@ -814,13 +814,13 @@ if (frame->data[0] == 0x00 && frame->data[1] == 0x00) {
 
 ## 关联主题
 
-- `bus/automotive/iso-tp.md` — ISO-TP 定位、帧类型、关键参数
-- `bus/automotive/iso-tp-deep-dive.md` — 寻址方式、PCI 编码、超时、缓冲区
-- `bus/automotive/iso-tp-practical.md` — 调试流程与检查清单
-- `bus/automotive/uds-failure-cases.md` — UDS 层案例（ISO-TP 正常但 NRC 的场景）
-- `bus/automotive/uds-deep-dive.md` — UDS 与传输层的分层边界
-- `basic/can-failure-cases.md` — CAN 物理层/链路层案例
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/iso-tp|iso-tp]] — ISO-TP 定位、帧类型、关键参数
+- [[bus/automotive/iso-tp-deep-dive|iso-tp-deep-dive]] — 寻址方式、PCI 编码、超时、缓冲区
+- [[bus/automotive/iso-tp-practical|iso-tp-practical]] — 调试流程与检查清单
+- [[bus/automotive/uds-failure-cases|uds-failure-cases]] — UDS 层案例（ISO-TP 正常但 NRC 的场景）
+- [[bus/automotive/uds-deep-dive|uds-deep-dive]] — UDS 与传输层的分层边界
+- [[basic/can-failure-cases|can-failure-cases]] — CAN 物理层/链路层案例
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景
 
 ## 更新记录
 

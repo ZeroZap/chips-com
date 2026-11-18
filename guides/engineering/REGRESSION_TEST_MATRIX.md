@@ -158,10 +158,10 @@ Regression trigger
 
 ## 与其他文档的关系
 
-- `guides/troubleshooting/MEASUREMENT_EXAMPLES.md`：说明如何采集证据。
-- `guides/troubleshooting/FAILURE_CASES.md`：记录典型故障闭环。
-- `guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md`：给现场快速定位方向。
-- `guides/engineering/PRODUCTION_TEST.md`：定义量产工位测试策略。
-- `guides/engineering/RELIABILITY_GUIDE.md`：定义长期可靠性和恢复策略。
-- `REVIEW_CHECKLIST.md`：定义设计评审入口。
-- `guides/learning/LABS.md`：把矩阵拆成可学习的实验路线。
+- [[guides/troubleshooting/MEASUREMENT_EXAMPLES|MEASUREMENT_EXAMPLES]]：说明如何采集证据。
+- [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]：记录典型故障闭环。
+- [[guides/troubleshooting/TROUBLESHOOTING_QUICKREF|TROUBLESHOOTING_QUICKREF]]：给现场快速定位方向。
+- [[guides/engineering/PRODUCTION_TEST|PRODUCTION_TEST]]：定义量产工位测试策略。
+- [[guides/engineering/RELIABILITY_GUIDE|RELIABILITY_GUIDE]]：定义长期可靠性和恢复策略。
+- [[REVIEW_CHECKLIST|REVIEW_CHECKLIST]]：定义设计评审入口。
+- [[guides/learning/LABS|LABS]]：把矩阵拆成可学习的实验路线。

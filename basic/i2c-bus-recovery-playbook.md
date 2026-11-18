@@ -9,7 +9,7 @@ tags:
 
 ## 目标
 
-本文是 I2C 总线被拉低死锁的实战手册。`i2c-deep-dive.md` 讲原理和体系，本手册聚焦：
+本文是 I2C 总线被拉低死锁的实战手册。[[basic/i2c-deep-dive|i2c-deep-dive]] 讲原理和体系，本手册聚焦：
 - 现场排障的 30 分钟快速定位流程
 - 可直接拷进项目的 C 代码骨架
 - 常见 MCU 平台的真实寄存器序列
@@ -487,12 +487,12 @@ dmesg | grep -i i2c
 
 ## 关联文档
 
-- `i2c-deep-dive.md` 原理和体系
-- `i2c-practical.md` 速查
-- `bus/onboard/smbus-pmbus-practical.md` SMBus timeout 差异
-- `bus/onboard/i3c-deep-dive.md` I3C 演进和兼容性
-- `bus/display/mipi-csi-dsi-debug.md` 传感器侧 I2C 初始化
-- `bus/display/fpd-link-gmsl-practical.md` 远端 I2C / 反向通道
+- [[basic/i2c-deep-dive|i2c-deep-dive]] 原理和体系
+- [[basic/i2c-practical|i2c-practical]] 速查
+- [[bus/onboard/smbus-pmbus-practical|smbus-pmbus-practical]] SMBus timeout 差异
+- [[bus/onboard/i3c-deep-dive|i3c-deep-dive]] I3C 演进和兼容性
+- [[bus/display/mipi-csi-dsi-debug|mipi-csi-dsi-debug]] 传感器侧 I2C 初始化
+- [[bus/display/fpd-link-gmsl-practical|fpd-link-gmsl-practical]] 远端 I2C / 反向通道
 
 ## 来源
 

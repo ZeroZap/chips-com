@@ -114,7 +114,7 @@ LoRa / Sigfox              → 远距非授权（Sub-1 GHz），更远更低速
 
 ## 延伸阅读
 
-- `bus/wireless-iot/lte-iot-practical.md` 调试流程速查 / 5 秒定位 / 错误码表
-- `bus/wireless-iot/lte-iot-deep-dive.md` 协议栈 / 蜂窝注册 / PSM/eDRX / 信令深挖
-- `bus/wireless-iot/lte-iot-failure-cases.md` 产线实战案例（附着 / PDP / DNS / TCP 等）
-- `bus/wireless-iot/lte-iot-index.md` 主题地图 + 读者路径
+- [[bus/wireless-iot/lte-iot-practical|lte-iot-practical]] 调试流程速查 / 5 秒定位 / 错误码表
+- [[bus/wireless-iot/lte-iot-deep-dive|lte-iot-deep-dive]] 协议栈 / 蜂窝注册 / PSM/eDRX / 信令深挖
+- [[bus/wireless-iot/lte-iot-failure-cases|lte-iot-failure-cases]] 产线实战案例（附着 / PDP / DNS / TCP 等）
+- [[bus/wireless-iot/lte-iot-index|lte-iot-index]] 主题地图 + 读者路径

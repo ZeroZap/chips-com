@@ -655,11 +655,11 @@ typedef enum {
 
 ## 关联文档
 
-- `uart-practical.md` 速查
-- `uart-failure-cases.md` 产线死机案例
-- `uart-rs485-and-flow-control.md` RS485 / 流控专题
-- `uart-dma-circular-and-rtos.md` DMA + 环形缓冲 + RTOS
-- `uart-index.md` 导航
-- `rs232-rs485.md` 物理层基础
-- `bus/industrial/modbus.md` Modbus RTU
-- `i2c-deep-dive.md` I2C 原理 (对比)
+- [[basic/uart-practical|uart-practical]] 速查
+- [[basic/uart-failure-cases|uart-failure-cases]] 产线死机案例
+- [[basic/uart-rs485-and-flow-control|uart-rs485-and-flow-control]] RS485 / 流控专题
+- [[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]] DMA + 环形缓冲 + RTOS
+- [[basic/uart-index|uart-index]] 导航
+- [[basic/rs232-rs485|rs232-rs485]] 物理层基础
+- [[bus/industrial/modbus|modbus]] Modbus RTU
+- [[basic/i2c-deep-dive|i2c-deep-dive]] I2C 原理 (对比)

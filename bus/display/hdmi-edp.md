@@ -71,5 +71,5 @@ HDMI 常见于外接显示。
 
 ## 延伸阅读
 
-- `bus/display/display-interfaces.md`
-- `bus/display/mipi-csi-dsi-deep-dive.md`
+- [[bus/display/display-interfaces|display-interfaces]]
+- [[bus/display/mipi-csi-dsi-deep-dive|mipi-csi-dsi-deep-dive]]

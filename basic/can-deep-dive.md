@@ -499,15 +499,15 @@ RECEIVE
 
 ## 关联文档
 
-- `can-practical.md` 速查
-- `can-failure-cases.md` 产线死机案例
-- `can-multimaster-and-bus-off.md` 多 master + 总线关闭
-- `can-fd-and-can-xl.md` 演进
-- `can-rtos-integration.md` RTOS + SocketCAN
-- `can-vs-other-bus.md` 跨总线对比
-- `can-index.md` 导航
-- `bus/automotive/canopen-deep-dive.md` CANopen
-- `bus/automotive/canopen-practical.md` CANopen 实战
-- `basic/can-phy.md` CAN 物理层
-- `i2c-bus-recovery-playbook.md` I2C recovery (I2C 也有错误恢复)
-- `i2c-state-machine.md` I2C 状态机 (对比)
+- [[basic/can-practical|can-practical]] 速查
+- [[basic/can-failure-cases|can-failure-cases]] 产线死机案例
+- [[basic/can-multimaster-and-bus-off|can-multimaster-and-bus-off]] 多 master + 总线关闭
+- [[basic/can-fd-and-can-xl|can-fd-and-can-xl]] 演进
+- [[basic/can-rtos-integration|can-rtos-integration]] RTOS + SocketCAN
+- [[basic/can-vs-other-bus|can-vs-other-bus]] 跨总线对比
+- [[basic/can-index|can-index]] 导航
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]] CANopen
+- [[bus/automotive/canopen-practical|canopen-practical]] CANopen 实战
+- [[basic/can-phy|can-phy]] CAN 物理层
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] I2C recovery (I2C 也有错误恢复)
+- [[basic/i2c-state-machine|i2c-state-machine]] I2C 状态机 (对比)

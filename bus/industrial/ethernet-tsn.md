@@ -62,5 +62,5 @@ TSN 是标准以太网增强方向。
 
 ## 延伸阅读
 
-- `bus/industrial/ethernet-deep-dive.md`
-- `bus/industrial/industrial-ethernet-comparison.md`
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]

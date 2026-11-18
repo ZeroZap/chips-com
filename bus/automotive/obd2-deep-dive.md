@@ -508,7 +508,7 @@ OBD-II 的标准体系比想象的宽，容易漏掉：
 
 WWH-OBD 的应用层 **ISO 27145-3 定义的是 UDS 服务的子集**，会话层直接引用 ISO 14229-2 —— 也就是说，商用车 OBD 是站在 UDS 体系上的，而不是另起炉灶。
 
-> ⚠️ **ISO 27145-5 不存在**，系列为 1 / 2 / 3 / 4 / 6，跳过 5。完整分工见 `bus/automotive/wwh-obd.md`。
+> ⚠️ **ISO 27145-5 不存在**，系列为 1 / 2 / 3 / 4 / 6，跳过 5。完整分工见 [[bus/automotive/wwh-obd|wwh-obd]]。
 
 ### Mode 与 UDS 服务的对应
 
@@ -562,12 +562,12 @@ OBD-II Mode 09  ≈  UDS 0x22 —— 但走扩展寻址多帧
 
 ## 延伸阅读
 
-- `bus/automotive/obd2.md` — OBD-II 概览、九个 Mode、PID 速查
-- `bus/automotive/obd2-practical.md` — 工具链、调试流程、检查清单
-- `bus/automotive/obd2-failure-cases.md` — 故障案例
-- `bus/automotive/uds.md` — UDS 入口
-- `bus/automotive/uds-deep-dive.md` — UDS 深度（与本文对照）
-- `bus/automotive/wwh-obd.md` — WWH-OBD（ISO 27145）商用车体系
-- `bus/automotive/iso-tp.md` — ISO-TP 入口
-- `bus/automotive/can-standards-map.md` — CAN 家族标准规范总表
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/obd2|obd2]] — OBD-II 概览、九个 Mode、PID 速查
+- [[bus/automotive/obd2-practical|obd2-practical]] — 工具链、调试流程、检查清单
+- [[bus/automotive/obd2-failure-cases|obd2-failure-cases]] — 故障案例
+- [[bus/automotive/uds|uds]] — UDS 入口
+- [[bus/automotive/uds-deep-dive|uds-deep-dive]] — UDS 深度（与本文对照）
+- [[bus/automotive/wwh-obd|wwh-obd]] — WWH-OBD（ISO 27145）商用车体系
+- [[bus/automotive/iso-tp|iso-tp]] — ISO-TP 入口
+- [[bus/automotive/can-standards-map|can-standards-map]] — CAN 家族标准规范总表
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景

@@ -225,6 +225,6 @@ void on_dnp3_event(point_t *point) {
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-gateway-design.md`：RTU 网关总体设计
-- `bus/power-rtu/dnp3.md`：DNP3 协议
-- `bus/power-rtu/iec104.md`：IEC 104 协议
+- [[bus/power-rtu/rtu-gateway-design|rtu-gateway-design]]：RTU 网关总体设计
+- [[bus/power-rtu/dnp3|dnp3]]：DNP3 协议
+- [[bus/power-rtu/iec104|iec104]]：IEC 104 协议

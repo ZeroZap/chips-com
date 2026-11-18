@@ -145,6 +145,6 @@ Schneider EcoStruxure：
 
 ## 延伸阅读
 
-- `bus/industrial/opcua.md`：OPC UA 协议
-- `bus/power-rtu/bacnet-vendor-bench.md`：BACnet 对标（楼宇 + 工业 4.0）
-- `bus/industrial/modbus-rtu-mqtt-gateway.md`：Modbus ↔ MQTT 网关
+- [[bus/industrial/opcua|opcua]]：OPC UA 协议
+- [[bus/power-rtu/bacnet-vendor-bench|bacnet-vendor-bench]]：BACnet 对标（楼宇 + 工业 4.0）
+- [[bus/industrial/modbus-rtu-mqtt-gateway|modbus-rtu-mqtt-gateway]]：Modbus ↔ MQTT 网关

@@ -284,12 +284,12 @@ field-dump-<serial>-<time>/
 
 关闭后要更新：
 
-- `guides/troubleshooting/FAILURE_CASES.md`：记录现象、排查、根因、修复。
-- `guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md`：补现场速查入口。
-- `guides/engineering/REGRESSION_TEST_MATRIX.md`：补回归用例。
-- `guides/engineering/AUTOMATED_TEST_HARNESS.md`：补 adapter 或测试脚本能力。
-- `guides/engineering/COMMUNICATION_OBSERVABILITY.md`：补计数器、状态或日志字段。
-- `guides/engineering/COMMUNICATION_QUALITY_GATE.md`：补门禁要求或风险接受规则。
+- [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]：记录现象、排查、根因、修复。
+- [[guides/troubleshooting/TROUBLESHOOTING_QUICKREF|TROUBLESHOOTING_QUICKREF]]：补现场速查入口。
+- [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]]：补回归用例。
+- [[guides/engineering/AUTOMATED_TEST_HARNESS|AUTOMATED_TEST_HARNESS]]：补 adapter 或测试脚本能力。
+- [[guides/engineering/COMMUNICATION_OBSERVABILITY|COMMUNICATION_OBSERVABILITY]]：补计数器、状态或日志字段。
+- [[guides/engineering/COMMUNICATION_QUALITY_GATE|COMMUNICATION_QUALITY_GATE]]：补门禁要求或风险接受规则。
 
 ## 现场沟通模板
 
@@ -310,10 +310,10 @@ field-dump-<serial>-<time>/
 
 ## 延伸阅读
 
-- `guides/troubleshooting/DEBUG_PLAYBOOK.md`
-- `guides/troubleshooting/TROUBLESHOOTING_QUICKREF.md`
-- `guides/troubleshooting/FAILURE_CASES.md`
-- `guides/engineering/COMMUNICATION_OBSERVABILITY.md`
-- `guides/troubleshooting/MEASUREMENT_EXAMPLES.md`
-- `guides/engineering/REGRESSION_TEST_MATRIX.md`
-- `guides/engineering/COMMUNICATION_QUALITY_GATE.md`
+- [[guides/troubleshooting/DEBUG_PLAYBOOK|DEBUG_PLAYBOOK]]
+- [[guides/troubleshooting/TROUBLESHOOTING_QUICKREF|TROUBLESHOOTING_QUICKREF]]
+- [[guides/troubleshooting/FAILURE_CASES|FAILURE_CASES]]
+- [[guides/engineering/COMMUNICATION_OBSERVABILITY|COMMUNICATION_OBSERVABILITY]]
+- [[guides/troubleshooting/MEASUREMENT_EXAMPLES|MEASUREMENT_EXAMPLES]]
+- [[guides/engineering/REGRESSION_TEST_MATRIX|REGRESSION_TEST_MATRIX]]
+- [[guides/engineering/COMMUNICATION_QUALITY_GATE|COMMUNICATION_QUALITY_GATE]]

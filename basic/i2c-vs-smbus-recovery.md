@@ -571,11 +571,11 @@ void smbus_tlow_reset_per_xfer(smbus_tlow_t *t) {
 
 ## 关联文档
 
-- `i2c-deep-dive.md` I2C 原理 + 故障树
-- `i2c-bus-recovery-playbook.md` 8 步恢复 SOP
-- `i2c-smbus-timeout.md` SMBus timeout 详细数值
-- `bus/onboard/smbus-pmbus-practical.md` SMBus 事务 / PEC / Alert
-- `i2c-multimaster.md` 多 master 仲裁
-- `i2c-failure-cases.md` 案例 2 (PMIC 上电时序)
+- [[basic/i2c-deep-dive|i2c-deep-dive]] I2C 原理 + 故障树
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] 8 步恢复 SOP
+- [[basic/i2c-smbus-timeout|i2c-smbus-timeout]] SMBus timeout 详细数值
+- [[bus/onboard/smbus-pmbus-practical|smbus-pmbus-practical]] SMBus 事务 / PEC / Alert
+- [[basic/i2c-multimaster|i2c-multimaster]] 多 master 仲裁
+- [[basic/i2c-failure-cases|i2c-failure-cases]] 案例 2 (PMIC 上电时序)
 - SMBus 2.0 spec
 - NXP UM10204 I2C spec

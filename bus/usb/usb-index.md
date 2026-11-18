@@ -266,7 +266,7 @@ USB 速查 → 跨总线对比 → USB 桥接 (USB <-> CAN / SPI / UART)
 | [[bus/usb/usb-class-drivers\|usb-class-drivers]]               | 类驱动改版时      | 类驱动     |
 | [[bus/usb/usb-dma-and-rtos\|usb-dma-and-rtos]]                | RTOS 改版时       | DMA + RTOS |
 | [[bus/usb/usb-vs-other-bus\|usb-vs-other-bus]]                | 新总线出现时      | 跨总线     |
-| usb-dfu-*.md                       | 改版才更新        | DFU 子主题 |
+| [[bus/usb/usb-dfu\|USB DFU]]                       | 改版才更新        | DFU 子主题 |
 | [[bus/usb/usb-index\|usb-index]]                       | 新增 / 删除文档时 | 导航       |
 
 ## 关联主题 (chips-com 其他目录)

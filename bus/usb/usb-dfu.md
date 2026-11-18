@@ -61,6 +61,6 @@ Host 查询状态
 
 ## 延伸阅读
 
-- `bus/usb/usb-practical.md`
-- `bus/usb/usb-deep-dive.md`
-- `guides/engineering/PRODUCTION_TEST.md`
+- [[bus/usb/usb-practical|usb-practical]]
+- [[bus/usb/usb-deep-dive|usb-deep-dive]]
+- [[guides/engineering/PRODUCTION_TEST|PRODUCTION_TEST]]

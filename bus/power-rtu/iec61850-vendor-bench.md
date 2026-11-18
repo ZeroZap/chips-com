@@ -116,6 +116,6 @@ IEC 61850 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/iec61850.md`：IEC 61850 协议
-- `bus/power-rtu/iec104-vendor-bench.md`：IEC 104 对标
-- `bus/power-rtu/dnp3-vendor-bench.md`：DNP3 对标
+- [[bus/power-rtu/iec61850|iec61850]]：IEC 61850 协议
+- [[bus/power-rtu/iec104-vendor-bench|iec104-vendor-bench]]：IEC 104 对标
+- [[bus/power-rtu/dnp3-vendor-bench|dnp3-vendor-bench]]：DNP3 对标

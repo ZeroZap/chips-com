@@ -144,7 +144,7 @@ PLB 406 MHz   │ 救命用，单向求救援
 
 ## 延伸阅读
 
-- `bus/wireless-iot/rescue-comms-practical.md` 调试速查 / 5 秒定位 / 错误码
-- `bus/wireless-iot/rescue-comms-deep-dive.md` 卫星链路 / SBD / PLB / 加密深挖
-- `bus/wireless-iot/rescue-comms-failure-cases.md` 产线 + 户外实战案例（8-9 个）
-- `bus/wireless-iot/rescue-comms-index.md` 主题地图 + 读者路径
+- [[bus/wireless-iot/rescue-comms-practical|rescue-comms-practical]] 调试速查 / 5 秒定位 / 错误码
+- [[bus/wireless-iot/rescue-comms-deep-dive|rescue-comms-deep-dive]] 卫星链路 / SBD / PLB / 加密深挖
+- [[bus/wireless-iot/rescue-comms-failure-cases|rescue-comms-failure-cases]] 产线 + 户外实战案例（8-9 个）
+- [[bus/wireless-iot/rescue-comms-index|rescue-comms-index]] 主题地图 + 读者路径

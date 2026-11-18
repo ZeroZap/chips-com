@@ -2224,8 +2224,8 @@ HAL_FDCAN_ConfigTxQueueFifo(&hfdcan1, FDCAN_TX_PRIORITY_HIGH, 0);
 
 ## 关联文档
 
-- `bus/automotive/can.md`：CAN 总览
-- `bus/automotive/canopen-deep-dive.md`：位时序 + 采样点 + CAN FD 协议层
-- `bus/automotive/canopen-practical.md`：调试实践
-- `bus/automotive/iso-tp-deep-dive.md`：CAN 多帧传输
-- `bus/automotive/uds-practical.md`：UDS 诊断（基于 CAN）
+- [[bus/automotive/can|can]]：CAN 总览
+- [[bus/automotive/canopen-deep-dive|canopen-deep-dive]]：位时序 + 采样点 + CAN FD 协议层
+- [[bus/automotive/canopen-practical|canopen-practical]]：调试实践
+- [[bus/automotive/iso-tp-deep-dive|iso-tp-deep-dive]]：CAN 多帧传输
+- [[bus/automotive/uds-practical|uds-practical]]：UDS 诊断（基于 CAN）

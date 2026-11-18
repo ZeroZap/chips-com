@@ -129,7 +129,7 @@ PLB 跟消费电子不同，**故障 = 人命**。产线必查项：
 
 ## 延伸阅读
 
-- `bus/wireless-iot/plb-practical.md` 调试流程速查 / 抓包 / 错误码
-- `bus/wireless-iot/plb-deep-dive.md` COSPAS-SARSAT / 406 MHz 编码 / BCH / UIN 解析深挖
-- `bus/wireless-iot/plb-failure-cases.md` 产线实战案例（编码错 / 触发错 / 认证失败等）
-- `bus/wireless-iot/plb-index.md` 主题地图 + 读者路径
+- [[bus/wireless-iot/plb-practical|plb-practical]] 调试流程速查 / 抓包 / 错误码
+- [[bus/wireless-iot/plb-deep-dive|plb-deep-dive]] COSPAS-SARSAT / 406 MHz 编码 / BCH / UIN 解析深挖
+- [[bus/wireless-iot/plb-failure-cases|plb-failure-cases]] 产线实战案例（编码错 / 触发错 / 认证失败等）
+- [[bus/wireless-iot/plb-index|plb-index]] 主题地图 + 读者路径

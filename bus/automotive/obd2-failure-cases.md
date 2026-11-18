@@ -1032,13 +1032,13 @@ def request_with_barrier(req_id, payload, resp_ids, timeout=2.0):
 
 ## 关联主题
 
-- `bus/automotive/obd2.md` — OBD-II 概览、九个 Mode、PID 速查
-- `bus/automotive/obd2-deep-dive.md` — PID 空间、I/M 监测模型、Mode 详解
-- `bus/automotive/obd2-practical.md` — 工具链、调试流程、检查清单
-- `bus/automotive/uds-failure-cases.md` — UDS 案例（OBD-II 的对照）
-- `bus/automotive/iso-tp-failure-cases.md` — 传输层案例
-- `basic/can-failure-cases.md` — CAN 物理层/链路层案例
-- `bus/automotive/can-protocol-family.md` — CAN 家族全景
+- [[bus/automotive/obd2|obd2]] — OBD-II 概览、九个 Mode、PID 速查
+- [[bus/automotive/obd2-deep-dive|obd2-deep-dive]] — PID 空间、I/M 监测模型、Mode 详解
+- [[bus/automotive/obd2-practical|obd2-practical]] — 工具链、调试流程、检查清单
+- [[bus/automotive/uds-failure-cases|uds-failure-cases]] — UDS 案例（OBD-II 的对照）
+- [[bus/automotive/iso-tp-failure-cases|iso-tp-failure-cases]] — 传输层案例
+- [[basic/can-failure-cases|can-failure-cases]] — CAN 物理层/链路层案例
+- [[bus/automotive/can-protocol-family|can-protocol-family]] — CAN 家族全景
 
 ## 更新记录
 

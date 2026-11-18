@@ -52,5 +52,5 @@ PROFINET 是工业以太网体系。
 
 ## 延伸阅读
 
-- `bus/industrial/profinet.md`
-- `bus/industrial/industrial-ethernet-comparison.md`
+- [[bus/industrial/profinet|profinet]]
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]

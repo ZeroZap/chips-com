@@ -541,14 +541,14 @@ void usb_cdc_rx_task(void *arg) {
 
 ## 关联文档
 
-- `bus/usb/usb-deep-dive.md` 原理
-- `bus/usb/usb-practical.md` 速查
-- `bus/usb/usb-failure-cases.md` 产线案例
-- `bus/usb/usb-enumeration-and-descriptors.md` 枚举
-- `bus/usb/usb-class-drivers.md` CDC / HID / MSC / DFU
-- `bus/usb/usb-vs-other-bus.md` 跨总线对比
-- `bus/usb/usb-index.md` 导航
-- `bus/usb/usb-dfu-deep-dive.md` DFU 协议
-- `bus/usb/usb-dfu-practical.md` DFU 实战
-- `i2c-state-machine.md` I2C 状态机 (对比)
-- `uart-dma-circular-and-rtos.md` UART DMA (对比)
+- [[bus/usb/usb-deep-dive|usb-deep-dive]] 原理
+- [[bus/usb/usb-practical|usb-practical]] 速查
+- [[bus/usb/usb-failure-cases|usb-failure-cases]] 产线案例
+- [[bus/usb/usb-enumeration-and-descriptors|usb-enumeration-and-descriptors]] 枚举
+- [[bus/usb/usb-class-drivers|usb-class-drivers]] CDC / HID / MSC / DFU
+- [[bus/usb/usb-vs-other-bus|usb-vs-other-bus]] 跨总线对比
+- [[bus/usb/usb-index|usb-index]] 导航
+- [[bus/usb/usb-dfu-deep-dive|usb-dfu-deep-dive]] DFU 协议
+- [[bus/usb/usb-dfu-practical|usb-dfu-practical]] DFU 实战
+- [[basic/i2c-state-machine|i2c-state-machine]] I2C 状态机 (对比)
+- [[basic/uart-dma-circular-and-rtos|uart-dma-circular-and-rtos]] UART DMA (对比)

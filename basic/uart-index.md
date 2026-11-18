@@ -207,8 +207,8 @@ uart-index.md (本文件, 导航)
 
 ## 关联主题 (chips-com 其他目录)
 
-- **`i2c-*.md`** — I2C 主题 (12 篇, 145 KB, 对比)
-- **`spi-*.md`** — SPI 主题 (6 篇, 75 KB, 对比)
+- **[[basic/i2c-index|I2C]]** — I2C 主题 (12 篇, 145 KB, 对比)
+- **[[basic/spi-index|SPI]]** — SPI 主题 (6 篇, 75 KB, 对比)
 - **[[basic/rs232-rs485|rs232-rs485]]** — 物理层基础
 - **[[bus/industrial/modbus|modbus]]** / **[[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]** — Modbus RTU
 - **[[bus/automotive/can|can]]** — CAN 总线 (用户后续单独做)

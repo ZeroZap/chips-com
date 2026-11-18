@@ -39,4 +39,4 @@ PMBus 是 Power Management Bus，通常建立在 SMBus 上，用于电源控制�
 
 ## 延伸阅读
 
-- `bus/onboard/smbus-pmbus-practical.md`
+- [[bus/onboard/smbus-pmbus-practical|smbus-pmbus-practical]]

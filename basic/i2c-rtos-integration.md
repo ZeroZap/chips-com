@@ -441,6 +441,6 @@ int sensor_read() {
 
 ## 关联文档
 
-- `i2c-bus-recovery-playbook.md` 通用 SOP + 代码骨架
-- `i2c-deep-dive.md` 原理
-- `i2c-state-machine.md` 状态机详解
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] 通用 SOP + 代码骨架
+- [[basic/i2c-deep-dive|i2c-deep-dive]] 原理
+- [[basic/i2c-state-machine|i2c-state-machine]] 状态机详解

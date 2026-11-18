@@ -489,8 +489,8 @@ FPD-Link/GMSL：线束上的远距离 SerDes 传输
 
 ## 延伸阅读
 
-- `bus/display/fpd-link-gmsl.md`
-- `bus/display/fpd-link-gmsl-practical.md`
-- `bus/display/mipi-csi-dsi-deep-dive.md`
-- `bus/display/display-interfaces.md`
-- `basic/lvds.md`
+- [[bus/display/fpd-link-gmsl|fpd-link-gmsl]]
+- [[bus/display/fpd-link-gmsl-practical|fpd-link-gmsl-practical]]
+- [[bus/display/mipi-csi-dsi-deep-dive|mipi-csi-dsi-deep-dive]]
+- [[bus/display/display-interfaces|display-interfaces]]
+- [[basic/lvds|lvds]]

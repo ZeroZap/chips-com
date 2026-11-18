@@ -105,5 +105,5 @@ CJ/T 188 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/cjt188.md`：CJ/T 188 协议
-- `bus/power-rtu/dlt645-vendor-bench.md`：DL/T 645 对标（电表对比）
+- [[bus/power-rtu/cjt188|cjt188]]：CJ/T 188 协议
+- [[bus/power-rtu/dlt645-vendor-bench|dlt645-vendor-bench]]：DL/T 645 对标（电表对比）

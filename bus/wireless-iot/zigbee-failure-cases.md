@@ -6364,7 +6364,7 @@ void coordinator_local_decision(zb_uint16_t sensor_endpoint, zb_uint16_t lux_val
 
 ## 关联文档
 
-- `bus/wireless-iot/zigbee.md` 主题入口
-- `bus/wireless-iot/zigbee-practical.md` 调试流程速查
-- `bus/wireless-iot/zigbee-deep-dive.md` 协议栈深挖
-- `bus/wireless-iot/zigbee-index.md` 主题地图 + 导航
+- [[bus/wireless-iot/zigbee|zigbee]] 主题入口
+- [[bus/wireless-iot/zigbee-practical|zigbee-practical]] 调试流程速查
+- [[bus/wireless-iot/zigbee-deep-dive|zigbee-deep-dive]] 协议栈深挖
+- [[bus/wireless-iot/zigbee-index|zigbee-index]] 主题地图 + 导航

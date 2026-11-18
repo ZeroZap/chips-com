@@ -368,8 +368,8 @@ PROFIBUS DP 更强调工程组态、GSD、周期 IO、参数化、诊断和从�
 
 ## 延伸阅读
 
-- `bus/industrial/profibus.md`
-- `bus/industrial/profibus-practical.md`
-- `basic/rs232-rs485.md`
-- `bus/industrial/rs485-modbus-rtu-deep-dive.md`
-- `bus/industrial/profinet-deep-dive.md`
+- [[bus/industrial/profibus|profibus]]
+- [[bus/industrial/profibus-practical|profibus-practical]]
+- [[basic/rs232-rs485|rs232-rs485]]
+- [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]
+- [[bus/industrial/profinet-deep-dive|profinet-deep-dive]]

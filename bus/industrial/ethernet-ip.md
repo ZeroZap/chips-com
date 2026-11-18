@@ -69,5 +69,5 @@ CIP 对象模型，生态和设备模型更复杂
 
 ## 延伸阅读
 
-- `bus/industrial/industrial-ethernet-comparison.md`
-- `bus/industrial/ethernet-deep-dive.md`
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]

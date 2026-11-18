@@ -667,13 +667,13 @@ write(s, &frame, sizeof(frame));
 
 ## 关联文档
 
-- `can-practical.md` 速查
-- `can-deep-dive.md` 原理
-- `can-failure-cases.md` 产线死机案例
-- `can-fd-and-can-xl.md` 演进
-- `can-rtos-integration.md` RTOS + SocketCAN
-- `can-vs-other-bus.md` 跨总线对比
-- `can-index.md` 导航
-- `bus/automotive/uds-*.md` UDS (诊断优先级)
-- `bus/automotive/j1939-*.md` J1939 (商用车主从)
-- `i2c-bus-recovery-playbook.md` I2C recovery (对比)
+- [[basic/can-practical|can-practical]] 速查
+- [[basic/can-deep-dive|can-deep-dive]] 原理
+- [[basic/can-failure-cases|can-failure-cases]] 产线死机案例
+- [[basic/can-fd-and-can-xl|can-fd-and-can-xl]] 演进
+- [[basic/can-rtos-integration|can-rtos-integration]] RTOS + SocketCAN
+- [[basic/can-vs-other-bus|can-vs-other-bus]] 跨总线对比
+- [[basic/can-index|can-index]] 导航
+- [[bus/automotive/uds-index|UDS]] UDS (诊断优先级)
+- [[bus/automotive/j1939-index|J1939]] J1939 (商用车主从)
+- [[basic/i2c-bus-recovery-playbook|i2c-bus-recovery-playbook]] I2C recovery (对比)

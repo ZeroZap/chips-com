@@ -389,7 +389,7 @@ Modbus RTU：
 
 ## 延伸阅读
 
-- `bus/industrial/dmx512.md`
-- `bus/industrial/dmx512-practical.md`
-- `basic/rs232-rs485.md`
-- `bus/industrial/rs485-modbus-rtu-deep-dive.md`
+- [[bus/industrial/dmx512|dmx512]]
+- [[bus/industrial/dmx512-practical|dmx512-practical]]
+- [[basic/rs232-rs485|rs232-rs485]]
+- [[bus/industrial/rs485-modbus-rtu-deep-dive|rs485-modbus-rtu-deep-dive]]

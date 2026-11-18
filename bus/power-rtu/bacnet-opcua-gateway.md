@@ -229,6 +229,6 @@ ai_temp.set_datatype(opcua.NodeId(opcua.ua.ObjectIds.AnalogItemType))
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-gateway-design.md`：RTU 网关总体设计
-- `bus/power-rtu/bacnet.md`：BACnet 协议
-- `bus/industrial/opcua.md`：OPC UA 协议
+- [[bus/power-rtu/rtu-gateway-design|rtu-gateway-design]]：RTU 网关总体设计
+- [[bus/power-rtu/bacnet|bacnet]]：BACnet 协议
+- [[bus/industrial/opcua|opcua]]：OPC UA 协议

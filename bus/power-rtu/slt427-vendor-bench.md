@@ -68,5 +68,5 @@ SL/T 427 应用场景
 
 ## 延伸阅读
 
-- `bus/power-rtu/slt427.md`：SL/T 427 协议
-- `bus/power-rtu/szy206-vendor-bench.md`：SZY 206 对标
+- [[bus/power-rtu/slt427|slt427]]：SL/T 427 协议
+- [[bus/power-rtu/szy206-vendor-bench|szy206-vendor-bench]]：SZY 206 对标

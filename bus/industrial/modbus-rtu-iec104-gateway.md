@@ -256,7 +256,7 @@ void on_general_interrogation(iec104_server_t *srv) {
 
 ## 延伸阅读
 
-- `bus/power-rtu/rtu-gateway-design.md`：RTU 网关总体设计
-- `bus/industrial/modbus.md`：Modbus 协议
-- `bus/power-rtu/iec104.md`：IEC 104 协议
-- `bus/industrial/modbus-rtu-iec104-gateway.md`（本文）
+- [[bus/power-rtu/rtu-gateway-design|rtu-gateway-design]]：RTU 网关总体设计
+- [[bus/industrial/modbus|modbus]]：Modbus 协议
+- [[bus/power-rtu/iec104|iec104]]：IEC 104 协议
+- [[bus/industrial/modbus-rtu-iec104-gateway|modbus-rtu-iec104-gateway]]（本文）

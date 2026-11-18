@@ -481,8 +481,8 @@ EtherNet/IP 常围绕 EDS、CIP 对象、Assembly、Forward Open、RPI 和连接
 
 ## 延伸阅读
 
-- `bus/industrial/profinet.md`
-- `bus/industrial/profinet-practical.md`
-- `bus/industrial/industrial-ethernet-comparison.md`
-- `bus/industrial/ethernet-deep-dive.md`
-- `bus/industrial/ethernet-ip-practical.md`
+- [[bus/industrial/profinet|profinet]]
+- [[bus/industrial/profinet-practical|profinet-practical]]
+- [[bus/industrial/industrial-ethernet-comparison|industrial-ethernet-comparison]]
+- [[bus/industrial/ethernet-deep-dive|ethernet-deep-dive]]
+- [[bus/industrial/ethernet-ip-practical|ethernet-ip-practical]]

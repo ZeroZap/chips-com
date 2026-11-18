@@ -197,7 +197,7 @@ spi-index.md (本文件, 导航)
 
 ## 关联主题 (chips-com 其他目录)
 
-- **`i2c-*.md`** — I2C 主题 (12 篇, 145 KB, 对比)
+- **[[basic/i2c-index|I2C]]** — I2C 主题 (12 篇, 145 KB, 对比)
 - **[[basic/qspi-ospi|qspi-ospi]]** — 高速 SPI Flash
 - **[[basic/spi-deep-dive|spi-deep-dive]]** "## SPI 与 QSPI 区别" 部分
 

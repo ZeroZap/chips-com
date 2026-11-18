@@ -152,7 +152,7 @@ Frame Counter → 上下行各 16-bit，每次 +1
 
 ## 延伸阅读
 
-- `bus/wireless-iot/lora-practical.md` 调试流程速查 / 5 秒定位 / 错误码
-- `bus/wireless-iot/lora-deep-dive.md` 协议栈 / 调制 / 配网 / 安全 / NS 深挖
-- `bus/wireless-iot/lora-failure-cases.md` 产线实战案例（Join Fail / MIC / Duty Cycle 等）
-- `bus/wireless-iot/lora-index.md` 主题地图 + 读者路径
+- [[bus/wireless-iot/lora-practical|lora-practical]] 调试流程速查 / 5 秒定位 / 错误码
+- [[bus/wireless-iot/lora-deep-dive|lora-deep-dive]] 协议栈 / 调制 / 配网 / 安全 / NS 深挖
+- [[bus/wireless-iot/lora-failure-cases|lora-failure-cases]] 产线实战案例（Join Fail / MIC / Duty Cycle 等）
+- [[bus/wireless-iot/lora-index|lora-index]] 主题地图 + 读者路径
